@@ -1,23 +1,23 @@
 package de.amr.schule.vektoren.ebene;
 
-import de.amr.schule.vektoren.Vektor;
+import de.amr.schule.vektoren.Vector3;
 
 /**
  * Allgemeine Normalenform der Ebene <code>e: n * x = c</code>
  */
 public class EbeneAllgNormalenForm implements Ebene {
 
-	private final Vektor n;
+	private final Vector3 n;
 	private final double c;
 
-	public EbeneAllgNormalenForm(Vektor n, double c) {
+	public EbeneAllgNormalenForm(Vector3 n, double c) {
 		this.n = n;
 		this.c = c;
 	}
 
 	@Override
-	public boolean contains(Vektor x) {
-		return Vektor.dot(n, x) == c;
+	public boolean contains(Vector3 x) {
+		return Vector3.dot(n, x) == c;
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package de.amr.schule.vektoren.ebene;
 
-import de.amr.schule.vektoren.Vektor;
+import de.amr.schule.vektoren.Vector3;
 
 /**
  * Punkt-Normalenform der Ebene.
@@ -9,17 +9,17 @@ import de.amr.schule.vektoren.Vektor;
  */
 public class EbenePunktNormalenForm implements Ebene {
 
-	Vektor n;
-	Vektor a;
+	Vector3 n;
+	Vector3 a;
 
-	public EbenePunktNormalenForm(Vektor n, Vektor a) {
+	public EbenePunktNormalenForm(Vector3 n, Vector3 a) {
 		this.n = n;
 		this.a = a;
 	}
 
 	@Override
-	public boolean contains(Vektor x) {
-		return Vektor.dot(n, Vektor.plus(x, Vektor.inv(a))) == 0;
+	public boolean contains(Vector3 x) {
+		return Vector3.dot(n, Vector3.plus(x, Vector3.inv(a))) == 0;
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class EbenePunktNormalenForm implements Ebene {
 
 	@Override
 	public EbeneAllgNormalenForm toAllgNormalenForm() {
-		return new EbeneAllgNormalenForm(n, Vektor.dot(n, a));
+		return new EbeneAllgNormalenForm(n, Vector3.dot(n, a));
 	}
 
 	@Override

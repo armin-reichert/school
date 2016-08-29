@@ -5,7 +5,7 @@ import static java.lang.Math.sqrt;
 /**
  * 3-dimensionale Vektoren mit Komponenten vom Typ <code>double</code>.
  */
-public class Vektor {
+public class Vector3 {
 
 	private final double x1;
 	private final double x2;
@@ -19,7 +19,7 @@ public class Vektor {
 	/**
 	 * Erzeugt den Nullvektor.
 	 */
-	public Vektor() {
+	public Vector3() {
 		x1 = x2 = x3 = 0;
 	}
 
@@ -33,7 +33,7 @@ public class Vektor {
 	 * @param z
 	 *          z-Koordinate
 	 */
-	public Vektor(double x, double y, double z) {
+	public Vector3(double x, double y, double z) {
 		this.x1 = x;
 		this.x2 = y;
 		this.x3 = z;
@@ -41,11 +41,11 @@ public class Vektor {
 
 	@Override
 	public boolean equals(Object other) {
-		if (other instanceof Vektor) {
+		if (other instanceof Vector3) {
 			if (other == this) {
 				return true;
 			}
-			Vektor v = (Vektor) other;
+			Vector3 v = (Vector3) other;
 			return v.x1 == x1 && v.x2 == x2 && v.x3 == x3;
 		}
 		return false;
@@ -72,8 +72,8 @@ public class Vektor {
 	 *          Vektor
 	 * @return Summenvektor u + v
 	 */
-	public static Vektor plus(Vektor u, Vektor v) {
-		return new Vektor(u.x1 + v.x1, u.x2 + v.x2, u.x3 + v.x3);
+	public static Vector3 plus(Vector3 u, Vector3 v) {
+		return new Vector3(u.x1 + v.x1, u.x2 + v.x2, u.x3 + v.x3);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class Vektor {
 	 *          Vektor
 	 * @return Differenzvektor u - v
 	 */
-	public static Vektor minus(Vektor u, Vektor v) {
+	public static Vector3 minus(Vector3 u, Vector3 v) {
 		return plus(u, inv(v));
 	}
 
@@ -98,8 +98,8 @@ public class Vektor {
 	 *          Vektor
 	 * @return s-faches von v
 	 */
-	public static Vektor times(double s, Vektor v) {
-		return new Vektor(s * v.x1, s * v.x2, s * v.x3);
+	public static Vector3 times(double s, Vector3 v) {
+		return new Vector3(s * v.x1, s * v.x2, s * v.x3);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class Vektor {
 	 *          Vektor
 	 * @return Gegenvektor zu v
 	 */
-	public static Vektor inv(Vektor v) {
+	public static Vector3 inv(Vector3 v) {
 		return times(-1, v);
 	}
 
@@ -122,7 +122,7 @@ public class Vektor {
 	 *          Vektor
 	 * @return Skalarprodukt u * v
 	 */
-	public static double dot(Vektor u, Vektor v) {
+	public static double dot(Vector3 u, Vector3 v) {
 		return u.x1 * v.x1 + u.x2 * v.x2 + u.x3 * v.x3;
 	}
 
@@ -135,8 +135,8 @@ public class Vektor {
 	 *          Vektor
 	 * @return u x v Kreuzproduktvektor
 	 */
-	public static Vektor cross(Vektor u, Vektor v) {
-		return new Vektor(u.x2 * v.x3 - u.x3 * v.x2, -u.x1 * v.x3 + u.x3 * v.x1,
+	public static Vector3 cross(Vector3 u, Vector3 v) {
+		return new Vector3(u.x2 * v.x3 - u.x3 * v.x2, -u.x1 * v.x3 + u.x3 * v.x1,
 				u.x1 * v.x2 - u.x2 * v.x1);
 	}
 
@@ -151,7 +151,7 @@ public class Vektor {
 	 *          Vektor
 	 * @return Spatprodukt <code>(u x v) * w</code>
 	 */
-	public static double spat(Vektor u, Vektor v, Vektor w) {
+	public static double spat(Vector3 u, Vector3 v, Vector3 w) {
 		return dot(cross(u, v), w);
 	}
 
@@ -162,7 +162,7 @@ public class Vektor {
 	 *          Vektor
 	 * @return Länge des Vektors
 	 */
-	public static double length(Vektor v) {
+	public static double length(Vector3 v) {
 		return sqrt(dot(v, v));
 	}
 
@@ -173,7 +173,7 @@ public class Vektor {
 	 *          Vektor
 	 * @return Quadrat der Länge des Vektors
 	 */
-	public static double lengthSqr(Vektor v) {
+	public static double lengthSqr(Vector3 v) {
 		return dot(v, v);
 	}
 
@@ -186,33 +186,33 @@ public class Vektor {
 	 *          Vektor
 	 * @return ob die Vektoren kollinear sind
 	 */
-	public static boolean collinear(Vektor u, Vektor v) {
-		return cross(u, v).equals(new Vektor());
+	public static boolean collinear(Vector3 u, Vector3 v) {
+		return cross(u, v).equals(new Vector3());
 	}
 
 	// Methoden
 
-	public Vektor plus(Vektor v) {
+	public Vector3 plus(Vector3 v) {
 		return plus(this, v);
 	}
 
-	public Vektor minus(Vektor v) {
+	public Vector3 minus(Vector3 v) {
 		return minus(this, v);
 	}
 
-	public Vektor inv() {
+	public Vector3 inv() {
 		return inv(this);
 	}
 
-	public Vektor times(double s) {
+	public Vector3 times(double s) {
 		return times(s, this);
 	}
 
-	public double dot(Vektor v) {
+	public double dot(Vector3 v) {
 		return dot(this, v);
 	}
 
-	public Vektor cross(Vektor v) {
+	public Vector3 cross(Vector3 v) {
 		return cross(this, v);
 	}
 

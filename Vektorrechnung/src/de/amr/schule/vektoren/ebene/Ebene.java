@@ -1,10 +1,10 @@
 package de.amr.schule.vektoren.ebene;
 
-import de.amr.schule.vektoren.Vektor;
+import de.amr.schule.vektoren.Vector3;
 
 public interface Ebene {
 	
-	public default boolean contains(Vektor v) {
+	public default boolean contains(Vector3 v) {
 		return toKoordinatenForm().contains(v);
 	}
 	

@@ -1,14 +1,14 @@
 package de.amr.schule.vektoren.figuren;
 
-import static de.amr.schule.vektoren.Vektor.*;
+import static de.amr.schule.vektoren.Vector3.*;
 
-import de.amr.schule.vektoren.Vektor;
+import de.amr.schule.vektoren.Vector3;
 
 public class Dreieck implements Figur {
 
-	private final Vektor a, b, c;
+	private final Vector3 a, b, c;
 
-	public Dreieck(Vektor a, Vektor b, Vektor c) {
+	public Dreieck(Vector3 a, Vector3 b, Vector3 c) {
 		this.a = a;
 		this.b = b;
 		this.c = c;

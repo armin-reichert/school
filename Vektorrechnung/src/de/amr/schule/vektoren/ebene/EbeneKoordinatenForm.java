@@ -1,6 +1,6 @@
 package de.amr.schule.vektoren.ebene;
 
-import de.amr.schule.vektoren.Vektor;
+import de.amr.schule.vektoren.Vector3;
 
 /**
  * Ebene in Koordinatenform <code>a*x + b*y + c*z = d</code>;
@@ -18,7 +18,7 @@ public class EbeneKoordinatenForm implements Ebene {
 	}
 
 	@Override
-	public boolean contains(Vektor v) {
+	public boolean contains(Vector3 v) {
 		return a * v.x1() + b * v.x2() + c * v.x3() == d;
 	}
 
