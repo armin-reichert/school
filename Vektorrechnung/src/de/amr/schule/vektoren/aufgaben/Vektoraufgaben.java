@@ -44,8 +44,8 @@ public class Vektoraufgaben extends Aufgabe {
 		$(new Vektor(1,2,3).plus(new Vektor(1,2,3)).times(5), "5 * ((1,2,3) + (1,2,3))");
 		$(new Vektor(1,2,3).dot(new Vektor(1,2,3)), "(1,2,3) * (1,2,3)");
 		Vektor v = new Vektor(1,2,3);
-		v.plus(v);
-		Assert.assertTrue(v.equals(new Vektor(2,4,6)));
+		Vektor w = v.plus(v);
+		Assert.assertTrue(w.equals(new Vektor(2,4,6)));
 		
 	}
 
