@@ -5,12 +5,12 @@ import de.amr.schule.vektoren.Vector3;
 /**
  * Allgemeine Normalenform der Ebene <code>e: n * x = c</code>
  */
-public class EbeneAllgNormalenForm implements Ebene {
+public class EbeneANF implements Ebene {
 
 	private final Vector3 n;
 	private final double c;
 
-	public EbeneAllgNormalenForm(Vector3 n, double c) {
+	public EbeneANF(Vector3 n, double c) {
 		this.n = n;
 		this.c = c;
 	}
@@ -30,25 +30,25 @@ public class EbeneAllgNormalenForm implements Ebene {
 	}
 
 	@Override
-	public EbeneParameterForm toParameterForm() {
+	public EbeneParamF toParameterForm() {
 		System.out.println("NOCH NICHT IMPLEMENTIERT!");
 		return null;
 	}
 
 	@Override
-	public EbenePunktNormalenForm toPunktNormalenForm() {
+	public EbenePNF toPunktNormalenForm() {
 		System.out.println("NOCH NICHT IMPLEMENTIERT!");
 		return null;
 	}
 
 	@Override
-	public EbeneAllgNormalenForm toAllgNormalenForm() {
+	public EbeneANF toAllgNormalenForm() {
 		return this;
 	}
 
 	@Override
-	public EbeneKoordinatenForm toKoordinatenForm() {
-		return new EbeneKoordinatenForm(n.x1(), n.x2(), n.x3(), c);
+	public EbeneKoordF toKoordinatenForm() {
+		return new EbeneKoordF(n.x1(), n.x2(), n.x3(), c);
 	}
 
 }

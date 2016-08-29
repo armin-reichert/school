@@ -8,15 +8,15 @@ public interface Ebene {
 		return toKoordinatenForm().contains(v);
 	}
 	
-	public EbeneParameterForm toParameterForm();
+	public EbeneParamF toParameterForm();
 
-	public EbenePunktNormalenForm toPunktNormalenForm();
+	public EbenePNF toPunktNormalenForm();
 
-	public default EbeneAllgNormalenForm toAllgNormalenForm() {
+	public default EbeneANF toAllgNormalenForm() {
 		return toPunktNormalenForm().toAllgNormalenForm();
 	}
 	
-	public default EbeneKoordinatenForm toKoordinatenForm() {
+	public default EbeneKoordF toKoordinatenForm() {
 		return toAllgNormalenForm().toKoordinatenForm();
 	}
 }

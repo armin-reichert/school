@@ -7,6 +7,10 @@ import static java.lang.Math.sqrt;
  */
 public class Vector3 {
 
+	public static final Vector3 EX = new Vector3(1, 0, 0);
+	public static final Vector3 EY = new Vector3(0, 1, 0);
+	public static final Vector3 EZ = new Vector3(0, 0, 1);
+
 	private final double x;
 	private final double y;
 	private final double z;
@@ -136,8 +140,7 @@ public class Vector3 {
 	 * @return u x v Kreuzproduktvektor
 	 */
 	public static Vector3 cross(Vector3 u, Vector3 v) {
-		return new Vector3(u.y * v.z - u.z * v.y, -u.x * v.z + u.z * v.x,
-				u.x * v.y - u.y * v.x);
+		return new Vector3(u.y * v.z - u.z * v.y, -u.x * v.z + u.z * v.x, u.x * v.y - u.y * v.x);
 	}
 
 	/**

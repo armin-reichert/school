@@ -5,20 +5,20 @@ import de.amr.schule.vektoren.Vector3;
 /**
  * Parameterform der Ebene <code>e: x = a + r * u + s * v</code>.
  */
-public class EbeneParameterForm implements Ebene {
+public class EbeneParamF implements Ebene {
 
 	private final Vector3 a;
 	private final Vector3 u;
 	private final Vector3 v;
 
-	public EbeneParameterForm(Vector3 a, Vector3 u, Vector3 v) {
+	public EbeneParamF(Vector3 a, Vector3 u, Vector3 v) {
 		this.a = a;
 		this.u = u;
 		this.v = v;
 	}
 
-	public static EbeneParameterForm dreiPunkte(Vector3 a, Vector3 b, Vector3 c) {
-		return new EbeneParameterForm(a, Vector3.minus(b, a), Vector3.minus(c, a));
+	public static EbeneParamF dreiPunkte(Vector3 a, Vector3 b, Vector3 c) {
+		return new EbeneParamF(a, Vector3.minus(b, a), Vector3.minus(c, a));
 	}
 
 	@Override
@@ -27,12 +27,12 @@ public class EbeneParameterForm implements Ebene {
 	}
 
 	@Override
-	public EbeneParameterForm toParameterForm() {
+	public EbeneParamF toParameterForm() {
 		return this;
 	}
 
 	@Override
-	public EbenePunktNormalenForm toPunktNormalenForm() {
-		return new EbenePunktNormalenForm(Vector3.cross(u, v), a);
+	public EbenePNF toPunktNormalenForm() {
+		return new EbenePNF(Vector3.cross(u, v), a);
 	}
 }

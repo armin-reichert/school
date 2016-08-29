@@ -4,7 +4,7 @@ public abstract class Aufgabe {
 
 	public void $(Object o, String... s) {
 		if (s.length > 0) {
-			System.out.println(s[0] + ": " + o);
+			System.out.println(s[0] + " = " + o);
 		} else {
 			System.out.println(o);
 		}

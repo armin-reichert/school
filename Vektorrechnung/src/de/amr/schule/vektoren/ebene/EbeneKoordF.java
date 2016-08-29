@@ -6,11 +6,11 @@ import de.amr.schule.vektoren.Vector3;
  * Ebene in Koordinatenform <code>a*x + b*y + c*z = d</code>;
  *
  */
-public class EbeneKoordinatenForm implements Ebene {
+public class EbeneKoordF implements Ebene {
 
 	private final double a, b, c, d;
 
-	public EbeneKoordinatenForm(double a, double b, double c, double d) {
+	public EbeneKoordF(double a, double b, double c, double d) {
 		this.a = a;
 		this.b = b;
 		this.c = c;
@@ -28,25 +28,25 @@ public class EbeneKoordinatenForm implements Ebene {
 	}
 
 	@Override
-	public EbeneAllgNormalenForm toAllgNormalenForm() {
+	public EbeneANF toAllgNormalenForm() {
 		System.out.println("NOCH NICHT IMPLEMENTIERT!");
 		return null;
 	}
 
 	@Override
-	public EbeneKoordinatenForm toKoordinatenForm() {
+	public EbeneKoordF toKoordinatenForm() {
 		System.out.println("NOCH NICHT IMPLEMENTIERT!");
 		return null;
 	}
 
 	@Override
-	public EbeneParameterForm toParameterForm() {
+	public EbeneParamF toParameterForm() {
 		System.out.println("NOCH NICHT IMPLEMENTIERT!");
 		return null;
 	}
 
 	@Override
-	public EbenePunktNormalenForm toPunktNormalenForm() {
+	public EbenePNF toPunktNormalenForm() {
 		System.out.println("NOCH NICHT IMPLEMENTIERT!");
 		return null;
 	}

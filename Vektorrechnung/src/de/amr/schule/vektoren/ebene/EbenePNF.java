@@ -7,12 +7,12 @@ import de.amr.schule.vektoren.Vector3;
  * <p>
  * <code>n * (x - a) = c</code>
  */
-public class EbenePunktNormalenForm implements Ebene {
+public class EbenePNF implements Ebene {
 
 	Vector3 n;
 	Vector3 a;
 
-	public EbenePunktNormalenForm(Vector3 n, Vector3 a) {
+	public EbenePNF(Vector3 n, Vector3 a) {
 		this.n = n;
 		this.a = a;
 	}
@@ -28,24 +28,24 @@ public class EbenePunktNormalenForm implements Ebene {
 	}
 
 	@Override
-	public EbeneAllgNormalenForm toAllgNormalenForm() {
-		return new EbeneAllgNormalenForm(n, Vector3.dot(n, a));
+	public EbeneANF toAllgNormalenForm() {
+		return new EbeneANF(n, Vector3.dot(n, a));
 	}
 
 	@Override
-	public EbeneKoordinatenForm toKoordinatenForm() {
+	public EbeneKoordF toKoordinatenForm() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public EbeneParameterForm toParameterForm() {
+	public EbeneParamF toParameterForm() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public EbenePunktNormalenForm toPunktNormalenForm() {
+	public EbenePNF toPunktNormalenForm() {
 		// TODO Auto-generated method stub
 		return null;
 	}
