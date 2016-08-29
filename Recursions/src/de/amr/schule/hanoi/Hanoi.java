@@ -1,4 +1,4 @@
-package demo.hanoi;
+package de.amr.schule.hanoi;
 
 public class Hanoi
 {

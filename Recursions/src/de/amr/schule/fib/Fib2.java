@@ -1,4 +1,4 @@
-package demo.fib;
+package de.amr.schule.fib;
 
 import java.math.BigInteger;
 
