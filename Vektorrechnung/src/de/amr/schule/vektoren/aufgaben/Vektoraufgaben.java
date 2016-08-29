@@ -39,6 +39,9 @@ public class Vektoraufgaben extends Aufgabe {
 		$(cross(EX, EY), "e_x x e_y");
 		$(cross(EX, EZ), "e_x x e_z");
 		$(cross(EY, EZ), "e_y x e_z");
+		$(cross(EX, EX), "e_x x e_x");
+		$(cross(EY, EY), "e_y x e_y");
+		$(cross(EZ, EZ), "e_z x e_z");
 	}
 
 	@Test
@@ -61,29 +64,29 @@ public class Vektoraufgaben extends Aufgabe {
 
 		{
 			Vector3 a = new Vector3(2, -1, 4), b = new Vector3(4, 1, 2), c = new Vector3(1, 5, 3);
-			EbeneParamF e = EbeneParamF.dreiPunkte(a, b, c);
-			$(e);
-			$(e.contains(a), "Ebene enthält Punkt " + a);
-			$(e.contains(b), "Ebene enthält Punkt " + b);
-			$(e.contains(c), "Ebene enthält Punkt " + c);
+			EbeneParamF paramf = EbeneParamF.dreiPunkte(a, b, c);
+			$(paramf);
+			$(paramf.contains(a), "Ebene enthält Punkt " + a);
+			$(paramf.contains(b), "Ebene enthält Punkt " + b);
+			$(paramf.contains(c), "Ebene enthält Punkt " + c);
 
-			EbenePNF epnf = e.toPunktNormalenForm();
-			$(epnf);
-			$(epnf.contains(a), "Ebene enthält Punkt " + a);
-			$(epnf.contains(b), "Ebene enthält Punkt " + b);
-			$(epnf.contains(c), "Ebene enthält Punkt " + c);
+			EbenePNF pnf = paramf.toPunktNormalenForm();
+			$(pnf);
+			$(pnf.contains(a), "Ebene enthält Punkt " + a);
+			$(pnf.contains(b), "Ebene enthält Punkt " + b);
+			$(pnf.contains(c), "Ebene enthält Punkt " + c);
 
-			EbeneANF eanf = e.toAllgNormalenForm();
-			$(eanf);
-			$(eanf.contains(a), "Ebene enthält Punkt " + a);
-			$(eanf.contains(b), "Ebene enthält Punkt " + b);
-			$(eanf.contains(c), "Ebene enthält Punkt " + c);
+			EbeneANF anf = paramf.toAllgNormalenForm();
+			$(anf);
+			$(anf.contains(a), "Ebene enthält Punkt " + a);
+			$(anf.contains(b), "Ebene enthält Punkt " + b);
+			$(anf.contains(c), "Ebene enthält Punkt " + c);
 
-			EbeneKoordF ekf = e.toKoordinatenForm();
-			$(ekf);
-			$(ekf.contains(a), "Ebene enthält Punkt " + a);
-			$(ekf.contains(b), "Ebene enthält Punkt " + b);
-			$(ekf.contains(c), "Ebene enthält Punkt " + c);
+			EbeneKoordF kf = paramf.toKoordinatenForm();
+			$(kf);
+			$(kf.contains(a), "Ebene enthält Punkt " + a);
+			$(kf.contains(b), "Ebene enthält Punkt " + b);
+			$(kf.contains(c), "Ebene enthält Punkt " + c);
 		}
 
 		{

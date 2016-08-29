@@ -7,6 +7,7 @@ import static java.lang.Math.sqrt;
  */
 public class Vector3 {
 
+	public static final Vector3 ZERO = new Vector3(0, 0, 0);
 	public static final Vector3 EX = new Vector3(1, 0, 0);
 	public static final Vector3 EY = new Vector3(0, 1, 0);
 	public static final Vector3 EZ = new Vector3(0, 0, 1);
@@ -190,7 +191,11 @@ public class Vector3 {
 	 * @return ob die Vektoren kollinear sind
 	 */
 	public static boolean collinear(Vector3 u, Vector3 v) {
-		return cross(u, v).equals(new Vector3());
+		return cross(u, v).equals(ZERO);
+	}
+
+	public static boolean orthogonal(Vector3 u, Vector3 v) {
+		return dot(u, v) == 0;
 	}
 
 	// Methoden

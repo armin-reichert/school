@@ -1,6 +1,8 @@
 package de.amr.schule.vektoren.figuren;
 
-import static de.amr.schule.vektoren.Vector3.*;
+import static de.amr.schule.vektoren.Vector3.cross;
+import static de.amr.schule.vektoren.Vector3.length;
+import static de.amr.schule.vektoren.Vector3.orthogonal;
 
 import de.amr.schule.vektoren.Vector3;
 
@@ -23,16 +25,16 @@ public class Parallelogramm implements Figur {
 	public double fläche() {
 		return length(cross(a, b));
 	}
-	
+
 	public boolean istRechteck() {
-		return dot(a, b) == 0;
+		return orthogonal(a, b);
 	}
-	
+
 	public boolean istQuadrat() {
 		return istRechteck() && length(a) == length(b);
-		
+
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("a=%s, b=%s", a.toString(), b.toString());
