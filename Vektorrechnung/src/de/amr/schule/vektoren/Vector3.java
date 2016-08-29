@@ -7,20 +7,20 @@ import static java.lang.Math.sqrt;
  */
 public class Vector3 {
 
-	private final double x1;
-	private final double x2;
-	private final double x3;
+	private final double x;
+	private final double y;
+	private final double z;
 
 	@Override
 	public String toString() {
-		return String.format("(%.2f, %.2f, %.2f)", x1, x2, x3);
+		return String.format("(%.2f, %.2f, %.2f)", x, y, z);
 	}
 
 	/**
 	 * Erzeugt den Nullvektor.
 	 */
 	public Vector3() {
-		x1 = x2 = x3 = 0;
+		x = y = z = 0;
 	}
 
 	/**
@@ -34,9 +34,9 @@ public class Vector3 {
 	 *          z-Koordinate
 	 */
 	public Vector3(double x, double y, double z) {
-		this.x1 = x;
-		this.x2 = y;
-		this.x3 = z;
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
 	@Override
@@ -46,21 +46,21 @@ public class Vector3 {
 				return true;
 			}
 			Vector3 v = (Vector3) other;
-			return v.x1 == x1 && v.x2 == x2 && v.x3 == x3;
+			return v.x == x && v.y == y && v.z == z;
 		}
 		return false;
 	}
 
 	public double x1() {
-		return x1;
+		return x;
 	}
 
 	public double x2() {
-		return x2;
+		return y;
 	}
 
 	public double x3() {
-		return x3;
+		return z;
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class Vector3 {
 	 * @return Summenvektor u + v
 	 */
 	public static Vector3 plus(Vector3 u, Vector3 v) {
-		return new Vector3(u.x1 + v.x1, u.x2 + v.x2, u.x3 + v.x3);
+		return new Vector3(u.x + v.x, u.y + v.y, u.z + v.z);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class Vector3 {
 	 * @return s-faches von v
 	 */
 	public static Vector3 times(double s, Vector3 v) {
-		return new Vector3(s * v.x1, s * v.x2, s * v.x3);
+		return new Vector3(s * v.x, s * v.y, s * v.z);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class Vector3 {
 	 * @return Skalarprodukt u * v
 	 */
 	public static double dot(Vector3 u, Vector3 v) {
-		return u.x1 * v.x1 + u.x2 * v.x2 + u.x3 * v.x3;
+		return u.x * v.x + u.y * v.y + u.z * v.z;
 	}
 
 	/**
@@ -136,8 +136,8 @@ public class Vector3 {
 	 * @return u x v Kreuzproduktvektor
 	 */
 	public static Vector3 cross(Vector3 u, Vector3 v) {
-		return new Vector3(u.x2 * v.x3 - u.x3 * v.x2, -u.x1 * v.x3 + u.x3 * v.x1,
-				u.x1 * v.x2 - u.x2 * v.x1);
+		return new Vector3(u.y * v.z - u.z * v.y, -u.x * v.z + u.z * v.x,
+				u.x * v.y - u.y * v.x);
 	}
 
 	/**
