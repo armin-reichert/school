@@ -103,7 +103,7 @@ public class Vector3 {
 	 * @return Gegenvektor zu v
 	 */
 	public static Vector3 inv(Vector3 v) {
-		return times(-1, v);
+		return new Vector3(-v.x, -v.y, -v.z);
 	}
 
 	/**
