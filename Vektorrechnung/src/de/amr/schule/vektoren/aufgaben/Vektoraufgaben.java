@@ -70,19 +70,19 @@ public class Vektoraufgaben extends Aufgabe {
 			$(paramf.contains(b), "Ebene enthält Punkt " + b);
 			$(paramf.contains(c), "Ebene enthält Punkt " + c);
 
-			EbenePNF pnf = paramf.toPunktNormalenForm();
+			EbenePNF pnf = paramf.toPNF();
 			$(pnf);
 			$(pnf.contains(a), "Ebene enthält Punkt " + a);
 			$(pnf.contains(b), "Ebene enthält Punkt " + b);
 			$(pnf.contains(c), "Ebene enthält Punkt " + c);
 
-			EbeneANF anf = paramf.toAllgNormalenForm();
+			EbeneANF anf = paramf.toANF();
 			$(anf);
 			$(anf.contains(a), "Ebene enthält Punkt " + a);
 			$(anf.contains(b), "Ebene enthält Punkt " + b);
 			$(anf.contains(c), "Ebene enthält Punkt " + c);
 
-			EbeneKoordF kf = paramf.toKoordinatenForm();
+			EbeneKoordF kf = paramf.toKoordF();
 			$(kf);
 			$(kf.contains(a), "Ebene enthält Punkt " + a);
 			$(kf.contains(b), "Ebene enthält Punkt " + b);

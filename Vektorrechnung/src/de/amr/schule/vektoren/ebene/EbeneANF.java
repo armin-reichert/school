@@ -1,5 +1,7 @@
 package de.amr.schule.vektoren.ebene;
 
+import static de.amr.schule.vektoren.Vector3.dot;
+
 import de.amr.schule.vektoren.Vector3;
 
 /**
@@ -7,9 +9,17 @@ import de.amr.schule.vektoren.Vector3;
  */
 public class EbeneANF implements Ebene {
 
-	private final Vector3 n;
-	private final double c;
+	public final Vector3 n;
+	public final double c;
 
+	/**
+	 * Erzeugt eine Ebene der Form <code>e: n * x = c</code>.
+	 * 
+	 * @param n
+	 *          Normalenvektor
+	 * @param c
+	 *          Konstante
+	 */
 	public EbeneANF(Vector3 n, double c) {
 		this.n = n;
 		this.c = c;
@@ -17,38 +27,33 @@ public class EbeneANF implements Ebene {
 
 	@Override
 	public boolean contains(Vector3 x) {
-		return Vector3.dot(n, x) == c;
+		return dot(n, x) == c;
 	}
 
 	@Override
 	public String toString() {
-		if (c < 0) {
-			return String.format("e: %s * x + %.2f = 0", n, -c);
-		} else {
-			return String.format("e: %s * x - %.2f = 0", n, c);
-		}
+		return String.format("e: %s * x + %.2f = 0", n, c >= 0 ? c : -c);
 	}
 
 	@Override
-	public EbeneParamF toParameterForm() {
+	public EbeneParamF toParamF() {
 		System.out.println("NOCH NICHT IMPLEMENTIERT!");
 		return null;
 	}
 
 	@Override
-	public EbenePNF toPunktNormalenForm() {
+	public EbenePNF toPNF() {
 		System.out.println("NOCH NICHT IMPLEMENTIERT!");
 		return null;
 	}
 
 	@Override
-	public EbeneANF toAllgNormalenForm() {
+	public EbeneANF toANF() {
 		return this;
 	}
 
 	@Override
-	public EbeneKoordF toKoordinatenForm() {
-		return new EbeneKoordF(n.x1(), n.x2(), n.x3(), c);
+	public EbeneKoordF toKoordF() {
+		return new EbeneKoordF(n.x, n.y, n.z, c);
 	}
-
 }

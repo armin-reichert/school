@@ -7,16 +7,36 @@ import de.amr.schule.vektoren.Vector3;
  */
 public class EbeneParamF implements Ebene {
 
-	private final Vector3 a;
-	private final Vector3 u;
-	private final Vector3 v;
+	public final Vector3 a;
+	public final Vector3 u;
+	public final Vector3 v;
 
+	/**
+	 * Erzeugt eine Ebene in Parameterform mit Aufpunkt a und Richtungsvektoren u und v.
+	 * 
+	 * @param a
+	 *          Aufpunkt der Ebene
+	 * @param u
+	 *          Richtungsvektor
+	 * @param v
+	 *          Richtungsvektor
+	 */
 	public EbeneParamF(Vector3 a, Vector3 u, Vector3 v) {
 		this.a = a;
 		this.u = u;
 		this.v = v;
 	}
 
+	/**
+	 * Erzeugt eine Ebene in Parameterform mit Aufpunkt a und Richtungsvektoren (b-a) und (c-a).
+	 * 
+	 * @param a
+	 *          Punkt der Ebene
+	 * @param b
+	 *          Punkt der Ebene
+	 * @param c
+	 *          Punkt der Ebene
+	 */
 	public static EbeneParamF dreiPunkte(Vector3 a, Vector3 b, Vector3 c) {
 		return new EbeneParamF(a, Vector3.minus(b, a), Vector3.minus(c, a));
 	}
@@ -27,12 +47,12 @@ public class EbeneParamF implements Ebene {
 	}
 
 	@Override
-	public EbeneParamF toParameterForm() {
+	public EbeneParamF toParamF() {
 		return this;
 	}
 
 	@Override
-	public EbenePNF toPunktNormalenForm() {
+	public EbenePNF toPNF() {
 		return new EbenePNF(Vector3.cross(u, v), a);
 	}
 }

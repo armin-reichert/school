@@ -2,6 +2,7 @@ package de.amr.schule.vektoren.aufgaben;
 
 import static de.amr.schule.vektoren.Vector3.minus;
 import static de.amr.schule.vektoren.Vector3.plus;
+import static de.amr.schule.vektoren.Vector3.times;
 
 import org.junit.Test;
 
@@ -51,7 +52,7 @@ public class Kapitel2 extends Aufgabe {
 		aufgabe("18a)");
 		EbeneKoordF e = new EbeneKoordF(2, -1, 0, 5);
 		$(e);
-		EbeneANF anf = e.toAllgNormalenForm();
+		EbeneANF anf = e.toANF();
 		$(anf);
 	}
 
@@ -61,7 +62,7 @@ public class Kapitel2 extends Aufgabe {
 		EbeneParamF e = new EbeneParamF(new Vector3(0, 1, 0), new Vector3(1, 1, 0),
 				new Vector3(0, 4, 1));
 		$(e);
-		EbeneKoordF ekf = e.toKoordinatenForm();
+		EbeneKoordF ekf = e.toKoordF();
 		$(ekf);
 	}
 
@@ -71,7 +72,7 @@ public class Kapitel2 extends Aufgabe {
 		EbeneParamF e = new EbeneParamF(new Vector3(1, 0, 0), new Vector3(1, 0, 0),
 				new Vector3(0, 1, 0));
 		$(e);
-		EbeneKoordF ekf = e.toKoordinatenForm();
+		EbeneKoordF ekf = e.toKoordF();
 		$(ekf);
 	}
 
@@ -81,7 +82,7 @@ public class Kapitel2 extends Aufgabe {
 		EbeneParamF e = new EbeneParamF(new Vector3(2, 1, 4), new Vector3(3, 2, -1),
 				new Vector3(0, 4, -1));
 		$(e);
-		EbeneKoordF ekf = e.toKoordinatenForm();
+		EbeneKoordF ekf = e.toKoordF();
 		$(ekf);
 	}
 
@@ -91,7 +92,7 @@ public class Kapitel2 extends Aufgabe {
 		EbeneParamF e = new EbeneParamF(new Vector3(0, 0, 0), new Vector3(5, 0, 1),
 				new Vector3(-3, 1, 0));
 		$(e);
-		EbeneKoordF ekf = e.toKoordinatenForm();
+		EbeneKoordF ekf = e.toKoordF();
 		$(ekf);
 	}
 
@@ -100,8 +101,8 @@ public class Kapitel2 extends Aufgabe {
 		aufgabe("20a)");
 		Vector3 a = new Vector3(-1, 3, 1), b = new Vector3(3, -4, 1), c = new Vector3(0, 0, -1);
 		EbeneParamF e = EbeneParamF.dreiPunkte(a, b, c);
-		$(e.toPunktNormalenForm());
-		$(e.toKoordinatenForm());
+		$(e.toPNF());
+		$(e.toKoordF());
 	}
 
 	@Test
@@ -109,31 +110,29 @@ public class Kapitel2 extends Aufgabe {
 		aufgabe("20b)");
 		Vector3 a = new Vector3(6, -2, 1), b = new Vector3(-1, 0, 2), c = new Vector3(0, 0, 1);
 		EbeneParamF e = EbeneParamF.dreiPunkte(a, b, c);
-		$(e.toPunktNormalenForm());
-		$(e.toKoordinatenForm());
+		$(e.toPNF());
+		$(e.toKoordF());
 	}
 
 	@Test
 	public void a22a() {
 		aufgabe("22a)");
-		EbenePNF e = new EbenePNF(new Vector3(2, -1, 0),
-				new Vector3(1, -1, 0));
-		$(e.toAllgNormalenForm());
+		EbenePNF e = new EbenePNF(new Vector3(2, -1, 0), new Vector3(1, -1, 0));
+		$(e.toANF());
 	}
 
 	@Test
 	public void a22b() {
 		aufgabe("22b)");
 		EbenePNF e = new EbenePNF(new Vector3(0, 0, 1), new Vector3());
-		$(e.toAllgNormalenForm());
+		$(e.toANF());
 	}
 
 	@Test
 	public void a22c() {
 		aufgabe("22c)");
-		EbenePNF e = new EbenePNF(new Vector3(0, 1, 0),
-				new Vector3(-4, 1, 3));
-		$(e.toAllgNormalenForm());
+		EbenePNF e = new EbenePNF(new Vector3(0, 1, 0), new Vector3(-4, 1, 3));
+		$(e.toANF());
 	}
 
 	@Test
@@ -141,7 +140,7 @@ public class Kapitel2 extends Aufgabe {
 		aufgabe("22d)");
 		Vector3 a = new Vector3(3, -2, 5);
 		EbenePNF e = new EbenePNF(a, a);
-		$(e.toAllgNormalenForm());
+		$(e.toANF());
 	}
 
 	@Test
@@ -149,8 +148,7 @@ public class Kapitel2 extends Aufgabe {
 		aufgabe("22e)");
 		Vector3 a = new Vector3(3, 5, 1);
 		Vector3 b = new Vector3(7, -1, 3);
-		EbenePNF e = new EbenePNF(minus(b, a),
-				Vector3.times(0.5, plus(a, b)));
-		$(e.toAllgNormalenForm());
+		EbenePNF e = new EbenePNF(minus(b, a), times(0.5, plus(a, b)));
+		$(e.toANF());
 	}
 }

@@ -12,9 +12,9 @@ public class Vector3 {
 	public static final Vector3 EY = new Vector3(0, 1, 0);
 	public static final Vector3 EZ = new Vector3(0, 0, 1);
 
-	private final double x;
-	private final double y;
-	private final double z;
+	public final double x;
+	public final double y;
+	public final double z;
 
 	@Override
 	public String toString() {
@@ -54,18 +54,6 @@ public class Vector3 {
 			return v.x == x && v.y == y && v.z == z;
 		}
 		return false;
-	}
-
-	public double x1() {
-		return x;
-	}
-
-	public double x2() {
-		return y;
-	}
-
-	public double x3() {
-		return z;
 	}
 
 	/**

@@ -8,7 +8,7 @@ import de.amr.schule.vektoren.Vector3;
  */
 public class EbeneKoordF implements Ebene {
 
-	private final double a, b, c, d;
+	public final double a, b, c, d;
 
 	public EbeneKoordF(double a, double b, double c, double d) {
 		this.a = a;
@@ -19,7 +19,7 @@ public class EbeneKoordF implements Ebene {
 
 	@Override
 	public boolean contains(Vector3 v) {
-		return a * v.x1() + b * v.x2() + c * v.x3() == d;
+		return a * v.x + b * v.y + c * v.z == d;
 	}
 
 	@Override
@@ -28,25 +28,25 @@ public class EbeneKoordF implements Ebene {
 	}
 
 	@Override
-	public EbeneANF toAllgNormalenForm() {
+	public EbeneANF toANF() {
 		System.out.println("NOCH NICHT IMPLEMENTIERT!");
 		return null;
 	}
 
 	@Override
-	public EbeneKoordF toKoordinatenForm() {
+	public EbeneKoordF toKoordF() {
 		System.out.println("NOCH NICHT IMPLEMENTIERT!");
 		return null;
 	}
 
 	@Override
-	public EbeneParamF toParameterForm() {
+	public EbeneParamF toParamF() {
 		System.out.println("NOCH NICHT IMPLEMENTIERT!");
 		return null;
 	}
 
 	@Override
-	public EbenePNF toPunktNormalenForm() {
+	public EbenePNF toPNF() {
 		System.out.println("NOCH NICHT IMPLEMENTIERT!");
 		return null;
 	}
