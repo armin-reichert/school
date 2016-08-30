@@ -52,18 +52,7 @@ public class EbenePNF implements Ebene {
 
 	@Override
 	public EbeneParamF toParamF() {
-		EbeneKoordF e = toKoordF();
-		if (e.c != 0) {
-			return new EbeneParamF(new Vector3(0, 0, e.d / e.c), new Vector3(1, 0, -e.a / e.c),
-					new Vector3(0, 1, -e.b / e.c));
-		} else if (e.b != 0) {
-			return new EbeneParamF(new Vector3(0, e.d / e.b, 0), new Vector3(1, -e.a / e.b, 0),
-					new Vector3(0, -e.c / e.b, 1));
-		} else if (e.a != 0) {
-			return new EbeneParamF(new Vector3(e.d / e.a, 0, 0), new Vector3(-e.b / e.a, 1, 0),
-					new Vector3(-e.c / e.a, 0, 1));
-		}
-		throw new IllegalStateException("Ebene in Koordinatenform ist ungültig: " + e);
+		return toKoordF().toParamF();
 	}
 
 	@Override

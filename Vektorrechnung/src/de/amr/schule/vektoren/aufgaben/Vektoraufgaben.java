@@ -60,6 +60,14 @@ public class Vektoraufgaben extends Aufgabe {
 			$(e);
 			$(e.contains(new Vector3(-1, -2, 2)), "Ebene enthält (-1|-2|2)");
 			$(e.contains(new Vector3(5, -3, 1)), "Ebene enthält (5|-3|1)");
+			EbeneParamF paramForm = e.toParamF();
+			$(paramForm, "Parameterform");
+			EbenePNF punktNormalenForm = e.toPNF();
+			$(punktNormalenForm, "Punkt-Normalenform");
+			EbeneKoordF koordForm = e.toKoordF();
+			$(koordForm, "Koordinatenform");
+			EbeneANF allgNormalenForm = paramForm.toANF();
+			$(allgNormalenForm, "ANF aus Parameterform");
 		}
 
 		{

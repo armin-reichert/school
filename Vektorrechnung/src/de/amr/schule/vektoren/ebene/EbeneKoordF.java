@@ -29,25 +29,26 @@ public class EbeneKoordF implements Ebene {
 
 	@Override
 	public EbeneANF toANF() {
-		System.out.println("NOCH NICHT IMPLEMENTIERT!");
-		return null;
+		return new EbeneANF(new Vector3(a, b, c), d);
 	}
 
 	@Override
 	public EbeneKoordF toKoordF() {
-		System.out.println("NOCH NICHT IMPLEMENTIERT!");
-		return null;
+		return this;
 	}
 
 	@Override
 	public EbeneParamF toParamF() {
-		System.out.println("NOCH NICHT IMPLEMENTIERT!");
-		return null;
-	}
-
-	@Override
-	public EbenePNF toPNF() {
-		System.out.println("NOCH NICHT IMPLEMENTIERT!");
-		return null;
+		if (c != 0) {
+			return new EbeneParamF(new Vector3(0, 0, d / c), new Vector3(1, 0, -a / c),
+					new Vector3(0, 1, -b / c));
+		} else if (b != 0) {
+			return new EbeneParamF(new Vector3(0, d / b, 0), new Vector3(1, -a / b, 0),
+					new Vector3(0, -c / b, 1));
+		} else if (a != 0) {
+			return new EbeneParamF(new Vector3(d / a, 0, 0), new Vector3(-b / a, 1, 0),
+					new Vector3(-c / a, 0, 1));
+		}
+		throw new IllegalStateException("Ebene in Koordinatenform ist ungültig: " + this);
 	}
 }

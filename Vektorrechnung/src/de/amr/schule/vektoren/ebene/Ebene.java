@@ -8,9 +8,13 @@ public interface Ebene {
 		return toKoordF().contains(v);
 	}
 	
-	public EbeneParamF toParamF();
+	public default EbeneParamF toParamF() {
+		return toKoordF().toParamF();
+	}
 
-	public EbenePNF toPNF();
+	public default EbenePNF toPNF() {
+		return toANF().toPNF();
+	}
 
 	public default EbeneANF toANF() {
 		return toPNF().toANF();

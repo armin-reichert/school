@@ -36,15 +36,15 @@ public class EbeneANF implements Ebene {
 	}
 
 	@Override
-	public EbeneParamF toParamF() {
-		System.out.println("NOCH NICHT IMPLEMENTIERT!");
-		return null;
-	}
-
-	@Override
 	public EbenePNF toPNF() {
-		System.out.println("NOCH NICHT IMPLEMENTIERT!");
-		return null;
+		if (n.x != 0) {
+			return new EbenePNF(n, new Vector3(c / n.x, 0, 0));
+		} else if (n.y != 0) {
+			return new EbenePNF(n, new Vector3(0, c / n.y, 0));
+		} else if (n.z != 0) {
+			return new EbenePNF(n, new Vector3(0, 0, c / n.z));
+		}
+		throw new IllegalStateException("Normalenvektor darf nicht der Nullvektor sein: " + this);
 	}
 
 	@Override
