@@ -12,7 +12,7 @@ import de.amr.schule.vektoren.ebene.EbeneKoordF;
 import de.amr.schule.vektoren.ebene.EbeneParamF;
 import de.amr.schule.vektoren.ebene.EbenePNF;
 
-public class Kapitel2 extends Aufgabe {
+public class Kapitel2_3 extends Aufgabe {
 
 	@Test
 	public void a16a() {
