@@ -7,7 +7,7 @@ import static java.lang.Math.sqrt;
  */
 public class Vector3 {
 
-	public static final Vector3 ZERO = new Vector3(0, 0, 0);
+	public static final Vector3 NULL = new Vector3(0, 0, 0);
 	public static final Vector3 EX = new Vector3(1, 0, 0);
 	public static final Vector3 EY = new Vector3(0, 1, 0);
 	public static final Vector3 EZ = new Vector3(0, 0, 1);
@@ -44,6 +44,16 @@ public class Vector3 {
 		this.z = z;
 	}
 
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param v
+	 *          a vector
+	 */
+	public Vector3(Vector3 v) {
+		this(v.x, v.y, v.z);
+	}
+
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof Vector3) {
@@ -57,7 +67,7 @@ public class Vector3 {
 	}
 
 	/**
-	 * Addition von Vektoren.
+	 * Addition von zwei Vektoren.
 	 * 
 	 * @param u
 	 *          Vektor
@@ -65,8 +75,23 @@ public class Vector3 {
 	 *          Vektor
 	 * @return Summenvektor u + v
 	 */
-	public static Vector3 plus(Vector3 u, Vector3 v) {
+	public static Vector3 sum(Vector3 u, Vector3 v) {
 		return new Vector3(u.x + v.x, u.y + v.y, u.z + v.z);
+	}
+
+	/**
+	 * Addition beliebig vieler Vektoren.
+	 * 
+	 * @param vs
+	 *          Vektoren
+	 * @return Summe der Vektoren
+	 */
+	public static Vector3 sum(Vector3... vs) {
+		Vector3 sum = NULL;
+		for (Vector3 v : vs) {
+			sum = sum.add(v);
+		}
+		return sum;
 	}
 
 	/**
@@ -78,8 +103,8 @@ public class Vector3 {
 	 *          Vektor
 	 * @return Differenzvektor u - v
 	 */
-	public static Vector3 minus(Vector3 u, Vector3 v) {
-		return plus(u, inv(v));
+	public static Vector3 diff(Vector3 u, Vector3 v) {
+		return new Vector3(u.x - v.x, u.y - v.y, u.z - v.z);
 	}
 
 	/**
@@ -179,7 +204,7 @@ public class Vector3 {
 	 * @return ob die Vektoren kollinear sind
 	 */
 	public static boolean collinear(Vector3 u, Vector3 v) {
-		return cross(u, v).equals(ZERO);
+		return cross(u, v).equals(NULL);
 	}
 
 	public static boolean orthogonal(Vector3 u, Vector3 v) {
@@ -188,12 +213,12 @@ public class Vector3 {
 
 	// Methoden
 
-	public Vector3 plus(Vector3 v) {
-		return plus(this, v);
+	public Vector3 add(Vector3 v) {
+		return sum(this, v);
 	}
 
-	public Vector3 minus(Vector3 v) {
-		return minus(this, v);
+	public Vector3 sub(Vector3 v) {
+		return diff(this, v);
 	}
 
 	public Vector3 inv() {

@@ -1,5 +1,7 @@
 package de.amr.schule.vektoren.ebene;
 
+import static de.amr.schule.vektoren.Vector3.diff;
+
 import de.amr.schule.vektoren.Vector3;
 
 /**
@@ -38,7 +40,7 @@ public class EbeneParamF implements Ebene {
 	 *          Punkt der Ebene
 	 */
 	public static EbeneParamF dreiPunkte(Vector3 a, Vector3 b, Vector3 c) {
-		return new EbeneParamF(a, Vector3.minus(b, a), Vector3.minus(c, a));
+		return new EbeneParamF(a, diff(b, a), diff(c, a));
 	}
 
 	@Override

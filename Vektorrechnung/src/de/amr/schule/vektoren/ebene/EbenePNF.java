@@ -2,7 +2,7 @@ package de.amr.schule.vektoren.ebene;
 
 import static de.amr.schule.vektoren.Vector3.dot;
 import static de.amr.schule.vektoren.Vector3.inv;
-import static de.amr.schule.vektoren.Vector3.plus;
+import static de.amr.schule.vektoren.Vector3.sum;
 
 import de.amr.schule.vektoren.Vector3;
 
@@ -32,7 +32,7 @@ public class EbenePNF implements Ebene {
 
 	@Override
 	public boolean contains(Vector3 x) {
-		return dot(n, plus(x, inv(a))) == 0;
+		return dot(n, sum(x, inv(a))) == 0;
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package de.amr.schule.vektoren.aufgaben;
 
-import static de.amr.schule.vektoren.Vector3.minus;
-import static de.amr.schule.vektoren.Vector3.plus;
+import static de.amr.schule.vektoren.Vector3.diff;
+import static de.amr.schule.vektoren.Vector3.sum;
 import static de.amr.schule.vektoren.Vector3.times;
 
 import org.junit.Test;
@@ -9,10 +9,10 @@ import org.junit.Test;
 import de.amr.schule.vektoren.Vector3;
 import de.amr.schule.vektoren.ebene.EbeneANF;
 import de.amr.schule.vektoren.ebene.EbeneKoordF;
-import de.amr.schule.vektoren.ebene.EbeneParamF;
 import de.amr.schule.vektoren.ebene.EbenePNF;
+import de.amr.schule.vektoren.ebene.EbeneParamF;
 
-public class Kapitel2_3 extends Aufgabe {
+public class Kapitel2_3 extends VektorApp {
 
 	@Test
 	public void a16a() {
@@ -148,7 +148,7 @@ public class Kapitel2_3 extends Aufgabe {
 		aufgabe("22e)");
 		Vector3 a = new Vector3(3, 5, 1);
 		Vector3 b = new Vector3(7, -1, 3);
-		EbenePNF e = new EbenePNF(minus(b, a), times(0.5, plus(a, b)));
+		EbenePNF e = new EbenePNF(diff(b, a), times(0.5, sum(a, b)));
 		$(e.toANF());
 	}
 }

@@ -1,6 +1,6 @@
 package de.amr.schule.vektoren.aufgaben;
 
-public abstract class Aufgabe {
+public abstract class VektorApp {
 
 	public void $(Object o, String... s) {
 		if (s.length > 0) {
