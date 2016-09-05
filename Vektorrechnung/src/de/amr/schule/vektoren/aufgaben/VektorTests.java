@@ -46,6 +46,15 @@ public class VektorTests extends VektorApp {
 	}
 
 	@Test
+	public void testConstruction() {
+		assertTrue(u.x == -1);
+		assertTrue(u.y == 3);
+		assertTrue(u.z == 5);
+		assertTrue(u.equals(new Vector3(-1, 3, 5)));
+		assertTrue(u.equals(new Vector3(u)));
+	}
+
+	@Test
 	public void testBinarySum() {
 		Vector3 sum = sum(u, v);
 		$(u, "u");
@@ -60,7 +69,7 @@ public class VektorTests extends VektorApp {
 	public void testSum() {
 		assertTrue(sum().equals(NULL));
 		assertTrue(sum(u).equals(u));
-		assertTrue(sum(u, v).equals(sum(u, v)));
+		assertTrue(sum(u, v).equals(u.add(v)));
 		assertTrue(sum(u, v, w).equals(sum(u, sum(v, w))));
 		assertTrue(Stream.of(u, v, w).reduce(NULL, Vector3::sum).equals(sum(u, v, w)));
 	}
@@ -86,6 +95,7 @@ public class VektorTests extends VektorApp {
 	public void testInverse() {
 		assertTrue(sum(u, u.inv()).equals(NULL));
 		assertTrue(sum(u.inv(), u).equals(NULL));
+		assertTrue(NULL.inv().equals(NULL));
 	}
 
 	@Test
@@ -97,22 +107,22 @@ public class VektorTests extends VektorApp {
 	}
 
 	@Test
-	public void testBasics() {
-		assertTrue(u.x == -1);
-		assertTrue(u.y == 3);
-		assertTrue(u.z == 5);
-		assertTrue(u.equals(new Vector3(-1, 3, 5)));
-		assertTrue(u.equals(new Vector3(u)));
-	}
-
-	@Test
 	public void testSMultiplication() {
-		Vector3 multiple = times(5, u);
+		Vector3 times5 = times(5, u);
 		$(u, "u");
-		$(multiple, "5 * u");
-		assertTrue(multiple.x == -5);
-		assertTrue(multiple.y == 15);
-		assertTrue(multiple.z == 25);
+		$(times5, "5 * u");
+		assertTrue(times5.x == -5);
+		assertTrue(times5.y == 15);
+		assertTrue(times5.z == 25);
+
+		assertTrue(times(-1, u).equals(u.inv()));
+		assertTrue(times(0, u).equals(NULL));
+		assertTrue(times(1, u).equals(u));
+		assertTrue(times(2, u).equals(sum(u, u)));
+
+		assertTrue(times(2, times(3, u)).equals(times(2 * 3, u)));
+		assertTrue(times(2 + 3, u).equals(times(2, u).add(times(3, u))));
+		assertTrue(times(2, u.add(v)).equals(times(2, u).add(times(2, v))));
 	}
 
 	@Test
@@ -139,6 +149,10 @@ public class VektorTests extends VektorApp {
 		assertTrue("EY hat Länge 1", length(EY) == 1);
 		assertTrue("EZ hat Länge 1", length(EZ) == 1);
 		assertTrue("(0,3,4) hat Länge 5", length(new Vector3(0, 3, 4)) == 5);
+		assertTrue(length(times(5, u)) == 5 * length(u));
+		assertTrue(length(u) == length(u.inv()));
+		assertTrue(length(u) > 0);
+		assertTrue(length(sum(u, v)) <= length(u) + length(v));
 	}
 
 	@Test

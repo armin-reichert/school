@@ -67,19 +67,6 @@ public class Vector3 {
 	}
 
 	/**
-	 * Addition von zwei Vektoren.
-	 * 
-	 * @param u
-	 *          Vektor
-	 * @param v
-	 *          Vektor
-	 * @return Summenvektor u + v
-	 */
-	public static Vector3 sum(Vector3 u, Vector3 v) {
-		return new Vector3(u.x + v.x, u.y + v.y, u.z + v.z);
-	}
-
-	/**
 	 * Addition beliebig vieler Vektoren.
 	 * 
 	 * @param vs
@@ -87,11 +74,16 @@ public class Vector3 {
 	 * @return Summe der Vektoren
 	 */
 	public static Vector3 sum(Vector3... vs) {
-		Vector3 sum = NULL;
-		for (Vector3 v : vs) {
-			sum = sum.add(v);
+		if (vs.length == 0) {
+			return NULL;
 		}
-		return sum;
+		double x = 0, y = 0, z= 0;
+		for (Vector3 v : vs) {
+			x += v.x;
+			y += v.y;
+			z += v.z;
+		}
+		return new Vector3(x, y, z);
 	}
 
 	/**
