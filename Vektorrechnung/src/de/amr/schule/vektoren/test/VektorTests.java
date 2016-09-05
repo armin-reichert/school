@@ -1,15 +1,7 @@
 package de.amr.schule.vektoren.test;
 
-import static de.amr.schule.vektoren.Vector3.EX;
-import static de.amr.schule.vektoren.Vector3.EY;
-import static de.amr.schule.vektoren.Vector3.EZ;
-import static de.amr.schule.vektoren.Vector3.NULL;
-import static de.amr.schule.vektoren.Vector3.cross;
-import static de.amr.schule.vektoren.Vector3.diff;
-import static de.amr.schule.vektoren.Vector3.dot;
-import static de.amr.schule.vektoren.Vector3.length;
-import static de.amr.schule.vektoren.Vector3.sum;
-import static de.amr.schule.vektoren.Vector3.times;
+import static de.amr.schule.vektoren.Vector3.*;
+import static java.lang.Math.PI;
 import static org.junit.Assert.assertTrue;
 
 import java.util.stream.Stream;
@@ -133,8 +125,25 @@ public class VektorTests extends VektorApp {
 		assertTrue(dot(EX, EY) == 0);
 		assertTrue(dot(EY, EZ) == 0);
 		assertTrue(dot(EX, EZ) == 0);
+
+		assertTrue(dot(NULL, u) == 0);
+		assertTrue(dot(u, v) == dot(v, u));
+		assertTrue(dot(u, v.add(w)) == dot(u, v) + dot(u, w));
 		assertTrue(2 * dot(u, v) == dot(times(2, u), v));
 		assertTrue(2 * dot(u, v) == dot(u, times(2, v)));
+
+		assertTrue(dot(u, u) == u.length() * u.length());
+
+		// sign
+		Vector3 a = new Vector3(2, 0, 0);
+		Vector3 b = new Vector3(2, 2, 0);
+		Vector3 c = new Vector3(0, 2, 0);
+		Vector3 d = new Vector3(-2, 2, 0);
+
+		assertTrue(dot(a, a) > 0);
+		assertTrue(dot(a, b) > 0);
+		assertTrue(dot(a, c) == 0);
+		assertTrue(dot(a, d) < 0);
 	}
 
 	@Test
@@ -148,6 +157,24 @@ public class VektorTests extends VektorApp {
 		assertTrue(length(u) == length(u.inv()));
 		assertTrue(length(u) > 0);
 		assertTrue(length(sum(u, v)) <= length(u) + length(v));
+	}
+
+	@Test
+	public void testAngle() {
+		assertTrue(angle(EX, EX) == 0);
+		assertTrue(angle(EX, EY) == PI / 2);
+		assertTrue(angle(EX, EZ) == PI / 2);
+		assertTrue(angle(EX, EX.inv()) == PI);
+
+		Vector3 diag1 = new Vector3(1, 1, 0);
+		double angle = angle(EX, diag1);
+		$(Math.toDegrees(angle), "Winkel in Grad");
+		assertTrue(aboutEqual(angle, PI / 4.0));
+
+		Vector3 diag2 = new Vector3(-1, -1, 0);
+		angle = angle(EX, diag2);
+		$(Math.toDegrees(angle), "Winkel in Grad");
+		assertTrue(aboutEqual(angle, 3 * PI / 2.0));
 	}
 
 	@Test

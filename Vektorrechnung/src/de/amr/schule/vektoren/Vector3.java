@@ -16,6 +16,10 @@ public class Vector3 {
 	public final double y;
 	public final double z;
 
+	public static boolean aboutEqual(double x, double y) {
+		return Math.abs(x) - Math.abs(y) <= 1e-15;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("(%.2f, %.2f, %.2f)", x, y, z);
@@ -55,15 +59,35 @@ public class Vector3 {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		if (other instanceof Vector3) {
-			if (other == this) {
-				return true;
-			}
-			Vector3 v = (Vector3) other;
-			return v.x == x && v.y == y && v.z == z;
-		}
-		return false;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(x);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(y);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(z);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vector3 other = (Vector3) obj;
+		if (x != other.x)
+			return false;
+		if (y != other.y)
+			return false;
+		if (z != other.z)
+			return false;
+		return true;
 	}
 
 	/**
@@ -77,7 +101,7 @@ public class Vector3 {
 		if (vs.length == 0) {
 			return NULL;
 		}
-		double x = 0, y = 0, z= 0;
+		double x = 0, y = 0, z = 0;
 		for (Vector3 v : vs) {
 			x += v.x;
 			y += v.y;
@@ -134,6 +158,19 @@ public class Vector3 {
 	 */
 	public static double dot(Vector3 u, Vector3 v) {
 		return u.x * v.x + u.y * v.y + u.z * v.z;
+	}
+
+	/**
+	 * Winkel zwischen zwei Vektoren.
+	 * 
+	 * @param u
+	 *          Vektor
+	 * @param v
+	 *          Vektor
+	 * @return der eingeschlossene Winkel
+	 */
+	public static double angle(Vector3 u, Vector3 v) {
+		return Math.acos(dot(u, v) / (u.length() * v.length()));
 	}
 
 	/**
@@ -227,6 +264,10 @@ public class Vector3 {
 
 	public Vector3 cross(Vector3 v) {
 		return cross(this, v);
+	}
+
+	public double length() {
+		return length(this);
 	}
 
 }
