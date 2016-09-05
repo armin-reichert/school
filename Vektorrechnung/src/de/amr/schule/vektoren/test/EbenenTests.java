@@ -1,4 +1,4 @@
-package de.amr.schule.vektoren.aufgaben;
+package de.amr.schule.vektoren.test;
 
 import static de.amr.schule.vektoren.Vector3.EX;
 import static de.amr.schule.vektoren.Vector3.EY;
@@ -19,6 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.amr.schule.vektoren.Vector3;
+import de.amr.schule.vektoren.aufgaben.VektorApp;
 import de.amr.schule.vektoren.ebene.EbeneANF;
 import de.amr.schule.vektoren.ebene.EbeneKoordF;
 import de.amr.schule.vektoren.ebene.EbenePNF;
@@ -26,7 +27,7 @@ import de.amr.schule.vektoren.ebene.EbeneParamF;
 import de.amr.schule.vektoren.figuren.Dreieck;
 import de.amr.schule.vektoren.figuren.Parallelogramm;
 
-public class VektorTests extends VektorApp {
+public class EbenenTests extends VektorApp {
 
 	private Vector3 u, v, w;
 
