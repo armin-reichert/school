@@ -1,17 +1,20 @@
 package de.amr.schule.vektoren.ebene;
 
-import static de.amr.schule.vektoren.Vector3.diff;
+import static de.amr.schule.vektoren.Vec3.collinear;
+import static de.amr.schule.vektoren.Vec3.diff;
 
-import de.amr.schule.vektoren.Vector3;
+import de.amr.schule.vektoren.Vec3;
 
 /**
- * Parameterform der Ebene <code>e: x = a + r * u + s * v</code>.
+ * Parameterform der Ebene:
+ * <p>
+ * {@code e: x = a + r * u + s * v}
  */
 public class EbeneParamF implements Ebene {
 
-	public final Vector3 a;
-	public final Vector3 u;
-	public final Vector3 v;
+	public final Vec3 a;
+	public final Vec3 u;
+	public final Vec3 v;
 
 	/**
 	 * Erzeugt eine Ebene in Parameterform mit Aufpunkt a und Richtungsvektoren u und v.
@@ -23,14 +26,17 @@ public class EbeneParamF implements Ebene {
 	 * @param v
 	 *          Richtungsvektor
 	 */
-	public EbeneParamF(Vector3 a, Vector3 u, Vector3 v) {
+	public EbeneParamF(Vec3 a, Vec3 u, Vec3 v) {
+		if (collinear(u, v)) {
+			throw new IllegalArgumentException("Die Punkte liegen auf einer Geraden");
+		}
 		this.a = a;
 		this.u = u;
 		this.v = v;
 	}
 
 	/**
-	 * Erzeugt eine Ebene in Parameterform mit Aufpunkt a und Richtungsvektoren (b-a) und (c-a).
+	 * Erzeugt eine Ebene in Parameterform durch die Punkte a, b und c.
 	 * 
 	 * @param a
 	 *          Punkt der Ebene
@@ -39,8 +45,13 @@ public class EbeneParamF implements Ebene {
 	 * @param c
 	 *          Punkt der Ebene
 	 */
-	public static EbeneParamF dreiPunkte(Vector3 a, Vector3 b, Vector3 c) {
-		return new EbeneParamF(a, diff(b, a), diff(c, a));
+	public static EbeneParamF dreiPunkte(Vec3 a, Vec3 b, Vec3 c) {
+		Vec3 u = diff(b, a);
+		Vec3 v = diff(c, a);
+		if (collinear(u, v)) {
+			throw new IllegalArgumentException("Die Punkte liegen auf einer Geraden");
+		}
+		return new EbeneParamF(a, u, v);
 	}
 
 	@Override
@@ -55,6 +66,6 @@ public class EbeneParamF implements Ebene {
 
 	@Override
 	public EbenePNF toPNF() {
-		return new EbenePNF(Vector3.cross(u, v), a);
+		return new EbenePNF(Vec3.cross(u, v), a);
 	}
 }

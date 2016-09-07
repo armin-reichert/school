@@ -1,10 +1,10 @@
 package de.amr.schule.vektoren.ebene;
 
-import static de.amr.schule.vektoren.Vector3.dot;
-import static de.amr.schule.vektoren.Vector3.inv;
-import static de.amr.schule.vektoren.Vector3.sum;
+import static de.amr.schule.vektoren.Vec3.dot;
+import static de.amr.schule.vektoren.Vec3.inv;
+import static de.amr.schule.vektoren.Vec3.sum;
 
-import de.amr.schule.vektoren.Vector3;
+import de.amr.schule.vektoren.Vec3;
 
 /**
  * Punkt-Normalenform der Ebene mit Normalenvektor {@code n} und Aufpunkt {@code a}.
@@ -14,8 +14,8 @@ import de.amr.schule.vektoren.Vector3;
  */
 public class EbenePNF implements Ebene {
 
-	public final Vector3 n;
-	public final Vector3 a;
+	public final Vec3 n;
+	public final Vec3 a;
 
 	/**
 	 * Erzeugt eine Ebene in Punkt-Normalenform {@code n * (x - a) = c}.
@@ -25,13 +25,13 @@ public class EbenePNF implements Ebene {
 	 * @param a
 	 *          Aufpunkt
 	 */
-	public EbenePNF(Vector3 n, Vector3 a) {
+	public EbenePNF(Vec3 n, Vec3 a) {
 		this.n = n;
 		this.a = a;
 	}
 
 	@Override
-	public boolean contains(Vector3 x) {
+	public boolean contains(Vec3 x) {
 		return dot(n, sum(x, inv(a))) == 0;
 	}
 

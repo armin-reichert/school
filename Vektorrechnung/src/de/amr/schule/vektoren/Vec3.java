@@ -3,17 +3,43 @@ package de.amr.schule.vektoren;
 import static java.lang.Math.sqrt;
 
 /**
- * 3-dimensionale Vektoren mit Komponenten vom Typ <code>double</code>.
+ * 3D-Vektor mit Koordinaten vom Typ <code>double</code>.
  */
-public class Vector3 {
+public class Vec3 {
 
-	public static final Vector3 NULL = new Vector3(0, 0, 0);
-	public static final Vector3 EX = new Vector3(1, 0, 0);
-	public static final Vector3 EY = new Vector3(0, 1, 0);
-	public static final Vector3 EZ = new Vector3(0, 0, 1);
+	/**
+	 * Nullvektor.
+	 */
+	public static final Vec3 NULL = new Vec3(0, 0, 0);
 
+	/**
+	 * Einheitsvektor in x-Richtung.
+	 */
+	public static final Vec3 EX = new Vec3(1, 0, 0);
+
+	/**
+	 * Einheitsvektor in y-Richtung.
+	 */
+	public static final Vec3 EY = new Vec3(0, 1, 0);
+
+	/**
+	 * Einheitsvektor in z-Richtung.
+	 */
+	public static final Vec3 EZ = new Vec3(0, 0, 1);
+
+	/**
+	 * X-Koordinate.
+	 */
 	public final double x;
+
+	/**
+	 * Y-Koordinate.
+	 */
 	public final double y;
+
+	/**
+	 * Z-Koordinate.
+	 */
 	public final double z;
 
 	public static boolean aboutEqual(double x, double y) {
@@ -28,7 +54,7 @@ public class Vector3 {
 	/**
 	 * Erzeugt den Nullvektor.
 	 */
-	public Vector3() {
+	public Vec3() {
 		x = y = z = 0;
 	}
 
@@ -42,7 +68,7 @@ public class Vector3 {
 	 * @param z
 	 *          z-Koordinate
 	 */
-	public Vector3(double x, double y, double z) {
+	public Vec3(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -52,9 +78,9 @@ public class Vector3 {
 	 * Copy constructor.
 	 * 
 	 * @param v
-	 *          a vector
+	 *          vector to copy
 	 */
-	public Vector3(Vector3 v) {
+	public Vec3(Vec3 v) {
 		this(v.x, v.y, v.z);
 	}
 
@@ -80,7 +106,7 @@ public class Vector3 {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Vector3 other = (Vector3) obj;
+		Vec3 other = (Vec3) obj;
 		if (x != other.x)
 			return false;
 		if (y != other.y)
@@ -94,20 +120,20 @@ public class Vector3 {
 	 * Addition beliebig vieler Vektoren.
 	 * 
 	 * @param vs
-	 *          Vektoren
-	 * @return Summe der Vektoren
+	 *          Vektoren {@code v1, ..., vN}
+	 * @return Summenvektor {@code v1 + ... + vN} oder Nullvektor, falls {@code N = 0}
 	 */
-	public static Vector3 sum(Vector3... vs) {
+	public static Vec3 sum(Vec3... vs) {
 		if (vs.length == 0) {
 			return NULL;
 		}
 		double x = 0, y = 0, z = 0;
-		for (Vector3 v : vs) {
+		for (Vec3 v : vs) {
 			x += v.x;
 			y += v.y;
 			z += v.z;
 		}
-		return new Vector3(x, y, z);
+		return new Vec3(x, y, z);
 	}
 
 	/**
@@ -117,10 +143,10 @@ public class Vector3 {
 	 *          Vektor
 	 * @param v
 	 *          Vektor
-	 * @return Differenzvektor u - v
+	 * @return Differenzvektor {@code u - v}
 	 */
-	public static Vector3 diff(Vector3 u, Vector3 v) {
-		return new Vector3(u.x - v.x, u.y - v.y, u.z - v.z);
+	public static Vec3 diff(Vec3 u, Vec3 v) {
+		return new Vec3(u.x - v.x, u.y - v.y, u.z - v.z);
 	}
 
 	/**
@@ -132,8 +158,8 @@ public class Vector3 {
 	 *          Vektor
 	 * @return s-faches von v
 	 */
-	public static Vector3 times(double s, Vector3 v) {
-		return new Vector3(s * v.x, s * v.y, s * v.z);
+	public static Vec3 times(double s, Vec3 v) {
+		return new Vec3(s * v.x, s * v.y, s * v.z);
 	}
 
 	/**
@@ -143,8 +169,8 @@ public class Vector3 {
 	 *          Vektor
 	 * @return Gegenvektor zu v
 	 */
-	public static Vector3 inv(Vector3 v) {
-		return new Vector3(-v.x, -v.y, -v.z);
+	public static Vec3 inv(Vec3 v) {
+		return new Vec3(-v.x, -v.y, -v.z);
 	}
 
 	/**
@@ -154,9 +180,9 @@ public class Vector3 {
 	 *          Vektor
 	 * @param v
 	 *          Vektor
-	 * @return Skalarprodukt u * v
+	 * @return Skalarprodukt {@code u * v}
 	 */
-	public static double dot(Vector3 u, Vector3 v) {
+	public static double dot(Vec3 u, Vec3 v) {
 		return u.x * v.x + u.y * v.y + u.z * v.z;
 	}
 
@@ -169,7 +195,7 @@ public class Vector3 {
 	 *          Vektor
 	 * @return der eingeschlossene Winkel
 	 */
-	public static double angle(Vector3 u, Vector3 v) {
+	public static double angle(Vec3 u, Vec3 v) {
 		return Math.acos(dot(u, v) / (u.length() * v.length()));
 	}
 
@@ -180,10 +206,10 @@ public class Vector3 {
 	 *          Vektor
 	 * @param v
 	 *          Vektor
-	 * @return u x v Kreuzproduktvektor
+	 * @return Kreuzproduktvektor {@code u x v}
 	 */
-	public static Vector3 cross(Vector3 u, Vector3 v) {
-		return new Vector3(u.y * v.z - u.z * v.y, -u.x * v.z + u.z * v.x, u.x * v.y - u.y * v.x);
+	public static Vec3 cross(Vec3 u, Vec3 v) {
+		return new Vec3(u.y * v.z - u.z * v.y, -u.x * v.z + u.z * v.x, u.x * v.y - u.y * v.x);
 	}
 
 	/**
@@ -195,9 +221,9 @@ public class Vector3 {
 	 *          Vektor
 	 * @param w
 	 *          Vektor
-	 * @return Spatprodukt <code>(u x v) * w</code>
+	 * @return Spatprodukt {@code (u x v) * w}
 	 */
-	public static double spat(Vector3 u, Vector3 v, Vector3 w) {
+	public static double spat(Vec3 u, Vec3 v, Vec3 w) {
 		return dot(cross(u, v), w);
 	}
 
@@ -208,7 +234,7 @@ public class Vector3 {
 	 *          Vektor
 	 * @return Länge des Vektors
 	 */
-	public static double length(Vector3 v) {
+	public static double length(Vec3 v) {
 		return sqrt(dot(v, v));
 	}
 
@@ -219,7 +245,7 @@ public class Vector3 {
 	 *          Vektor
 	 * @return Quadrat der Länge des Vektors
 	 */
-	public static double lengthSqr(Vector3 v) {
+	public static double lengthSqr(Vec3 v) {
 		return dot(v, v);
 	}
 
@@ -232,42 +258,87 @@ public class Vector3 {
 	 *          Vektor
 	 * @return ob die Vektoren kollinear sind
 	 */
-	public static boolean collinear(Vector3 u, Vector3 v) {
+	public static boolean collinear(Vec3 u, Vec3 v) {
 		return cross(u, v).equals(NULL);
 	}
 
-	public static boolean orthogonal(Vector3 u, Vector3 v) {
+	/**
+	 * Testet Vektoren auf Orthogonalität.
+	 * 
+	 * @param u
+	 *          Vektor
+	 * @param v
+	 *          Vektor
+	 * @return ob die Vektoren orthogonal sind
+	 */
+	public static boolean orthogonal(Vec3 u, Vec3 v) {
 		return dot(u, v) == 0;
 	}
 
 	// Methoden
 
-	public Vector3 add(Vector3 v) {
+	/**
+	 * 
+	 * @param v
+	 *          zu addierender Vektor
+	 * @return Summe von diesem und dem zu addierenden Vektor
+	 */
+	public Vec3 add(Vec3 v) {
 		return sum(this, v);
 	}
 
-	public Vector3 sub(Vector3 v) {
+	/**
+	 * 
+	 * @param v
+	 *          zu subtrahierender Vektor
+	 * @return Differenz von diesem und dem zu subtrahierenden Vektor
+	 */
+	public Vec3 sub(Vec3 v) {
 		return diff(this, v);
 	}
 
-	public Vector3 inv() {
+	/**
+	 * @return Gegenvektor zu diesem Vektor
+	 */
+	public Vec3 inv() {
 		return inv(this);
 	}
 
-	public Vector3 times(double s) {
+	/**
+	 * 
+	 * @param s
+	 *          Skalarer Faktor
+	 * @return Skalares Vielfaches von diesem Vektor
+	 */
+	public Vec3 times(double s) {
 		return times(s, this);
 	}
 
-	public double dot(Vector3 v) {
+	/**
+	 * 
+	 * @param v
+	 *          Vektor, mit dem das Skalarprodukt gebildet werden soll
+	 * @return Skalarprodukt von diesem mit dem gegebenen Vektor
+	 */
+	public double dot(Vec3 v) {
 		return dot(this, v);
 	}
 
-	public Vector3 cross(Vector3 v) {
+	/**
+	 * 
+	 * @param v
+	 *          Vektor, mit dem das Kreuzprodukt gebilder werden soll
+	 * @return Kreuzproduktvektor
+	 */
+	public Vec3 cross(Vec3 v) {
 		return cross(this, v);
 	}
 
+	/**
+	 * 
+	 * @return Länge dieses Vektors
+	 */
 	public double length() {
 		return length(this);
 	}
-
 }

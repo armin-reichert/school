@@ -1,17 +1,17 @@
 package de.amr.schule.vektoren.figuren;
 
-import static de.amr.schule.vektoren.Vector3.cross;
-import static de.amr.schule.vektoren.Vector3.length;
-import static de.amr.schule.vektoren.Vector3.orthogonal;
+import static de.amr.schule.vektoren.Vec3.cross;
+import static de.amr.schule.vektoren.Vec3.length;
+import static de.amr.schule.vektoren.Vec3.orthogonal;
 
-import de.amr.schule.vektoren.Vector3;
+import de.amr.schule.vektoren.Vec3;
 
 public class Parallelogramm implements Figur {
 
-	private final Vector3 a;
-	private final Vector3 b;
+	private final Vec3 a;
+	private final Vec3 b;
 
-	public Parallelogramm(Vector3 a, Vector3 b) {
+	public Parallelogramm(Vec3 a, Vec3 b) {
 		this.a = a;
 		this.b = b;
 	}

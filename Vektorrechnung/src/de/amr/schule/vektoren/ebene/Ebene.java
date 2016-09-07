@@ -1,11 +1,11 @@
 package de.amr.schule.vektoren.ebene;
 
-import de.amr.schule.vektoren.Vector3;
+import de.amr.schule.vektoren.Vec3;
 
 public interface Ebene {
 	
-	public default boolean contains(Vector3 v) {
-		return toKoordF().contains(v);
+	public default boolean contains(Vec3 point) {
+		return toKoordF().contains(point);
 	}
 	
 	public default EbeneParamF toParamF() {

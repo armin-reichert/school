@@ -1,6 +1,17 @@
 package de.amr.schule.vektoren.test;
 
-import static de.amr.schule.vektoren.Vector3.*;
+import static de.amr.schule.vektoren.Vec3.EX;
+import static de.amr.schule.vektoren.Vec3.EY;
+import static de.amr.schule.vektoren.Vec3.EZ;
+import static de.amr.schule.vektoren.Vec3.NULL;
+import static de.amr.schule.vektoren.Vec3.aboutEqual;
+import static de.amr.schule.vektoren.Vec3.angle;
+import static de.amr.schule.vektoren.Vec3.cross;
+import static de.amr.schule.vektoren.Vec3.diff;
+import static de.amr.schule.vektoren.Vec3.dot;
+import static de.amr.schule.vektoren.Vec3.length;
+import static de.amr.schule.vektoren.Vec3.sum;
+import static de.amr.schule.vektoren.Vec3.times;
 import static java.lang.Math.PI;
 import static org.junit.Assert.assertTrue;
 
@@ -10,18 +21,18 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.amr.schule.vektoren.Vector3;
+import de.amr.schule.vektoren.Vec3;
 import de.amr.schule.vektoren.aufgaben.VektorApp;
 
 public class VektorTests extends VektorApp {
 
-	private Vector3 u, v, w;
+	private Vec3 u, v, w;
 
 	@Before
 	public void setup() {
-		u = new Vector3(-1, 3, 5);
-		v = new Vector3(2, 3, -1);
-		w = new Vector3(0, 1, 2);
+		u = new Vec3(-1, 3, 5);
+		v = new Vec3(2, 3, -1);
+		w = new Vec3(0, 1, 2);
 	}
 
 	@Test
@@ -37,13 +48,13 @@ public class VektorTests extends VektorApp {
 		assertTrue(u.x == -1);
 		assertTrue(u.y == 3);
 		assertTrue(u.z == 5);
-		assertTrue(u.equals(new Vector3(-1, 3, 5)));
-		assertTrue(u.equals(new Vector3(u)));
+		assertTrue(u.equals(new Vec3(-1, 3, 5)));
+		assertTrue(u.equals(new Vec3(u)));
 	}
 
 	@Test
 	public void testBinarySum() {
-		Vector3 sum = sum(u, v);
+		Vec3 sum = sum(u, v);
 		$(u, "u");
 		$(v, "v");
 		$(sum, "u + v");
@@ -53,21 +64,21 @@ public class VektorTests extends VektorApp {
 	}
 
 	@Test
-	public void testSum() {
+	public void testMultiSum() {
 		assertTrue(sum().equals(NULL));
 		assertTrue(sum(u).equals(u));
 		assertTrue(sum(u, v).equals(u.add(v)));
 		assertTrue(sum(u, v, w).equals(sum(u, sum(v, w))));
-		assertTrue(Stream.of(u, v, w).reduce(NULL, Vector3::sum).equals(sum(u, v, w)));
+		assertTrue(Stream.of(u, v, w).reduce(NULL, Vec3::sum).equals(sum(u, v, w)));
 	}
 
 	@Test
-	public void testAssociativity() {
+	public void testSumAssociativity() {
 		assertTrue(sum(u, sum(v, w)).equals(sum(sum(u, v), w)));
 	}
 
 	@Test
-	public void testCommutativity() {
+	public void testSumCommutativity() {
 		assertTrue(sum(u, v).equals(sum(v, u)));
 	}
 
@@ -95,7 +106,7 @@ public class VektorTests extends VektorApp {
 
 	@Test
 	public void testSMultiplication() {
-		Vector3 times5 = times(5, u);
+		Vec3 times5 = times(5, u);
 		$(u, "u");
 		$(times5, "5 * u");
 		assertTrue(times5.x == -5);
@@ -135,10 +146,10 @@ public class VektorTests extends VektorApp {
 		assertTrue(dot(u, u) == u.length() * u.length());
 
 		// sign
-		Vector3 a = new Vector3(2, 0, 0);
-		Vector3 b = new Vector3(2, 2, 0);
-		Vector3 c = new Vector3(0, 2, 0);
-		Vector3 d = new Vector3(-2, 2, 0);
+		Vec3 a = new Vec3(2, 0, 0);
+		Vec3 b = new Vec3(2, 2, 0);
+		Vec3 c = new Vec3(0, 2, 0);
+		Vec3 d = new Vec3(-2, 2, 0);
 
 		assertTrue(dot(a, a) > 0);
 		assertTrue(dot(a, b) > 0);
@@ -152,7 +163,7 @@ public class VektorTests extends VektorApp {
 		assertTrue("EX hat Länge 1", length(EX) == 1);
 		assertTrue("EY hat Länge 1", length(EY) == 1);
 		assertTrue("EZ hat Länge 1", length(EZ) == 1);
-		assertTrue("(0,3,4) hat Länge 5", length(new Vector3(0, 3, 4)) == 5);
+		assertTrue("(0,3,4) hat Länge 5", length(new Vec3(0, 3, 4)) == 5);
 		assertTrue(length(times(5, u)) == 5 * length(u));
 		assertTrue(length(u) == length(u.inv()));
 		assertTrue(length(u) > 0);
@@ -166,12 +177,12 @@ public class VektorTests extends VektorApp {
 		assertTrue(angle(EX, EZ) == PI / 2);
 		assertTrue(angle(EX, EX.inv()) == PI);
 
-		Vector3 diag1 = new Vector3(1, 1, 0);
+		Vec3 diag1 = new Vec3(1, 1, 0);
 		double angle = angle(EX, diag1);
 		$(Math.toDegrees(angle), "Winkel in Grad");
 		assertTrue(aboutEqual(angle, PI / 4.0));
 
-		Vector3 diag2 = new Vector3(-1, -1, 0);
+		Vec3 diag2 = new Vec3(-1, -1, 0);
 		angle = angle(EX, diag2);
 		$(Math.toDegrees(angle), "Winkel in Grad");
 		assertTrue(aboutEqual(angle, 3 * PI / 2.0));
@@ -207,10 +218,10 @@ public class VektorTests extends VektorApp {
 
 	@Test
 	public void testMethods() {
-		Vector3 v = new Vector3(1, 2, 3);
+		Vec3 v = new Vec3(1, 2, 3);
 		$(v.add(v.times(5)), "(1,2,3) + 5 * (1,2,3)");
 		$(v.add(v).times(5), "5 * ((1,2,3) + (1,2,3))");
 		$(v.dot(v), "(1,2,3) * (1,2,3)");
-		Assert.assertTrue(v.add(v).equals(new Vector3(2, 4, 6)));
+		Assert.assertTrue(v.add(v).equals(new Vec3(2, 4, 6)));
 	}
 }

@@ -1,15 +1,15 @@
 package de.amr.schule.vektoren.ebene;
 
-import static de.amr.schule.vektoren.Vector3.dot;
+import static de.amr.schule.vektoren.Vec3.dot;
 
-import de.amr.schule.vektoren.Vector3;
+import de.amr.schule.vektoren.Vec3;
 
 /**
  * Allgemeine Normalenform der Ebene <code>e: n * x = c</code>
  */
 public class EbeneANF implements Ebene {
 
-	public final Vector3 n;
+	public final Vec3 n;
 	public final double c;
 
 	/**
@@ -20,29 +20,29 @@ public class EbeneANF implements Ebene {
 	 * @param c
 	 *          Konstante
 	 */
-	public EbeneANF(Vector3 n, double c) {
+	public EbeneANF(Vec3 n, double c) {
 		this.n = n;
 		this.c = c;
 	}
 
 	@Override
-	public boolean contains(Vector3 x) {
+	public boolean contains(Vec3 x) {
 		return dot(n, x) == c;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("e: %s * x + %.2f = 0", n, c >= 0 ? c : -c);
+		return String.format("e: %s * x = %.2f", n, c >= 0 ? c : -c);
 	}
 
 	@Override
 	public EbenePNF toPNF() {
 		if (n.x != 0) {
-			return new EbenePNF(n, new Vector3(c / n.x, 0, 0));
+			return new EbenePNF(n, new Vec3(c / n.x, 0, 0));
 		} else if (n.y != 0) {
-			return new EbenePNF(n, new Vector3(0, c / n.y, 0));
+			return new EbenePNF(n, new Vec3(0, c / n.y, 0));
 		} else if (n.z != 0) {
-			return new EbenePNF(n, new Vector3(0, 0, c / n.z));
+			return new EbenePNF(n, new Vec3(0, 0, c / n.z));
 		}
 		throw new IllegalStateException("Normalenvektor darf nicht der Nullvektor sein: " + this);
 	}
