@@ -6,10 +6,10 @@ import static de.amr.schule.vektoren.Vec3.cross;
 import static de.amr.schule.vektoren.Vec3.diff;
 import static de.amr.schule.vektoren.Vec3.sum;
 import static de.amr.schule.vektoren.Vec3.times;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import de.amr.schule.vektoren.Vec3;
@@ -79,17 +79,17 @@ public class Kapitel1 extends VektorApp {
 		Vec3 a = new Vec3(3, -4, 0), b = new Vec3(-2, 1, -1);
 		$(a.inv(), "-a");
 		$(b.inv(), "-b");
-		$(times(2,a), "2*a");
-		$(times(-2,a), "-2*a");
-		$(times(-3,a), "-3*a");
-		$(times(-4,b), "-4*b");
-		$(times(1./2.,b), "1/2*b");
-		$(times(3,NULL), "3*0");
+		$(times(2, a), "2*a");
+		$(times(-2, a), "-2*a");
+		$(times(-3, a), "-3*a");
+		$(times(-4, b), "-4*b");
+		$(times(1. / 2., b), "1/2*b");
+		$(times(3, NULL), "3*0");
 		$(times(-4, NULL), "-4*0");
-		$(times(-5,a), "-5*a");
-		$(times(3,b.inv()), "3*(-b)");
-		$(times(0,b.inv()), "0*(-b)");
-		
+		$(times(-5, a), "-5*a");
+		$(times(3, b.inv()), "3*(-b)");
+		$(times(0, b.inv()), "0*(-b)");
+
 	}
 
 	@Test
@@ -148,12 +148,11 @@ public class Kapitel1 extends VektorApp {
 			vb = new Vec3(rnd.nextDouble(), rnd.nextDouble(), rnd.nextDouble());
 			a = rnd.nextDouble();
 			b = rnd.nextDouble();
-			Assert.assertTrue("Assoziativgesetz", times(a, times(b, va)).equals(times(a * b, va)));
-			Assert.assertTrue("1. Distributivgesetz",
+			assertTrue("Assoziativgesetz", times(a, times(b, va)).equals(times(a * b, va)));
+			assertTrue("1. Distributivgesetz",
 					times(a, sum(va, vb)).equals(sum(times(a, va), times(a, vb))));
-			Assert.assertTrue("2. Distributivgesetz",
-					times(a + b, va).equals(sum(times(a, va), times(b, vb))));
-			Assert.assertTrue("Neutrales Element", times(1, va).equals(va));
+			assertTrue("2. Distributivgesetz", times(a + b, va).equals(sum(times(a, va), times(b, vb))));
+			assertTrue("Neutrales Element", times(1, va).equals(va));
 		}
 	}
 
