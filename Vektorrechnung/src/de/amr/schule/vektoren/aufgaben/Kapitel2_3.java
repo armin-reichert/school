@@ -7,6 +7,7 @@ import static de.amr.schule.vektoren.Vec3.times;
 import org.junit.Test;
 
 import de.amr.schule.vektoren.Vec3;
+import de.amr.schule.vektoren.ebene.Ebene;
 import de.amr.schule.vektoren.ebene.EbeneANF;
 import de.amr.schule.vektoren.ebene.EbeneKoordF;
 import de.amr.schule.vektoren.ebene.EbenePNF;
@@ -150,5 +151,14 @@ public class Kapitel2_3 extends VektorApp {
 		Vec3 b = new Vec3(7, -1, 3);
 		EbenePNF e = new EbenePNF(diff(b, a), times(0.5, sum(a, b)));
 		$(e.toANF());
+	}
+	
+	@Test
+	public void a99() {
+		Ebene e = new EbeneKoordF(4, 0, 1, -8);
+		$(e);
+		Vec3 p = new Vec3(2,1,1);
+		$(p, "Punkt P");
+		$(e.dist(p), "Abstand P von e");
 	}
 }

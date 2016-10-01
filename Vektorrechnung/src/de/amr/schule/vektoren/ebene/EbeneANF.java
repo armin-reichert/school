@@ -25,6 +25,11 @@ public class EbeneANF implements Ebene {
 		this.c = c;
 	}
 
+	public EbeneANF toHesseNF() {
+		double len = n.length();
+		return new EbeneANF(n.times(1.0 / len), c / len);
+	}
+
 	@Override
 	public boolean contains(Vec3 x) {
 		return dot(n, x) == c;

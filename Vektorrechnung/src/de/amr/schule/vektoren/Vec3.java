@@ -327,7 +327,7 @@ public class Vec3 {
 	/**
 	 * 
 	 * @param v
-	 *          Vektor, mit dem das Kreuzprodukt gebilder werden soll
+	 *          Vektor, mit dem das Kreuzprodukt gebildet werden soll
 	 * @return Kreuzproduktvektor
 	 */
 	public Vec3 cross(Vec3 v) {
