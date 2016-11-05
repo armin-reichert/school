@@ -13,7 +13,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
