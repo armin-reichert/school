@@ -1,0 +1,120 @@
+\chapter{Mathematical foundations}
+
+\section{Notations, basic notions}
+
+In this first section we want to define the elementary notions that are used
+throughout the whole book. We use the usual notions
+\[ \mathbb{N} = \{ 0, 1, 2, \ldots \}\ \mbox{for the natural numbers} \]
+\[ \mathbb{Z} = \{ \ldots, -2, -1, 0, 1, 2, \ldots \}\ \mbox{for the integer
+numbers} \]
+\[ \mathbb{Q} = \{ \frac{a}{b} \mid a,b \in \mathbb{Z}, b \neq 0 \}\ \mbox{for
+the rational numbers } \]
+
+For the set operations we use $\cup$ for the union and $\cap$ for the
+intersection. Also $A \subset B$, $a \in A$, $a \not\in A$, $\bar{A}$, $A - B$,
+$A \times B$ and $\emptyset$ have their usual meaning. For the power set of a
+set $A$ we write $2^A$ or $Pot(A)$. $Card(A)$ denotes the cardinality of $A$.
+Logical implication is denoted by $\Rightarrow$.
+
+{\bf Mappings} are denoted as $f : A \rightarrow B$, in that case $f$ is a
+total mapping. We write $Q(f) = A, Z(f) = B$. Here $Q$ stands for ''Quelle'' (source)
+and $Z$ for ''Ziel'' (target).
+
+If $f: A \rightarrow B, g : B \rightarrow C$ are mappings, then $f \circ g : A
+\rightarrow C$ is the composed mapping that one gets by applying $f$ first and
+then $g$, i.e. $(f \circ g)(a) = g(f(a))$. If $f:A \rightarrow B$ and $C
+\subset A$, then $f(C) = \{ f(c) \mid c \in C \}$.
+
+A subset $R \subset A \times B$ is called a {\bf relation} between $A$ and $B$.
+$R_f \subset A \times B$ with $R_f = \{ (a,b) \mid f(a) = b \}$ is the relation
+{\bf induced by} mapping f or the {\bf graph} of $f$.
+
+Let $f : A \rightarrow B$ be a mapping, $A_1 \subset A$ and $g : A_1 \rightarrow
+B$ a mapping. $f$ is called the {\bf continuation} of $g$ if $f(a_1) = g(a_1),
+a_1 \in A_1$. In this case we also write $f \mid _{A_1} = g$ (in words: $f$
+restricted to $A_1$).
+
+A {\bf semi-group} consists of a set $M$ an an associative operation on that
+set, usually denoted as a multiplication. If a semi-group is commutative, we
+also use ''$+$'' instead of ''$\cdot$''.
+
+A semi-group is a {\bf monoid} if $M$ contains a neutral element. We often
+denote it with $1_M$ or shortly $1$. In the commutative case we often write $0$
+instead of $1$.
+
+For $A,B \subset M$ we denote by $A \cdot B = \{ a b \mid a \in A, b \in B \}$
+the {\bf complex product} of $A$ and $B$.
+
+$A \subset M$ is a {\bf submonoid} of $M$ if the follwoing holds: $1_M \in A$
+and $A$ is closed under the operation of $M$.
+
+For an $A$, the set $A^*$ defined as follows, is the smallest submonoid of $M$
+which contains $A$. More specific,
+\[
+		A^* = \bigcap_{M' \in M(A)} M'	
+\]
+where $M(A) = \{ M' \subset M \mid M'$ is a submonoid of $M, A \subset M' \}$.
+
+It is easy to see that
+\[
+		A^* = \bigcup_{n \geq 0} A^n\ \mbox{with}\ A^0 = \{1\}\ \mbox{and}\ A^{n+1} =
+		A^n \cdot A
+\]
+
+In the same sense the notion $A^+ = A^* - \{1\}$ is defined for semi-groups. $A$
+is called the {\bf generation system} of $A^*$ and $A^+$ resp.
+
+A special meaning for us is assigned to the set of ''words'' (string) over a
+fixed alphabet $A$. We understand as words the finite sequences of elements from
+the alphabet $A$ as for example $(a,b,d,a,c)$ for alphabet $A = \{ a,b,c,d \}$.
+
+We define
+\[
+WORD(A) := \{\epsilon\} \cup A \cup (A \times A) \cup (A \times A \times A) \cup
+\ldots
+\]
+as the set of words (strings) over $A$. The symbol $\epsilon$ denotes the {\bf
+empty word} over $A$, that is $A^0 = \{\epsilon\}$.
+
+If $w, v \in WORD(A)$ then $w \cdot v$ is the word over $A$ which you get by
+concatenating $w$ and $v$, more formally:
+\[
+\mbox{If}\ w = (a_1,\ldots,a_k), v = (a_{k+1},\ldots,a_n)\ \mbox{then}\ w \cdot
+v = (a_1, \ldots, a_n)
+\]
+
+With this operation $WORD(A)$ becomes a monoid which is usually also denoted
+with $A^*$. This is slightly inconsistent because for the first definition of
+the $*$-operator it holds $(A^*)^* = A^*$ but for the second usage of the
+$*$-operator it holds $(A*)^* \neq A^*$.
+
+The following example should clarify that: Let $A = \{a,b,c\}$ and let $(a,b,a)$
+and $(b,a) \in A^*$.
+\[(a,b,a)\cdot(b,a) = (a,b,a,b,a) \in A^*,\ \mbox{but}\]
+\[((a,b,a),(b,a)) \in (A^*)^*\ \mbox{but}\ \notin A^*\].
+
+
+Instead of $(a)$ we write just $a$. In this sense it holds $A \subset A^*$. This
+also holds in the sense of the first definition of $A^*$.
+
+If $w = (w_1,\ldots,w_n)$ we denote with $|a| = n$ the {\bf length} of $w$.
+Obviously it holds: $|w \cdot v| = |w| + |v|$ and $|\epsilon| = 0$.
+
+The {\bf mirror word} $w^R$ of a word $w = (w_1,\ldots,w_n)$ is the word
+$(w_n,\ldots,w_1)$. $\epsilon^R = \epsilon$. It holds: $(w \cdot v)^R =
+v^R \cdot w^R$.
+
+In $A^*$ the reduction rules hold, i.e.
+\begin{enumerate}
+  \item $w \cdot x = w \cdot y \Rightarrow x = y$
+  \item $x \cdot w = y \cdot w \Rightarrow x = y$
+\end{enumerate}
+
+We define {\bf left} and {\bf right quotient}:
+\[ B^{-1} \cdot A = \{ v\ |\ \exists u \in B, w \in A : u \cdot v = w \} \]
+and $A \cdot B^{-1}$ in the same way.
+
+Because of the reduction rules it holds:
+
+
+
