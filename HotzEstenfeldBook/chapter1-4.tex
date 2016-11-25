@@ -420,9 +420,61 @@ It is possible that lines coincide which are counted only once in that case.
 
 Let's give an example for this definition:
 
+Let $P \in V_1$ be a point with ordering $e_1, e_2, e_3, e'_4, e'_3, e'_2,
+e'_1$ and $P' \in V_2$ be a point with ordering $r_1, r_2, r'_5,
+r'_4, r'_3, r'_2, r'_1$ as shown in the following figure:
 
+FIGURE
 
+Define $\phi$ by $\phi_1(P) = P'$ and 
+\[ \phi_2(e_1) = r_1, \phi_2(e_2) = r_2, \phi_2(e_3) = r_2 \]
+\[ \phi_2(e'_1) = r'_1, \phi_2(e'_2) = r'_3, \phi_2(e'_3) = r'_4, \phi_2(e'_4) = r'_5 \]
 
+Then $\phi$ respects the ordering in point $P$.
+
+\begin{definition}
+Let $G_1, G_2$ be oriented graphs and $\phi = (\mathcal{W}(G_1), \mathcal{W}(G_2),
+\phi_1, \phi_2)$ be a functor.
+
+$\phi$ is called {\bf regular} $\Leftrightarrow$ the restriction of $\phi_2$
+to the set $\{ e \in E_1\ |\ Q(e) = P \}$ and $\{ e' \in E_2\ |\ Q(e') = \phi_1(P) \}$ and to $\{
+e \in E_1\ |\ Z(e) = P \}$ and $\{ e' \in E_2\ |\ Z(e') = \phi_1(P) \}$ for $P
+\in V_1$ is bijective.
+\end{definition}
+
+To each incoming / outgoing edge of a point $P \in V_1$ corresponds exactly
+one incoming / outgoing edge of $\phi_1(P) \in V_2$.
+
+In our example, $\phi$ was not regular.
+
+We slightly weaken the definition of a regular functor by only postulating
+regularity on the outgoing edges.
+
+\begin{definition}
+Let $G_1, G_2$ be oriented graphs and $\phi = (\mathcal{W}(G_1), \mathcal{W}(G_2),
+\phi_1, \phi_2)$ be a functor.
+
+$\phi$ is called {\bf out-regular} $\Leftrightarrow$ the restriction of $\phi_2$
+to the set $\{ e \in E_1\ |\ Q(e) = P \}$ and $\{ e' \in E_2\ |\ Q(e') = \phi_1(P) \}$ for
+$P \in V_1$ is bijective.
+\end{definition}
+
+The following lemma holds:
+
+\begin{lemma}
+If $\phi = (\mathcal{W}(G_1), \mathcal{W}(G_2), \phi_1, \phi_2)$ is an
+out-regular functor, then \\ $\phi(\mathcal{W}(G_1))$ is a category.
+\end{lemma}
+
+Our next lemma describes a well-known fact from graph theory that has found many
+applications.
+
+\begin{lemma}
+To each circle-free star $G = (V, E)$ relative to a point $P$ there exists a
+tree $B$ and an out-regular functor $(\mathcal{W}(B), \mathcal{W}(G),
+\phi_1, \phi_2)$ mapping the root of the tree $B$ to the point $P$. $B$ is
+determined up to isomorphisms.
+\end{lemma}
 
 
 
