@@ -19,20 +19,20 @@ total mapping. We write $Q(f) = A, Z(f) = B$. Here $Q$ stands for ''Quelle'' (so
 and $Z$ for ''Ziel'' (target).
 
 If $f: A \rightarrow B, g : B \rightarrow C$ are mappings, then $f \circ g : A
-\rightarrow C$ is the composed mapping that one gets by applying $f$ first and
-then $g$, i.e. $(f \circ g)(a) = g(f(a))$. If $f:A \rightarrow B$ and $C
+\rightarrow C$ is the composed mapping that one gets by applying $f$ first
+and then $g$, i.e. $(f \circ g)(a) = g(f(a))$. If $f:A \rightarrow B$ and $C
 \subset A$, then $f(C) = \{ f(c) \mid c \in C \}$.
 
 A subset $R \subset A \times B$ is called a {\bf relation} between $A$ and $B$.
 $R_f \subset A \times B$ with $R_f = \{ (a,b) \mid f(a) = b \}$ is the relation
-{\bf induced by} mapping f or the {\bf graph} of $f$.
+{\bf induced by} the mapping f or the {\bf graph} of $f$.
 
 Let $f : A \rightarrow B$ be a mapping, $A_1 \subset A$ and $g : A_1 \rightarrow
 B$ a mapping. $f$ is called the {\bf continuation} of $g$ if $f(a_1) = g(a_1),
 a_1 \in A_1$. In this case we also write $f \mid _{A_1} = g$ (in words: $f$
 restricted to $A_1$).
 
-A {\bf semi-group} consists of a set $M$ an an associative operation on that
+A {\bf semi-group} consists of a set $M$ and an associative operation on that
 set, usually denoted as a multiplication. If a semi-group is commutative, we
 also use ''$+$'' instead of ''$\cdot$''.
 
@@ -43,11 +43,11 @@ instead of $1$.
 For $A,B \subset M$ we denote by $A \cdot B = \{ a b \mid a \in A, b \in B \}$
 the {\bf complex product} of $A$ and $B$.
 
-$A \subset M$ is a {\bf submonoid} of $M$ if the follwoing holds: $1_M \in A$
+$A \subset M$ is a {\bf submonoid} of $M$ if the following holds: $1_M \in A$
 and $A$ is closed under the operation of $M$.
 
-For an $A$, the set $A^*$ defined as follows, is the smallest submonoid of $M$
-which contains $A$. More specific,
+For a set $A$, the set $A^*$ defined as follows, is the smallest submonoid of
+$M$ which contains $A$. More specific,
 \[
 		A^* = \bigcap_{M' \in M(A)} M'	
 \]
@@ -86,21 +86,21 @@ with $A^*$. This is slightly inconsistent because for the first definition of
 the $*$-operator it holds $(A^*)^* = A^*$ but for the second usage of the
 $*$-operator it holds $(A*)^* \neq A^*$.
 
-The following example should clarify that: Let $A = \{a,b,c\}$ and let $(a,b,a)$
-and $(b,a) \in A^*$.
-\[(a,b,a)\cdot(b,a) = (a,b,a,b,a) \in A^*,\ \mbox{but}\]
-\[((a,b,a),(b,a)) \in (A^*)^*\ \mbox{but}\ \notin A^*\].
+The following example should clarify that: 
 
+Let $A = \{a,b,c\}$ and let $(a,b,a)$ and $(b,a) \in A^*$.
+\[(a,b,a)\cdot(b,a) = (a,b,a,b,a) \in A^*,\ \mbox{but}\]
+\[((a,b,a),(b,a)) \in (A^*)^*\ \mbox{but}\ \notin A^*\]
 
 Instead of $(a)$ we write just $a$. In this sense it holds $A \subset A^*$. This
 also holds in the sense of the first definition of $A^*$.
 
-If $w = (w_1,\ldots,w_n)$ we denote with $|a| = n$ the {\bf length} of $w$.
-Obviously it holds: $|w \cdot v| = |w| + |v|$ and $|\epsilon| = 0$.
+If $w = (w_1, \ldots, w_n)$ we call $|w| := n$ the {\bf length} of
+$w$. Obviously it holds: $|w \cdot v| = |w| + |v|$ and $|\epsilon| = 0$.
 
 The {\bf mirror word} $w^R$ of a word $w = (w_1,\ldots,w_n)$ is the word
-$(w_n,\ldots,w_1)$. $\epsilon^R = \epsilon$. It holds: $(w \cdot v)^R =
-v^R \cdot w^R$.
+$(w_n,\ldots,w_1)$. It holds: $(w \cdot v)^R = v^R \cdot w^R$ and $\epsilon^R =
+\epsilon$.
 
 In $A^*$ the reduction rules hold, i.e.
 \begin{enumerate}
@@ -108,16 +108,19 @@ In $A^*$ the reduction rules hold, i.e.
   \item $x \cdot w = y \cdot w \Rightarrow x = y$
 \end{enumerate}
 
-We define {\bf left} and {\bf right quotient}:
-\[ B^{-1} \cdot A = \{ v\ |\ \exists u \in B, w \in A : u \cdot v = w \} \]
-and $A \cdot B^{-1}$ in the same way.
+We define {\bf left} and {\bf right quotient} for sets of words $X, Y$:
+\[ X^{-1} \cdot Y = \{ w\ |\ \exists x \in X, y \in Y\ \mbox{with}\ x \cdot w =
+y \} \] and 
+\[ X \cdot Y^{-1} = \{ w\ |\ \exists x \in X, y \in Y\ \mbox{with}\ w \cdot y =
+x \} \]
 
 Because of the reduction rules it holds:
-\[ \{w\}^{-1} \cdot \{v\}\ \mbox{and}\ \{w\}^{-1} \cdot \{v\}\ \mbox{resp. are
+\[ \{w\}^{-1} \cdot \{v\}\ \mbox{and}\ \{w\}^{-1} \cdot \{v\}\ \mbox{are
 either empty or contain a single element.} \]
 
 If $\{w\}^{-1} \cdot \{v\}$ is not empty we call $w$ a {\bf prefix} of $v$. If
-$\{w\} \cdot \{v\}^{-1} \not= \emptyset $, we call $v$ a {\bf suffix} of $w$. In
-the future we will always write just $w$ instead of $\{w\}$ and also $w$ is
+$\{w\} \cdot \{v\}^{-1} \not= \emptyset $, we call $v$ a {\bf suffix} of $w$.
+
+In the future we will always write just $w$ instead of $\{w\}$ and also $w$ is
 prefix of $v$ if $w^{-1} \cdot v \not= \emptyset$.
 

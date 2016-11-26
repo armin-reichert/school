@@ -4,7 +4,7 @@
 A {\bf monoid homomorphism} (short: homomorphism) from a monoid $M$ to a monoid
 $S$ is a mapping $\Phi : M \to S$ with the following properties:
 \begin{enumerate}
-  \item $\Phi(m_1 \cdot m_2) = \Phi(m_1) \cdot \Phi(m_2), \quad m_1, m2 \in M$
+  \item $\Phi(m_1 \cdot m_2) = \Phi(m_1) \cdot \Phi(m_2), \quad m_1, m_2 \in M$
   \item $\Phi(1_M) = 1_S$
 \end{enumerate}
 \end{definition}
@@ -13,7 +13,7 @@ It can be easily shown: if $M_1 \subset M$ is a submonoid of $M$, then
 $\Phi(M_1)$ is a submonoid of $S$. If $S_1$ is a submonoid of $S$, then
 $\Phi^{-1}(S_1)$ is a submonoid of $M$.
 
-A homomorphism $\Phi : M \to S, \quad M,S$ monoids, is called
+A homomorphism $\Phi : M \to S, \ M, S$ monoids, is called
 \begin{description}
   \item[monomorphism] if $\Phi$ is injective
   \item[epimorphism] if $\Phi$ is surjective
@@ -23,16 +23,16 @@ A homomorphism $\Phi : M \to S, \quad M,S$ monoids, is called
 Homomorphisms $\Phi : M \to M$ are called {\bf endomorphisms}, isomorphisms
 $\Phi : M \to M$ are called {\bf automorphisms}.
 
-Monoid $M$ and $S$ are called $isomorphic$, if there exists an isomorphism
+Monoids $M$ and $S$ are called $isomorphic$, if there exists an isomorphism
 between $M$ and $S$.
 
-Of course, a monoid homomorphism cannot be defined arbitrarily on a monoid $M$.
+Of course, a homomorphism cannot be defined arbitrarily on a monoid $M$.
 Thus the following two questions arise:
 \begin{enumerate}
   \item If $M_1 \subset M$ is a submonoid and $\Phi_1 : M_1 \to S$ is an arbitrary
-mapping. When is it possible to extend $\Phi_1$ to a monoid homomorphism $\Phi
+mapping. When is it possible to extend $\Phi_1$ to a homomorphism $\Phi
 : M \to S$\ ?
-	\item If $\Phi_1, \Phi_2$ both are monoid homomorphisms from $M$ to $S$ which
+	\item If $\Phi_1, \Phi_2$ both are homomorphisms from $M$ to $S$ which
 	coincide on $M_1 \subset M$. In which way can $\Phi_1$ and $\Phi_2$ be
 	different? 
 \end{enumerate}
@@ -41,11 +41,11 @@ The answer to this question of course depends on the structure of $M_1$. If
 $M_1 = \{ 1_M \}$ then $\Phi$ is determined uniquely on $M_1$ but there is
 little information on the relation between $\Phi_1$ and $\Phi2$.
 
-The following two simple theorems which can be found in introductory algebra are
-holding:
+The following two simple theorems which can be found in introductory algebra
+books are holding:
 \begin{enumerate}
-  \item If $M_1$ is a generating system of $M$ and $\Phi1, \Phi2 : M \to S$ both
-  are monoid homomorphisms which coincide on $M_1$, then $\Phi1 = \Phi_2$.
+  \item If $M_1$ is a generating system of $M$ and $\Phi_1, \Phi_2 : M \to S$
+  both are monoid homomorphisms which coincide on $M_1$, then $\Phi1 = \Phi_2$.
   \item If $A$ is a set and $M = A^*$, and $\Phi_1 : A \to S$ is an arbitrary
   mapping, then there exists exactly one continuation $\Phi$ from $\Phi_1$ which
   is a monoid homomorphism from $A^*$ to $S$.
@@ -69,10 +69,12 @@ A free monoid has at most one free generating system. From that we can see that
 the length $|w|$ of a word $w \in A^*$ can be defined in a unique way for any
 free monoid.
 
-The length is an example for a monoid homomorphism $L : A^* \to \mathbb{N}$.
+The length mapping $L$ is an example for a monoid homomorphism $L : A^* \to
+\mathbb{N}$.
 
-If $\Phi : M \to S$ is a monoid homomorphism, then the sets $\{ \Phi^{-1}(s) |
-s \in S \} \subset Pot(M)$ is a monoid isomorphic to $\Phi(M)$.
+If $\Phi : M \to S$ is a monoid homomorphism, then the sets 
+\[\{ \Phi^{-1}(s)\ |\ s \in S \} \subset Pot(M)\]
+form a monoid isomorphic to $\Phi(M)$.
 
 We want to handle now the following question: Let $M$ be a monoid, $L \subset M$
 be any subset of $M$. Does there exist a monoid $S$ and a homomorphism $\Phi :
@@ -91,27 +93,29 @@ We want to describe $L$ as close as possible by a monoid homomorphism.
 Such an $S$ and $\Phi$ exists for each $L \subset M$ (see Algebra text), it is
 named $synt_M(L)$ an is constructed as follows:
 
-\begin{definition}
+\begin{definition}[syntactic congruence]
 Let $M$ be a monoid and $L \subset M$. For $a, b \in M$ we define
-\[ a \equiv b (L) \Leftrightarrow \mbox{For all}\ u, v \in M: u a v \in L
-\Leftrightarrow u b v \in L
+\[ a \equiv b\ (L) \Leftrightarrow \mbox{for all}\ u, v \in M: u \cdot a \cdot v
+\in L \Leftrightarrow u \cdot b \cdot v \in L
 \]
 \end{definition}
 
 $\equiv (L)$ is a congruence relation, it holds:
 \begin{enumerate}
-  \item Let $[a]_L = \{ b \in M\ |\ a \equiv b (L) \}$\ then\ $b \in [a]_L
+  \item Let $[a]_L = \{ b \in M\ |\ a \equiv b\ (L) \}$\ then\ $b \in [a]_L
   \Rightarrow [a]_L = [b]_L $
   \item If we define $[a]_L \cdot [b]_L := [a b]_L$\ (complex product), then
-  $synt_M(L) = \{ [a]_L\ |\ a \in M$ becomes a monoid and the mapping $\Psi_L :
-  M \to synt_M(L)$\ with $\Psi_L(a) = [a]_L$\ is a monoidepimorphism.
+  \[synt_M(L) = \{ [a]_L\ |\ a \in M \}\] becomes a monoid and the mapping
+  \[\Psi_L : M \to synt_M(L),\ \Psi_L(a) = [a]_L\]
+   is a monoidepimorphism.
 \end{enumerate}
 
 We call $\equiv (L)$ the {\bf syntactic congruence} of $L$ and $synt_M(L)$ the
 {\bf syntactic monoid} of $L$ wrt. $M$.
 
-To motivate the name $synt_M(L)$ we give an example from German language. Let
-$A$ be the alphabet of German and $L$ the set of sentences in German. One can
+To motivate the name ''syntactic monoid'' we give an example from German
+language.
+Let $A$ be the alphabet of German and $L$ the set of sentences in German. One can
 denote two words $w_1$ and $w_2$ as congruent if they can always be exchanged in
 each german sentence. There exist words that cannot always be exchanged. In the
 sentence ''Apfel ist eine Kernfrucht'' the word ''Apfel'' can be exchanged by
@@ -122,5 +126,4 @@ The difficulty is of semantic nature. If you don't consider semantic correctness
 of sentences you get a classification of words wrt. their syntactic meaning.
 
 The important notion of ''syntactic congruence'' has been introduced by M. P.
-Sch\"utzenberger in the context of coding problems.
-
+Schützenberger in the context of coding problems.
