@@ -218,49 +218,67 @@ Further let $\phi_2$ be uniquely determined for these paths $w$ and it holds: \[
 \phi_2(w \cdot v) = \phi_2(w) \cdot \phi_2(u) \]
 for all $w, v$ with $|w \cdot v| \leq n$.
 
+Now let $v = (P, s_1, \ldots, s_{n+1}, P') \in \mathcal{W}(G)$. We split $v$
+into \[ v = (P, \underbrace{s_1, \ldots, s_n}_{v_1}, P'') \cdot (P'',
+\underbrace{s_{n+1}}_{v_2}, P') \].
 
+By induction hypothesis, $\phi_2(v_1)$ and $\phi_2(v_2)$ are defined.
 
+For $\phi_2$ to become a functor, necessarily $\phi_2(v) = \phi_2(v1) \cdot
+\phi_2(v_2)$ must hold.
 
+By assumption, $\phi_2$ is compatible with source and target mappings $Q$ and
+$Z$ for $v_1$ and $v_2$. Therefore $Z(\phi_2(v_1)) = Q(\phi_2(v_2))$ and
+$\phi_2(v)$ is defined.
 
+Let $v = u_1 \cdot u_2$ be any partition of $v$, so \[ v = (P, \underbrace{s_1,
+\ldots, s_j}_{u_1}, \bar{P}) \cdot (\bar{P}, \underbrace{s_{j+1},
+\ldots, s_{n+1}}_{u_2}, P'). \]
 
+By induction hypothesis it holds:
+\begin{enumerate}
+  \item $Z(\phi_2(u_1)) = Q(\phi_2(u_2))$, so $\phi_2(u1) \cdot \phi_2(u_2)$ is
+  defined.
+  \item With $u'_2 = (\bar{P}, s_{j+1}, \ldots, s_n, P'')$ we have
+  \begin{eqnarray*}
+  \phi_2(u_1) \cdot \phi_2(u_2) & = & \phi_2(u_1) \cdot (\phi_2(u'_2) \cdot
+  \phi_2(v_2)) \\
+  & = & (\phi_2(u_1) \cdot \phi_2(u'_2)) \cdot \phi_2(v_2) \\
+  & = & \phi_2(v_1) \cdot \phi_2(v_2) \\
+  & = & \phi_2(v)
+  \end{eqnarray*}
+\end{enumerate}
 
+It remains to show \[ \phi_1(Q(v)) = Q(\phi_2(v)),\quad \phi_1(Z(v)) =
+Z(\phi_2(v)) \]
 
+This follows directly from $Q(v) = Q(v_1)$ and $Z(v) = Z(v_2)$ by induction
+hypothesis.
 
+\begin{theorem}
+To each category $C$ there exists a free category $F$ and a surjective functor
+$\phi = (F, C, \phi_1, \phi_2)$.
+\end{theorem}
 
+Proof: For the category $C$, create the oriented graph $G_C = (V, E)$ with $V =
+Obj(C)$ and $E = \{ f\ |\ Q(f) = O_1, Z(f) = O_2, f : O_1 \to O_2 \in M \}$.
 
+That means: The objects of the category become the points of the graph and each
+morphism becomes an edge between the corresponding source and target objects.
+Because $\mathcal{W}(G_C)$ is a free category by theorem 1 we can choose $F$ to
+be exactly this category.
 
+Let $\phi_1 : V \to O$ with $\phi_1(w) = w$ and $\phi'_2 : E \to M$ with
+$\phi'_2(f) = f$ be mappings and $\phi_2 : \mathcal{W}(G_C) \to M$ be the
+continuation of $\phi'_2$ such that $\phi = (\mathcal{W}(G_C), C, \phi_2,
+\phi_2)$ becomes a functor.
 
+By construction, $\phi$ is surjective.
 
+The following theorem tells about the uniqueness of free generating systems.
 
+\begin{theorem}
+If $E$ and $E'$ are free generating systems of a category $F$, then $E = E'$.
+\end{theorem}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+The proof is similar to the one of the corresponding theorem for free monoids.

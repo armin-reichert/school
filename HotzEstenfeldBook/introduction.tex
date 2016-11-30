@@ -125,7 +125,27 @@ Then it holds:
 
 For $D(X_k)$ we get the following syntax diagram:
 
-FIGURE
+\begin{center}
+\begin{tikzpicture}[node distance = 10em]
+\tikzset{VertexStyle/.append style = {minimum size = 1em}}
+\tikzset{EdgeStyle/.append style = {->, bend left}}
+\tikzset{LabelStyle/.style = {fill=white}}
+\node[VertexStyle](S){S};
+\node[VertexStyle,right=of S](V){ }; 
+\node[VertexStyle,right=of V](F){F};
+\draw[EdgeStyle](S) to node[LabelStyle]{$s_4/\epsilon$} (F);
+\draw[EdgeStyle](F) to node[LabelStyle]{$s_1/\epsilon$} (S);
+\path[]
+	(S)	edge[bend left] 	node[LabelStyle] {$s_{x_1}/x_1$} (V)
+	(S)	edge 							node[LabelStyle] {$\cdots$} (V)
+	(S)	edge[bend right] 	node[LabelStyle] {$s_{x_k}/x_k$} (V)
+	(V)	edge[bend left] 	node[LabelStyle] {$s_{\bar{x}_1}/\bar{x}_1$} (F)
+	(V)	edge 							node[LabelStyle] {$\cdots$} (F)
+	(V)	edge[bend right] 	node[LabelStyle] {$s_{x_k}/x_k$} (F)
+	(V) edge							node[LabelStyle] {$s_2/\epsilon$} (S)
+	;
+\end{tikzpicture}
+\end{center}
 
 If we consider all labelings of paths from $S$ to $F$ we get of course also
 words not contained in $D(X_k)$, for example $x_1 x_2 \bar{x}_k$ or $x_1
