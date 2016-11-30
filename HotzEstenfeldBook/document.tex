@@ -14,8 +14,12 @@
 \newtheorem{lemma}{Lemma}[section]
 \newtheorem{theorem}{Theorem}[section]
 
+\newcommand{\where}{\ |\ }
 \newcommand{\dderives}[1]{\mbox{\,$\Rightarrow_{#1}$\,}}
 \newcommand{\derives}[1]{\mbox{\,$\stackrel{*}{\Rightarrow}_{#1}$\,}}
+\newcommand{\pathcat}[1]{\mbox{$\mathcal{W}(#1)$}}
+\newcommand{\automat}[1]{\mbox{$\mathcal{#1}$}}
+\newcommand{\automatlang}[1]{\mbox{$L_{\automat{#1}}$}}
 
 \begin{document}
 
@@ -41,11 +45,14 @@
 \tableofcontents
 \include{introduction}
 
-\chapter{Mathematical foundations}
+\chapter{Mathematical Foundations}
 \include{chapter1-1}
 \include{chapter1-2}
 \include{chapter1-3}
 \include{chapter1-4}
 \include{chapter1-5}
 \include{chapter1-6}
+
+\chapter{Finite Automata}
+\include{chapter2-1}
 \end{document}

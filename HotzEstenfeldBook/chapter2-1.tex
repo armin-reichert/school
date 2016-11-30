@@ -1,0 +1,280 @@
+\section{The finite automaton, regular sets in $X^*$,\ $REG(X^*)$}
+
+Let $G = (V, E)$ be a finite, oriented graph, $X$ a finite set and $\alpha =
+(\pathcat{G}, X^*,\alpha_1, \alpha_2)$ a functor with $\alpha_1 : V \to \{ X^*
+\},\ \alpha_2 : \pathcat{G} \to X^*$.
+
+(Remark by the translator: Here the free monoid $X^*$ is regarded as a category
+$X^* = (\{X^*\}, X^*, Q, Z, \cdot \})$ where $\cdot$ is the monoid operation
+(word concatenation). Words are treated as morphisms with source and target
+$X^*$. Klingt komisch, is aber so.)
+
+\begin{definition}[nondeterministic finite automaton]
+$\automat{A} = (G, X^*, \alpha)$ is called a {\bf nondeterministic finite
+automaton}.
+\end{definition}
+
+If $S, F \in V$ are points of the graph $G$, we call $\automat{A} = (G, X^*,
+S, F, \alpha)$ a finite automaton with start and final states or shortly a {\bf
+finite acceptor}.
+
+In the following we will use the terms acceptor and automaton as synonyms.
+
+If the finite automaton works over the free monoid $X^*$ we write shorter just
+$X$ instead of $X^*$, otherwise we specify the monoid explicitly.
+
+\begin{definition}[accepted set]
+If we define 
+\[ \pathcat{G}(S, F) := \{ w \in \pathcat{G}\ |\ Q(w) \in S \wedge Z(w)
+\in F \}, \]
+then \[ L_{\automat{A}} := \alpha_2(\pathcat{G}(S, F)) \] 
+is called the set {\bf accepted by} the automaton. 
+\end{definition}
+
+We will also write shortly $\alpha$ instead of $\alpha_2$ and $\pathcat{}(S,F)$
+instead of $\pathcat{G}(S,F)$.
+
+\begin{definition}[regular language over free monoid]
+Let $X$ be an alphabet. \[ REG(X^*) := \{ L \subset X^*\ | \mbox{ there
+exists a finite automaton } \automat{A} \mbox{ with } L = \automatlang{A} \}
+\]
+
+$REG(X^*)$ is the set of {\bf regular languages} over the free monoid $X^*$.
+\end{definition}
+
+Remark: We defined here the finite automaton via its ''state graph''. Most
+often, the definition is given using the ''next state relation'' as follows:
+
+\[ \delta = \{ (a, P_1, P_2) \in X \times V \times V)\ | \]
+\[ \mbox{there exists an edge } e \mbox{ with } Q(e) = P_1, Z(e) = P_2 \mbox{
+and } \alpha(e) = a \in X \}. \]
+
+$\delta$ my be regarded as a relation between $X \times V$ and $V$ where $X$ is
+the input alphabet and $V$ the state set of the automaton \[ \automat{B} = (X,
+V, \delta, S, F) \]
+
+The elements of $V$ denote the current state of the automaton $\automat{B}$.
+
+If the automaton $\automat{B}$ is in state $z \in V$ and reads the symbol $x
+\in X$ then it changes into state $z' \in V$ where $(x, z, z') \in \delta$. If
+there doesn't exist such a $z'$ the automaton halts.
+
+This interpretation can be visualized as follows:
+
+FIGURE
+
+Let's return to out definition of the finite automaton. We explain its
+working based on our definition:
+
+The automaton $\automat{A} = (G, X, S, F, \alpha)$ may be interpreted as a
+nondeterministic algorithm. The points of graph $G$ define the possible states
+of the algorithm, the elements of $X$ are the input alphabet.
+
+The nondeterministic automaton $\automat{A}$ which reads a symbol $x \in X$
+while in state $P \in V$ changes into state $P'$ if there exists an edge $e$
+from $P$ to $P'$ with label $\alpha(e) = x$. If the graph has no such edge
+originating in $P$ the automaton is set ''out of service''.
+
+A finite acceptor accepts a word $w \in X^*$ if there exists a path from a point
+in $S$ to a point in $F$ which is labeld with $w$.
+
+Let's consider some examples for finite automata:
+
+Example 1: Let $X = \{ a, b \}$ and $L = \{ (a b)^{2n}\ |\ n \in \mathbb{N} \}$.
+It holds: $L \in REG(\{a, b\}^*)$.
+
+The following acceptor accepts $L$ (exercise):
+
+$\automat{A} = (G, \{a, b\}, {1}, {1}, \alpha)$.
+
+FIGURE
+
+Example 2: Lexical analysis, check for special characters.
+
+In every programming language there exist special character combinations
+(reserved words) that mark certain program actions. These have to be identified
+during the lexical analysis. We give a finite acceptor which realizes such a check for a selection
+of reserved words:
+
+Let the set of reserved words be 
+$\{$ 'BEGIN', 'END', 'ELSE', 'IF', FI', 'FOR', 'INTEGER', 'THEN', 'LOOP',
+'POOL', 'PROCEDURE' $\}$.
+
+The following acceptor accepts this set:
+
+FIGURE
+
+The images of the edges under the mapping $\alpha$ are shown as edge labels. The
+points of the graph are the ovals with their labels. Start and final states are
+given by $S = \{$ START $\}$ and $F = \{$ STOP $\}$.
+
+The labels of the points are chosen such that one can see the information stored
+by the automaton.
+
+Now we want to prove some properties of $REG(X^*)$. To do that, we need
+some basic properties for finite automata.
+
+\begin{lemma}
+Let $\automat{A} = (G, X, S, F, \alpha)$ be a finite automaton. Then there
+exists a finite automaton $\automat{A'} = (G', X, S', F', \alpha')$ such that
+$card(S') = card(F') = 1$ and $\automatlang{A} = \automatlang{A'}$.
+\end{lemma}
+
+An automaton with a single start state is called {\bf initial}.
+
+Proof: If $card(S) = card(F) = 1$ we are done.
+
+(Comment by translator: The proof in the book is completely unreadable because
+of all these tildes, primes, indices etc. Therefore it is reformulated here.) 
+
+Let $card(S) > 1$ or $card(F) > 1$.
+
+1. Add new edges leaving the new start state $S'$:
+
+Define the set of all edges leaving an old start state by
+\[ OUT := \{ e \in E \where Q(e) \in S \} \]
+Add the following new edges to the graph:
+\[ OUT' := \{ e' = (S', Z(e)) \where e \in OUT,\ \alpha'(e') := \alpha(e) \} \]
+
+2. Add new edges reaching the new final state $F'$:
+
+Define the set of all edges reaching an old final state by
+\[ IN := \{ e \in E \where Z(e) \in F \} \]
+Add the following new edges to the graph:
+\[ IN' := \{ e' = (Q(e), F') \where e \in IN,\ \alpha'(e') := \alpha(e) \} \]
+
+To each new edge we assign the same label as the edge from which it has been
+derived.
+
+The new automaton $\automat{A'} = (G', X, \{S'\}, \{F'\}, \alpha')$ is defined
+by the graph $G' = (V \cup \{ S', F' \}, E \cup OUT' \cup IN')$
+and the new labeling $\alpha'$ which is identical to $\alpha$ for all existing edges and is defined as shown above for the new edges.
+
+It is easily shown that $\automatlang{A'} = \automatlang{A}$.
+
+\begin{lemma}
+Let $\automat{A} = (G, X, S, F, \alpha)$ be a finite automaton. Then there
+exists an automaton $\automat{A'} = (G', X, S', F', \alpha')$ with $\alpha'(e)
+\in X\ \forall e \in E(G)$ and $\automatlang{A} = \automatlang{A'}$.
+\end{lemma}
+
+Proof: We ''split'' all edges according to their labels.
+
+\begin{enumerate}
+  \item Let $e \in E$ with $\alpha_2(e) = x_1 \cdots x_k,\ k > 1, x_i \in X$.\\
+  Remove edge $e$ and add new edges $e'_1,
+  \ldots, e'_k$ and new points $P'_1, \ldots, P'_{k-1}$ such that $(Q(e),
+  e'_1, \ldots, e'_k, Z(e)) \in \pathcat{G'}$ and define a new graph $G' =
+  (V', E')$. The labeling of the new edges is defined by $\alpha'(e'_i) := x_i$
+  for $i = 1, \ldots, k$.
+  
+  Then $\alpha_2(e) = \alpha'_2(e'_1) \cdots \alpha'_2(e'_k)$.
+  
+  \item Let $e \in E$ be an edge labeled with $\epsilon$.
+  \begin{enumerate}
+    \item  (Remove $\epsilon$-loops) \\
+    If $Q(e) = Z(e) : E' := E - e$
+    \item (Remove
+    $\epsilon$-edges which cannot be continued to a longer path)\\
+    If there is
+    not $e' \in E$ with $Q(e') = Z(e') : E' := E - e$
+    \item  (Skip $\epsilon$-edges that can be continued and remove the
+    $\epsilon$-edge)\\
+    If there exists an edge $e' \in E$ with $Q(e') = Z(e) : E'' := E - e$.
+    Add new edges: $E' := E'' \cup \{
+    \tilde{e} \where Q(\tilde{e}) = Q(e), Z(\tilde{e}) = Z(e'),\
+    alpha'(\tilde{e}) := \alpha(e') \}$
+  \end{enumerate}
+  If in step (b) or (c) the target of the edge is a final state, then add the
+  source of the edge to the set of final states.
+  
+  Continue this algorithm inductively until no more $\epsilon$-edges remain in
+  the graph. The algorithm terminates because the point and edge sets are
+  finite. For the new automaton $\automat{A'}$ that results from this algorithm
+  holds: $\automatlang{A'} = \automatlang{A}$.
+\end{enumerate}
+
+If we apply this algorithm to our automaton from example 1, we obtain:
+
+FIGURE
+
+Now we want to prove some closure properties of $REG(X^*)$.
+
+\begin{theorem}
+Let $L, L' \in REG(X^*)$. Then the union $L \cup L'$ and the intersection $L
+\cap L'$ both are regular.
+\end{theorem}
+
+Proof: Let $L = \automatlang{A}$ and $L' = \automatlang{B}$ with automata \[
+\automat{A} = (G_A, X, S_A, F_A, \alpha) \] and \[ \automat{B} = (G_B, X, S_B,
+F_B, \beta).\]
+We may assume that the edge and point sets of both automata graphs are disjoint.
+
+\begin{enumerate}
+  \item Closure under union: Define
+	\[ \gamma_2(e) := \left\{
+		\begin{array}{l} 
+		\alpha_2(e),\ e \in E(G_A) \\
+		\beta_2(e),\ e \in E(G_B)
+		\end{array}
+	 \right. \]
+
+	Then the automaton $\automat{C} = (G_A \cup G_B, X, S_A \cup S_B, F_A \cup F_B)$
+	accepts the language $\automatlang{A} \cup \automatlang{B}$.
+	
+	\item Closure under intersection: Define $G' = (V', E')$ where
+	\[ V' = V_A \times V_B \]
+	\[ E' = \{ (e_A, e_B) \in E_A \times E_B \where \alpha_2(e_A) = \beta_2(e_B)
+		 \}. \]
+	By lemma 2 we may assume that the edge labels are all single symbols from $X$.
+	
+	We define the new labeling $\delta_2$ by \[ \delta_2 : E' \to X,\
+	\delta_2((e_A, e_B) = \alpha_2(e_A)). \]
+	
+	For the automaton $\automat{A'} = (G', X, S_A \times S_B, F_A \times F_B,
+	\delta)$ then holds: $\automatlang{G'} = \automatlang{A} \cap \automatlang{B}$
+	and this automaton is called the {\bf cartesian product} of $\automat{A}$ and
+	$\automat{B}$.
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
