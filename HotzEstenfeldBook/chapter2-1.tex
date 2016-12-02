@@ -200,9 +200,9 @@ FIGURE
 
 Now we want to prove some closure properties of $REG(X^*)$.
 
-\begin{theorem}
-Let $L, L' \in REG(X^*)$. Then the union $L \cup L'$ and the intersection $L
-\cap L'$ both are regular.
+\begin{theorem}[Regular languages are closed under union and intersection]
+\[ L, L' \in REG(X^*) \Rightarrow L \cup L' \in REG(X^*) \wedge L \cap L' \in
+REG(X^*) \]
 \end{theorem}
 
 Proof: Let $L = \falang{A}$ and $L' = \falang{B}$ with automata \[
@@ -237,9 +237,8 @@ We may assume that the edge and point sets of both automata graphs are disjoint.
 	$\fa{B}$.
 \end{enumerate}
 
-\begin{theorem}
-Let $L \in REG(X^*) \Rightarrow L^R \in REG(X^*)$ where $L^R$ is the mirror
-language of $L$.
+\begin{theorem}[Regular languages are closed under mirror operation]
+\[ L \in REG(X^*) \Rightarrow L^R \in REG(X^*) \]
 \end{theorem}
 
 Proof: Let $\fa{A} = (G, X, S_{\fa{A}}, F_{\fa{A}}, \alpha)$ be a
@@ -267,7 +266,7 @@ and $x \in X$ there exists an edge $e \in E(G)$ with $Q(e) = P$ and $\alpha(e)
 = x$.
 \end{definition}
 
-\begin{theorem}
+\begin{theorem}[Existence of complete, deterministic acceptor]
 If \fa{A} is a finite automaton, then there exists a complete,
 deterministic automaton \fa{A'} which accepts the same language.
 \end{theorem}
@@ -411,12 +410,13 @@ less memory but the computing time can grow linear for each simulation step.
 
 We want to state an important consequence from our last theorem.
 
-\begin{theorem}
-Let $L \in REG(X^*) \Rightarrow \bar{L} \in REG(X^*)$ where $\bar{L}$ denotes
-the complement of $L$.
+\begin{theorem}[Regular languages are closed under complement]
+\[ L \in REG(X^*) \Rightarrow \bar{L} = X^* - L \in REG(X^*) \]
 \end{theorem}
 
-Proof: $L \in REG(X^*) \Rightarrow $ there exists a complete, deterministic
+Proof: 
+
+$L \in REG(X^*) \Rightarrow $ there exists a complete, deterministic
 finite acceptor $\fa{A}$ with $\falang{A} = L$.
 
 Define $\fa{A'} = (G, X, S_{\fa{A}}, F_{\fa{A}}, \alpha)$ where $F_{\fa{A}} :=
@@ -432,52 +432,220 @@ It is either $P \in F_{\fa{A}}$ or $P \in F_{\fa{A'}}$ and from $F_{\fa{A}}
 \cap F_{\fa{A}'} = \emptyset$ follows $w \in \falang{A} \Leftrightarrow w
 \notin \falang{A'}$ and therefore $\falang{A'} = \bar{\falang{A}}$.
 
-\begin{theorem}
-Let $L_1, L_2 \in REG(X^*) \Rightarrow L_1 \cdot L_2 \in REG(X^*)$.
+\begin{theorem}[Regular languages are closed under concatenation]
+\[ L_1, L_2 \in REG(X^*) \Rightarrow L_1 \cdot L_2 \in REG(X^*) \]
 \end{theorem}
 
-Proof: $L_1, L_2 \in REG(X^*) \Rightarrow$\ there exist acceptors $\fa{A}_1$ and
-$\fa{A}_2$ with $L_1 = \falang{A}_1$ and $L_2 = \falang{A}_2$.
+Proof: $L_1, L_2 \in REG(X^*) \Rightarrow$\ there exist finite acceptors
+$\fa{A}_i = (G_i, X, S_i, F_i, \alpha_i)$ with $L_i = \falang{A}_i,\ i = 1,2$.
 
-We define a new acceptor ${\fa{A}} = (G, X, S, F, \alpha)$ as follows:
-\[ V(G) = V(G_{\fa{A}_1}) \cup V(G_{\fa{A}_2})\mbox{ where }V(G_{\fa{A}_1}) \cap
-V(G_{\fa{A}_2}) = \emptyset \]
-\[ E(G) = E(G_{\fa{A}_1}) \cup E(G_{\fa{A}_2}) \cup \mbox{ the following edges:}
+We define a new acceptor
+\[\fa{A} = (G, X, S, F, \alpha) \]
+as follows:
+
+Vertices:
+\[ V(G) := V(G_{\fa{A}_1}) \cup V(G_{\fa{A}_2})\mbox{ where }V(G_{\fa{A}_1})
+\cap V(G_{\fa{A}_2}) = \emptyset \]
+
+Edges:
+\[ E(G) = E(G_{\fa{A}_1}) \cup E(G_{\fa{A}_2}) \cup \mbox{ 'bridge'' edges
+defined as follows:}
 \]
-For $P \edge{e} P' \in E(G_{\fa{A}_1}), R \in F_{\fa{A}_1}, \alpha(e) = x, P'
-\in S_{\fa{A}_2}$ there is an edge $P \edge{e'} P'$ with $\alpha(e') = x$ added
-to $E(G)$.
 
-FIGURE
+FIGURE (bridge edge)
 
-We set $S = S_{\fa{A}_1}$ and $F = F_{\fa{A}_2}$.
+Here $R \in F1$ is a final state in $\fa{A}_1$, $x = \alpha_1(e_1)$ is the label
+of edge $e_1$, $P'$ is a start state in $\fa{A}_2$.
 
-We show now that the automaton defined in this way accepts the language
-$\falang{A}_1 \cdot \falang{A}_2$.
+For each such configuration, a new ''bridge''	edge $e$ is added to $E(G)$ where
+\[ Q(e) := P,\ Z(e) := P' \mbox{ and } \alpha(e) := x.\]
 
+Start and final states: $S := S_{\fa{A}_1}$ and $F := F_{\fa{A}_2}$.
 
+We now prove that $\falang{A} = \falang{A}_1 \cdot \falang{A}_2$.
 
+\begin{enumerate}
+  \item $\falang{A} \supset \falang{A}_1 \cdot \falang{A}_2$
+  
+  Let $u = u_1 \cdots u_n \in \falang{A}_1$ and $v = v_1 \cdots v_m \in
+  \falang{A}_2$. Then there exist accepting paths
+  \[ S_1 \ni P_0 \edge{u_1} P_1 \edge{u_2} \ldots \edge{u_n} P_n \in F_1 \]
+  and 
+  \[ S_2 \ni Q_0 \edge{v_1} Q_1 \edge{v_2} \ldots \edge{v_m} Q_m \in F_2 \]
+  
+  By construction of graph $G$ there exists a path in $\pathcat{G}(S1, F2)$ of
+  the form
+  \[ S_1 \ni P_0 \edge{u_1} P_1 \edge{u_2} \ldots P_{n-1} \edge{u_n} Q_0
+  \edge{v_1} Q_1 \edge{v_2} \ldots \edge{v_m} Q_m \in F_2 \]
+  
+  It follows $u = u_1 \cdots u_n \cdot v_1 \cdots v_m \in \falang{A}$ thus
+  $\falang{A}_1 \cdot \falang{A}_2 \subset \falang{A}$.
+  
+  \item $\falang{A} \subset \falang{A}_1 \cdot \falang{A}_2$
+  
+  Let \[ S \ni P_0 \edge{w_1} P_1 \edge{w_2} \ldots \edge{w_n} P_n \in F \] be
+  an accepting path in $\pathcat{G}(S, F)$. Then there exist states $P_i \in
+  S_2$ and $P_j \in V(G_1)$ with $j < i$ because $V(G_1) \cap V(G_2) =
+  \emptyset$.
+  
+  FIGURE
+  
+  Therefore the subpath \[ S_2 \ni P_i \edge{w_{i+1}} P_{i+1} \edge{} \ldots
+  \edge{w_n} P_n \in F_2 \] contains only edges and vertices from $\fa{A}_2$ and
+  is an accepting path for the word $w_{i+1} \cdots w_n \in \falang{A}_2$.
+  
+  It holds $P_{i-1} \in V_1$ and by construction of the graph $G$ there exists
+  an edge labeled with $w_i$ which ends in a final state of $\fa{A}_1$. So $w_1
+  \cdots w_i \in \falang{A}_1$.
+  
+  Together we get \[ w_1 \cdots w_i \cdots w_n \in \falang{A}_1 \cdot
+  \falang{A}_2 \Rightarrow \falang{A} \subset \falang{A}_1 \cdot \falang{A}_2.\]
+\end{enumerate}
 
+From (1) and (2) it follows $\falang{A} = \falang{A}_1 \cdot
+\falang{A}_2$.
 
+\begin{theorem}[Regular languages are closed under Kleene-star]
+\[ L \in REG(X^*) \Rightarrow L^* \in REG(X^*) \]
+\end{theorem}
 
+FIGURE (graph construction)
 
+Let $\fa{A} = (G, X, S, F, \alpha)$	be a finite acceptor for $L$, create the
+finite acceptor $\fa{A'} = (G', X, S, F, \alpha')$ as follows:
 
+Graph: Take the graph $G$ and add the following edges: 
 
+\begin{enumerate}
+  \item For each edge \[e : P \edge{x} R \in E(G),\ R \in F\] leading to a
+  final state and each start state $P_0$ add an edge \[e' : P \edge{x} P_0 \]
+  labeled by $\alpha'(e') := x$.
+  \item For each state $P_0 \in S$ and each final state $R \in F$ add an edge
+  (if not already existing) \[ e' : P_0 \edge{\epsilon} R \]
+  labeled by $\alpha'(e') := \epsilon$.
+\end{enumerate}
 
+For the finite acceptor $\fa{A'}$ it holds (exercise): \[ \falang{A'} = L^* \]
 
+We have seen (lemma 1) that for nondeterministic automata a single start and a
+single final state are sufficient, but in the deterministic case, a single final
+state in insufficient in general.
 
+\begin{theorem}[Regular languages are closed under homomorphism]
+\[ L \in REG(X^*), \phi : X^* \to Y^* \mbox{ monoid homomorphism } \Rightarrow
+\]
+\[ \phi(L) := \{ \phi(w) \where w \in L \} \in REG(X^*) \]
+\end{theorem}
 
+Proof: Let $\fa{A} = (G, X, S, F, \alpha)$ be a finite acceptor for $L$. Then \[
+\fa{B} = (G, Y, S, F, \beta)\] with $\beta_2(e) := \phi(\alpha_2(e)),\ e \in
+E(G)$, is an acceptor for $\phi(L)$ because \[\phi(L) =
+\phi(\alpha_2(\pathcat{G}(S, F))) = \beta_2(\pathcat{G}(S,F))\]
+Therefore \[ \phi(L) \in REG(Y^*) \]
 
+After having proved closure properties, we prove some other important properties
+of regular sets.
 
+\begin{lemma}
+For $x \in X$ it holds $\{ x \} \in REG(X^*)$ and $\emptyset \in REG(X^*)$.
+\end{lemma}
 
+Proof: Set $G = (\{S,F\}, \{e\})$ be a graph, then the finite acceptor
+\[\fa{A}_x = (G, \{x\}, \{S\}, \{F\}, \alpha)\] with $\alpha_2(e) = x$ fulfills
+$\falang{A} = \{x\}$.
 
+Set $G = (\{S,F\}, \emptyset)$, then $\fa{A} = (G, \emptyset, \{S\}, \{F\},
+\emptyset)$ fulfills $\falang{A} = \emptyset$.
 
+\begin{lemma}
+Set $G = (V, E)$. Then $\pathcat{G}(S,F) \in REG(E^*)$.
+\end{lemma}
 
+This means the set of paths of a graph which start in a start state and end in a
+final state is a regular set over the set of edges of the graph. The proof is
+trivial, just label the edges with their name.
 
+\begin{definition}[local set]
+Let $S, F \subset X$ and $R \subset X \times X$ be a relation on $X$ with \[ L =
+\{ x_1 \cdots x_k \where x_1 \in S, x_k \in F, (x_i, x_{i+1}) \in R,\ i = 1,
+\ldots, k - 1 \} \]
+\end{definition}
 
+\begin{lemma}[The accepting path set of a FA is local]
+Let $G = (V, E)$ be a graph. Then $\pathcat{G}(S, F)$ is local over $E$.
+\end{lemma}
 
+Proof: Let \begin{eqnarray*}
+S & = & \{ e \in E \where Q(e) \in S \} \\ 
+F & = & \{ e \in E \where Z(e) \in F \} \\
+R & = & \{ (e, e') \in E \times E \where Z(e) = Q(e') \} 
+\end{eqnarray*}
 
+Then the claim is immediately proved.
 
+\begin{lemma}[local sets are regular]
+\[ L \mbox{ local over } X \Rightarrow L \in REG(X^*) \]
+\end{lemma}
+
+Proof: Let $S$ and $F$ be the subsets of $X$ from the definition of a local
+set. We define a graph $G = (V, E)$ as follows:
+\begin{eqnarray*}
+V & = & X \cup \{ \bar{S} \} \mbox{ with } X \cap \{ \bar{S} \} = \emptyset \\
+E & = & \{ e : \{ \bar{S} \} \to x \where x \in S \} \cup \{ e : x \to y \where
+(x, y) \in R \}
+\end{eqnarray*}
+
+Consider the finite acceptor $\fa{A} = (G, X, \{\bar{X}\}, F, \alpha)$ with
+labeling $\alpha$ defined by $\alpha_2(e) = Z(e)$ for each edge $e \in E$.
+
+Then it is clear that $\falang{A} = L$.
+
+\begin{lemma}[Each regular set is homomorphic image of a local set]
+$L \in REG(X^*)$, then there exists a local set $R$ over $X$ and a monoid
+homomorphism $\phi$ such that \[ \phi(R) = L \]
+\end{lemma}
+
+Proof: Exercise
+
+We want to summarize our results to some main theorems where we organize these
+results differently.
+
+Let $X_\infty = \{ x_1, x_2, \ldots \}$ be an infinite alphabet. Define \[
+REG(X_\infty^*) = \bigcup_{X	\subset X_\infty} REG(X^*), \mbox{$X$ is finite}
+\]
+
+\begin{maintheorem}\ \\
+\begin{enumerate}
+  \item $REG(X_\infty^*)$ is closed under union, complex product and
+  Kleene-star $^*$.
+  \item If $\phi : X_\infty^* \to X_\infty^*$ is a monoid homomorphism, then
+$REG(X_\infty^*)$ is closed under $\phi$.
+	\item Every $L \in REG(X_\infty^*)$ is the homomorphic image of a local set
+	over $X_\infty^*$.
+	\item $REG(X_\infty^*)$	 contains the sets $\{x\}, x \in X_\infty^*$ and the
+	empty set $\emptyset$.
+\end{enumerate}
+\end{maintheorem}
+
+\begin{maintheorem}
+$REG(X_\infty^*)$ is a Boolean Algebra with operations union, intersection and
+complement. 
+
+Every language $L \in REG(X_\infty^*)$ is accepted by some complete,
+deterministic automaton.
+\end{maintheorem}
+
+To prove the first main theorem we don't need the fact that $X^*$ is a {\bf
+free} monoid. In the proof of main theorem 2 we used that fact.
+
+There exist examples of monoids $M$ for which the second main theorem does not
+hold for $REG(M)$, in both sentences (see exercises).
+
+Of special interest are the monoids $M = F(X)$, where $F(X)$ is the free group
+generated by $X$ (see chapter 1.3) and $M = X^\oplus$ where $X^\oplus$ is the
+free commutative group generated by $X$.
+
+Languages $L \in REG(X^\oplus)$ are also called {\bf semi-linear}.
 
 
 
