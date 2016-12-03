@@ -1,0 +1,78 @@
+\section{Sets recognizable by homomorphisms, $REC(X^*)$}
+
+In this section we investigate a third possibility for characterizing subsets of
+$X^*$.
+
+\begin{definition}
+\begin{eqnarray*}
+ REC(X^*) & := & \{ L \subset X^* \mid \mbox{ there exists a
+finite monoid } H \\
+& & \mbox{ and a monoid homomorphism }\mu : X^* \to H \\
+& & \mbox{ with } L = \mu^{-1}(T), T \subset H \}
+\end{eqnarray*}
+is the class of {\bf recognizable sets} over $X$.
+\end{definition}
+
+\begin{lemma}
+\[ REG(X^*) \subset REC(^*) \]
+\end{lemma}
+
+Proof: Let $L \in REG(X^*)$, then there exists a complete, deterministic finite
+automaton $\fa{A} = (G, X, S, F, \alpha)$ with graph $G = (V, E)$ accepting $L$.
+
+We define \[ H := Map(V,V) := \{ f : V \to V \mid f \mbox{ is a mapping} \} \]
+
+and define a homomorphism $\mu : X^* \to H$ as follows:
+
+Let $\mu$ be the homomorphic continuation of mapping $\mu'$ where
+\begin{eqnarray*}
+& \mu'(x)(P) = R & \\
+& \Leftrightarrow & \\
+& \mbox{ there exists an edge }e \in E\mbox{ with }Q(e) = P, Z(e) = R\mbox{ and
+}\alpha(e) = x \in X &
+\end{eqnarray*}
+
+We define further \[ T := \{ f \in H \mid f(S) \in F \} \]
+
+Then it holds $\falang{A} = \mu^{-1}(T)$ (exercise).
+
+\begin{lemma}
+\[ REC(X^*) \subset REG(X^*) \]
+\end{lemma}
+
+Proof: Sei $L \in REC(X^*)$, thus let $H$ be a finite monoid and $\mu : X^* \to
+H$ be a monoid homomorphism and $L = \mu^{-1}(T), T \subset H$.
+
+We construct a graph $G = (V, E)$:
+
+Vertex set: $V := H$.
+
+Edges: $E := \{ (h, a) \mid h \in H, a \in X \}$ with $Q((h,a)) = h, Z((h,a))
+= h \cdot \mu(a)$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

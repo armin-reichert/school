@@ -1,6 +1,6 @@
 \section{Monoid homomorphisms and congruence relations}
 
-\begin{definition}
+\begin{definition}[monoid homomorphism]
 A {\bf monoid homomorphism} (short: homomorphism) from a monoid $M$ to a monoid
 $S$ is a mapping $\Phi : M \to S$ with the following properties:
 \begin{enumerate}
@@ -13,7 +13,7 @@ It can be easily shown: if $M_1 \subset M$ is a submonoid of $M$, then
 $\Phi(M_1)$ is a submonoid of $S$. If $S_1$ is a submonoid of $S$, then
 $\Phi^{-1}(S_1)$ is a submonoid of $M$.
 
-A homomorphism $\Phi : M \to S, \ M, S$ monoids, is called
+A monoid homomorphism $\Phi : M \to S$ is called
 \begin{description}
   \item[monomorphism] if $\Phi$ is injective
   \item[epimorphism] if $\Phi$ is surjective
@@ -23,8 +23,8 @@ A homomorphism $\Phi : M \to S, \ M, S$ monoids, is called
 Homomorphisms $\Phi : M \to M$ are called {\bf endomorphisms}, isomorphisms
 $\Phi : M \to M$ are called {\bf automorphisms}.
 
-Monoids $M$ and $S$ are called $isomorphic$, if there exists an isomorphism
-between $M$ and $S$.
+Monoids $M$ and $S$ are called {\bf isomorphic}, if there exists an
+isomorphism between $M$ and $S$.
 
 Of course, a homomorphism cannot be defined arbitrarily on a monoid $M$.
 Thus the following two questions arise:
@@ -51,19 +51,17 @@ books are holding:
   is a monoid homomorphism from $A^*$ to $S$.
 \end{enumerate}
 
-\begin{definition}
+\begin{definition}[free generating system, free monoid]
 A subset $A \subset M$ is called a {\bf free generating system} of $M$, if each
 mapping $\Phi_1 : A \to S$, where $S$ is an arbitrary monoid, can be continued
-to a monoid homomorphims in a unique way.
+to a monoid homomorphims in a unique way. A monoid with a free generating system
+is called a {\bf free monoid}.
 \end{definition}
-
-A monoid with a free generating system is called a {\bf free monoid}.
 
 $A^*$ therefore is a free monoid and $A$ is a free generating system of $A^*$.
 
-It holds also:
-If $A$ is a free generating system of $M$ and $A^*$ is the monoid of words
-(string) over $A$, then $A^*$ and $M$ are isomorphic.
+It holds also: If $A$ is a free generating system of $M$ and $A^*$ is the monoid
+of words (string) over $A$, then $A^*$ and $M$ are isomorphic.
 
 A free monoid has at most one free generating system. From that we can see that
 the length $|w|$ of a word $w \in A^*$ can be defined in a unique way for any
@@ -73,13 +71,14 @@ The length mapping $L$ is an example for a monoid homomorphism $L : A^* \to
 \mathbb{N}$.
 
 If $\Phi : M \to S$ is a monoid homomorphism, then the sets 
-\[\{ \Phi^{-1}(s)\ |\ s \in S \} \subset Pot(M)\]
+\[\{ \Phi^{-1}(s) \mid s \in S \} \subset Pot(M)\]
 form a monoid isomorphic to $\Phi(M)$.
 
-We want to handle now the following question: Let $M$ be a monoid, $L \subset M$
-be any subset of $M$. Does there exist a monoid $S$ and a homomorphism $\Phi :
-M \to S$ with the following property: There exists an $s \in S$ with $L \subset
-\Phi^{-1}(s)$?
+We want to handle now the following question:
+
+Let $M$ be a monoid, $L \subset M$ be any subset of $M$. Does there exist a
+monoid $S$ and a homomorphism $\Phi : M \to S$ with the following property:
+There exists an $s \in S$ with $L \subset \Phi^{-1}(s)$?
 
 Of course, there always exists such an $S$: Choose $S = \{1\}$ and $\Phi(M) =
 \{1\}$.
@@ -102,12 +101,12 @@ Let $M$ be a monoid and $L \subset M$. For $a, b \in M$ we define
 
 $\equiv (L)$ is a congruence relation, it holds:
 \begin{enumerate}
-  \item Let $[a]_L = \{ b \in M\ |\ a \equiv b\ (L) \}$\ then\ $b \in [a]_L
+  \item Let $[a]_L = \{ b \in M \mid a \equiv b\ (L) \}$\ then\ $b \in [a]_L
   \Rightarrow [a]_L = [b]_L $
   \item If we define $[a]_L \cdot [b]_L := [a b]_L$\ (complex product), then
-  \[synt_M(L) = \{ [a]_L\ |\ a \in M \}\] becomes a monoid and the mapping
+  \[synt_M(L) = \{ [a]_L \mid a \in M \}\] becomes a monoid and the mapping
   \[\Psi_L : M \to synt_M(L),\ \Psi_L(a) = [a]_L\]
-   is a monoidepimorphism.
+   is a monoid epimorphism.
 \end{enumerate}
 
 We call $\equiv (L)$ the {\bf syntactic congruence} of $L$ and $synt_M(L)$ the

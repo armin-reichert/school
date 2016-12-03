@@ -132,16 +132,16 @@ Let $card(S) > 1$ or $card(F) > 1$.
 1. Add new edges leaving the new start state $S'$:
 
 Define the set of all edges leaving an old start state by
-\[ OUT := \{ e \in E \where Q(e) \in S \} \]
+\[ OUT := \{ e \in E \mid Q(e) \in S \} \]
 Add the following new edges to the graph:
-\[ OUT' := \{ e' = (S', Z(e)) \where e \in OUT,\ \alpha'(e') := \alpha(e) \} \]
+\[ OUT' := \{ e' = (S', Z(e)) \mid e \in OUT,\ \alpha'(e') := \alpha(e) \} \]
 
 2. Add new edges reaching the new final state $F'$:
 
 Define the set of all edges reaching an old final state by
-\[ IN := \{ e \in E \where Z(e) \in F \} \]
+\[ IN := \{ e \in E \mid Z(e) \in F \} \]
 Add the following new edges to the graph:
-\[ IN' := \{ e' = (Q(e), F') \where e \in IN,\ \alpha'(e') := \alpha(e) \} \]
+\[ IN' := \{ e' = (Q(e), F') \mid e \in IN,\ \alpha'(e') := \alpha(e) \} \]
 
 To each new edge we assign the same label as the edge from which it has been
 derived.
@@ -182,7 +182,7 @@ Proof: We ''split'' all edges according to their labels.
     $\epsilon$-edge)\\
     If there exists an edge $e' \in E$ with $Q(e') = Z(e) : E'' := E - e$.
     Add new edges: $E' := E'' \cup \{
-    \tilde{e} \where Q(\tilde{e}) = Q(e), Z(\tilde{e}) = Z(e'),\
+    \tilde{e} \mid Q(\tilde{e}) = Q(e), Z(\tilde{e}) = Z(e'),\
     alpha'(\tilde{e}) := \alpha(e') \}$
   \end{enumerate}
   If in step (b) or (c) the target of the edge is a final state, then add the
@@ -224,7 +224,7 @@ We may assume that the edge and point sets of both automata graphs are disjoint.
 	
 	\item Closure under intersection: Define $G' = (V', E')$ where
 	\[ V' = V_A \times V_B \]
-	\[ E' = \{ (e_A, e_B) \in E_A \times E_B \where \alpha_2(e_A) = \beta_2(e_B)
+	\[ E' = \{ (e_A, e_B) \in E_A \times E_B \mid \alpha_2(e_A) = \beta_2(e_B)
 		 \}. \]
 	By lemma 2 we may assume that the edge labels are all single symbols from $X$.
 	
@@ -281,7 +281,7 @@ $Pot(V(G))$ of $V(G)$ as its point set.
 
 For $\tilde{P} \in Pot(V(G))$ we define 
 \begin{eqnarray*}
-& N(x, \tilde{P}) := & \{ P \in V(G) \where \mbox{there exists an edge } e \in
+& N(x, \tilde{P}) := & \{ P \in V(G) \mid \mbox{there exists an edge } e \in
 E(G) \mbox{ with } \\
 & & \ Q(e) \in \tilde{P}, Z(e) = \tilde{P} \mbox{ and } \alpha(e) = x \} 
 \end{eqnarray*}
@@ -296,7 +296,7 @@ This defines our new graph $G' = (V', E')$.
 
 The start and final states are defined as follows:
 \[ S_{\fa{A'}} = \{ S_{\fa{A}} \} \]
-\[ F_{\fa{A'}} = \{ \tilde{R} \in Pot(V(G)) \where \tilde{R} \cap
+\[ F_{\fa{A'}} = \{ \tilde{R} \in Pot(V(G)) \mid \tilde{R} \cap
 F_{\fa{A}} \neq \emptyset \} \]
 
 This completes the definition of automaton $\fa{A'} = (G', X,
@@ -307,7 +307,7 @@ We first prove that
 
 \fa{A'} has a single start state $S_{\fa{A'}} = \{ S_{\fa{A}}
 \}$, the edge labels are all single symbols and 
-\[ card(\{ e \in E' \where Q(e) = \tilde{P}, \alpha'_2(e) = x \}) = 1 \]
+\[ card(\{ e \in E' \mid Q(e) = \tilde{P}, \alpha'_2(e) = x \}) = 1 \]
 for all $\tilde{P} \in V(G')$.
 
 Now we prove that the accepted languages are equal:
@@ -367,7 +367,7 @@ Remark: The state set grows exponentially when the automaton is made
 deterministic. The following example will clarify this fact \cite{Co}.
 
 Example: Let $X = \{ a, b \}$. Define for arbitrary, but fixed $n \in
-\mathbb{N}$ \[ L_n := \{ w \where w = w_1 \cdot w_2 \mbox{ with } w1 \neq w_2, |w_1| = |w_2|
+\mathbb{N}$ \[ L_n := \{ w \mid w = w_1 \cdot w_2 \mbox{ with } w1 \neq w_2, |w_1| = |w_2|
 = n, w_1, w_2 \in X^* \} \]
 
 $L_n \in REG(X^*)$ because there exists a nondeterministic finite acceptor
@@ -534,7 +534,7 @@ state in insufficient in general.
 \begin{theorem}[Regular languages are closed under homomorphism]
 \[ L \in REG(X^*), \phi : X^* \to Y^* \mbox{ monoid homomorphism } \Rightarrow
 \]
-\[ \phi(L) := \{ \phi(w) \where w \in L \} \in REG(X^*) \]
+\[ \phi(L) := \{ \phi(w) \mid w \in L \} \in REG(X^*) \]
 \end{theorem}
 
 Proof: Let $\fa{A} = (G, X, S, F, \alpha)$ be a finite acceptor for $L$. Then \[
@@ -567,7 +567,7 @@ trivial, just label the edges with their name.
 
 \begin{definition}[local set]
 Let $S, F \subset X$ and $R \subset X \times X$ be a relation on $X$ with \[ L =
-\{ x_1 \cdots x_k \where x_1 \in S, x_k \in F, (x_i, x_{i+1}) \in R,\ i = 1,
+\{ x_1 \cdots x_k \mid x_1 \in S, x_k \in F, (x_i, x_{i+1}) \in R,\ i = 1,
 \ldots, k - 1 \} \]
 \end{definition}
 
@@ -576,9 +576,9 @@ Let $G = (V, E)$ be a graph. Then $\pathcat{G}(S, F)$ is local over $E$.
 \end{lemma}
 
 Proof: Let \begin{eqnarray*}
-S & = & \{ e \in E \where Q(e) \in S \} \\ 
-F & = & \{ e \in E \where Z(e) \in F \} \\
-R & = & \{ (e, e') \in E \times E \where Z(e) = Q(e') \} 
+S & = & \{ e \in E \mid Q(e) \in S \} \\ 
+F & = & \{ e \in E \mid Z(e) \in F \} \\
+R & = & \{ (e, e') \in E \times E \mid Z(e) = Q(e') \} 
 \end{eqnarray*}
 
 Then the claim is immediately proved.
@@ -591,7 +591,7 @@ Proof: Let $S$ and $F$ be the subsets of $X$ from the definition of a local
 set. We define a graph $G = (V, E)$ as follows:
 \begin{eqnarray*}
 V & = & X \cup \{ \bar{S} \} \mbox{ with } X \cap \{ \bar{S} \} = \emptyset \\
-E & = & \{ e : \{ \bar{S} \} \to x \where x \in S \} \cup \{ e : x \to y \where
+E & = & \{ e : \{ \bar{S} \} \to x \mid x \in S \} \cup \{ e : x \to y \mid
 (x, y) \in R \}
 \end{eqnarray*}
 
@@ -614,7 +614,7 @@ Let $X_\infty = \{ x_1, x_2, \ldots \}$ be an infinite alphabet. Define \[
 REG(X_\infty^*) = \bigcup_{X	\subset X_\infty} REG(X^*), \mbox{$X$ is finite}
 \]
 
-\begin{maintheorem}\ \\
+\begin{maintheorem}
 \begin{enumerate}
   \item $REG(X_\infty^*)$ is closed under union, complex product and
   Kleene-star $^*$.
@@ -628,11 +628,12 @@ $REG(X_\infty^*)$ is closed under $\phi$.
 \end{maintheorem}
 
 \begin{maintheorem}
-$REG(X_\infty^*)$ is a Boolean Algebra with operations union, intersection and
+\begin{enumerate}
+  \item $REG(X_\infty^*)$ is a Boolean Algebra with operations union, intersection and
 complement. 
-
-Every language $L \in REG(X_\infty^*)$ is accepted by some complete,
+	\item Every language $L \in REG(X_\infty^*)$ is accepted by some complete,
 deterministic automaton.
+\end{enumerate}
 \end{maintheorem}
 
 To prove the first main theorem we don't need the fact that $X^*$ is a {\bf
@@ -647,22 +648,27 @@ free commutative group generated by $X$.
 
 Languages $L \in REG(X^\oplus)$ are also called {\bf semi-linear}.
 
+Exercices:
+\begin{enumerate}
+  \item Let $\phi : (\{x, y\}^*, \cdot) \to (\mathbb{Z} / 3 \mathbb{Z} \times
+  \mathbb{Z} / 4 \mathbb{Z}, +)$ be given by $\phi(x) = (0,1), \phi(y) = (1,0)$.
+  
+  Construct a finite automaton \fa{A} with $\falang{A} = \phi^{-1}((0,0))$ and
+  present $\phi^{-1}((0,0))$ as a rational set.
+  
+  \item Let $\fa{A} = (G, X, S, F, \alpha)$ be a finite automaton with $n$
+  states. Prove:
+  \begin{enumerate}
+    \item If $x \in \falang{A}$ with $|x| >= n$, then there exists words $u, v
+    w \in X^*$ with $x = u \cdot v \cdot w, v \neq \epsilon$ and $u \cdot v^m
+    \cdot w \in falang{A}\ \forall m \geq 1$ (''pumping lemma'').
+    \item \falang{A} infinite $\Leftrightarrow \exists x \in X^*$ with $n \leq
+    |x| \leq 2n$ and $x \in \falang{A}$.
+   \end {enumerate}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	\item Show: The set $L = \{ a^n b^n \} \mid n \in \mathbb{N}$ is not regular.
+	
+	\item Let $L \in REG(X^*), M \subset X^*$ finite. Show: $M^{-1}L \in REG(X^*)$.
+	What if $M \subset REG(X^*)$ is an arbitrary regular set?
+\end{enumerate}
 
