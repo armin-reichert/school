@@ -74,27 +74,104 @@ Together, we get $\falang{A} = L(G)$.
 
 ''$\subset$'':
 
+Let $L \in REG(X^*),\ L = \falang{A}$ with a finite acceptor with a single start
+state $\fa{A} = (G, X, S_{\fa{A}}, F_{\fa{A}}, \alpha),\ G = (V, E)$ 
+and $|\alpha(e)| = 1$ for each edge $e \in E$.
 
+We define a right-linear grammar $RLG = (N, X, P, S)$ with $N = E, S =
+S_{\fa{A}}$ and production set
+\begin{eqnarray*}
+P & = & \{ (q, \alpha(e) \cdot r) \mid \exists \mbox{ edge } e : q \to r \in E
+\} \\
+& \cup & \{ (q, \alpha(e)) \mid \exists \mbox{ edge } e : q \to r \in E,\ r \in
+F_{\fa{A}} \}
+\end{eqnarray*}
 
+It holds $L(RLG) = \falang{A}$ (exercise) which completes the proof of the
+theorem.
 
+Remark: It also holds $l{-}LIN(X^*) = REG(X^*)$. This can be seen by theorem 2
+in chapter 2.1 which states that $REG(X^*)$ is closed under the
+mirror-operation.
 
+Given a right-linear grammar for $L$ one can directly define a left-linear
+grammar for the mirror language $L^R$: Replace each production $X \to t \cdot Y$
+by a left-linear production $X \to Y \cdot t$. Because of ${L^R}^R = L$ it then
+holds $L \in l{-}LIN(X^*)$.
 
+We can therefore in all of the following results replace $r{-}LIN(X^*)$ by
+$l{-}LIN(X^*)$.
 
+We extend now our main theorems from section 1. Let $X_\infty$ again be the
+countably infinite alphabet and let $RAT(X_\infty^*)$ and $REC(X_\infty^*)$ be
+defined as before.
 
+\begin{maintheorem}\leavevmode
+\begin{enumerate}
+  \item $ REG(X_\infty^*) = RAT(X_\infty^*) = REC(X_\infty^*) =
+  r{-}LIN(X_\infty^*) = l{-}LIN(X_\infty^*) $
+  \item $ REG(X_\infty^*)$ is closed under union, intersection,
+  complement, Kleene-star, complex product, monoid homomorphisms and inverse
+  homomorphisms
+\end{enumerate}
+\end{maintheorem}
 
+Each of these language classes motivates a different generalization. We want to
+shortly present those.
 
+{\bf Regular languages:} Generalization into two directions come to mind: Replace the
+free monoid $X^*$ by an arbitrary monoid or by special monoids like free groups or
+free commutative monoids. We already pointed that out and we will investigate
+two important cases later in this book.
 
+The second generalization concerns the free (path) category. By adding a second
+operation we get simply computable, infinite categories. The paths in graphs are
+then replaced by trees or nets representing the morphisms of these new free 
+category.
 
+{\bf Rational languages:} Instead of the free monoid one can use arbitray monoids. We
+already made some statements about this. We now already that this generalization
+will coincide with a corresponding generalization of the regular sets.
 
+In an even stronger generalization the monoid can be replaced by other algebras,
+that is one adds other operations in addition to the monoid operation. The
+question arises if in this case the strong relation between the rattional and
+regular sets will be conserved.
 
+{\bf Recognizable languages:} Here also two different directions for generalization
+come to mind. First, one can keep monoids but replace finite monoids by simply
+computable infinite monoids.
 
+A second generalization concerns the replacement of monoids by other algebras.
+Especially the free monoid can be replaced by free algebras and the finite
+monoid by finite algebras.
 
+{\bf Right-linear languages:} Here one generalizes by using general Chomsky
+grammars (see definition 1, chapter 1.6). This last generalization will be in
+our focus later.
 
+Our main theorem motivates yet another generalization:
 
+{\bf Abstract Families of Languages (AFL):} The AFL-theory generalizes the
+notion of the family of rational languages. This is done by introducing the
+notion of {\bf Kleene-algebra} which is based on the operations of union,
+complex product and Kleene-star.
 
+A set $\mathcal{A} \in Pot(X_\infty^*)$ is called a {\bf full AFL}, if
+$\mathbb{A}$ is closed under the operations of union, complex product,
+Kleene-star, homomorphisms and inverse homomorphisms and intersection with
+regular languages.
 
+The idea is the following:
 
+All these operations are simple, therefore using these operations only ''simple
+sets'' mya be constructed from some given set of ''simple sets''. It should be
+possible to decide the common computer science questions for all elements in an
+AFL if one can decide them for the generating basic sets.
 
+In this book we cannot treat all these topics. We will not develop the
+AFL-theory.
 
-
+The interested reader is referred to the book by Jean Berstel \cite{Be} which
+handles this theory in great detail.
 
