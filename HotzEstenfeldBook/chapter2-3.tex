@@ -50,29 +50,53 @@ Vertex set: $V := H$.
 Edges: $E := \{ (h, a) \mid h \in H, a \in X \}$ with $Q((h,a)) = h, Z((h,a))
 = h \cdot \mu(a)$.
 
+FIGURE
 
+Let $\fa{A} = (G, X, S, F, \alpha)$ with $S = \{ 1_H \},\ F = T,\ \alpha((h, a))
+= a$.
 
+We show: $L = \falang{A}$.
 
+''$\subset$'': Let $w \in L$, so $w \in X^*$ with $\mu(w) \in T$.
 
+If $w = x_1 \cdots w_n$ with $x_i \in X$, then $\mu(x_1) \cdots \mu(x_n) = t
+\in T$.
 
+We consider \[ v = (1_H, (1_H, x_1), (\mu(x_1), x_2), (\mu(x_1 \cdot x_2),
+x_3), \ldots, (\mu(x_1 \cdots x_{n-1}), x_n), \mu(w)) \]
 
+$v \in \pathcat{G}$ with $\alpha(v) = x_1 \cdots x_n = w$. It even holds $v \in
+\pathcat{G(S, F)}$ because $\mu(w) \in T \Rightarrow w \in \falang{A}$.
 
+''$\supset$'': Let $w \in \falang{A}$, then there exists a path $v \in
+\pathcat{G}(\{1_h\}, T)$ with $\alpha(v) = w$. For $w = x_1 \cdots x_n$ then
+obviously holds $\mu(x_1 \cdots x_n) \in T$ thus $w \in \mu^{-1}(T) = L$ from
+which the claim follows.
 
+From both lemmata immediately follows
 
+\begin{theorem}[Regular sets of free monoid are exactly the recognizable sets]
+\[ REG(X^*) = REC(X^*) \]
+\end{theorem}
 
+In the first section of this chapter we showed closure properties for regular
+sets. We show now closure under inverse homomorphism which is rather easy using
+our last theorem.
 
+\begin{theorem}[Recognizable sets are closed under inverse homomorphism]
+Let $\phi : X^* \to Y^*$ a monoid homomorphism, $L \in REC(Y^*) \Rightarrow
+\phi^{-1}(L) \in REC(X^*)$.
+\end{theorem}
 
+Let $\phi : X^* \to Y^*$ and $L$ should be defined by monoid homomorphism $\mu'
+: Y^* \to H$ as $L = \mu'^{-1}(T)$ for a subset $T \subset H$.
 
+We set $\mu = \phi \circ \mu'$ and have $\mu : X^* \to H$ is a monoid
+homomorphism and $\phi^{-1}(L) = \mu^{-1}(T)$ from which follows $\phi^{-1}(L)
+\in REC(X^*)$.
 
+Exercise: For the integer numbers $\mathbb{Z}$ the set of recognizable sets
+$REC(\mathbb{Z})$ shall be defined in analogy to $REC(X^*)$.
 
-
-
-
-
-
-
-
-
-
-
-
+Characterize $REC(\mathbb{Z})$! Are there nonempty, infinite sets in
+$REC(\mathbb{Z})$?
