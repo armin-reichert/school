@@ -1,0 +1,153 @@
+\section{The rational transductor}
+
+In this section we extend the finite automaton with an output which leads to:
+
+\begin{definition}
+\[ \fa{T} = (G, X, S, F, \alpha, \beta) \] is called a {\bf finite transductor}
+with input alphabet $X$ and output alphabet $Y$ if $(G, X, S, F, \alpha)$ is a
+finite automaton, $G = (V, E)$, and $\beta = (\pathcat{G}, Y^*, \beta_1,
+\beta_2)$ is a functor.
+\end{definition}
+
+$\fa{T}$ is called {\bf length-preserving} if $|\alpha(e)| = |\beta(e)|$ for all
+edges $e \in E$.
+
+$\fa{T}$ computes the {\bf finite transduction}
+\begin{eqnarray*}
+\tau(\fa{T}) & = & \{ (u, v) \in X^* \times Y^* \mid \mbox{there
+exists a path } w \in \pathcat{G}(S, F) \\
+& &  \mbox{ with } \alpha(w) = u \mbox{ and } \beta(w) = v \}
+\end{eqnarray*}
+
+Remark: For each length-preserving transductor $\fa{T}$ there exists a
+transductor $\fa{T'}$ with $|\alpha(e)| = |\beta(e)| = 1$ such that
+$\tau(\fa{T}) = \tau(\fa{T'})$.
+
+A finite transduction can equivalently be written as 
+\[ \tau(\fa{T})(u) = \beta(\alpha^{-1}(u) \cap \pathcat{G}(S, F)),\ u \in X^* \]
+
+We also speak of {\bf rational transduction} instead of finite transduction.
+
+We give an example for a rational transductor:
+
+Let $\fa{T} = (G, \{x\}, \{a, b\}, \{1\}, \{3, 5\}, \alpha, \beta)$ be given by
+the graph
+
+FIGURE
+
+The edges are labeled with the input/output symbols.
+
+$\fa{T}$ realizes the transduction $\tau(\fa{T})$ defined by
+\[ \tau(\fa{T})(x^n) = \left\{ 
+\begin{array}{l@{\quad}l}
+a^n & \mbox{if } n \equiv 1 \bmod 2 \\
+b^n & \mbox{if } n \equiv 0 \bmod 2
+\end{array}
+\right. \]
+
+\begin{lemma}[closure under inversion]
+Let $\tau(\fa{T})$ be a rational transduction. Then $(\tau(\fa{T}))^{-1}$ is
+also a rational transduction.
+\end{lemma}
+
+Proof: Let \[ \fa{T} = (G, X, Y, S, F, \alpha, \beta) \] be a finite tranductor.
+Then \[ \fa{T'} = (G, Y, X, S, F, \beta, \alpha) \] is a finite transductor and
+\[ \tau(\fa{T'}) = (\tau(\fa{T}))^{-1} \]
+
+We now define the image of a language under rational transduction:
+
+\begin{definition}
+Let $L \subset X^*$, then
+\begin{eqnarray*}
+\tau(\fa{T})(L) & := & \{ v \in Y^* \mid \mbox{there exists } u \in L \mbox{
+with } (u, v) \in \tau(\fa{T}) \} \\
+& := & \bigcup_{u \in L} \tau(\fa{T})(u)
+\end{eqnarray*}
+\end{definition}
+
+The following theorem holds:
+
+\begin{theorem}[Regular languages are closed under rational transductions]
+Let $L \in REG(X^*)$ be a regular language and $\fa{T}$ be a finite transducer,
+then the image of $L$ under $\tau$ is a regular language over $Y^*$:
+\[ \tau(\fa{T})(L) \in REG(Y^*) \]
+\end{theorem}
+
+Proof: By definition, the image of $L$ can be presented as
+\[ \tau(\fa{T})(L) = \beta\big( \alpha^{-1}(L) \cap \pathcat{G}(S, F) \big) \]
+
+$\alpha$ may be continued to a monoid homomorphism from $E^*$, the free monoid
+over the edge set of graph $G$, into $X^*$.
+
+We already know:
+\begin{eqnarray*}
+\alpha^{-1}(L) \in REG(E^*)    & \mbox{Theorem 2, chapter 2.3} \\
+\pathcat{G}(S, F) \in REG(E^*) & \mbox{Lemma 4, chapter 2.1} \\
+\Rightarrow \alpha^{-1}(L) \cap \pathcat{G}(S, F) \in
+REG(E^*) & \mbox{Theorem 1, chapter 2.1} \\
+\Rightarrow \beta(\alpha^{-1}(L) \cap \pathcat{G}(S, F)) \in
+REG(Y^*) & \mbox{Theorem 7, chapter 2.1}
+\end{eqnarray*}
+
+The next theorem gives an insight into the power of rational transductions.
+
+\begin{theorem}
+For each $L \in REG(Y^*)$ there exists a length-preserving transductor
+$\fa{T}_L$ with \[ \tau(\fa{T}_L)(\{x\}^*) = L \]
+\end{theorem}
+
+Proof: $L \in REG(Y^*) \Rightarrow$ there exists a finite automaton $\fa{B} =
+(G, Y, S, F, \beta),\ G= (V, E)$ with $L = \beta(\pathcat{G}(S, F))$. For $X =
+\{x\}$ set $\alpha(e) = x$ for all edges $e \in E$.
+
+Then $\alpha^{-1}(X^*) \cap \pathcat{G}(S, F) = \pathcat{G}(S, F)$, from which
+follows \[\beta(\alpha^{-1}(X^*) \cap \pathcat{G}(S, F)) = L\]
+
+\begin{theorem}
+If $\tau_1 : X^* \to Y^*$ and $\tau_2 : Y^* \to Z^*$ are finite,
+length-preserving transductions, then $\tau_1 \circ \tau_2 : X^* \to Z^*$ is a
+finite transduction.
+\end{theorem}
+
+Proof: We want to illustrate the proof geometrically as shown in the following
+figure:
+
+FIGURE
+
+(Translator's remark: I changed the names in the diagram and the proof to make
+it more readable)
+
+We have the following situation:
+\[ \tau_i(u) = \beta^{(i)}\big( {\alpha^{(i)}}^{-1}(u) \cap R_i \big) \]
+with $\alpha^{(1)} : E_1^* \to X^*,\quad \beta^{(1)} : E_1^* \to Y^*,\quad
+\alpha^{(2)} : E_2^* \to Y^*,\quad \beta^{(2)} : E_2^* \to Z^*$.
+
+Let
+\[ E_3 := \{ (e_1, e_2) \mid \beta^{(1)}(e_1) = \alpha^{(2)}(e_2) \} \]
+and 
+\[ R_3 := \chi^{-1}(R_1) \times \rho^{-1}(R_2) = \pathcat{}(S_1 \times S_2, F_1
+\times F_2) \]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
