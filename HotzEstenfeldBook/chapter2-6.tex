@@ -1,0 +1,125 @@
+\section{Homomorphy and equivalence of finite automata}
+
+We consider again the finite automaton from chapter 2.1 and investigate the
+question of structural relationship between finite automata.
+
+We tackle the question how finite automata are related which accept the same
+language. We will formalize this by the existence of certain functors between
+finite automata.
+
+For making statements about decidability wrt.\ accepted languages it is an
+advantage to be able to determine a ''simplest'''' finite acceptor. We will
+prove the existence of such a ''simplest'' automaton.
+
+First, we consider some simple decidability questions answered by the following
+theorems:
+
+\begin{theorem}
+Let $\fa{A}$ be a finite automaton. Then the questions $\falang{A} = \emptyset?$
+and $\falang{A} = X^*?$ are decidable.
+\end{theorem}
+
+Proof:
+
+''$\falang{A} = \emptyset$?'':
+
+Because of $\falang{A} = \emptyset \Leftrightarrow \pathcat{G}(S, F) =
+\emptyset$ this is a decidable problem (reachability in a finite graph). The
+formal proof is up to the reader.
+
+''$\falang{A} = X^*$?'':
+
+We gave in chapter 2.1 an effective procedure for constructing a deterministic,
+finite automaton $\fa{A}'$ from an automaton $\fa{A}$. From this deterministic
+automaton, one can construct an automaton $\fa{B}$ accepting the complement of
+$\falang{A}$. From $\falang{B} = \emptyset \Leftrightarrow \falang{A} = X^*$,
+and 1) follows the claim.
+
+\begin{definition}
+$\fa{A}$ is called {\bf weakly-equivalent} to an automaton $\fa{B}$ if the
+accepted languages are equal: \[ \falang{A} = \falang{B} \]
+\end{definition}
+
+\begin{theorem}[decidability of weak equivalence]
+For finite automata $\fa{A}$ and $\fa{B}$ it is decidable if $\falang{A} =
+\falang{B}$.
+\end{theorem}
+
+Proof: Without loss of generality we may assume that $\fa{A}$ and $\fa{B}$ are
+complete and deterministic. 
+
+From $\fa{A}$ and $\fa{B}$ using our constructions we can directly give automata
+for 
+\[\bar{\falang{A}}, \bar{\falang{B}}, \bar{\falang{A}} \cap
+\falang{B}, \falang{A} \cap \bar{\falang{A}}\]
+and also for 
+\[ \falang{C} := (\bar{\falang{A}} \cap \falang{B}) \cup (\falang{A} \cap
+\bar{\falang{A}}) \]
+
+Because $\falang{A} = \falang{B} \Leftrightarrow \falang{C} = \emptyset$ which
+is decidable (theorem 1) we get the proof of theorem 2.
+
+We consider now the homomorphy between finite automata. Structure-preserving
+mappings between finite automata are called {\bf automata homomorphisms}.
+
+\begin{definition}
+Let $\fa{A}, \fa{A'}$ be finite automata. A functor $\beta = (\beta', \beta'')$
+is called an {\bf automata homomorphism}, if
+\[ \beta' = (\pathcat{G}, \pathcat{G'}, \beta'_1, \beta'_2) \]
+is a functor,
+\[ \beta'': X^* \to X'^*	\]
+is a monoid homomorphism, and the axioms (A1) and (A2) hold:
+\begin{itemize}
+  \item[(A1)] The following diagram is commutative:
+  
+  FIGURE
+  
+  \item[(A2)] $\beta'_1(S) = S'$ and $\beta'_1(F) = F'$. 
+\end{itemize}
+
+$\beta$ is called {\bf length-preserving} $\Leftrightarrow \beta'_2(e) \in
+E(G')$ for each edge $e \in E(G)$.
+
+$\beta$ is called {\bf non-expanding} $\Leftrightarrow \beta_2'(e) \in E(G')
+\cup \{ 1_e \mid e \in E(G') \}$
+\end{definition}
+
+In the following we will always identify $\beta'$ with $\beta$.
+
+It holds:
+
+\begin{theorem}
+Given an automata homomorphism $\beta: \fa{A} \to \fa{A'}$. If
+\[\beta_2(\pathcat{G}(S,F)) = \pathcat{G'}(S',F')\]
+then $\beta''(\falang{A}) = \falang{A'}$.
+\end{theorem}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
