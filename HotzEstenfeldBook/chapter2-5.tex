@@ -114,13 +114,17 @@ figure:
 
 FIGURE
 
-(Translator's remark: I changed the names in the diagram and the proof to make
-it more readable)
+(Translator's remark: I slightly changed names to make the proof more readable)
 
 We have the following situation:
-\[ \tau_i(u) = \beta^{(i)}\big( {\alpha^{(i)}}^{-1}(u) \cap R_i \big) \]
-with $\alpha^{(1)} : E_1^* \to X^*,\quad \beta^{(1)} : E_1^* \to Y^*,\quad
-\alpha^{(2)} : E_2^* \to Y^*,\quad \beta^{(2)} : E_2^* \to Z^*$.
+\[ \tau_1(u) = \beta^{(1)}\big( {\alpha^{(1)}}^{-1}(u) \cap R_1 \big) \]
+and
+\[ \tau_2(v) = \beta^{(2)}\big( {\alpha^{(2)}}^{-1}(v) \cap R_2 \big) \]
+
+with $u \in X^*, v \in Y^*$ and $R_1 \subset E_1^*, R_2 \subset E_2^*$ regular
+languages and monoid homomorphisms
+\[ \alpha^{(1)} : E_1^* \to X^*,\quad \beta^{(1)} : E_1^* \to
+Y^*,\quad \alpha^{(2)} : E_2^* \to Y^*,\quad \beta^{(2)} : E_2^* \to Z^* \]
 
 Let
 \[ E_3 := \{ (e_1, e_2) \mid \beta^{(1)}(e_1) = \alpha^{(2)}(e_2) \} \]
@@ -128,12 +132,151 @@ and
 \[ R_3 := \chi^{-1}(R_1) \times \rho^{-1}(R_2) = \pathcat{}(S_1 \times S_2, F_1
 \times F_2) \]
 
+with monoid homomorphisms $\chi: e_3^* \to E_1^*$ and $\rho: E_3^* \to E_2^*$.
 
+Now let $(u, v) \in \tau_1$ and ($v, w) \in \tau_2$. Then there exists paths
+$\omega_1 \in E_1^* \cap R_1$ and $\omega_2 \in E_2^* \cap R_2$ such that 
+\[ u = \alpha^{(1)}(\omega_1),\quad v = \beta^{(1)}(\omega_1) =
+\alpha^{(2)}(\omega_2),\quad w = \beta^{(2)}(\omega_2) \]
 
+The ''parallel'' path $\omega = (\omega_1(1), \omega_2(1)) \cdot
+(\omega_1(n), \omega_2(n))$ is an element of $E_3^* \cap R_3$ and 
+$\chi(\omega) = \omega_1,\ \rho(\omega) = \omega_2$ (without loss of
+generality the length-restriction from the remark after definition 1 should
+hold here too).
 
+Together this means
+\[ (u, v) \in \rho \circ \beta^{(2)} \big( {\alpha^{(1)}}^{-1} \circ
+\chi^{-1}(X^*) \cap R_3 \big) \]
+which means $(u, v) \in \tau_3$.
 
+To the opposite, let $(u, v) \in \tau_3$. Then there exists a path $\omega \in
+E_3^* \cap R_3$ with $\chi(\alpha^{(1)})(\omega) = u$ and $\rho(\beta^{(2)})(\omega)
+= v$.
 
+Let $\omega_1 = \chi(\omega)$ and $\omega_2 = \rho(\omega)$ (''projections''), then we get
+\[ \omega_1 \in E_1^* \cap R_1,\qquad \omega_2 \in E_2^* \cap R_2 \]
 
+By construction of $E_3$ it follows
+\[ \beta^{(1)}(\omega_1) = \alpha^{(2)}(\omega_2) \]
+
+\begin{corollary}
+Length-preserving transductions with composition form a category.
+\end{corollary}
+
+We generalize now our statement by allowing $\alpha$ and $\beta$ to be arbitrary
+functors to $X^*$ resp. $Y^*$.
+
+Next, we investigate the case $|\alpha(w)| \leq |w|$ and $|\beta(w)| \leq |w|$.
+Afterwards we will reduce the general case to this special case.
+
+Notation: Functors fulfilling the condition above are called {\bf
+non-expanding}.
+
+\begin{theorem}[Composition of non-expanding transductions is a transduction]
+Let $\fa{T}_i = (G_i, X_i, S_i, F_i, \alpha^{(i)}, \beta^{(i)}),\ G_i = (V_i,
+E_i)$ be transducers with non-expanding functors $\alpha^{(i)}$ and
+$\beta^{(i)},\ i = 1,2.$
+
+If $Y_1 = X_2$ (the input alphabet of the second is the output alphabet of the
+first transducer), then the composition $\tau(\fa{T}_1) \circ \tau(\fa{T}_2)$
+is a transduction.
+\end{theorem}
+
+Proof: Our proposition is described by the following figure:
+
+FIGURE
+
+Remark: It should be clear that the addition of $\epsilon$-loops ($e \in E,
+\alpha(e) = \beta(e) = \epsilon$) in the graph does not change the computed
+transduction.
+
+We add to each state of $\fa{T}_1$ and $\fa{T}_2$ such a loop.
+
+Because this does not change the computed transductions, this also is the case
+for the composition of those.
+
+We define the vertex set of the composed transducer as $V := V_1 \times V_2$.
+The edge set is given by
+\[ E := \{ (e_1, e_2) \in E_1 \times E_2 \mid \alpha^{(2)}(e_2) =
+\beta^{(1)}(e_1) \} \]
+where
+\begin{eqnarray*}
+Q((e_1, e_2)) & = & (Q(e_1), Q(e_2)) \\
+Z((e_1, e_2)) & = & (Z(e_1), Z(e_2)) 
+\end{eqnarray*}
+
+With the projections $\pi^i : E^* \to E_i^*,\ i = 1,2$ we get the commutative
+diagram:
+
+FIGURE
+
+and it holds: for $v \in \beta^{(1)}(E_1^*) \cap \alpha^{(2)}(E_2^*)$ there
+exists a path $u \in E^*$ with $\sigma(u) = v$.
+
+Define start and final state sets as follows:
+\begin{eqnarray*}
+S & = & S_1 \times S_2 \\
+F & = & F_1 \times F_2 \\
+\end{eqnarray*}
+Then the composed transducer
+\[\fa{T} = (G, X_1, Y_2, S, F, \pi^1 \circ \alpha^{(1)}, \pi^2 \circ
+\beta^{(2)})\]
+computes the composition of transductions $\tau_1$ and $\tau_2$:
+\[ \tau(\fa{T}) = \tau(\fa{T}_1) \circ \tau(\fa{T}_2) \]
+
+(Exercise).
+
+In analogy to the corresponding result for finite automata it holds:
+
+\begin{lemma}
+For each transductor
+\[\fa{T} = (G, X, Y, S, F, \alpha, \beta)\] there exists a
+transductor \[\fa{T'} = (G', X, Y, S', F', \alpha', \beta')\] with
+\begin{eqnarray*}
+& \forall e \in E(G'): \alpha'(e) \in X \cup \{\epsilon\} \\
+& \forall e \in E(G'): \beta'(e) \in Y \cup \{\epsilon\} \\
+& card(S') = 1 \\
+& card(F') = 1
+\end{eqnarray*}
+which computes the same transduction as $\fa{T}$.
+\end{lemma}
+
+Proof: Let $\fa{T}$ be an arbitrary transductor. If an edge $e \in E$ has an
+input or output label longer than 1, that is $e \in E$ with $|\alpha(e)| = k >
+1$ or $|\beta(e)| = l > 1$ and $m := max(k, l)$, then a path of length $m$ is
+split as follows:
+\[ \edge{e_1} \edge{e_2} \ldots \edge{e_m} \]
+
+\begin{enumerate}
+  \item $|\alpha'(e_i)| \leq 1$
+  \item $|\beta'(e_i)| \leq 1,\quad i = 1,\ldots,m$
+  \item $\alpha(e) = \alpha'(e_1 \cdots e_m)$ and $\beta(s) = \beta'(e_1
+  \cdots e_m)$
+\end{enumerate}
+
+For the resulting transducer $\fa{T'}$ it holds \[ \tau(\fa{T}) = \tau(\fa{T}')
+\]
+
+The construction for making this transducer initial (single start state) is
+completely analog to the construction in lemma 1 in chapter 2.1.
+
+From lemma 2 and theorem 4 we get directly
+
+\begin{theorem}[composition of rational transductions is a rational
+transduction] For rational transductions $\tau_1$ and $\tau_2$ the composition $\tau_1 \circ
+\tau_2$, if defined, is also a rational transduction.
+\end{theorem}
+
+Remark: An equivalent definition of rational transductions can be given using
+matrices. These are a compact description for transductions which one gets by
+putting the output words that belong to a fixed input word into the matrix, for
+all state changes.
+
+Multiplication of matrices corresponds to concatenation of paths in the graph of
+the transductor and to the union of sets of output words of these paths.
+
+The interested reader should refer to \cite{Be} for more information.
 
 
 
