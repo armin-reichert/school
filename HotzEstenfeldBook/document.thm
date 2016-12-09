@@ -1,0 +1,36 @@
+\contentsline {definition}{{Definition}{2.{3}}{syntactic congruence}}{14}
+\contentsline {definition}{{Definition}{4.{1}}{graph}}{17}
+\contentsline {definition}{{Definition}{4.{2}}{loop-free}}{17}
+\contentsline {definition}{{Definition}{4.{3}}{oriented graph}}{17}
+\contentsline {definition}{{Definition}{4.{4}}{connected graph}}{17}
+\contentsline {definition}{{Definition}{4.{5}}{ordered graph}}{17}
+\contentsline {definition}{{Definition}{4.{6}}{oriented graph}}{18}
+\contentsline {definition}{{Definition}{4.{7}}{path}}{18}
+\contentsline {definition}{{Definition}{4.{8}}{subpath}}{18}
+\contentsline {definition}{{Definition}{4.{9}}{circle-free graph}}{18}
+\contentsline {definition}{{Definition}{4.{10}}{star, center}}{18}
+\contentsline {definition}{{Definition}{4.{11}}{tree}}{18}
+\contentsline {definition}{{Definition}{4.{12}}{category}}{19}
+\contentsline {definition}{{Definition}{4.{13}}{functor}}{20}
+\contentsline {definition}{{Definition}{5.{2}}{generated subcategory}}{26}
+\contentsline {definition}{{Definition}{5.{3}}{free generating system}}{26}
+\contentsline {definition}{{Definition}{5.{4}}{free category}}{26}
+\contentsline {definition}{{Definition}{6.{1}}{Chomsky grammar}}{28}
+\contentsline {definition}{{Definition}{6.{2}}{directly derivable, derivable}}{28}
+\contentsline {definition}{{Definition}{6.{5}}{weak grammar equivalence}}{29}
+\contentsline {definition}{{Definition}{6.{6}}{context-free grammar}}{29}
+\contentsline {definition}{{Definition}{1.{1}}{nondeterministic finite automaton}}{32}
+\contentsline {definition}{{Definition}{1.{2}}{accepted set}}{32}
+\contentsline {definition}{{Definition}{1.{3}}{regular language over free monoid}}{32}
+\contentsline {theorem}{{Theorem}{1.{1}}{Regular languages are closed under union and intersection}}{34}
+\contentsline {theorem}{{Theorem}{1.{2}}{Regular languages are closed under mirror operation}}{35}
+\contentsline {definition}{{Definition}{1.{4}}{deterministic and complete automaton}}{35}
+\contentsline {theorem}{{Theorem}{1.{3}}{Existence of complete, deterministic acceptor}}{35}
+\contentsline {theorem}{{Theorem}{1.{4}}{Regular languages are closed under complement}}{38}
+\contentsline {theorem}{{Theorem}{1.{5}}{Regular languages are closed under concatenation}}{38}
+\contentsline {theorem}{{Theorem}{1.{6}}{Regular languages are closed under Kleene-star}}{39}
+\contentsline {theorem}{{Theorem}{1.{7}}{Regular languages are closed under homomorphism}}{40}
+\contentsline {definition}{{Definition}{1.{5}}{local set}}{40}
+\contentsline {lemma}{{Lemma}{1.{5}}{The accepting path set of a FA is local}}{40}
+\contentsline {lemma}{{Lemma}{1.{6}}{local sets are regular}}{41}
+\contentsline {lemma}{{Lemma}{1.{7}}{Each regular set is homomorphic image of a local set}}{41}
