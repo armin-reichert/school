@@ -36,7 +36,7 @@ instead of $\pathcat{G}(S,F)$.
 
 \begin{definition}[regular language over free monoid]
 Let $X$ be an alphabet. \[ REG(X^*) := \{ L \subset X^*\ | \mbox{ there
-exists a finite automaton } \fa{A} \mbox{ with } L = \falang{A} \}
+exists a finite automaton } \fa{A} \mbox{ with } L = \lang{A} \}
 \]
 
 $REG(X^*)$ is the set of {\bf regular languages} over the free monoid $X^*$.
@@ -117,7 +117,7 @@ some basic properties for finite automata.
 \begin{lemma}
 Let $\fa{A} = (G, X, S, F, \alpha)$ be a finite automaton. Then there
 exists a finite automaton $\fa{A'} = (G', X, S', F', \alpha')$ such that
-$card(S') = card(F') = 1$ and $\falang{A} = \falang{A'}$.
+$card(S') = card(F') = 1$ and $\lang{A} = \lang{A'}$.
 \end{lemma}
 
 An automaton with a single start state is called {\bf initial}.
@@ -150,12 +150,12 @@ The new automaton $\fa{A'} = (G', X, \{S'\}, \{F'\}, \alpha')$ is defined
 by the graph $G' = (V \cup \{ S', F' \}, E \cup OUT' \cup IN')$
 and the new labeling $\alpha'$ which is identical to $\alpha$ for all existing edges and is defined as shown above for the new edges.
 
-It is easily shown that $\falang{A'} = \falang{A}$.
+It is easily shown that $\lang{A'} = \lang{A}$.
 
 \begin{lemma}
 Let $\fa{A} = (G, X, S, F, \alpha)$ be a finite automaton. Then there
 exists an automaton $\fa{A'} = (G', X, S', F', \alpha')$ with $\alpha'(e)
-\in X\ \forall e \in E(G)$ and $\falang{A} = \falang{A'}$.
+\in X\ \forall e \in E(G)$ and $\lang{A} = \lang{A'}$.
 \end{lemma}
 
 Proof: We ''split'' all edges according to their labels.
@@ -191,7 +191,7 @@ Proof: We ''split'' all edges according to their labels.
   Continue this algorithm inductively until no more $\epsilon$-edges remain in
   the graph. The algorithm terminates because the point and edge sets are
   finite. For the new automaton $\fa{A'}$ that results from this algorithm
-  holds: $\falang{A'} = \falang{A}$.
+  holds: $\lang{A'} = \lang{A}$.
 \end{enumerate}
 
 If we apply this algorithm to our automaton from example 1, we obtain:
@@ -205,7 +205,7 @@ Now we want to prove some closure properties of $REG(X^*)$.
 REG(X^*) \]
 \end{theorem}
 
-Proof: Let $L = \falang{A}$ and $L' = \falang{B}$ with automata \[
+Proof: Let $L = \lang{A}$ and $L' = \lang{B}$ with automata \[
 \fa{A} = (G_A, X, S_A, F_A, \alpha) \] and \[ \fa{B} = (G_B, X, S_B,
 F_B, \beta).\]
 We may assume that the edge and point sets of both automata graphs are disjoint.
@@ -220,7 +220,7 @@ We may assume that the edge and point sets of both automata graphs are disjoint.
 	 \right. \]
 
 	Then the automaton $\fa{C} = (G_A \cup G_B, X, S_A \cup S_B, F_A \cup
-	F_B, \gamma)$ accepts the language $\falang{A} \cup \falang{B}$.
+	F_B, \gamma)$ accepts the language $\lang{A} \cup \lang{B}$.
 	
 	\item Closure under intersection: Define $G' = (V', E')$ where
 	\[ V' = V_A \times V_B \]
@@ -232,7 +232,7 @@ We may assume that the edge and point sets of both automata graphs are disjoint.
 	\delta_2((e_A, e_B) = \alpha_2(e_A)). \]
 	
 	For the automaton $\fa{A'} = (G', X, S_A \times S_B, F_A \times F_B,
-	\delta)$ then holds: $\falang{G'} = \falang{A} \cap \falang{B}$
+	\delta)$ then holds: $\lang{G'} = \lang{A} \cap \lang{B}$
 	and this automaton is called the {\bf cartesian product} of $\fa{A}$ and
 	$\fa{B}$.
 \end{enumerate}
@@ -251,7 +251,7 @@ which means we reverse the orientation of the edges.
 
 For the resulting automaton $\fa{A'} = (G', X, S_{\fa{A}},
 F_{\fa{A}}, \alpha')$ with $\alpha'(e') = \alpha(e)$ for all edges of $G'$
-it holds: $\falang{A'} = \falang{A}^R = L^R \in REG(X^*)$.
+it holds: $\lang{A'} = \lang{A}^R = L^R \in REG(X^*)$.
 
 \begin{definition}[deterministic and complete automaton]
 Let $\fa{A} = (G, X, S, F, \alpha)$ be a finite automaton with
@@ -333,9 +333,9 @@ L_{\fa{A}}$:
 \end{eqnarray*}
 
 That means $\tilde{P_k} \cap F_{\fa{A}} \neq \emptyset \Rightarrow \tilde{P}_k \
-\in F_{\fa{A'}} \Rightarrow w \in \falang{A'}.$
+\in F_{\fa{A'}} \Rightarrow w \in \lang{A'}.$
 
-\[ \Rightarrow \falang{A} \subset \falang{A'}\]
+\[ \Rightarrow \lang{A} \subset \lang{A'}\]
 
 ''$\supset$'': Here we use diagrams  
 \begin{eqnarray*}
@@ -347,7 +347,7 @@ which are to be understood as follows: For $\tilde{P} \edge{x} \tilde{R} \in
 E(G')$ and $R \in \tilde{R}$ there exists $P \in \tilde{P}$ with $P \edge{x} R
 \in E(G)$.
 
-For $x_1 \cdots x_K \in \falang{A'}$ we start with $F_{\fa{A'}}$ and continue
+For $x_1 \cdots x_K \in \lang{A'}$ we start with $F_{\fa{A'}}$ and continue
 the diagram from right to left. For $P_k \in \tilde{P}_k \cap F_{\fa{A}}$ we get
 \begin{eqnarray*}
  & S_{\fa{A'}} \ni & \tilde{P}_0 \edge{x_1} \tilde{P}_1 \edge{x_2} \tilde{P}_2 \edge{} \ldots
@@ -357,11 +357,11 @@ the diagram from right to left. For $P_k \in \tilde{P}_k \cap F_{\fa{A}}$ we get
 \end{eqnarray*}
 
 Because of $S_{\fa{A'}} = \{ S_{\fa{A}} \} = \{\{ P_0 \}\}$ it holds: $x_1
-\cdots x_k \in \falang{A} \Rightarrow \falang{A'} \subset \falang{A}$.
+\cdots x_k \in \lang{A} \Rightarrow \lang{A'} \subset \lang{A}$.
 
-\[ \Rightarrow \falang{A'} \subset \falang{A}\]
+\[ \Rightarrow \lang{A'} \subset \lang{A}\]
 
-From both inclusions we get $\falang{A} = \falang{A'}$.
+From both inclusions we get $\lang{A} = \lang{A'}$.
 
 Remark: The state set grows exponentially when the automaton is made
 deterministic. The following example will clarify this fact \cite{Co}.
@@ -417,7 +417,7 @@ We want to state an important consequence from our last theorem.
 Proof: 
 
 $L \in REG(X^*) \Rightarrow $ there exists a complete, deterministic
-finite acceptor $\fa{A}$ with $\falang{A} = L$.
+finite acceptor $\fa{A}$ with $\lang{A} = L$.
 
 Define $\fa{A'} = (G, X, S_{\fa{A}}, F_{\fa{A}}, \alpha)$ where $F_{\fa{A}} :=
 V(G) - F_{\fa{A}}$.
@@ -429,15 +429,15 @@ This $w \in X^*$ uniquely determines a point $P \in V(G)$ with $w \in
 \alpha(\pathcat{W}(S_{\fa{A}}, P))$.
 
 It is either $P \in F_{\fa{A}}$ or $P \in F_{\fa{A'}}$ and from $F_{\fa{A}}
-\cap F_{\fa{A}'} = \emptyset$ follows $w \in \falang{A} \Leftrightarrow w
-\notin \falang{A'}$ and therefore $\falang{A'} = \bar{\falang{A}}$.
+\cap F_{\fa{A}'} = \emptyset$ follows $w \in \lang{A} \Leftrightarrow w
+\notin \lang{A'}$ and therefore $\lang{A'} = \bar{\lang{A}}$.
 
 \begin{theorem}[Regular languages are closed under concatenation]
 \[ L_1, L_2 \in REG(X^*) \Rightarrow L_1 \cdot L_2 \in REG(X^*) \]
 \end{theorem}
 
 Proof: $L_1, L_2 \in REG(X^*) \Rightarrow$\ there exist finite acceptors
-$\fa{A}_i = (G_i, X, S_i, F_i, \alpha_i)$ with $L_i = \falang{A}_i,\ i = 1,2$.
+$\fa{A}_i = (G_i, X, S_i, F_i, \alpha_i)$ with $L_i = \lang{A}_i,\ i = 1,2$.
 
 We define a new acceptor
 \[\fa{A} = (G, X, S, F, \alpha) \]
@@ -462,13 +462,13 @@ For each such configuration, a new ''bridge''	edge $e$ is added to $E(G)$ where
 
 Start and final states: $S := S_{\fa{A}_1}$ and $F := F_{\fa{A}_2}$.
 
-We now prove that $\falang{A} = \falang{A}_1 \cdot \falang{A}_2$.
+We now prove that $\lang{A} = \lang{A}_1 \cdot \lang{A}_2$.
 
 \begin{enumerate}
-  \item $\falang{A} \supset \falang{A}_1 \cdot \falang{A}_2$
+  \item $\lang{A} \supset \lang{A}_1 \cdot \lang{A}_2$
   
-  Let $u = u_1 \cdots u_n \in \falang{A}_1$ and $v = v_1 \cdots v_m \in
-  \falang{A}_2$. Then there exist accepting paths
+  Let $u = u_1 \cdots u_n \in \lang{A}_1$ and $v = v_1 \cdots v_m \in
+  \lang{A}_2$. Then there exist accepting paths
   \[ S_1 \ni P_0 \edge{u_1} P_1 \edge{u_2} \ldots \edge{u_n} P_n \in F_1 \]
   and 
   \[ S_2 \ni Q_0 \edge{v_1} Q_1 \edge{v_2} \ldots \edge{v_m} Q_m \in F_2 \]
@@ -478,10 +478,10 @@ We now prove that $\falang{A} = \falang{A}_1 \cdot \falang{A}_2$.
   \[ S_1 \ni P_0 \edge{u_1} P_1 \edge{u_2} \ldots P_{n-1} \edge{u_n} Q_0
   \edge{v_1} Q_1 \edge{v_2} \ldots \edge{v_m} Q_m \in F_2 \]
   
-  It follows $u = u_1 \cdots u_n \cdot v_1 \cdots v_m \in \falang{A}$ thus
-  $\falang{A}_1 \cdot \falang{A}_2 \subset \falang{A}$.
+  It follows $u = u_1 \cdots u_n \cdot v_1 \cdots v_m \in \lang{A}$ thus
+  $\lang{A}_1 \cdot \lang{A}_2 \subset \lang{A}$.
   
-  \item $\falang{A} \subset \falang{A}_1 \cdot \falang{A}_2$
+  \item $\lang{A} \subset \lang{A}_1 \cdot \lang{A}_2$
   
   Let \[ S \ni P_0 \edge{w_1} P_1 \edge{w_2} \ldots \edge{w_n} P_n \in F \] be
   an accepting path in $\pathcat{G}(S, F)$. Then there exist states $P_i \in
@@ -492,18 +492,18 @@ We now prove that $\falang{A} = \falang{A}_1 \cdot \falang{A}_2$.
   
   Therefore the subpath \[ S_2 \ni P_i \edge{w_{i+1}} P_{i+1} \edge{} \ldots
   \edge{w_n} P_n \in F_2 \] contains only edges and vertices from $\fa{A}_2$ and
-  is an accepting path for the word $w_{i+1} \cdots w_n \in \falang{A}_2$.
+  is an accepting path for the word $w_{i+1} \cdots w_n \in \lang{A}_2$.
   
   It holds $P_{i-1} \in V_1$ and by construction of the graph $G$ there exists
   an edge labeled with $w_i$ which ends in a final state of $\fa{A}_1$. So $w_1
-  \cdots w_i \in \falang{A}_1$.
+  \cdots w_i \in \lang{A}_1$.
   
-  Together we get \[ w_1 \cdots w_i \cdots w_n \in \falang{A}_1 \cdot
-  \falang{A}_2 \Rightarrow \falang{A} \subset \falang{A}_1 \cdot \falang{A}_2.\]
+  Together we get \[ w_1 \cdots w_i \cdots w_n \in \lang{A}_1 \cdot
+  \lang{A}_2 \Rightarrow \lang{A} \subset \lang{A}_1 \cdot \lang{A}_2.\]
 \end{enumerate}
 
-From (1) and (2) it follows $\falang{A} = \falang{A}_1 \cdot
-\falang{A}_2$.
+From (1) and (2) it follows $\lang{A} = \lang{A}_1 \cdot
+\lang{A}_2$.
 
 \begin{theorem}[Regular languages are closed under Kleene-star]
 \[ L \in REG(X^*) \Rightarrow L^* \in REG(X^*) \]
@@ -525,7 +525,7 @@ Graph: Take the graph $G$ and add the following edges:
   labeled by $\alpha'(e') := \epsilon$.
 \end{enumerate}
 
-For the finite acceptor $\fa{A'}$ it holds (exercise): \[ \falang{A'} = L^* \]
+For the finite acceptor $\fa{A'}$ it holds (exercise): \[ \lang{A'} = L^* \]
 
 We have seen (lemma 1) that for nondeterministic automata a single start and a
 single final state are sufficient, but in the deterministic case, a single final
@@ -552,10 +552,10 @@ For $x \in X$ it holds $\{ x \} \in REG(X^*)$ and $\emptyset \in REG(X^*)$.
 
 Proof: Set $G = (\{S,F\}, \{e\})$ be a graph, then the finite acceptor
 \[\fa{A}_x = (G, \{x\}, \{S\}, \{F\}, \alpha)\] with $\alpha_2(e) = x$ fulfills
-$\falang{A} = \{x\}$.
+$\lang{A} = \{x\}$.
 
 Set $G = (\{S,F\}, \emptyset)$, then $\fa{A} = (G, \emptyset, \{S\}, \{F\},
-\emptyset)$ fulfills $\falang{A} = \emptyset$.
+\emptyset)$ fulfills $\lang{A} = \emptyset$.
 
 \begin{lemma}
 Set $G = (V, E)$. Then $\pathcat{G}(S,F) \in REG(E^*)$.
@@ -598,7 +598,7 @@ E & = & \{ e : \{ \bar{S} \} \to x \mid x \in S \} \cup \{ e : x \to y \mid
 Consider the finite acceptor $\fa{A} = (G, X, \{\bar{X}\}, F, \alpha)$ with
 labeling $\alpha$ defined by $\alpha_2(e) = Z(e)$ for each edge $e \in E$.
 
-Then it is clear that $\falang{A} = L$.
+Then it is clear that $\lang{A} = L$.
 
 \begin{lemma}[Each regular set is homomorphic image of a local set]
 $L \in REG(X^*)$, then there exists a local set $R$ over $X$ and a monoid
@@ -653,17 +653,17 @@ Exercices:
   \item Let $\phi : (\{x, y\}^*, \cdot) \to (\mathbb{Z} / 3 \mathbb{Z} \times
   \mathbb{Z} / 4 \mathbb{Z}, +)$ be given by $\phi(x) = (0,1), \phi(y) = (1,0)$.
   
-  Construct a finite automaton \fa{A} with $\falang{A} = \phi^{-1}((0,0))$ and
+  Construct a finite automaton \fa{A} with $\lang{A} = \phi^{-1}((0,0))$ and
   present $\phi^{-1}((0,0))$ as a rational set.
   
   \item Let $\fa{A} = (G, X, S, F, \alpha)$ be a finite automaton with $n$
   states. Prove:
   \begin{enumerate}
-    \item If $x \in \falang{A}$ with $|x| >= n$, then there exists words $u, v
+    \item If $x \in \lang{A}$ with $|x| >= n$, then there exists words $u, v
     w \in X^*$ with $x = u \cdot v \cdot w, v \neq \epsilon$ and $u \cdot v^m
     \cdot w \in falang{A}\ \forall m \geq 1$ (''pumping lemma'').
-    \item \falang{A} infinite $\Leftrightarrow \exists x \in X^*$ with $n \leq
-    |x| \leq 2n$ and $x \in \falang{A}$.
+    \item \lang{A} infinite $\Leftrightarrow \exists x \in X^*$ with $n \leq
+    |x| \leq 2n$ and $x \in \lang{A}$.
    \end {enumerate}
 
 	\item Show: The set $L = \{ a^n b^n \} \mid n \in \mathbb{N}$ is not regular.

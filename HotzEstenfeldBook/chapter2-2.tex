@@ -30,7 +30,7 @@ This lemma is the first part of the following theorem by Kleene:
 
 Proof: We still have to proof the inclusion $REG(X^* \subset RAT(X^*))$.
 
-Let $\fa{A}$ be a finite automaton. We show that \falang{A} can be generated
+Let $\fa{A}$ be a finite automaton. We show that \lang{A} can be generated
 from $\emptyset$ and $\{x\}, x \in X$	using $\cup$, $\cdot$ and $^*$-operations.
 
 We prove this by induction over the number $k$ of edges in the graph of the
@@ -39,7 +39,7 @@ automaton when the number of vertices is fixed.
 We may assume that the automaton has a single start state, $card(S) = 1$.
 
 $k = 0$: Without loss of generality, we may assume $S \cap F = \emptyset$. It
-follows $\falang{A} = \emptyset$ which is a rational set over $X^*$.
+follows $\lang{A} = \emptyset$ which is a rational set over $X^*$.
 
 Induction step: Let the claim be true for $i \leq k, k > 1$ and let $G_k$ be a
 graph with $k$ edges.

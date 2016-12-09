@@ -34,7 +34,7 @@ Let $\mu$ be the homomorphic continuation of mapping $\mu'$ where
 
 We define further \[ T := \{ f \in H \mid f(S) \in F \} \]
 
-Then it holds $\falang{A} = \mu^{-1}(T)$ (exercise).
+Then it holds $\lang{A} = \mu^{-1}(T)$ (exercise).
 
 \begin{lemma}
 \[ REC(X^*) \subset REG(X^*) \]
@@ -55,7 +55,7 @@ FIGURE
 Let $\fa{A} = (G, X, S, F, \alpha)$ with $S = \{ 1_H \},\ F = T,\ \alpha((h, a))
 = a$.
 
-We show: $L = \falang{A}$.
+We show: $L = \lang{A}$.
 
 ''$\subset$'': Let $w \in L$, so $w \in X^*$ with $\mu(w) \in T$.
 
@@ -66,9 +66,9 @@ We consider \[ v = (1_H, (1_H, x_1), (\mu(x_1), x_2), (\mu(x_1 \cdot x_2),
 x_3), \ldots, (\mu(x_1 \cdots x_{n-1}), x_n), \mu(w)) \]
 
 $v \in \pathcat{G}$ with $\alpha(v) = x_1 \cdots x_n = w$. It even holds $v \in
-\pathcat{G(S, F)}$ because $\mu(w) \in T \Rightarrow w \in \falang{A}$.
+\pathcat{G(S, F)}$ because $\mu(w) \in T \Rightarrow w \in \lang{A}$.
 
-''$\supset$'': Let $w \in \falang{A}$, then there exists a path $v \in
+''$\supset$'': Let $w \in \lang{A}$, then there exists a path $v \in
 \pathcat{G}(\{1_h\}, T)$ with $\alpha(v) = w$. For $w = x_1 \cdots x_n$ then
 obviously holds $\mu(x_1 \cdots x_n) \in T$ thus $w \in \mu^{-1}(T) = L$ from
 which the claim follows.
