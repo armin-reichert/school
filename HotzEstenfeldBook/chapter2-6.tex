@@ -70,9 +70,13 @@ is a functor,
 \[ \beta'': X^* \to X'^*	\]
 is a monoid homomorphism, and the axioms (A1) and (A2) hold:
 \begin{itemize}
-  \item[(A1)] The following diagram is commutative:
+  \item[(A1)] The following diagram commutes:
   
-  FIGURE
+  \begin{tikzcd}[column sep=large]
+  \pathcat{G} \arrow[r, "\alpha"] \arrow[d, "\beta'"] & X^* \arrow[d, "\beta''"]
+  \\
+  \pathcat{G'} \arrow[r, "\alpha'"] & X'^*
+  \end{tikzcd}
   
   \item[(A2)] $\beta'_1(S) = S'$ and $\beta'_1(F) = F'$. 
 \end{itemize}
@@ -157,14 +161,20 @@ To reach this goal, we will need a number of lemmata.
 
 \begin{lemma}
 Let $\fa{A}, \fa{B}, \fa{C}$ be complete, deterministic finite automata and let
-$\beta_{\fa{a}} : \fa{C} \to \fa{A}$ and $\beta_{\fa{B}} : \fa{C} \to \fa{B}$ be
+$\beta_{\fa{A}} : \fa{C} \to \fa{A}$ and $\beta_{\fa{B}} : \fa{C} \to \fa{B}$ be
 closed reductions. Then there exists a finite automaton $\fa{D}$ and reductions
 $\gamma_{\fa{A}}$ and $\gamma_{\fa{B}}$ such that the following diagram
 commutes:
 
-FIGURE
-
-
+\begin{center}
+\begin{tikzcd}
+&	\fa{C} \arrow[dl, "\beta_{\fa{A}}"'] \arrow[dd, dashrightarrow, "\delta"]
+\arrow[dr, "\beta_{\fa{B}}"] \\
+\fa{A} \arrow[dr, dashrightarrow, "\gamma_{\fa{A}}"'] 	& & \fa{B} \arrow[dl,
+dashrightarrow, "\gamma_{\fa{B}}"]\\
+& \fa{D} 
+\end{tikzcd}
+\end{center}
 \end{lemma}
 
 

@@ -112,7 +112,14 @@ finite transduction.
 Proof: We want to illustrate the proof geometrically as shown in the following
 figure:
 
-FIGURE
+\begin{center}
+\begin{tikzcd}[row sep=large]
+& & E_3^* \cap R_3 \arrow[dl, "\chi"'] \arrow[dr, "\rho"] & & \\
+& E_1^* \cap R_1 \arrow[dl, "\alpha^{(1)}"'] \arrow[dr, "\beta^{(1)}"] & & E_2^*
+\cap R_2 \arrow[dl, "\alpha^{(2)}"'] \arrow[dr, "\beta^{(2)}"] & \\
+X^* \arrow[rr, "\tau_1"] & & Y^* \arrow[rr, "\tau_2"] & & Z^*
+\end{tikzcd}
+\end{center}
 
 (Translator's remark: I slightly changed names to make the proof more readable)
 
@@ -183,9 +190,17 @@ first transducer), then the composition $\tau(\fa{T}_1) \circ \tau(\fa{T}_2)$
 is a transduction.
 \end{theorem}
 
-Proof: Our proposition is described by the following figure:
+Proof: Our assumption is described by the following figure:
 
-FIGURE
+\begin{center}
+\begin{tikzcd}[row sep=large]
+& E_1^* \cap \pathcat{G_1}(S_1,F_1) \arrow[dl,"\alpha^{(1)}"']
+\arrow[dr,"\beta^{(1)}"] & & E_2^* \cap \pathcat{G_2}(S_2, F_2)
+\arrow[dl,"\alpha^{(2)}"'] \arrow[dr,"\beta^{(2)}"] & \\
+X_1^* \arrow[rr,"\tau(\fa{T}_1)"] & & Y_1^* \arrow[rr,"\tau(\fa{T}_2)"] & &
+Y_2^*
+\end{tikzcd}
+\end{center}
 
 Remark: It should be clear that the addition of $\epsilon$-loops ($e \in E,
 \alpha(e) = \beta(e) = \epsilon$) in the graph does not change the computed
@@ -209,7 +224,13 @@ Z((e_1, e_2)) & = & (Z(e_1), Z(e_2))
 With the projections $\pi^i : E^* \to E_i^*,\ i = 1,2$ we get the commutative
 diagram:
 
-FIGURE
+\begin{center}
+\begin{tikzcd}
+& E^* \arrow[dl, "\pi^1"'] \arrow[dd, "\sigma"] \arrow[dr,"\pi^2"] & \\
+E_1^* \arrow[dr, "\beta^{(1)}"'] & & E_2^* \arrow[dl, "\alpha^{(2)}"] \\
+& Y_1^* &
+\end{tikzcd}
+\end{center}
 
 and it holds: for $v \in \beta^{(1)}(E_1^*) \cap \alpha^{(2)}(E_2^*)$ there
 exists a path $u \in E^*$ with $\sigma(u) = v$.

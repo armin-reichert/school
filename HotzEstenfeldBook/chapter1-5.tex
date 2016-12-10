@@ -173,13 +173,13 @@ Let $C = (O, M, Q, Z, \circ)$ be a category and $E \subset M$. $E$ is called a
 If $C' = (O', M', Q, Z, \circ)$ is an arbitrary category and $\phi_1 : O \to O'$
 and $\phi_s : E \to M'$ are mappings which fulfill the following diagram:
 
-\[
-\begin{tikzcd}
+\begin{center}
+\begin{tikzcd}[row sep=large,column sep=huge]
  O \arrow[leftarrow]{r}{Q} \arrow{d}{\phi_1} & E \arrow{r}{Z}
  \arrow{d}{\phi'_2} & O \arrow{d}{\phi_1} \\
  O' \arrow[leftarrow]{r}{Q} & M' \arrow{r}{Z} & O'
 \end{tikzcd}
-\]
+\end{center}
 
 Then there exists a unique continuation of $\phi'_2$ to $\phi_2 : M \to M'$ such
 that $\phi = (C, C', \phi_1, \phi_2)$ is a functor.
@@ -200,13 +200,13 @@ $\mathcal{W}(G)$.
 Proof: Let $G = (V, E)$ be a graph and $C$ an arbitrary category. Let $\phi_1 :
 E \to O,\ \phi'_2 : E \to M$ be mappings and the following diagram commute:
 
-\[
-\begin{tikzcd}
+\begin{center}
+\begin{tikzcd}[column sep=huge,row sep=large]
  V \arrow[leftarrow]{r}{Q} \arrow{d}{\phi_1} & E \arrow{r}{Z}
  \arrow{d}{\phi'_2} & V \arrow{d}{\phi_1} \\
  O \arrow[leftarrow]{r}{Q} & M \arrow{r}{Z} & O
 \end{tikzcd}
-\]
+\end{center}
 
 We define \[ \phi_2(P,P) = 1_{\phi_1(P)}, P \in V \] and \[ \phi_2(e) =
 \phi'_2(e), e \in E \]

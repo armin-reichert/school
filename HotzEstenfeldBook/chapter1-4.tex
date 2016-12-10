@@ -167,14 +167,14 @@ start point of the second path. Obviously it holds:
   	\end{eqnarray*}
 \end{enumerate}
 
-We denote the set of paths of a graph $G$ with $\mathcal{W}(G)$.
+We denote the set of paths of a graph $G$ with $\pathcat{G}$.
 
-$\mathcal{W}(G)$ is called the {\bf path category} of $G$ and $G$ in this
-context is also called {\bf schema}. $\mathcal{W}(G)$ is an important special
-case of a category.
+$\pathcat{G}$ is called the {\bf path category} of $G$ and $G$ in this
+context is also called {\bf schema}. $\pathcat{G}$ is an important
+special case of a category.
 
-Notation: \[ \mathcal{W}(G)(P,P') := \{ w \in \mathcal{W}(G)\ |\ Q(w) = p, Z(w)
-= P' \} \]
+Notation: 
+\[ \pathcat{G}(P,P') := \{ w \in \pathcat{G} \mid Q(w) = p,\ Z(w) = P' \} \]
 
 Categories are algebraic structures with a {\em partial} operation.
 
@@ -205,8 +205,8 @@ Notations: $Obj(C) := O$ is the {\bf set of objects} and $Mor(C) := M$ the
 Historical remark: Euler was already interested in graphs and paths in graphs.
 The path category has already been used before the notion of category even
 existed. The axiomatic formulation of categories and its importance for many
-areas of mathematics has been elaborated by S. Eilenberg and S. MacLane in 1945
-\cite{Ei.Ma}. Their work has stimulated a broad, very abstract theory of
+areas of mathematics has been elaborated by S.\ Eilenberg and S.\ MacLane in
+1945 \cite{Ei.Ma}. Their work has stimulated a broad, very abstract theory of
 categories. We will only use the notations for structures which are categories
 and some elementary concepts which also in the theory of formal languages lead
 to fruitful questions.
@@ -255,13 +255,12 @@ $\phi = (C_1, C_2, \phi_1, \phi_2)$ is called a {\bf functor} from $C_1$ to
 $C_2$ if the axioms (F1) to (F3) hold:
 \begin{itemize}
   \item[(F1)] The diagram
-	\[
-	\begin{tikzcd}
+	\begin{tikzcd}[column sep=large,row sep=large]
 	 O_1 \arrow[leftarrow]{r}{Q_1} \arrow{d}{\phi_1} & M_1 \arrow{r}{Z_1}
 	 \arrow{d}{\phi_2} & O_1 \arrow{d}{\phi_1} \\
 	 O_2 \arrow[leftarrow]{r}{Q_2} & M_2 \arrow{r}{Z_2} & O_2
 	\end{tikzcd}
-	\] is commutative.
+	is commutative.
   
   \item[(F2)] $\phi_2(f \circ_1 g) = \phi_2(f) \circ_2 \phi_2(g)$ for all $f, g
   \in M_1$ with $Z(f) = Q(g)$.
@@ -284,7 +283,7 @@ tree two edges go out which are labeled with $f$ and $g$.
 $G_2 = (V_2, E_2)$ consists of a single point $P_0$ and two loops labeled with
 $f$ and $g$ respectively.
 
-Consider the path categories $\mathcal{W}(G_1)$ and $\mathcal{W}(G_2)$. For $P
+Consider the path categories $\pathcat{G_1}$ and $\pathcat{G_2}$. For $P
 \in V_1$ define $\phi_1(P) := P_0$ and $\phi_2(1_P) := 1_{P_0}$.
 
 For an edge $e \in E_1$ we define:
@@ -294,12 +293,12 @@ $ \phi'(e) = \left\{ \begin{array}{l}
 	g\quad \mbox{if $e$ is marked with $g$}
 	\end{array} \right. $
 
-Now we define for $(P, e_1, \ldots, e_n, P') \in \mathcal{W}(G_1)$:
+Now we define for $(P, e_1, \ldots, e_n, P') \in \pathcat{G_1}$:
 
 $\phi_2((P, e_1, \ldots, e_n, P')) = (P_0, \phi'_2(e_1), \ldots, \phi'_2(e_n),
 P_0)$.
 
-Obviously $\phi = (\mathcal{W}(G_1), \mathcal{W}(G_2), \phi1, \phi_2)$ is a
+Obviously $\phi = (\pathcat{G_1}, \pathcat{G_2}, \phi1, \phi_2)$ is a
 functor.
 
 It is a special functor because
@@ -315,8 +314,8 @@ It is a special functor because
 
 FIGURE
 
-Then there exists a surjective functor from $\mathcal{W}(G_1)$ to
-$\mathcal{W}(G_2)$.
+Then there exists a surjective functor from $\pathcat{G_1}$ to
+$\pathcat{G_2}$.
 
 It is possible to construct surjective functors which fulfill (2) from example 1
 and other surjective functors which don't.
@@ -337,10 +336,10 @@ We define:
 
 For the units, the defintion of $\phi_2$ is clear. 
 
-One can see that $\phi = (\mathcal{W}(G_1), \mathcal{W}(G_2), \phi_1, \phi_2)$
+One can see that $\phi = (\pathcat{G_1}, \pathcat{G_2}, \phi_1, \phi_2)$
 is a functor.
 
-It is remarkable that $\phi_2(\mathcal{W}(G_1))$ is not a category because this
+It is remarkable that $\phi_2(\pathcat{G_1})$ is not a category because this
 set is not closed under the $\circ$ operation.
 
 {\bf Example 4}: Let $G_1$ and $G_2$ be given as follows:
@@ -363,7 +362,7 @@ We define:
 \phi_2(g) & 1_3
 \end{array} \]
 
-$\phi = (\mathcal{W}(G_1), \mathcal{W}(G_2), \phi_1, \phi_2)$ is a functor.
+$\phi = (\pathcat{G_1}, \pathcat{G_2}, \phi_1, \phi_2)$ is a functor.
 
 {\bf Example 5}: The graph $G$ shall be defined by
 
@@ -399,20 +398,20 @@ f' = \left( \begin{array}{cc}
 \end{array} \right)
 \]
 
-We consider $\mathcal{W}(G)$ and $MAT(\mathbb{N})$, the category of matrices
+We consider $\pathcat{G}$ and $MAT(\mathbb{N})$, the category of matrices
 over $\mathbb{N}$.
 
 We define $\phi_1(i) = i$ for $i = 2,3,4$ and $\phi'_2(x) = x'$ for $x \in \{
 a, b, c, d, e, f \}$.
 
 $\phi'_2$ can be extended in a unique way to a mapping $\phi_2 :
-\mathcal{W}(G) \to MAT(\mathbb{N})$ such that $\phi = (\mathcal{W}(G),
+\pathcat{G} \to MAT(\mathbb{N})$ such that $\phi = (\pathcat{G},
 MAT(\mathbb{N}), \phi_1, \phi_2)$ is a functor.
 
 We want to define now some special properties of functors.
 
 \begin{definition}
-Let $G_1, G_2$ be ordered graphs, $\phi = (\mathcal{W}(G_1), \mathcal{W}(G_2),
+Let $G_1, G_2$ be ordered graphs, $\phi = (\pathcat{G_1}, \pathcat{G_2},
 \phi_1, \phi_2)$ a functor.
 
 $\phi$ is called {\bf ordered} or {\bf order preserving} if it holds:
@@ -441,7 +440,7 @@ Define $\phi$ by $\phi_1(P) = P'$ and
 Then $\phi$ respects the ordering in point $P$.
 
 \begin{definition}
-Let $G_1, G_2$ be oriented graphs and $\phi = (\mathcal{W}(G_1), \mathcal{W}(G_2),
+Let $G_1, G_2$ be oriented graphs and $\phi = (\pathcat{G_1}, \pathcat{G_2},
 \phi_1, \phi_2)$ be a functor.
 
 $\phi$ is called {\bf regular} $\Leftrightarrow$ the restriction of $\phi_2$
@@ -459,7 +458,7 @@ We slightly weaken the definition of a regular functor by only postulating
 regularity on the outgoing edges.
 
 \begin{definition}
-Let $G_1, G_2$ be oriented graphs and $\phi = (\mathcal{W}(G_1), \mathcal{W}(G_2),
+Let $G_1, G_2$ be oriented graphs and $\phi = (\pathcat{G_1}, \pathcat{G_2},
 \phi_1, \phi_2)$ be a functor.
 
 $\phi$ is called {\bf out-regular} $\Leftrightarrow$ the restriction of $\phi_2$
@@ -470,8 +469,8 @@ $P \in V_1$ is bijective.
 The following lemma holds:
 
 \begin{lemma}
-If $\phi = (\mathcal{W}(G_1), \mathcal{W}(G_2), \phi_1, \phi_2)$ is an
-out-regular functor, then \\ $\phi(\mathcal{W}(G_1))$ is a category.
+If $\phi = (\pathcat{G_1}, \pathcat{G_2}, \phi_1, \phi_2)$ is an
+out-regular functor, then \\ $\phi(\pathcat{G_1})$ is a category.
 \end{lemma}
 
 Our next lemma describes a well-known fact from graph theory that has found many
@@ -479,7 +478,7 @@ applications.
 
 \begin{lemma}
 To each circle-free star $G = (V, E)$ relative to a point $P$ there exists a
-tree $B$ and an out-regular functor $(\mathcal{W}(B), \mathcal{W}(G),
+tree $B$ and an out-regular functor $(\pathcat{B}, \pathcat{G},
 \phi_1, \phi_2)$ mapping the root of the tree $B$ to the point $P$. $B$ is
 determined up to isomorphisms.
 \end{lemma}
