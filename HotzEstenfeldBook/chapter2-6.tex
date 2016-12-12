@@ -177,11 +177,236 @@ dashrightarrow, "\gamma_{\fa{B}}"]\\
 \end{center}
 \end{lemma}
 
+Proof: The idea of the proof is as follows: We create from $\fa{C}$ a new
+automaton $\fa{D}$ by putting those vertices and edges into classes which will
+be identified under the reductions $\beta_{\fa{A}}$ or $\beta_{\fa{B}}$. In that
+way we will get the reduction $\delta$. The difficulty that arises in
+identifying the edges is that the labelling of the edges has to be respected.
 
+To realize out idea we define equivalence relations on the edges and vertices of
+the graph $G_{\fa{C}} = (V_{\fa{C}}, E_{\fa{C}})$ of $\fa{C}$:
 
+Let $v_1, v_2 \in V_{\fa{C}}$ be vertices (states). Define
+\begin{eqnarray*}
+v_1 \faequiv{A} v_2 & : \Longleftrightarrow & \beta_{\fa{A}}(v_1) =
+\beta_{\fa{A}}(v_2) \\
+v_1 \faequiv{B} v_2 & : \Longleftrightarrow & \beta_{\fa{B}}(v_1) =
+\beta_{\fa{B}}(v_2)
+\end{eqnarray*}
 
+In analogy we define such an equivalence relation for the edges of the graph
+$G_{\fa{C}}$.
 
+We define now an equivalence relation on the vertices (states) of the automaton
+$\fa{C}$. For $v, v' \in V_{\fa{C}}$:
+\begin{eqnarray*}
+v \equiv v' & :\Leftrightarrow & \mbox{there is a chain of states } v = v_1,
+v_2, \ldots, v_k = v'\mbox{ with } \\
+& & v_i \faequiv{A} v_{i+1}\mbox{\quad or\quad }v_i \faequiv{B} v_{i+1},\quad i
+= 1, \ldots, k
+\end{eqnarray*} 
 
+Obviously this defines an equivalence relation on the vertex (state) set
+$V_{\fa{C}}$. We do this in the same way for the edges.
+
+We get equivalence classes
+\begin{eqnarray*}
+\left[ v \right] & := & \{ v' \in V_{\fa{C}} \mid v \equiv v' \} \\
+\left[ e \right] & := & \{ e' \in E_{\fa{C}} \mid e \equiv e' \}
+\end{eqnarray*}
+
+We define the sets of equivalence classes by
+\begin{eqnarray*}
+\bar{V} & := & \{ [v] \mid v \in V_{\fa{C}} \} \\ 
+\bar{E} & := & \{ [e] \mid e \in E_{\fa{C}} \} 
+\end{eqnarray*}
+
+Claim: With $Q([e]) := [Q(e)]$ and $Z([e]) := [Z(e)],\ e \in E_{\fa{C}}$ we get
+well-defined source and target mappings for the edges of the graph of
+the automaton $\fa{C}$.
+
+Proof. Let $e' \in [e]$. To prove that $Q(e') \in [Q(e)]$, we use induction over
+the length of the chain $e = e_1, \ldots, e_k = e'$ where $s_i \faequiv{A}
+s_{i+1}$ or $s_i \faequiv{B} s_{i+1}$ for all $i = 1,\ldots,k-1$. 
+
+It is sufficient to show that the claim is correct for each single step. Because
+$\beta_{\fa{A}}$ and $\beta_{\fa{B}}$ are functors, it holds
+\[ e_i \faequiv{A} e_{i+1} \Rightarrow Q(e_i) \faequiv{A} Q(e_{i+1}) \]
+and
+\[ e_i \faequiv{B} e_{i+1} \Rightarrow Q(e_i) \faequiv{B} Q(e_{i+1}) \]
+
+From this it follows that $Q$ and $Z$ are well-defined on the equivalence
+classes.
+
+Let $\bar{G} = (\bar{V}, \bar{E})$ be the graph defined by the sets of vertex
+and edge equivalence classes. Define the labelling $\alpha_{\fa{D}} : \bar{E}
+\to X^*$ for the edges of this graph by
+\[ \alpha_{\fa{D}}([e]) := \alpha_{\fa{C}}(e) \]
+
+This mapping is well-defined. 
+
+Proof: Because $\beta_{\fa{A}}$ is a reduction, it holds:
+\[ \alpha_{\fa{A}}(\beta_{\fa{A}}(e) = \beta''(\alpha_{\fa{C}}(e)) =
+\alpha_{\fa{C}}(e) \]
+
+This means that for each $e' \in [e]_{\fa{A}}$ we have
+$\alpha_{\fa{A}}(\beta_{\fa{A}}(e')) = \alpha_{\fa{C}}(e)$. This our claim is
+correct if $e \faequiv{A} e'$. The same holds for $e \faequiv{B} e'$. Together
+we get that this holds for all $e \equiv e'$ so $\alpha_{\fa{D}}$ is
+well-defined.
+
+To complete the definition of the automaton $\fa{D}$ we have to define start and
+final state sets.
+\[ \fa{D} := (\bar{G}, X, [S_{\fa{C}}], [F_{\fa{C}}], \alpha_{\fa{D}}) \]
+
+with final state set $[F_{\fa{C}}] := \{ [f] \mid f \in F_{\fa{C}} \}$.
+
+Claim: The canonical mapping $e \to [e],\ v \to [v]$ is a reduction.
+
+Proof: Exercise (Hint: use that automaton is complete and deterministic)
+
+Finally we define the reductions $\gamma_{\fa{A}}$ and $\gamma_{\fa{B}}$ by
+\begin{eqnarray*}
+\gamma_{\fa{A}}(v) & := & [\beta_{\fa{A}}^-1](v),\quad v \in V_{\fa{A}} \\
+\gamma_{\fa{B}}(v) & := & [\beta_{\fa{B}}^-1](v),\quad v \in V_{\fa{B}} \\
+\gamma_{\fa{A}}(e) & := & [\beta_{\fa{A}}^-1](e),\quad e \in E_{\fa{A}} \\
+\gamma_{\fa{B}}(e) & := & [\beta_{\fa{B}}^-1](e),\quad e \in E_{\fa{B}} \\
+\end{eqnarray*}
+\qed
+
+Remark: The requirement of our lemma, that the automata have to be complete, is
+essential, as the following example shows:
+
+FIGURE
+
+It holds: $\lang{A} = \lang{B} = \lang{C} = \{ a^n \mid n \in \mathbb{N} \}
+\cup \{ b^n \mid n \in \mathbb{N} \}$.
+
+From our construction it follows $4 \equiv 2 \equiv 1 \equiv 3$ and the
+automaton $\fa{D}$ has the form
+
+FIGURE
+
+But $\lang{D} = \{ a, b \}^* \neq \lang{C}$. It follows:
+
+There exists no reduction from $\fa{C}$ to $\fa{D}$ because \fa{A}, \fa{B} and
+\fa{C} are not complete {\it and} deterministic.
+
+The motivation for lemma 1 can be easily seen in the following diagram:
+
+Let
+
+\begin{center}
+\begin{tikzcd}
+& \fa{A}_2 \arrow[dl] \arrow[dr] & & \fa{A}_4 \arrow[dl] \arrow[dr] & & \fa{A}_6
+\arrow[dl] \\
+\fa{A}_1 & & \fa{A}_3 && \fa{A}_5
+\end{tikzcd}
+\end{center}
+
+be a chain of reductions. Then we can construct automata $\fa{A}_7, \fa{A}_8$
+and reductions like
+
+\begin{center}
+\begin{tikzcd}
+& \fa{A}_2 \arrow[dl] \arrow[dr] & & \fa{A}_4 \arrow[dl] \arrow[dr] & & \fa{A}_6
+\arrow[dl] \\
+\fa{A}_1 \arrow[dr, dashed] & & \fa{A}_3 \arrow[dl, dashed] && \fa{A}_5
+\arrow[dldl, dashed] \\
+& \fa{A}_7 \arrow[dr, dashed] & \\
+& & \fa{A}_8
+\end{tikzcd}
+\end{center}
+
+such that the diagram can be ''shortened'' to
+
+\begin{center}
+\begin{tikzcd}
+& \fa{A}_1 \arrow[dr] & & \fa{A}_6 \arrow[dl] \\
+& & \fa{A}_8
+\end{tikzcd}
+\end{center}
+
+\begin{lemma}
+Let $\gamma_{\fa{A}} : \fa{A} \to \fa{D}$ and $\gamma_{\fa{B}} : \fa{B} \to
+\fa{D}$ be length-preserving reductions.
+
+Then there exists an automaton $\fa{C}$ and reductions $\beta_{\fa{A}}$ and
+$\beta_{\fa{B}}$ such that the following diagram commutes:
+\begin{center}
+\begin{tikzcd}
+& \fa{C} \arrow[dl,dashed,"\beta_{\fa{A}}"'] \arrow[dd,dashed]
+\arrow[dr,dashed,"\beta_{\fa{B}}"]
+\\
+\fa{A} \arrow[dr,"\gamma_{\fa{A}}"'] & & \fa{B} \arrow[dl,"\gamma_{\fa{B}}"] \\
+& \fa{D}
+\end{tikzcd}
+\end{center}
+\end{lemma}
+
+\begin{proof}
+We construct the automaton 
+\[ \fa{C} = (G_{\fa{C}}, X, S_{\fa{C}}, F_{\fa{C}}, \alpha_{\fa{C}}) \]
+with vertex (state) set
+\[ V_{\fa{C}} = V_{\fa{A}} \times V_{\fa{B}} \]
+and edge set
+\[ E_{\fa{C}} = \{ (e, e') \in E_{\fa{A}} \times E_{\fa{B}} \mid
+\gamma_{\fa{A}}(e) = \gamma_{\fa{B}}(e') \} \]
+start states
+\[ S_{\fa{C}} = S_{\fa{A}} \times S_{\fa{B}} \]
+final states
+\[ F_{\fa{C}} = F_{\fa{A}} \times F_{\fa{B}} \]
+and labelling
+\[ \alpha_{\fa{C}}((e, e')) = \alpha_{\fa{A}}(e) \] 
+
+$\beta_{\fa{A}}$ and $\beta_{\fa{B}}$ are the projections onto $\fa{A}$ and
+$\fa{B}$.
+
+Claim: $\beta_{\fa{A}}$ and $\beta_{\fa{B}}$ are reductions.
+
+Without loss of generality we show the claim for $\beta_{\fa{A}}$ only.
+
+\begin{enumerate}
+\item $\alpha_{\fa{A}}(\beta_{\fa{A}}((e,e'))) = \alpha_{\fa{A}}(e) =
+\beta''_{\fa{A}}(\alpha_{\fa{C}})(e, e') = \beta''_{\fa{A}}(\alpha_{\fa{A}})(e)$
+
+With $\beta''_{\fa{A}}$ the equation above holds.
+\item $\beta_{\fa{A}}(S_{\fa{C}}) = S_{\fa{A}}$ and $\beta_{\fa{A}}(F_{\fa{C}})
+= F_{\fa{A}}$ holds by definition
+\item $\beta_{\fa{A}}\Big(\pathcat{G_{\fa{C}}}(S_{\fa{C}}, F_{\fa{C}})\Big)
+\stackrel{!}{=} \pathcat{G_{\fa{A}}}(S_{\fa{A}}, F_{\fa{A}})$
+\end{enumerate}
+
+Let $\pi \in \pathcat{G_{\fa{A}}}(S_{\fa{A}}, F_{\fa{A}})$ be an accepting path.
+We have to show that there exists an accepting path $\pi' \in
+\pathcat{G_{\fa{C}}}(S_{\fa{C}}, F_{\fa{C}})$ with $\beta_{\fa{A}}(\pi') = \pi$.
+
+Because $\gamma_{\fa{A}}$ is a reduction, there exists an accepting path
+$\pi_{\fa{D}} \in \pathcat_{\fa{D}}(S_{\fa{D}}, F_{\fa{D}})$ with
+$\gamma_{\fa{A}}(\pi) = \pi_{\fa{D}}$.
+
+Further there exists an accepting path $\pi_{\fa{B}} \in
+\pathcat{G_{\fa{B}}}(S_{\fa{B}}, F_{\fa{B}})$ with
+$\gamma_{\fa{B}}(\pi_{\fa{B}}) = \pi_{\fa{D}}$, because $\gamma_{\fa{B}}$ is a
+reduction (and therefore is surjective).
+
+From the paths $\pi$ and $\pi_{\fa{B}}$ we construct the path we are searching
+for:
+\[ \pi = e_1 \cdots e_n \qquad \pi_{\fa{D}} = \gamma_{\fa{A}}(e_1) \cdots
+\gamma_{\fa{A}}(e_n) = \gamma_{\fa{B}}(\pi_{\fa{B}}) \]
+
+Because $\gamma_{\fa{A}}$ and $\gamma_{\fa{B}}$ are length-preserving it follows
+\[ \pi_{\fa{B}} = e'_1 \cdots e'_n \]
+with $e'_i \in E_{\fa{B}}$.
+
+Now create the path $\pi_{\fa{C}} = (e_1, e'_1) \cdots (e_n, e'_n) \in
+\pathcat{G_{\fa{C}}}(S_{\fa{C}}, F_{\fa{C}})$.
+
+\[ \Rightarrow \pathcat{G_{\fa{A}}}(S_{\fa{A}}, F_{\fa{A}}) \subset
+\beta_{\fa{A}}(\pathcat_{\fa{C}}(S_{\fa{C}}, F_{\fa{C}})) \]
+\[ \Rightarrow \pathcat{G_{\fa{A}}}(S_{\fa{A}}, F_{\fa{A}}) =
+\beta_{\fa{A}}(\pathcat_{\fa{C}}(S_{\fa{C}}, F_{\fa{C}})) \]
+\end{proof}
 
 
 
