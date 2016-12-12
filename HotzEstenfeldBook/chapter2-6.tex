@@ -408,9 +408,194 @@ Now create the path $\pi_{\fa{C}} = (e_1, e'_1) \cdots (e_n, e'_n) \in
 \beta_{\fa{A}}(\pathcat_{\fa{C}}(S_{\fa{C}}, F_{\fa{C}})) \]
 \end{proof}
 
+We want to treat again the question from the beginning of this section: How do
+automata relate which accept the same language?
 
+First, we want to render more precisely: How does a non-deterministic automaton
+\fa{A} relate to the complete, deterministic automaton \fa{A}'?
 
+We remember the constructions from the first section.
 
+At first, we want to start with an $\epsilon$-free automaton with $\alpha(e)
+\in X$ for each edge $e$.
+
+Consider the step which makes this automaton initial (single start state). The
+construction was as follows:
+
+FIGURE
+
+Let $\fa{A}_1$ be the initial automaton with start state $Z_0$.
+
+We construct an automaton $\fa{A}'_1$ by adding for each start state $i \in
+S_{\fa{A}}$ a state $i' \in V_G$ and setting $S_{\fa{A}'} = \{ 1', \ldots, k'
+\}$:
+
+FIGURE
+
+The homomorphism $\phi : \fa{A}'_1 \to \fa{A}$ is defined by $\phi_1(i) =
+\phi_1(i') = i,\ i = 1, \ldots, k$ and the identity otherwise. Then $\phi$ is a
+reduction.
+
+The homomorphism $\phi' : \fa{A}_1' \to \fa{A}$ is defined by $\phi'_1(i') =
+Z_0,\ i = 1, \ldots, k$ and $\phi'_1(i) = i$. $\phi'$ is also a reduction such
+that the step of make an automaton initial can be described by the following
+reduction diagram:
+
+\begin{center}
+\begin{tikzcd}
+& \fa{A}_1' \arrow[dl,"\phi"'] \arrow[dr,"\phi'"] \\
+\fa{A} & & \fa{A}_1
+\end{tikzcd}
+\end{center}
+
+The construction of the final states is totally similar.
+
+As the next step we want to make our initial automaton $\fa{A}_1$ complete.
+
+This is realized by introducing a new vertex (state) $\omega$ to which from all 
+''incomplete'' vertices new edges with the corresponding label will be drawn.
+Each edge starting from $\omega$ also ends in $\omega$.
+
+Let's name the automaton which results from this step with $\fa{A}_2$. Obviously
+we get a reduction $\phi'' : \fa{A}_1 \to \fa{A}_2$.
+
+Now we make $\fa{A}_2$ deterministic. The resulting automaton shall be named
+$\fa{A}'$.
+
+We construct an automaton $\fa{A}_2'$ by constructing edges of the following
+form:
+\[ e := (\{p_1, \ldots, p_r\}, p_i) \edge{x} (\{q_1, \ldots, q_s\}, q_j) \]
+if $p_i \edge{e'} q_j \in E_{\fa{A_2}}$ and $\alpha(e') = x$ for all $i = 1,
+\ldots,r,\ j = 1, \ldots, s$ in the construction of the deterministic automaton.
+
+We get homomorphisms
+\[ \tilde{\phi} \mbox{ with } \tilde{\phi}(e) := (p_i \edge{x} q_j) \]
+and 
+\[ \hat{\phi} \mbox{ with } \hat{\phi}(e) := (\{p_1, \ldots, p_r\} \edge{x}
+\{q_1, \ldots, q_s\}) \]
+for all edges $e$ as described above.
+
+Both homomorphisms are reductions.
+
+If we compose all these reductions, we get the following diagram:
+
+\begin{center}
+\begin{tikzcd}
+& \fa{A}_1' \arrow[dl] \arrow[dr] \\
+\fa{A} & & \fa{A}_1 \arrow[dr] & & \fa{A}_2' \arrow[dl] \arrow[dr] \\
+& & & \fa{A}_2 & & \fa{A}'
+\end{tikzcd}
+\end{center}
+
+Because the composition of reductions is also a reduction, we can change this
+diagram as follows:
+
+\begin{center}
+\begin{tikzcd}
+& \fa{A}_1' \arrow[dl] \arrow[dr] & & \fa{A}_2' \arrow[dl] \arrow[dr] \\
+\fa{A} & & \fa{A}_2 & & \fa{A}'
+\end{tikzcd}
+\end{center}
+
+Because all reductions in this diagram are length-preserving, we can complete
+this diagram to:
+
+\begin{center}
+\begin{tikzcd}
+& & \fa{C} \arrow[dl,dashed] \arrow[dr,dashed] \\
+& \fa{A}_1' \arrow[dl] \arrow[dr] & & \fa{A}_2' \arrow[dl] \arrow[dr] \\
+\fa{A} & & \fa{A}_2 & & \fa{A}'
+\end{tikzcd}
+\end{center}
+
+and finally to
+
+\begin{center}
+\begin{tikzcd}
+& \fa{C} \arrow[dl] \arrow[dr] \\
+\fa{A} & & \fa{A}'
+\end{tikzcd}
+\end{center}
+
+Remark: All the reductions that we constructed for make an automaton initial,
+complete and deterministic have been length-preserving. In chapter 2.1 we
+additionally made a construction which transforms an automaton with labelling
+$\alpha(e) \in X^*$ into an automaton with $\alpha(e) \in X$. We had to split
+edges and make the automaton $\epsilon$-free. We can represent this also by
+reduction diagrams but in that case the reductions are are not length-preserving
+(non-expanding) anymore.
+
+The consequence is that lemma 2 cannot be applied anymore.
+
+We now describe these reductions informally.
+
+\begin{enumerate}
+  \item Splitting of edges:
+  \[ \edge{x_1 \cdots x_k} \qquad\stackrel{\phi}{\to}\qquad \edge{x_1}\quad
+  \cdots\quad \edge{x_k} \] Here, an edge is mapped to a path. The reduction
+  properties are fulfilled.
+  \item Removal of $\epsilon$-edges after insertion of bridges:
+  
+  FIGURE
+  
+  $\phi(e_1') = e_1 \cdot e_2,\quad Q(e_1') = Q(e_1),\quad Z(e_1') =
+  Z(e_2),\quad \phi(e_2) = e_2$, identity otherwise.
+  
+  Here the properties of a reduction are also fulfilled.
+\end{enumerate}
+
+Let's visualize the complete construction graphically:
+
+\begin{center}
+\begin{tikzcd}
+ & & & & \tilde{\fa{A}} \arrow[ld,dashed]  \arrow[rdrd,dashed] \\
+ & & & \fa{A}_2'' \arrow[ld] \arrow[rd] \\
+\fa{A} \arrow[rd]& & \fa{A}_2 \arrow[ld]& & \fa{A}_2' \arrow[rd] & &
+\fa{A}_3'' \arrow[ld] \arrow[rd] \\
+& \fa{A}_1 & & & & \fa{A}_3 & & \fa{A}' 
+\end{tikzcd}
+\end{center}
+
+This diagram can be simplified after our previous considerations and using the
+categorial closure of length-preserving reductions into:
+
+\begin{center}
+\begin{tikzcd}
+& & & \tilde{\fa{A}} \arrow[ld] \arrow[rd] \\
+\fa{A} \arrow[rd] & & \fa{A}_2 \arrow[ld] & & \fa{A}' \\
+& \fa{A}_1
+\end{tikzcd}
+\end{center}
+
+We can now concretize our initial goal: describing the relation between
+two equivalent automata.
+
+We want to achieve the following:
+
+$\lang{A} = \lang{B}$, then there should exist a diagram
+
+FIGURE
+
+We specify for the complete, deterministic automaton a normal-form and define
+
+\begin{definition}[reduced automaton]
+A complete, deterministic automaton is called {\bf reduced} $\iff$ each
+reduction $\rho : \fa{A} \to \fa{B}$ is a monomorphism (injective homomorphism).
+\end{definition}
+
+\begin{lemma}
+For each complete, deterministic finite automaton $\fa{A}$ there exists a
+reduced automaton $\fa{A}_r$ and a closed reduction $\rho : \fa{A} \to
+\fa{A}_r$.
+
+If $\fa{A}_r$ does not contain superfluous elements, then it is unique up to
+isomorphism.
+\end{lemma}
+
+\begin{proof}
+We prove first that two automata which are reduced and belong to $\fa{A}$ are
+always isomorphic.
+\end{proof}
 
 
 
