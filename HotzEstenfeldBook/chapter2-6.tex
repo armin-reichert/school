@@ -593,9 +593,184 @@ isomorphism.
 \end{lemma}
 
 \begin{proof}
-We prove first that two automata which are reduced and belong to $\fa{A}$ are
-always isomorphic.
+We prove first that every two automata which are reduced and belong to $\fa{A}$
+are isomorphic.
+
+Let $\rho_i : \fa{A} \to \fa{A}_i,\ i = 1, 2$ be closed reductions. We can apply
+lemma 1 and get the following situation:
+
+There exist a reduced automaton $\fa{A}_r$ and reductions $\psi_i : \fa{A}_i
+\to \fa{A}_r$ with
+
+\begin{center}
+\begin{tikzcd}
+& \fa{A} \arrow[ld,"\rho_1"'] \arrow[rd,"\rho_2"] \\
+\fa{A}_1 \arrow[rd,"\psi_1"'] & & \fa{A}_2 \arrow[ld,"\psi_2"] \\
+& \fa{A}_r
+\end{tikzcd}
+\end{center}
+
+By assumption, $\fa{A}_1$ and $\fa{A}_2$ are reduced, therefore $\psi_1$ and
+$\psi_2$ are monomorphisms (injective) and $\rho_1$ and $\rho_2$ are surjective,
+$\fa{A}_1$ and $\fa{A}_2$	are complete and deterministic
+
+$\Rightarrow$ the images under $\psi_1$ and $\psi_2$ are equal
+
+$\Rightarrow \psi_1, \psi_2$ are isomorphisms on the images. 
 \end{proof}
+
+It remains to prove that for each automaton $\fa{A}$ there exists a reduces
+automaton $\fa{A}_r$.
+
+This follows from the fact that the automata are finite and is shown by the
+following construction.
+
+Remark: For simplicity (without loss of generality) we want to assume that our
+automata in the following do not contain superfluous vertices (states).
+
+We consider now a restriction of the syntactic congruence defined in chapter
+1.2.
+
+\begin{definition}
+$u, v \in X^*$ are called {\bf congruent modulo $L$}, written as 
+\[ u \equiv_L v :\iff \mbox{ for all } w \in X^* \mbox{ holds}\quad u \cdot w
+\in L \iff v \cdot w \in L \]
+\end{definition}
+
+Notation: $[w]_L := \{ v \mid w \equiv_L v \}$
+\[ X^*/L := \{ [w]_L \mid w \in X^* \} \]
+
+With this notatation it holds
+
+\begin{lemma}
+\[ card(X^*/L) \mbox{ is finite} \iff L \in REG(X^*) \]
+\end{lemma}
+
+\begin{proof}
+''$\Rightarrow$'':
+
+One sees immediately: $w \equiv_L w' \Rightarrow w \cdot x \equiv_L w' \cdot x$
+
+We construct the graph $G' = (X^*/L, E)$ with edge set
+\[ E = \{ ([w], [wx]) \mid w \in X^*,\ x \in X \} \]
+which by assumption is finite.
+
+Set $S := \{ [e] \},\ F := \{[w] \mid w\in L \}$ and define the labelling
+$\alpha$ by $\alpha(([w], [wx])) := x$.
+
+We obtain a finite automaton \[ \fa{A} = \fa{A}(L) = (G', X, S, F, \alpha) \]
+with the property $\lang{A} = L$ (exercise).
+
+''$\Leftarrow$'':
+
+(Translator remark: Made the proof more readable)
+
+Let $L \in REG(X^*)$ be a regular language, then there exists a finite acceptor
+$\fa{A}$ for $L$. Assume, that $\fa{A}$ is complete and deterministic with graph
+$G = (V, E)$.
+
+Consider paths $\pi$ and $\pi'$ both starting at some start state of $\fa{A}$
+\[ Q(\pi) \in S,\ Q(\pi')\in S \]
+with labels being congruent modulo $L$:
+\[ \alpha(\pi) \equiv_L \alpha(\pi') \]
+
+For any pair of paths $\omega, \omega'$ that can be appended to $\pi$ and $\pi'$
+and which have equal labels, that is
+\[ Q(\omega) = Z(\pi),\ Q(\omega') = Z(\pi'),\ \alpha(\omega) = \alpha(\omega')
+\] it holds: \[ Z(\omega) \in F \iff Z(\omega') \in F \]
+
+(Otherwise, we would have for example $Z(\omega) \in F,\ Z(\omega') \notin F$.
+But from this would follow $\alpha(\pi) \cdot \alpha(\omega) \in L$ and
+$\alpha(\pi') \cdot \alpha(\omega) \notin L$ which violates our assumption.)
+
+Now assume to the opposite that for each pair of paths $\omega,
+\omega'$ that can be appended to $\pi$ and $\pi'$ and $\alpha(\omega) =
+\alpha(\omega')$ it holds \[ Z(\omega) \in F \iff Z(\omega') \in F \]
+
+Then for any pair of paths $\pi, \pi'$ with 
+\[Z(\pi) = Q(\omega),\ Z(\pi') = Q(\omega'),\quad Q(\pi)\in S,\ Q(\pi') \in S \]
+it follows 
+\[ \alpha(\pi) \equiv_L \alpha(\pi') \]
+
+This gives us a mapping that assigns to each vertex (state) $v \in V$ a
+congruence class, namely $[\alpha(\pi)]$.
+
+From this we get: $card(X^*/L)$ is finite, especially $card(X^*/L) \leq
+card(V)$.
+\end{proof}
+
+In our lemma we even proved a bit more:
+
+Let $\rho_1 : V \to X^*/L$ with $\rho_1(v) = [u]_L$, if $\pi \in
+\pathcat{G}(S, V)$ where $Z(\pi) = v$ and $\alpha(\pi) = u$ be the mapping from
+the lemma. Then it holds
+
+\begin{lemma}
+$\rho_1$ induces a reduction from $\fa{A}$ to $\fa{A}(L)$.
+\end{lemma}
+
+\begin{proof}
+Let $e \in E$ be an edge with $Q(e) = v, Z(e) = v'$ and $\alpha(e) = x$, then
+the mapping $\rho_2$ with \[ \rho_2(e) = e' \in E(G'),\ Q(e') = [u] =
+\rho_1(v),\ Z(e') = [ux] = \rho_1(v') \]
+induces a reduction.
+\end{proof}
+
+We get immediately
+
+\begin{theorem}If $\fa{A}$ is a complete, deterministic finite automaton, then
+there exists a closed reduction \[ \rho : \fa{A} \to \fa{A}_L \]
+\end{theorem}
+
+\begin{proof}
+Let $\rho$ be the mapping defined by $\rho_1$ and $\rho_2$. It holds:
+\begin{enumerate}
+  \item $\rho$ is a homomorphism
+  \item $\rho_1^{-1}([L]) = F,\qquad \rho_1^{-1}([\epsilon]) = S$
+  \item $\rho$ is surjective!
+\end{enumerate}
+
+$\rho_1$: clear, because to each $v \in V$ there is a corresponding congruence
+class.
+
+$\rho_2$ is surjective because $\fa{A}$ is complete.
+\end{proof}
+
+Remark: $\rho$ is even length-preserving.
+
+\begin{corollary}
+$\fa{A}(L)$ is reduced. (Exercise)
+\end{corollary}
+
+With all this we can set $\fa{A}_r := \fa{A}(L)$ and we have proved lemma 3
+completely.
+
+The question remains: how do equivalent, reduced, complete and deterministic
+finite automata relate?
+
+\begin{theorem}
+If $\fa{A}$ and $\fa{B}$ are reduced, complete and deterministic finite
+automata which accept the same language, then they are isomorphic.
+\end{theorem}
+
+\begin{proof}
+If \fa{A} and \fa{B} are reduced, then $\fa{A} \cong \fa{A}(L) \cong \fa{B}$.
+\end{proof}
+
+\begin{corollary}
+If $\fa{A}$ is equivalent to $\fa{B}$ then there exists a chain of reductions
+\[ \fa{A} \longrightarrow \fa{A}_1 \longleftarrow \fa{A}_2 \longleftarrow \fa{C}
+\longrightarrow \fa{B}_1 \longleftarrow \fa{B} \]
+\end{corollary}
+
+\begin{proof}
+We look at the construction from figure TODO:
+\end{proof}
+
+
+
+
+
 
 
 
