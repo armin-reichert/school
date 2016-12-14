@@ -765,7 +765,144 @@ If $\fa{A}$ is equivalent to $\fa{B}$ then there exists a chain of reductions
 
 \begin{proof}
 We look at the construction from figure TODO:
+
+\begin{center}
+\begin{tikzcd}[column sep=small]
+& & & & & \fa{C} \arrow[lld,dashed] \arrow[rrd,dashed] & & & & & \\
+& & & \tilde{\fa{A}} \arrow[ld] \arrow[rd]& & & & \tilde{\fa{B}} \arrow[ld] \arrow[rd] \\
+\fa{A} \arrow[r] & \fa{A}_1 &\fa{A}_2 \arrow[l] & &\fa{A}' \arrow[rd] & &
+\fa{B}' \arrow[ld] & & \fa{B}_2 \arrow[r] & \fa{B}_1 & \fa{B} \arrow[l] \\
+& & & & & \fa{A}_r & & & & &
+\end{tikzcd}
+\end{center}
+
+$\fa{A}_r$ exists by theorems 4 and 5. $\fa{C}$ exists by lemma 2.
 \end{proof}
+
+\begin{lemma}
+Let $\gamma_{\fa{A}} : \fa{C} \to \fa{A},\ \gamma_{\fa{B}} : \fa{C} \to \fa{B}$
+be length-preserving reductions.
+
+Then there exists an automaton $\fa{A} \times \fa{B}$ and reductions
+\begin{eqnarray*}
+& \pi_{\fa{A}} : \fa{A} \times \fa{B} \to \fa{A} \\
+& \pi_{\fa{B}} : \fa{A} \times \fa{B} \to \fa{B}
+\end{eqnarray*}
+such that the following diagram commutes:
+
+\begin{center}
+\begin{tikzcd}
+& \fa{C} \arrow[ld,"\gamma_{\fa{A}}"'] \arrow[dd,"\delta"]
+\arrow[rd,"\gamma_{\fa{B}}"] \\
+\fa{A} & & \fa{B} \\
+& \fa{A} \times \fa{B} \arrow[lu,"\pi_{\fa{A}}"] \arrow[ru,"\pi_{\fa{B}}"']
+\end{tikzcd}
+\end{center}
+\end{lemma}
+
+\begin{proof}
+Let \[ G := (V_{\fa{A}} \times V_{\fa{B}}, \{ (e, e') \in E_{\fa{A}} \times
+E_{\fa{B}} \mid \alpha_{\fa{A}}(e) = \alpha_{\fa{B}}(e') \}  ) \]
+
+Then the finite automaton $\fa{A} \times \fa{B}$ is defined by
+\[ \fa{A} \times \fa{B} := (G, X, S_{\fa{A}} \times S_{\fa{B}}, F_{\fa{A}}
+\times F_{\fa{B}}, \alpha) \]
+
+Let $\delta(v) = (\gamma_{\fa{A}}(v), \gamma_{\fa{B}}(v)),\ v \in V_{\fa{C}}$,
+and $\delta(e) = \gamma_{\fa{A}}(e), \gamma_{\fa{B}}(e)),\ e \in E_{\fa{C}}$.
+
+$\delta$ is a homomorphism from $\fa{C}$ to $\fa{A} \times \fa{B}$.
+
+Now $\gamma_{\fa{A}} = \delta \circ \pi_{\fa{A}}$ and $\gamma_{\fa{B}} = \delta
+\circ \pi_{\fa{B}}$ are reductions
+\[ \Rightarrow \pi_{\fa{A}} \mbox{ and } \pi_{\fa{B}} \mbox{ are reductions.} \]
+\end{proof}
+
+With lemma 6 we get
+
+\begin{theorem}
+If \fa{A} is equivalent to \fa{B}, then \fa{A} can be transformed into \fa{B} by
+the following chain of reductions:
+\begin{center}
+\begin{tikzcd}
+\fa{A} \arrow[r] & \fa{A}_1 & \fa{A}_2 \arrow[l] & \fa{A}_2 \times \fa{B}_2
+\arrow[l, "\pi_{\fa{A}}"'] \arrow[r, "\pi_{\fa{B}}"] & \fa{B}_2 \arrow[r] &
+\fa{B}_1 & \fa{B}
+\arrow[l]
+\end{tikzcd}
+\end{center}
+\end{theorem}
+
+\begin{proof}
+Our constructions above.
+\end{proof}
+
+We can now give a {\bf decision algorithm} for the equivalence of finite
+automata \fa{A} and \fa{B}.
+
+\begin{enumerate}
+  \item From \fa{A} and \fa{B} construct the automata $\fa{A}_2$ and $\fa{B}_2$.
+  \item Check if 
+  \begin{tikzcd} \fa{A}_2 & \fa{A}_2 \times \fa{B}_2
+		\arrow[l, "\pi_{\fa{A}}"'] \arrow[r, "\pi_{\fa{B}}"] & \fa{B}_2 
+	\end{tikzcd}
+	are reductions. If this is the case, $\lang{A} = \lang{B}$.
+\end{enumerate}
+
+We want to specify the {\bf complexity} of this decision algorithm:
+
+As measure of complexity of \fa{A} we define 
+\[ \|\fa{A}\| := \sum_{e \in E} |\alpha(e)| \]
+
+\begin{tabular}{ll}
+  ''Splitting'' the edges: & $O(\|\fa{A}\|)$ \\  \\
+  Creating the bridges: & $(card(E))^2$ \\ \\
+  Transitive closure of $\epsilon$-graph & $O(\|\fa{A}\|^3)$ \\  \\
+  Construction of $\fa{A} \times \fa{B}$: & $\|\fa{A}\| \cdot \|\fa{B}\|$ \\ \\
+  Test for reduction \\
+  1. Removal of superfluous states: & $O(\|\fa{A}\|^3)$ \\
+  2. Surjectivity test on the rest: & $O(2^{\|\fa{A}\|})$
+\end{tabular}
+
+The test for surjectivity takes most of the time and dominates the complexity of
+this decision algorithm. Our algorithm takes the same time as the other
+algorithms from the literature \cite{AHU}, because we start from
+non-deterministic automata.
+
+Remark: If we would have required for our automata \fa{A} and \fa{B} that
+$\alpha_{\fa{A}}(e) \in X$ and $\alpha_{\fa{B}}(e) \in X$, then the diagram from
+the corollary to theorem 5 could have been simplified to \begin{tikzcd}
+\fa{A} & \fa{C} \arrow[l] \arrow[r] & \fa{B} \end{tikzcd}. For the compexity of
+our decision algorithm this however would be insignificant.
+
+Exercises:
+
+\begin{enumerate}
+\item Let \fa{A}, \fa{B}, \fa{C} be finite automata, $\beta_{\fa{A}} : \fa{C}
+\to \fa{A},\ \beta_{\fa{B}} : \fa{C} \to \fa{B}$ reductions and $\faequiv{A},
+\faequiv{B}$ the equivalence relations from the proof of lemma 1.
+
+Show: $(\faequiv{A}\ \subset\ \faequiv{B}) \Rightarrow$ there exists a reduction
+$\beta : \fa{B} \to \fa{A}$ such that the following diagram commutes:
+\begin{center}
+\begin{tikzcd}
+& \fa{C} \arrow[ld,"\beta_{\fa{A}}"] \arrow[rd,"\beta_{\fa{B}}"] \\
+\fa{A} & & \fa{B} \arrow[ll,dashed,"\beta"]
+\end{tikzcd}
+\end{center}
+
+\item Let \fa{A} be a complete, deterministic finite automaton, \fa{B} a finite
+automaton and $\beta : \fa{A} \to \fa{B}$ a homomorphism with
+$\beta(E_{\fa{A}}) = E_{\fa{B}}$.
+Show:
+\begin{itemize}
+  \item $\beta$ is a reduction
+  \item The given requirements are necessary.
+\end{itemize}
+
+\end{enumerate}
+
+
 
 
 
