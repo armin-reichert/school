@@ -1,0 +1,252 @@
+\section{Regular sets in \pocymon{X}, REG(\pocymon{X})}
+
+In the first section of this chapter we looked at $REG(X^*)$, the class of
+regular languages over the free monoid $X^*$. 
+
+We replace now the free monoid by an important special case of a monoid, namely
+the polycyclic monoid \pocymon{X} which is the syntactic monoid of the
+Dyck-language of the alphabet $X \cup X^{-1}$.
+
+We represent the elements of \pocymon{X} by their reduced words (see chapter
+1.3).
+
+\begin{definition}
+Let $|w|$ be the reduced word of $w \in (X \cup X^{-1})^*$ with respect to the
+polycyclic monoid \pocymon{X} and let $L \subset (X \cup X^{-1})^*$ be a
+language. Then
+\[ |L| := \{ |w| \mid w \in L,\ |w| \neq 0 \} \]
+is the set of reduced words of $L$.
+\end{definition}
+
+\begin{definition}
+\begin{eqnarray*}
+|REG|(\pocymon{X}) & := & \{ L \subset (X\cup X^{-1})^* \mid \mbox{there exists
+}L' \in REG(\pocymon{X}) \\
+& & \mbox{ with } L = \{|w| \mid [w] \in L' \} \}
+\end{eqnarray*}
+\end{definition}
+
+Our goal is to show the inclusion
+\[ |REG|(\pocymon{X}) \subset REG((X \cup X^{-1})^*) \]
+
+This inclusion does not tell that the word problem of \pocymon{X} is rational,
+or in other words that $[w]$ is a rational set. But the structure of
+$REG(\pocymon{X})$ is determined for the biggest part by $REG((X \cup
+X^{-1})^*)$.
+
+Of course it is
+\[ |REG|(\pocymon{X}) \neq REG((X \cup X^{-1})^*) \]
+
+But we can completely characterize $|REG|(\pocymon{X})$ as a subset of $REG((X
+\cup X^{-1})^*)$.
+
+To do so, we prove at first a number of lemmata.
+
+\begin{lemma}
+\[ L \subset REG((X \cup X^{-1})^*) \Rightarrow |L| \in REG((X \cup X^{-1})^*)
+\]
+\end{lemma}
+
+\begin{proof}
+Let \[ \fa{A} = (G, X \cup X^{-1}, S, F, \alpha) \] be a finite automaton
+accepting $L$.
+
+We construct in several steps an automaton $\fa{A}'$ accepting $|L|$.
+
+This construction will play an exceptional role in later chapters.
+
+Without loss of generality we may assume that for each edge of our graph $G =
+(V, E)$ holds: $\alpha(e) \in X\cup X^{-1}\cup \{\epsilon\}$.
+
+{\bf Step 1:} If there is a path $\pi \in \pathcat{G}(v, v')$ with
+$|\alpha(\pi)| = \epsilon$, then we add a new edge $e: v \to v'$ to $E$ and set
+$\alpha(e) := \epsilon$. $\epsilon$-loops will be removed.
+
+We do this for each such pair $(v, v')\in V x V$ and get a graph $G_1$ with
+corresponding labelling $\alpha$.
+
+{\bf Step 2:} For edges $e\in E$ with $\alpha(e) = \epsilon$ and $e'\in E$ with
+$\alpha(e')\neq \epsilon$ and $Z(e) = Q(e')$ we add an edge $e''$ with
+$Q(e'') := Q(e)$, $Z(e'') := Z(e')$ and $\alpha(e'') := \alpha(e')$.
+
+If $Z(e') = Q(\tilde{e})$ with $Z(\tilde{e}) \in F$ is a final state and
+$\alpha(\tilde{e}) = \epsilon$, then add edge $e''$ with $Q(e'') := Q(e)$,
+$Z(e'') := Z(\tilde{e})$ and $\alpha(e'') := \alpha(e')$.
+
+\transrem{Insert figure to clarify this}
+
+If we do this for all such pairs of edges $(e, e')$, we get a graph $G_2$ with
+labelling $\alpha$ as described.
+
+{\bf Step 3:} We remove all edges $e \in G_2$ where $\alpha(e) = \epsilon$. The
+resulting graph shall be $G_3$ with labelling $\alpha$.
+
+Because of our construction we get:
+\[ \lang{A}_3 = \{ v \mid v \mbox{ is reduced word of } w \in
+\lang{A} \mbox{ wrt. } x\cdot x^{-1} = 1 \} \]
+
+{\bf Step 4:} We interrupt all paths with a label containing $x \cdot y^{-1},\
+x\neq y$. To do so, we duplicate certain vertices and edges of $G_3$.
+
+Let $v$ be a vertex which is the target of an edge $e$ with $\alpha(e) \in X$
+and is the source of an edge $e'$ with $\alpha(e') \in X^{-1}$.
+
+We replace vertex $v$ by vertices $v$ and $v^+$ and add edges as follows:
+
+All edges $e_1$ with $Z(e_1) = v$ and $\alpha(e_1) \in X$ will be rerouted to
+vertex $v^+$. Edges $e_2$ with $Z(e_2) = v$ and $\alpha(e_2) \in X^{-1}$ are
+left unchanged.
+
+All edges $e_3$ with $Q(e_3) = v$ and $\alpha(e_3) \in X$ will be duplicated
+into $e_3^+$ and $e_3^-$. One of them leads from $v^+$ and the other from $v$ to
+$Z(e_3)$.
+
+The labelling is defined by $\alpha(e_3^+) = \alpha(e_3^-) = \alpha(e_3)$.
+
+Edges $e_4$ with label $\alpha(e_4) \in X^{-1}$ and $Q(e_4) = v$ stay unchanged.
+
+The following figure shows the construction:
+
+FIGURE
+
+We do this with every such vertex of $G_3$. Tge resulting graph shall be $G'$.
+With start and final state sets $S' := S$ and $F' := F \cup \{e^+ \mid e\in F\}$
+we get a finite automaton
+\[ \fa{A}' = (G', X \cup X^{-1}, ', F', \alpha') \]
+
+It then holds: $\lang{A}' = |L|$!
+
+We observe that $\lang{A}'$ contains only reduced words which are different from
+zero. Additionally, the reversal of the construction of $G'$ from $G_3$ is a
+functor which preserves the labelling of the edges.
+
+Therefore $\lang{A}' \subset |L|$.
+
+Let to the opposite $\pi$ be a path in $\pathcat{G_3}$ with label $\alpha(\pi)
+= |\alpha(\pi)|$, then there is no $(+, -)$-sequence in the label.
+
+That means the path $\pi$ stays unchanged in $G'$ as long as the label of the
+edges is in $X^{-1}$.
+
+If the label changes, the path switches to the $+$-vertices and stays
+''positive'' until its target. If we denote this path that belongs to $\pi$ by
+$w'$, then $\alpha(\pi) = \alpha'(\pi')$ from which follows $|L| \subset
+\lang{A}'$.
+
+Together we get $|L| = \lang{A'}$.
+\end{proof}
+
+In this proof we even showed more which is summarized in the following
+corollary.
+
+\begin{corollary}
+To each path $\pi = e_1 \cdots e_k \in \pathcat{G}(S, -),\ e_i \in E$ with
+$\alpha(e_k) \neq \epsilon$ and $\alpha(\pi) \neq \epsilon$ there is assigned a
+unique $\epsilon$-free path $\pi' \in \pathcat{G_3}(S, -)$ with $\alpha(\pi) =
+\alpha(\pi')$.
+
+Additionally, we can define a functor $\nu : \pathcat{G_3} \to \pathcat{G}$ such
+that the following holds:
+
+For each accepted word $u \in L$ there exists an accepting path $\pi = e_1
+\cdots e_n \in \pathcat{G_3}(S, F)$ with $e_i \in E_3,\ \alpha(e_i) \neq \epsilon$ such
+that $\alpha(\nu(\pi)) = u$
+\end{corollary}
+
+Proof: Exercise.
+
+Our construction show even more: the number of paths $\pi$ with $\alpha(\pi) =
+u$ for a given $u \in |L|$ is the same in $\pathcat{G_3}$ as in $\pathcat{G'}$.
+Therefore this number is in $\pathcat{G'}$ less or equal to the number in
+$\pathcat{G_2}$. A similar statement holds for $\pathcat{G_1}$ and
+$\pathcat{G}$.
+
+This fact, which will be of importance later in this book, is summarized in the
+following corollary. We define
+
+\begin{definition}
+\[ INDEX(|\fa{A}|, u) := card( \{ \pi \in \pathcat{G}(S, F) \mid |\alpha(\pi) =
+u \} ) \]
+\end{definition}
+
+\begin{corollary}
+\[ INDEX(|\fa{A}|, u) \geq INDEX(|\fa{A}'|, u),\ u \in \lang{A}' \]
+\end{corollary}
+
+Remark: Because $\lang{A}' = |\lang{A}'|$ it holds $INDEX(|\fa{A}'|, u) =
+INDEX(\fa{A}', u)$.
+
+Now we can prove the announced theorem.
+
+\begin{theorem}
+\[ |REG|(\pocymon{X}) = \{ |L| \mid L \in REG((X\cup X^{-1})^*) \} \]
+\end{theorem}
+
+\begin{proof}
+ The inclusion ''$\supset$'' is clear.
+ 
+ ''$\subset$'': Every functor $\alpha : \pathcat{G} \to \pocymon{X}$ can be
+ extended to a functor $\alpha' : \pathcat{G} \to (X \cup X^{-1})^*$ by
+ defining $\alpha'(e) := |u|$ for each edge $e \in E$ and $\alpha(e) = [u]$.
+ 
+ $\alpha'$ is continued to a functor and for the finite automaton
+ \[ \fa{A}' = (G', X \cup X^{-1}, S', F', \alpha') \]
+ it holds:
+ \[ \lang{A} = \{ [u] \mid u \in \lang{A}' \} \]
+ and with lemma 1 we get:
+ \[ \lang{A} = \{ [u] \mid u \in |\lang{A}'| \} \]
+ which means
+ \[ |\lang{A}| = \{ |u| \mid u \in \lang{A}' \} \]
+\end{proof}
+
+The next theorem gives an even more precise characterization for
+$|REG|(\pocymon{X})$.
+
+\begin{theorem}
+Let $\fa{A}$ be a finite automaton
+\[ \fa{A} = (G, X \cup X^{-1}, S, F, \alpha) \]
+where $G = (V, E)$ and $card(E) = c$. Then there exist $c$ pairs $(L_i^+,
+L_i^-)$ with 
+\[ L_i^+ \in REG(X^*),\qquad L_i^- \in REG((X^{-1})^*) \]
+such that
+\[ |\lang{A}| = \bigcup_{i=1}^c L_i^- \cdot L_i^+ \]
+\end{theorem}
+
+\begin{proof}
+The proof follows directly from the construction of the automaton $\fa{A}'$.
+
+If $V'$ is the set of the vertices $v$ which have an associated vertex $v^+$ in
+$G'$, then every path $\pi \in \pathcat{G'}(S', F')$ can be uniquely split into
+a product $\pi_1 \cdot \pi_2$ where the target $Z(\pi_1)$ is such a vertex $v$.
+
+Therefore one can write
+\[ |\lang{A}| = \bigcup_{v \in V} L_{\fa{A}(S, v)}^- \cdot L_{\fa{A}(v, F)}^+
+\]
+\end{proof}
+
+\begin{corollary}
+\[ INDEX(\fa{A}', u) = \sum_{v \in V' \atop u_1 \cdot u_2 = u}
+INDEX(\fa{A}'(S, v), u_1) \cdot INDEX(\fa{A}'(v, F), u_2) \]
+\end{corollary}
+
+\begin{lemma}
+Let $L = \lang{A}^+ \subset X^*$ and $L' = \lang{A'}^- \subset (X^{-1})^*$.
+\end{lemma}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
