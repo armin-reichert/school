@@ -1,0 +1,25 @@
+\usepackage[utf8]{inputenc}
+\usepackage{parskip}
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%\usepackage{amsthm}
+\usepackage{pgf}
+\usepackage{tkz-graph}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,cd,positioning,shapes}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{maintheorem}{Main Theorem}[section]
+
+\newcommand{\dderives}[1]{\underset{#1}{\Rightarrow}}
+\newcommand{\derives}[1]{\underset{#1}{\overset{*}{\Rightarrow}}}
+\newcommand{\pathcat}[1]{\mbox{$\mathcal{W}(#1)$}}
+\newcommand{\fa}[1]{\mbox{$\mathcal{#1}$}}
+\newcommand{\faequiv}[1]{\underset{\fa{#1}}{\equiv}}
+\newcommand{\lang}[1]{\mbox{$L_{\mathcal{#1}}$}}
+\newcommand{\edge}[1]{\stackrel{#1}{\longrightarrow}}
+\newcommand{\pocymon}[1]{\mbox{${#1}^{(*)}$}}
+\newcommand{\transrem}[1]{(Translator's remark: #1)}

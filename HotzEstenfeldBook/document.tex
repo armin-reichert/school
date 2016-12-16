@@ -1,46 +1,16 @@
 \documentclass[a4paper]{amsbook}
-
-\usepackage[utf8]{inputenc}
-\usepackage{parskip}
-%\usepackage{amsmath}
-%\usepackage{amssymb}
-%\usepackage{amsthm}
-\usepackage{pgf}
-\usepackage{tkz-graph}
-\usepackage{tikz}
-\usetikzlibrary{arrows,automata,cd,positioning,shapes}
-
-\newtheorem{definition}{Definition}[section]
-\newtheorem{lemma}{Lemma}[section]
-\newtheorem{corollary}{Corollary}[section]
-\newtheorem{theorem}{Theorem}[section]
-\newtheorem{maintheorem}{Main Theorem}[section]
-
-\newcommand{\dderives}[1]{\underset{#1}{\Rightarrow}}
-\newcommand{\derives}[1]{\underset{#1}{\overset{*}{\Rightarrow}}}
-\newcommand{\pathcat}[1]{\mbox{$\mathcal{W}(#1)$}}
-\newcommand{\fa}[1]{\mbox{$\mathcal{#1}$}}
-\newcommand{\faequiv}[1]{\underset{\fa{#1}}{\equiv}}
-\newcommand{\lang}[1]{\mbox{$L_{\mathcal{#1}}$}}
-\newcommand{\edge}[1]{\stackrel{#1}{\longrightarrow}}
-\newcommand{\pocymon}[1]{\mbox{${#1}^{(*)}$}}
-\newcommand{\transrem}[1]{(Translator's remark: #1)}
-
-\makeindex
-
+\include{includes}
 \title{Formal Languages\\An automata-theoretic introduction}
-
 \author{Prof.\ Dr.\ Günter Hotz\\Universität des Saarlandes
 \and Dr.\ Klaus Estenfeld\\Universität des Saarlandes
 \and English translation by\\Dipl.-Inform.\ Armin Reichert\\Alumnus Universität
 des Saarlandes}
-
+\makeindex
 \begin{document}
 \maketitle
 \include{preface}
 \tableofcontents
 \include{introduction}
-
 \chapter{Mathematical Foundations}
 \include{chapter1-1}
 \include{chapter1-2}
@@ -48,7 +18,6 @@ des Saarlandes}
 \include{chapter1-4}
 \include{chapter1-5}
 \include{chapter1-6}
-
 \chapter{Finite Automata}
 \include{chapter2-1}
 \include{chapter2-2}
@@ -58,10 +27,9 @@ des Saarlandes}
 \include{chapter2-6}
 \include{chapter2-7}
 \include{final_remarks}
-
 \bibliographystyle{amsalpha}
 \nocite{*}
 \bibliography{bibliography}
-\chapter*{Index}
+%\chapter*{Index}
 \printindex
 \end{document}

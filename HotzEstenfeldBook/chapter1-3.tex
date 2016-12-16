@@ -51,14 +51,16 @@ different congruence relations and investigate the corresponding factor monoids.
 
 \begin{definition}
 \[ X^{[*]} := (X \cup X^{-1})^* / \{ x x^{-1} = 1\ |\ x \in X \} \]
-is called the {\bf H-group}. (The name (H = ''half'') shall remember of
-semi-group).
+is called the {\bf H-group}.
 \end{definition}
 
 Now we introduce a special absorbing element $0$ by defining:
 \begin{definition}
-\[ X^{(*)} := (X \cup X^{-1} \cup \{0\})^* / \{ x x^{-1} = 1, x y^{-1} = 0, 0 z
-= z 0 = 0\ |\ x,y \in X, z \in X \cup X^{-1} \ \{0\} \} \]
+\begin{eqnarray*}
+\pocymon{X} & := & (X \cup X^{-1} \cup \{0\})^* / \\
+& & \{ x x^{-1} = 1,\ x y^{-1} = 0,\ 0
+z = z 0 = 0 \mid x,y \in X,\ x\neq y,\ z \in X \cup X^{-1} \ \{0\} \}
+\end{eqnarray*}
 is called the {\bf polycyclic monoid}.
 \end{definition}
 

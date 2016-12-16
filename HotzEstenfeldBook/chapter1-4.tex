@@ -71,24 +71,28 @@ circle as in the following figure:
 
 FIGURE
 
-\begin{definition}[oriented graph]
-A loop-free, {\bf oriented} graph $G$ is called {\bf ordered} if for all points
-$P \in V$ it	holds: There exists an ordering $e_1, \ldots, e_k, e_m', \ldots,
-e_1'$ such that $\{ e_1, \ldots, e_k \} = \{ e \in E\ |\ Z(e) = P \}$ and $\{
-e_1', \ldots, e_m' \} = \{ e \in E\ |\ Q(e) = P \}$. 
+\begin{definition}[ordered graph]
+A loop-free, graph $G$ is called {\bf ordered} if for all points
+$P \in V$ it	holds: There exists an ordering 
+\[ e_1, \ldots, e_k, e_m', \ldots, e_1'\]
+such that
+\[ \{ e_1, \ldots, e_k \} = \{ e \in E \mid Z(e) = P \} \]
+and 
+\[ \{ e_1', \ldots, e_m' \} = \{ e \in E\ |\ Q(e) = P \} \]
 \end{definition}
 
 $e_1, \ldots, e_k$ is called the {\bf ordering} of the incoming edges of $P$ and
-$e_1', \ldots, e_m'$ the {\bf ordering} of the outgoing edges of $P$.
+$e_1', \ldots, e_m'$ the ordering of the outgoing edges of $P$.
 
 Example:
 
 FIGURE
 
 \begin{definition}[path]
-A {\bf path} in an oriented graph $G$ is a sequence $w = (Q_1, e_1, \ldots,
-e_k, Z_k)$ with $k \geq 1$ and $e_1, \ldots, e_k \in E, Q(e_1) = Q_1,
-Z(e_k)=Z_k$ and $Q(e_{i+1}) = Z(e_i)$ for all $i = 1, \ldots, k-1$.
+A {\bf path} in an oriented graph $G$ is a sequence 
+\[ \pi = (Q_1, e_1, \ldots, e_k, Z_k) \]
+with $k \geq 1,\ e_1, \ldots, e_k \in E,\ Q(e_1) = Q_1,\ Z(e_k)=Z_k$ and
+$Q(e_{i+1}) = Z(e_i)$ for $i = 1, \ldots, k-1$.
 \end{definition}
 
 We extends the mappings $Q$ and $Z$ onto paths by defining $Q(w) := Q_1$ and
