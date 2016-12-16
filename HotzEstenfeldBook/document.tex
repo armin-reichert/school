@@ -26,24 +26,21 @@
 \newcommand{\pocymon}[1]{\mbox{${#1}^{(*)}$}}
 \newcommand{\transrem}[1]{(Translator's remark: #1)}
 
-\begin{document}
+\makeindex
 
 \title{Formal Languages\\An automata-theoretic introduction}
 
-\author{
-Prof.\ Dr.\ Günter Hotz\\
-Universität des Saarlandes
-\and Dr.\ Klaus Estenfeld\\
-Universität des Saarlandes
-\and English translation by\\
-Dipl.-Inform.\ Armin Reichert
-\\Alumnus Universität
+\author{Prof.\ Dr.\ Günter Hotz\\Universität des Saarlandes
+\and Dr.\ Klaus Estenfeld\\Universität des Saarlandes
+\and English translation by\\Dipl.-Inform.\ Armin Reichert\\Alumnus Universität
 des Saarlandes}
 
+\begin{document}
 \maketitle
 \include{preface}
 \tableofcontents
 \include{introduction}
+
 \chapter{Mathematical Foundations}
 \include{chapter1-1}
 \include{chapter1-2}
@@ -51,6 +48,7 @@ des Saarlandes}
 \include{chapter1-4}
 \include{chapter1-5}
 \include{chapter1-6}
+
 \chapter{Finite Automata}
 \include{chapter2-1}
 \include{chapter2-2}
@@ -59,9 +57,11 @@ des Saarlandes}
 \include{chapter2-5}
 \include{chapter2-6}
 \include{chapter2-7}
-%\include{final_remarks}
+\include{final_remarks}
 
-\bibliographystyle{alpha}
+\bibliographystyle{amsalpha}
 \nocite{*}
 \bibliography{bibliography}
+\chapter*{Index}
+\printindex
 \end{document}
