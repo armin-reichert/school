@@ -230,8 +230,101 @@ INDEX(\fa{A}'(S, v), u_1) \cdot INDEX(\fa{A}'(v, F), u_2) \]
 \end{corollary}
 
 \begin{lemma}
-Let $L = \lang{A}^+ \subset X^*$ and $L' = \lang{A'}^- \subset (X^{-1})^*$.
+Let $L = \lang{A}^+ \subset X^*$ and $L' = \lang{A}^- \subset (X^{-1})^*$. Then
+there exist $L_1^+,\ldots,L_p^+ \in REG(X^*),\ L_1,\ldots,L_q^- \in
+REG((X^{-1})^*)$ with
+\[ |L \cdot L'| = \bigcup_{i=1}^{p} L_i^+ \ \cup\ \bigcup_{j=1}^{q} L_j^- \]
+Here $p, q \leq card(F(\fa{A'}))$.
 \end{lemma}
+
+\begin{proof}
+We construct $\fa{A} = \fa{A}^+ \circ \fa{A}^-$ with $\lang{A} = L \cdot L'$ and
+thereafter $\fa{A'}$ with $\lang{A'} = |\lang{A}|$.
+
+Because for every reduced word $u \in (X\cup X^{-1})^*$ it holds $u = u^- \cdot
+u^+$ where $u^- \in (X^{-1})^*, u^+ \in X^*$ the first part of the lemma is
+proven.
+
+From our construction of $\fa{A'}$ it follows that the set $F(\fa{A'})$ of final
+states are divided into sets from $(X^{-1})^*$ and sets from $X^*$. From that
+follows the rest of the lemma.
+\end{proof}
+
+We want to investigate in the following the set of regular sets which can be
+defined with fixed graph and show two simple but important properties of these
+sets.
+
+Let $G = (V, E)$ be a graph and $\alpha : E \to (X \cup X^{-1})^*$. We may
+assume that $\alpha(e) \in X \cup X^{-1} \cup \{\epsilon\}$.
+
+We define
+\[ \mathcal{R}(G) := \{ L_{\fa{A}(\tilde{S},\tilde{F})} \mid \fa{A} = (G, X \cup
+X^{-1}, S, F, \alpha),\ \tilde{S} \subset V,\ \tilde{F} \subset V \} \]
+
+For $c := card(V)$ then it trivially holds $card(\mathcal{R}(G)) \leq 2^{2
+\cdot c}$.
+
+Remark: The set $\mathcal{R}(G)$ is in general not closed under union but it
+contains a simple base for the closure $<\mathcal{R}(G)>$ under union.
+
+For shorter notation we set $\mathcal{R}(\tilde{S},\tilde{F}) :=
+L_{\fa{A}(\tilde{S},\tilde{F})}$.
+
+\begin{lemma}
+\[ \mathcal{R}(\tilde{S},\tilde{F}) = \bigcup_{\substack{v \in \tilde{S}\\v'
+\in \tilde{F}}} \mathcal{R}(v, v') \]
+\end{lemma}
+
+\begin{proof}
+Exercise for the reader.
+\end{proof}
+
+Let $\fa{A'}$ be the automaton constructed as in lemma 1. We construct a graph
+$G' = (V', E')$ from the graph $G = (V, E)$. Define
+\[ \mathcal{B}(G') := \{ L_{\fa{A'}(v, v')} \mid v, v' \in V' \]
+
+\begin{lemma}
+Let $L^+ \subset X^*, L^- \subset (X^{-1})^*$ and $L^+, L^- \in
+\mathcal{B}(G')$. Then $|L^+ \cdot L^-|$ is contained in the union-closure
+$<\mathcal{B}(G')>$ of $\mathcal{B}(G')$.
+\end{lemma}
+
+\begin{proof}
+Let $L^+ = L_{\fa{A'}(v, v')}$ and $L^- = L_{\fa{A'}(q, q')}$. We create an
+automaton
+\[ \fa{A}'' := \fa{A'}(v, v') \circ \fa{A'}(q, q') \]
+with $L_{\fa{A}''} = L^+ \cdot L^-$.
+\end{proof}
+
+We get $\fa{A}''$ by connecting an instance of $\fa{A'}(q, q')$ using an
+$\epsilon$-edge which leads from $v'$ to $q$ with another instance. Now all
+words $u \in L_{\fa{A}''}$ have the form $u = u^+ \cdot u^-$. We are only
+interested in the reduced words.
+
+We have the cases:
+\[ |u^+ \cdot u^-| = \begin{cases}
+u_1^+ \\ 0 \\ u_1^-
+\end{cases} \]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
