@@ -1,1 +1,88 @@
 \section{The finite automaton with pushdown-store}
+
+We investigate now a second example (after the 2-way automaton) that represents
+a generalization of the finite automaton in our concept, the {\bf finite
+automaton with pushdown-store}.
+
+For preparation we remember theorem 2 from chapter II.8
+
+\begin{theorem}
+For a finite automaton $\fa{A} = (G, X^{[*]}, S, F, \alpha)$ it holds:
+\[ X^* \cap |L_{\fa{A}}| \in REG(X^*) \]
+\end{theorem}
+
+Remark: From this theorem the following claims can be derived (exercise):
+\begin{enumerate}
+  \item With the same assumptions it holds $|L_{\fa{A}}| \in REG((X\cup
+  X^{-1})^*)$
+  \item Corresponding theorems hold for the free group $F(X)$ and the polycyclic
+  monoid \pocymon{X} instead of $X^{[*]}$.
+\end{enumerate}
+
+  
+We want to introduce now the finite automaton with pushdown store. We define
+\begin{definition}[simple pushdown-store]
+$\mathcal{K} = (X, Y, \delta)$ is called a {\bf simple pushdown-store} with
+input $X^*$ and stack-monoid $Y^*$ if
+\begin{itemize}
+  \item[(K1)] $\delta: X \times Y^* \to Y^*$ is a mapping with
+  \begin{eqnarray*}
+  \delta(X \times Y) & \subset & Y^2 \cup \{\epsilon\} \\
+  \delta(X \times \{\epsilon\}) & \subset & Y
+  \end{eqnarray*} 
+  \item[(K2)] $\delta(x, u \cdot v) = u \cdot \delta(x, v)$ for $v \in Y^+,u \in
+  Y^*$.
+\end{itemize}
+\end{definition} 
+
+Obviously the simple pushdown-store $\mathcal{K}$ is uniquely determined by
+$\delta' = \delta |_{X \times (Y \cup \{\epsilon\})}$. Each such mapping can be
+continued using (K2) onto $X \times Y^*$ such that one gets a simple
+pushdown-store.
+
+We continue $\delta$ onto $X^* \times Y^*$ by defining
+\begin{eqnarray*}
+\delta(\epsilon, u) & = & u \\
+\delta(x v, u) & = & \delta(v,  \delta(x,u))
+\end{eqnarray*}
+
+The following lemma holds:
+\begin{lemma}
+For $u \in X^{[*]}$
+\end{lemma}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
