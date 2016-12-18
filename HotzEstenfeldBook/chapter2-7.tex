@@ -294,7 +294,6 @@ Let $L^+ = L_{\fa{A'}(v, v')}$ and $L^- = L_{\fa{A'}(q, q')}$. We create an
 automaton
 \[ \fa{A}'' := \fa{A'}(v, v') \circ \fa{A'}(q, q') \]
 with $L_{\fa{A}''} = L^+ \cdot L^-$.
-\end{proof}
 
 We get $\fa{A}''$ by connecting an instance of $\fa{A'}(q, q')$ using an
 $\epsilon$-edge which leads from $v'$ to $q$ with another instance. Now all
@@ -302,44 +301,99 @@ words $u \in L_{\fa{A}''}$ have the form $u = u^+ \cdot u^-$. We are only
 interested in the reduced words.
 
 We have the cases:
-\[ |u^+ \cdot u^-| = \begin{cases}
-u_1^+ \\ 0 \\ u_1^-
-\end{cases} \]
+\[ |u^+ \cdot u^-| = \begin{cases} u_1^+ \\ 0 \\ u_1^- \end{cases} \]
 
+Because every path $\pi$ of $\fa{A}''$ leading from $v$ to $q'$ is divided in
+two sections
+\[ \pi = \pi^+ e \pi^- \text{ where }\pi^+; v \to v' \in \fa{A'}(v, v') \text{
+and }\pi^- : q \to q' \in \fa{A'}(q, q') \]
+there exists for the case $|u^+ \cdot u^-|$ a division $\pi^+ = \pi_1^+ \cdot
+\pi_2^+$ with $\alpha(\pi_1^+) = u_1^+$ and $|\alpha(\pi_2^+ \cdot e \cdot
+\pi^-)| = \epsilon$.
 
+Opposite direction:
 
+If $\bar{\pi_1}$ is a path with $Q(\bar{\pi_1}) = Q(w_1^+),\ Z(\bar{\pi_1}) =
+Z(w_1^+)$, then $\alpha(\bar{\pi_1}) \in |L^+ \cdot L^-|$.
 
+The case for $|u^+ \cdot u^-| = u_1^-$ is symmetrical.
 
+Therefore there exist sets $V^+, V^- \subset V'$ with
+\[ |L^+ \cdot L^-| = \bigcup_{v^+ \in V^+} \mathcal{R}(v, v^+) \cup
+\bigcup_{q^- \in V^-} \mathcal{R}(q^-, q') \]
+\end{proof}
 
+Remark: The facts proved above will be useful in connection to the normal-form
+theorems of context-free grammars (chapter IV). This is especially true for the
+following
 
+\begin{corollary}
+If $\mathcal{B}(G', S, F) = \{ L^+_{\fa{A'}(S, v)},\ L^-_{\fa{A'}(q, F)} \mid
+v, q \in V \}$. Then $\mathcal{B}(G', S, F)$ is a union base for
+\[ \{ |L^+ \cdot L^-| \mid L^+, L^- \in \mathcal{B}(G', S, F) \} \]
+\end{corollary}
 
+This corollary gives us a smaller base. For fixed $S$ and $F$ we can represent
+each set $|L^+ \cdot L^-|$ as the union of at most $2 \cdot card(V)$ sets of
+type $L^+_{\fa{A}(S, v)}$ resp.\ $L^-_{\fa{A}(q, F)}$.
 
+We now assign to $\mathcal{B}(G)$ a system 
+\begin{eqnarray*} 
+\mathcal{P}(G) & \subset & \mathcal{B}(G) \times \mathcal{B}(G)
+\cdot \{;\} \cdot \mathcal{B}(G) \\
+& \cup & \{ \epsilon \} \times \mathcal{B}(G)
+\end{eqnarray*}
+in the following way:
+\begin{eqnarray*}
+L \to L^+ ; L^- \in \mathcal{P}(G) & \iff & \text{in the representation } L^+
+  \cdot L^- = \cup L_i \text{ from lemma 2} \\
+  & & \text {there exists such an index $i$ with $L = L_i$} \\
+\epsilon \to L \in \mathcal{P}(G) & \iff & \epsilon \in L
+\end{eqnarray*}
 
+\begin{lemma}
+$\epsilon \in |L_1 L_2 \cdots L_n|$ with $L_i \in \mathcal{B}(G) \iff
+L_1;L_2;\cdots ;L_n$ can be reduced to $\epsilon$ using the rules from
+$\mathcal{P}(G)$.
+\end{lemma}
 
+\begin{proof}
 
+''$\Rightarrow$'':
 
+$\epsilon \in |L_1 L_2 \cdots L_n| \Rightarrow$ there exists $u_i \in L_i$ for
+$i = 1, \ldots, n$ with $|u_1 \cdots u_n = \epsilon \Rightarrow$ there exists an
+index $j$ with $L_j \subset X^*,\ L_{j+1} \subset (X^{-1})^*$. Because $|u_1
+\cdots u_n = \epsilon$ it holds $|u_j u_{j+1}| \neq 0$. Therefore $u_j u_{j+1}$
+can be reduced to a word $\bar{u}_j$ with $\bar{u}_j \in X^*$ or $\bar{u}_j \in
+(X^{-1})^*$.
 
+In the decomposition $L_j L_{j+1} = \cup L'_i$ there exists ab $L'_j$ with
+$\bar{u}_j \in L'_j$ and it holds $L'_j \to L_j;L_{j+1} \in \mathcal{P}(G)$.
 
+If we replace $L_j;L_{j+1}$ by $L'_j$ then we have again $\epsilon \in |L_1
+\cdots L_{j-1} L'_j L_{j+2} \cdots L_n|$.
 
+Inductively we may assume that $L_1 \cdots L_n$ can be reduced using
+$\mathcal{P}(G)$ to some $L'$ and $\epsilon \in |L'|$ holds.
 
+Because $|L'| = L$ we get $\epsilon \in L$. So $L_1;\cdots;L_n$ can indeed be
+reduced to $\epsilon$.
 
+''$\Leftarrow$'':
 
+Let $L_1;\cdots;L_n$ be reducible to $\epsilon$ using $\mathcal{P}(G)$ and let
+$L'_j \to L_j;L_{j+1} \in \mathcal{P}(G)$.
 
+Then for each $u_i \in L_i,\ i = 1,\ldots,j-1,j+2,\ldots,n$ and $\bar{u}_i \in
+L_j'$ there are $u_j \in L_j, u_{j+q} \in L_{j+1}$ with $|u_1 \cdots u_n| =
+|u_1 \cdots u_{j-1}\bar{u}_j u_{j+2} \cdots u_n|$.
 
+If $\epsilon \in L_j$ then $\epsilon \to L_j \in \mathcal{P}(G)$ and it holds
+$\bar{u}_j = \epsilon$. Therefore $|u_1 \cdots u_{j-1} u_{j+1} \cdots u_n| =
+|u_1 \cdots u_n|$.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+By induction it follows: if $L_1; \cdots L_n$ can be derived in
+$\mathcal{P}(G)$ from $\epsilon$, then $\epsilon \in |L_1 \cdots L_n|$.
+\end{proof}
 
