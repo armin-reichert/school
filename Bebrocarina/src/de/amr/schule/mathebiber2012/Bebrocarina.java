@@ -1,13 +1,10 @@
 package de.amr.schule.mathebiber2012;
 
-import java.util.logging.Level;
+import de.amr.easy.statemachine.StateMachine;
 
-import de.amr.easy.fsm.FSM;
-
-public class Bebrocarina extends FSM<Integer, Character> {
+public class Bebrocarina extends StateMachine<Integer, Character> {
 
 	public static void main(String[] args) {
-		FSM.LOG.setLevel(Level.OFF);
 		Bebrocarina acceptor = new Bebrocarina();
 		acceptor.prüfeObSpielbar("+ooo+ooo+ooo+ooo+");
 		acceptor.prüfeObSpielbar("---o+-o--ooo+");
@@ -16,32 +13,46 @@ public class Bebrocarina extends FSM<Integer, Character> {
 	}
 
 	public Bebrocarina() {
-		/*@formatter:off*/
-		beginFSM()
-			.acceptedEvents('+', 'o', '-')
-			.initialState(1)
-			.state(1).keep().on('o').into(2).on('+').into(-1).on('-').end()
-			.state(2).keep().on('o').into(3).on('+').into(1).on('-').end()
-			.state(3).keep().on('o').into(4).on('+').into(2).on('-').end()
-			.state(4).keep().on('o').into(5).on('+').into(3).on('-').end()
-			.state(5).keep().on('o').into(6).on('+').into(4).on('-').end()
-			.state(6).keep().on('o').into(-1).on('+').into(5).on('-').end()
-			.state(-1).keep().on('o').keep().on('-').keep().on('+').end()
-		.endFSM();
-		/*@formatter:on*/
+		super("Bebrocarina", Integer.class, 1);
+
+		changeOnInput('o', 1, 1);
+		changeOnInput('+', 1, 2);
+		changeOnInput('-', 1, -1);
+
+		changeOnInput('o', 2, 2);
+		changeOnInput('+', 2, 3);
+		changeOnInput('-', 2, 1);
+
+		changeOnInput('o', 3, 3);
+		changeOnInput('+', 3, 4);
+		changeOnInput('-', 3, 2);
+
+		changeOnInput('o', 4, 4);
+		changeOnInput('+', 4, 5);
+		changeOnInput('-', 4, 3);
+
+		changeOnInput('o', 5, 5);
+		changeOnInput('+', 5, 6);
+		changeOnInput('-', 5, 4);
+
+		changeOnInput('o', 6, 6);
+		changeOnInput('+', 6, -1);
+		changeOnInput('-', 6, 5);
+
+		changeOnInput('o', -1, -1);
+		changeOnInput('+', -1, -1);
+		changeOnInput('-', -1, -1);
 	}
 
 	void prüfeObSpielbar(String wort) {
-		for (int initialState = 1; initialState <= 6; ++initialState) {
-			setInitialState(initialState);
-			init();
-			for (int i = 0; i < wort.length(); ++i) {
-				run(wort.charAt(i));
-			}
-			if (!getCurrentState().equals(-1)) {
-				System.out.println(wort + ": spielbar");
-				return;
-			}
+		init();
+		for (int i = 0; i < wort.length(); ++i) {
+			addInput(wort.charAt(i));
+			update();
+		}
+		if (stateID() != -1) {
+			System.out.println(wort + ": spielbar");
+			return;
 		}
 		System.out.println(wort + ": nicht spielbar");
 	}
