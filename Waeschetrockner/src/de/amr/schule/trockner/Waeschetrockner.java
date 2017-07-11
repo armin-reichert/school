@@ -1,23 +1,31 @@
 package de.amr.schule.trockner;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
+import static de.amr.easy.game.Application.LOG;
+
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import de.amr.easy.game.Application;
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
+import de.amr.easy.game.sprite.Sprite;
 import de.amr.easy.statemachine.StateMachine;
 
 public class Waeschetrockner extends GameEntity {
 
-	private StateMachine<String, String> hauptAutomat;
-	private StateMachine<String, String> türAutomat;
-	private StateMachine<String, String> zeitAutomat;
+	public StateMachine<String, String> hauptAutomat;
+	public StateMachine<String, String> türAutomat;
+	public StateMachine<String, String> zeitAutomat;
 
 	public Waeschetrockner(WaeschetrocknerApp app) {
+
+		setSprites(new Sprite(app.assets.image("trockner.jpg")));
+
+		// Steuerung
+
 		hauptAutomat = new StateMachine<>("Trockner", String.class, "Aus");
 
 		// Aus
@@ -75,11 +83,23 @@ public class Waeschetrockner extends GameEntity {
 		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(StateMachine::update);
 	}
 
-	@Override
-	public void draw(Graphics2D g) {
-		g.setColor(Color.white);
-		g.setFont(new Font("Sans", Font.PLAIN, 30));
-		g.drawString(String.format("Trockner: %s, Tür: %s, Zeit %s", hauptAutomat.stateID(), türAutomat.stateID(),
-				zeitAutomat.stateID()), 100, 100);
+	// hot spots
+
+	private Map<String, Rectangle> hotSpots = new HashMap<>();
+	{
+		hotSpots.put("StartTaste", new Rectangle(505, 209, 60, 30));
+		hotSpots.put("TürAuf", new Rectangle(679, 201, 74, 33));
+		hotSpots.put("EinAusTaste", new Rectangle(694, 146, 61, 32));
+	}
+
+	public void handleMouseClick(int x, int y) {
+		LOG.info(String.format("Click at x=%d y=%d", x, y));
+		for (String key : hotSpots.keySet()) {
+			Rectangle r = hotSpots.get(key);
+			if (r.contains(x, y)) {
+				LOG.info(key);
+				Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(a -> a.addInput(key));
+			}
+		}
 	}
 }
