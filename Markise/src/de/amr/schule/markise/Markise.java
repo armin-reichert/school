@@ -3,6 +3,7 @@ package de.amr.schule.markise;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 
 import de.amr.easy.game.Application;
@@ -13,7 +14,7 @@ import de.amr.easy.statemachine.StateMachine;
 public class Markise extends GameEntity {
 
 	private final MarkiseApp app;
-	private final StateMachine<String, String> automat;
+	final StateMachine<String, String> automat;
 
 	private int position;
 	private boolean esRegnet;
@@ -25,31 +26,35 @@ public class Markise extends GameEntity {
 
 		// Eingefahren
 
-		automat.changeOnInput("down", "Eingefahren", "FährtAus");
+		automat.changeOnInput("down", "Eingefahren", "FährtAus", () -> !esRegnet);
 
 		// FährtAus
 
-		automat.state("FährtAus").update = s -> {
-			position += 1;
-		};
+		automat.state("FährtAus").update = s -> ausfahren();
 
 		automat.change("FährtAus", "Ausgefahren", this::endpunktErreicht);
 
 		automat.changeOnInput("stop", "FährtAus", "Gestoppt");
 
-		automat.change("FährtAus", "Gestoppt", this::esRegnet);
+		automat.changeOnInput("up", "FährtAus", "FährtEin");
+
+		automat.change("FährtAus", "Gestoppt", () -> esRegnet);
 
 		// Ausgefahren
 
 		automat.changeOnInput("up", "Ausgefahren", "FährtEin");
 
+		automat.change("Ausgefahren", "FährtEin", () -> esRegnet);
+
 		// FährtEin
+
+		automat.state("FährtEin").update = s -> einfahren();
 
 		automat.change("FährtEin", "Eingefahren", this::anfangspunktErreicht);
 
-		automat.state("FährtEin").update = s -> {
-			position -= 1;
-		};
+		automat.changeOnInput("stop", "FährtEin", "Gestoppt");
+
+		automat.changeOnInput("down", "FährtEin", "FährtAus");
 
 		// Gestoppt
 
@@ -57,7 +62,15 @@ public class Markise extends GameEntity {
 
 		automat.changeOnInput("down", "Gestoppt", "FährtAus");
 
-		automat.change("Gestoppt", "FährtEin", this::esRegnet);
+		automat.change("Gestoppt", "FährtEin", () -> esRegnet);
+	}
+
+	void ausfahren() {
+		position += 1;
+	}
+
+	void einfahren() {
+		position -= 1;
 	}
 
 	boolean endpunktErreicht() {
@@ -66,10 +79,6 @@ public class Markise extends GameEntity {
 
 	boolean anfangspunktErreicht() {
 		return position == 0;
-	}
-
-	boolean esRegnet() {
-		return esRegnet;
 	}
 
 	@Override
@@ -95,10 +104,13 @@ public class Markise extends GameEntity {
 
 	@Override
 	public void draw(Graphics2D g) {
+		g.translate(tf.getX(), tf.getY());
 		g.setColor(Color.BLUE);
 		g.setFont(new Font("sans", Font.PLAIN, 36));
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.drawString(
 				String.format("Regen: %s, Position: %d, Zustand: %s", (esRegnet ? "Ja" : "Nein"), position, automat.stateID()),
-				tf.getX(), tf.getY());
+				0, 0);
+		g.translate(-tf.getX(), -tf.getY());
 	}
 }
