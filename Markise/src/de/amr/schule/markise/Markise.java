@@ -12,16 +12,16 @@ import de.amr.easy.statemachine.StateMachine;
 
 public class Markise extends GameEntity {
 
-	private MarkiseApp app;
-	private StateMachine<String, String> automat;
+	private final MarkiseApp app;
+	private final StateMachine<String, String> automat;
+
 	private int position;
 	private boolean esRegnet;
 
 	public Markise(MarkiseApp app) {
-
 		this.app = app;
 
-		automat = new StateMachine<>("Markise", String.class, "Eingefahren");
+		automat = new StateMachine<>("MarkisenSteuerung", String.class, "Eingefahren");
 
 		// Eingefahren
 
