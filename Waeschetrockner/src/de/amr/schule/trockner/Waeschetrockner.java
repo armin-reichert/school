@@ -1,9 +1,9 @@
 package de.amr.schule.trockner;
 
-import static de.amr.easy.game.Application.LOG;
-
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -16,12 +16,14 @@ import de.amr.easy.statemachine.StateMachine;
 
 public class Waeschetrockner extends GameEntity {
 
+	private WaeschetrocknerApp app;
+
 	public StateMachine<String, String> hauptAutomat;
 	public StateMachine<String, String> türAutomat;
-	public StateMachine<String, String> zeitAutomat;
+	public StateMachine<Integer, String> zeitAutomat;
 
 	public Waeschetrockner(WaeschetrocknerApp app) {
-
+		this.app = app;
 		setSprites(new Sprite(app.assets.image("trockner.jpg")));
 
 		// Steuerung
@@ -36,16 +38,8 @@ public class Waeschetrockner extends GameEntity {
 		hauptAutomat.changeOnInput("StartTaste", "Bereit", "Läuft", () -> türAutomat.is("Zu"));
 
 		// Läuft
-		hauptAutomat.state("Läuft").entry = state -> {
-			if (zeitAutomat.is("15")) {
-				state.setDuration(15 * 60);
-			} else if (zeitAutomat.is("20")) {
-				state.setDuration(20 * 60);
-			}
-		};
-		hauptAutomat.changeOnInput("EinAusTaste", "Läuft", "Aus", (läuft, aus) -> {
-			türAutomat.addInput("TürAuf");
-		});
+		hauptAutomat.state("Läuft").entry = state -> state.setDuration(app.pulse.secToTicks(zeitAutomat.stateID()));
+		hauptAutomat.changeOnInput("EinAusTaste", "Läuft", "Aus", (läuft, aus) -> türAutomat.addInput("TürAuf"));
 		hauptAutomat.changeOnInput("TürAuf", "Läuft", "Aus");
 		hauptAutomat.changeOnTimeout("Läuft", "Aus", (läuft, aus) -> app.assets.sound("fertig.mp3").play());
 
@@ -53,14 +47,24 @@ public class Waeschetrockner extends GameEntity {
 		türAutomat.changeOnInput("TürAuf", "Zu", "Auf");
 		türAutomat.changeOnInput("TürZu", "Auf", "Zu");
 
-		zeitAutomat = new StateMachine<>("Zeitwahl", String.class, "15");
-		zeitAutomat.changeOnInput("Auf20", "15", "20", () -> hauptAutomat.is("Bereit"));
-		zeitAutomat.changeOnInput("Auf15", "20", "15", () -> hauptAutomat.is("Bereit"));
+		zeitAutomat = new StateMachine<>("Zeitwahl", Integer.class, 15);
+		zeitAutomat.changeOnInput("Auf20", 15, 20, () -> hauptAutomat.is("Bereit"));
+		zeitAutomat.changeOnInput("Auf15", 20, 15, () -> hauptAutomat.is("Bereit"));
 	}
 
 	@Override
 	public void init() {
-		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(automat -> automat.setLogger(Application.LOG));
+		app.getShell().getCanvas().addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				handleMouseClick(e.getX(), e.getY());
+			}
+		});
+		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(automat -> {
+			automat.setLogger(Application.LOG);
+			automat.setFrequency(app.pulse.getFrequency());
+		});
 		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(StateMachine::init);
 	}
 
@@ -90,14 +94,16 @@ public class Waeschetrockner extends GameEntity {
 		hotSpots.put("StartTaste", new Rectangle(505, 209, 60, 30));
 		hotSpots.put("TürAuf", new Rectangle(679, 201, 74, 33));
 		hotSpots.put("EinAusTaste", new Rectangle(694, 146, 61, 32));
+		hotSpots.put("Auf20", new Rectangle(34, 171, 103, 32));
+		hotSpots.put("Auf15", new Rectangle(38, 205, 84, 22));
 	}
 
 	public void handleMouseClick(int x, int y) {
-		LOG.info(String.format("Click at x=%d y=%d", x, y));
+		// LOG.info(String.format("Click at x=%d y=%d", x, y));
 		for (String key : hotSpots.keySet()) {
 			Rectangle r = hotSpots.get(key);
 			if (r.contains(x, y)) {
-				LOG.info(key);
+				// LOG.info(key);
 				Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(a -> a.addInput(key));
 			}
 		}

@@ -12,43 +12,70 @@ import de.amr.easy.statemachine.StateMachine;
 
 public class Markise extends GameEntity {
 
-	StateMachine<String, String> automat;
-	int position;
+	private MarkiseApp app;
+	private StateMachine<String, String> automat;
+	private int position;
+	private boolean esRegnet;
 
-	public Markise() {
+	public Markise(MarkiseApp app) {
+
+		this.app = app;
+
 		automat = new StateMachine<>("Markise", String.class, "Eingefahren");
+
+		// Eingefahren
 
 		automat.changeOnInput("down", "Eingefahren", "FährtAus");
 
+		// FährtAus
+
 		automat.state("FährtAus").update = s -> {
 			position += 1;
-			Application.LOG.info(position + "");
 		};
 
 		automat.change("FährtAus", "Ausgefahren", this::endpunktErreicht);
 
+		automat.changeOnInput("stop", "FährtAus", "Gestoppt");
+
+		automat.change("FährtAus", "Gestoppt", this::esRegnet);
+
+		// Ausgefahren
+
 		automat.changeOnInput("up", "Ausgefahren", "FährtEin");
+
+		// FährtEin
 
 		automat.change("FährtEin", "Eingefahren", this::anfangspunktErreicht);
 
 		automat.state("FährtEin").update = s -> {
 			position -= 1;
-			Application.LOG.info(position + "");
 		};
+
+		// Gestoppt
+
+		automat.changeOnInput("up", "Gestoppt", "FährtEin");
+
+		automat.changeOnInput("down", "Gestoppt", "FährtAus");
+
+		automat.change("Gestoppt", "FährtEin", this::esRegnet);
 	}
 
 	boolean endpunktErreicht() {
-		return position == 180;
-
+		return position == 50;
 	}
 
 	boolean anfangspunktErreicht() {
 		return position == 0;
 	}
 
+	boolean esRegnet() {
+		return esRegnet;
+	}
+
 	@Override
 	public void init() {
 		automat.setLogger(Application.LOG);
+		automat.setFrequency(app.pulse.getFrequency());
 		automat.init();
 	}
 
@@ -56,20 +83,22 @@ public class Markise extends GameEntity {
 	public void update() {
 		if (Keyboard.keyPressedOnce(KeyEvent.VK_DOWN)) {
 			automat.addInput("down");
-		}
-
-		if (Keyboard.keyPressedOnce(KeyEvent.VK_UP)) {
+		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_UP)) {
 			automat.addInput("up");
+		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_SPACE)) {
+			automat.addInput("stop");
+		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_R)) {
+			esRegnet = !esRegnet;
 		}
-
 		automat.update();
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
 		g.setColor(Color.BLUE);
-		g.setFont(new Font("sans", Font.PLAIN, 60));
-		g.drawString(position + "", tf.getX(), tf.getY());
+		g.setFont(new Font("sans", Font.PLAIN, 36));
+		g.drawString(
+				String.format("Regen: %s, Position: %d, Zustand: %s", (esRegnet ? "Ja" : "Nein"), position, automat.stateID()),
+				tf.getX(), tf.getY());
 	}
-
 }

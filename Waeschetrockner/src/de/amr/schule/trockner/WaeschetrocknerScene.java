@@ -3,8 +3,6 @@ package de.amr.schule.trockner;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import de.amr.easy.game.scene.Scene;
 
@@ -20,14 +18,6 @@ public class WaeschetrocknerScene extends Scene<WaeschetrocknerApp> {
 	public void init() {
 		trockner = new Waeschetrockner(app);
 		trockner.init();
-
-		app.getShell().getCanvas().addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				trockner.handleMouseClick(e.getX(), e.getY());
-			}
-		});
 	}
 
 	@Override

@@ -14,9 +14,9 @@ public class MarkiseApp extends Application {
 
 	@Override
 	public void init() {
+		pulse.setFrequency(5);
 		MarkiseScene scene = new MarkiseScene(this);
 		views.add(scene);
 		views.show(scene);
 	}
-
 }

@@ -6,7 +6,7 @@ import de.amr.easy.game.scene.Scene;
 
 public class MarkiseScene extends Scene<MarkiseApp> {
 
-	Markise markise;
+	private Markise markise;
 
 	public MarkiseScene(MarkiseApp app) {
 		super(app);
@@ -14,13 +14,13 @@ public class MarkiseScene extends Scene<MarkiseApp> {
 
 	@Override
 	public void init() {
-		markise = new Markise();
+		markise = new Markise(app);
 		markise.init();
 	}
 
 	@Override
 	public void draw(Graphics2D pen) {
-		markise.center(getWidth(), getHeight());
+		markise.vCenter(getHeight());
 		markise.draw(pen);
 	}
 
@@ -28,5 +28,4 @@ public class MarkiseScene extends Scene<MarkiseApp> {
 	public void update() {
 		markise.update();
 	}
-
 }

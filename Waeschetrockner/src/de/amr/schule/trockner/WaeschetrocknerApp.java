@@ -8,6 +8,7 @@ public class WaeschetrocknerApp extends Application {
 		WaeschetrocknerApp app = new WaeschetrocknerApp();
 		app.settings.title = "Wäschetrockner Simulation";
 		app.settings.width = 800;
+		app.pulse.setFrequency(10);
 		launch(app);
 	}
 
