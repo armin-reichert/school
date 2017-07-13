@@ -18,7 +18,6 @@ public class MarkiseScene extends Scene<MarkiseApp> {
 		markise = new Markise(app);
 		remote = new Fernbedienung(app, markise);
 		markise.init();
-		markise.tf.setX(20);
 		markise.tf.setY(getHeight() - 100);
 	}
 

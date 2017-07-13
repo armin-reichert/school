@@ -41,7 +41,7 @@ public class Fernbedienung extends GameEntity {
 		}
 	}
 
-	protected void handleClick(int x, int y) {
+	private void handleClick(int x, int y) {
 		/*@formatter:off*/
 		BUTTONS.entrySet().stream()
 			.filter(entry -> entry.getValue().contains(x, y))
