@@ -13,12 +13,17 @@ import de.amr.easy.statemachine.StateMachine;
 
 public class Markise extends GameEntity {
 
+	private final MarkiseApp app;
 	private final Motor motor;
 	private final PositionsSensor positionsSensor;
 	private final RegenSensor regenSensor;
+	private final WindSensor windSensor;
 	private final StateMachine<String, String> automat;
 
+	private float position;
+
 	public Markise(MarkiseApp app) {
+		this.app = app;
 
 		// Aktoren
 		motor = new Motor(this);
@@ -26,6 +31,7 @@ public class Markise extends GameEntity {
 		// Sensoren
 		positionsSensor = new PositionsSensor(this);
 		regenSensor = new RegenSensor();
+		windSensor = new WindSensor();
 
 		// Steuerung
 
@@ -34,7 +40,7 @@ public class Markise extends GameEntity {
 		// Eingefahren
 
 		automat.state("Eingefahren").entry = s -> {
-			tf.setX(0);
+			position = 0;
 			motor.stop();
 		};
 
@@ -89,16 +95,25 @@ public class Markise extends GameEntity {
 		automat.setFrequency(app.pulse.getFrequency());
 	}
 
+	public float getPosition() {
+		return position;
+	}
+
+	public void setPosition(float position) {
+		this.position = position;
+	}
+
 	@Override
 	public void init() {
-		positionsSensor.setStartPositionX(0);
-		positionsSensor.setEndPositionX(100);
+		positionsSensor.setStartPosition(0);
+		positionsSensor.setEndPosition(100);
 		automat.init();
 	}
 
 	@Override
 	public void update() {
 		regenSensor.update();
+		windSensor.update();
 		automat.update();
 		motor.update();
 	}
@@ -107,11 +122,16 @@ public class Markise extends GameEntity {
 	public void draw(Graphics2D g) {
 		g.translate(tf.getX(), tf.getY());
 		g.setColor(Color.BLUE);
+		g.fillRect(0, 0, Math.round(position / 100f * app.settings.width), 50);
+		g.translate(-tf.getX(), -tf.getY());
+
+		g.translate(tf.getX(), tf.getY() + 80);
 		g.setFont(new Font("sans", Font.PLAIN, 20));
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.drawString(format("%s  Geschw: %.1f  Position: %.1f  Zustand: %s",
-				regenSensor.esRegnet() ? "Regen" : "Sonnenschein", tf.getVelocityX(), tf.getX(), automat.stateID()), 0, 0);
-		g.translate(-tf.getX(), -tf.getY());
+		g.drawString(format("Wetter: %s %s  Geschw: %.1f  Position: %.1f  Zustand: %s",
+				regenSensor.esRegnet() ? "Regen" : "Sonnenschein", windSensor.esIstWindig() ? "Windig" : "Windstill",
+				tf.getVelocityX(), position, automat.stateID()), 0, 0);
+		g.translate(-tf.getX(), -(tf.getY() + 80));
 	}
 
 	public void raiseEvent(String event) {

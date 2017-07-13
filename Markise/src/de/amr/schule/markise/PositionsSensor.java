@@ -2,8 +2,8 @@ package de.amr.schule.markise;
 
 public class PositionsSensor {
 
-	private float startPositionX;
-	private float endPositionX;
+	private float startPosition;
+	private float endPosition;
 
 	private final Markise markise;
 
@@ -11,20 +11,20 @@ public class PositionsSensor {
 		this.markise = markise;
 	}
 
-	public void setStartPositionX(float startPositionX) {
-		this.startPositionX = startPositionX;
+	public void setStartPosition(float startPosition) {
+		this.startPosition = startPosition;
 	}
 
-	public void setEndPositionX(float endPositionX) {
-		this.endPositionX = endPositionX;
+	public void setEndPosition(float endPosition) {
+		this.endPosition = endPosition;
 	}
 
 	public boolean endPositionErreicht() {
-		return markise.tf.getX() >= endPositionX;
+		return markise.getPosition() >= endPosition;
 	}
 
 	public boolean startPositionErreicht() {
-		return markise.tf.getX() <= startPositionX;
+		return markise.getPosition() <= startPosition;
 	}
 
 }
