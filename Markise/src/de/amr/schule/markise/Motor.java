@@ -14,7 +14,7 @@ public class Motor extends GameEntity {
 		markise.tf.setVelocityX(-2);
 	}
 
-	void schnellzurück() {
+	void schnellZurück() {
 		markise.tf.setVelocityX(-4);
 	}
 

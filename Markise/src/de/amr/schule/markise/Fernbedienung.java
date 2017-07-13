@@ -36,7 +36,7 @@ public class Fernbedienung extends GameEntity {
 	@Override
 	public void update() {
 		if (event != null) {
-			markise.automat.addInput(event);
+			markise.raiseEvent(event);
 			event = null;
 		}
 	}

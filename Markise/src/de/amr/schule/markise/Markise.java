@@ -1,66 +1,76 @@
 package de.amr.schule.markise;
 
+import static java.lang.String.format;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.KeyEvent;
 
 import de.amr.easy.game.Application;
 import de.amr.easy.game.entity.GameEntity;
-import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.statemachine.StateMachine;
 
 public class Markise extends GameEntity {
 
-	private final MarkiseApp app;
-	final StateMachine<String, String> automat;
-
-	final Motor motor;
-
-	private int regenTropfen;
+	private final Motor motor;
+	private final PositionsSensor positionsSensor;
+	private final RegenSensor regenSensor;
+	private final StateMachine<String, String> automat;
 
 	public Markise(MarkiseApp app) {
-		this.app = app;
 
+		// Aktoren
 		motor = new Motor(this);
+
+		// Sensoren
+		positionsSensor = new PositionsSensor(this);
+		regenSensor = new RegenSensor();
+
+		// Steuerung
 
 		automat = new StateMachine<>("MarkisenSteuerung", String.class, "Eingefahren");
 
 		// Eingefahren
 
-		automat.changeOnInput("down", "Eingefahren", "FährtAus", () -> !esRegnet());
-		automat.change("Eingefahren", "FährtAus", () -> !esRegnet());
+		automat.state("Eingefahren").entry = s -> {
+			tf.setX(0);
+			motor.stop();
+		};
+
+		automat.changeOnInput("down", "Eingefahren", "FährtAus", () -> !regenSensor.esRegnet());
+
+		automat.change("Eingefahren", "FährtAus", () -> !regenSensor.esRegnet());
 
 		// FährtAus
 
 		automat.state("FährtAus").update = s -> motor.vor();
 
-		automat.change("FährtAus", "Ausgefahren", this::endpunktErreicht, (s, t) -> motor.stop());
+		automat.change("FährtAus", "Ausgefahren", () -> positionsSensor.endPositionErreicht(), (s, t) -> motor.stop());
 
 		automat.changeOnInput("stop", "FährtAus", "Gestoppt", (s, t) -> motor.stop());
 
 		automat.changeOnInput("up", "FährtAus", "FährtEin");
 
-		automat.change("FährtAus", "Gestoppt", this::esRegnet, (s, t) -> motor.stop());
+		automat.change("FährtAus", "Gestoppt", () -> regenSensor.esRegnet(), (s, t) -> motor.stop());
 
 		// Ausgefahren
 
 		automat.changeOnInput("up", "Ausgefahren", "FährtEin");
 
-		automat.change("Ausgefahren", "FährtEin", this::esRegnet);
+		automat.change("Ausgefahren", "FährtEin", () -> regenSensor.esRegnet());
 
 		// FährtEin
 
 		automat.state("FährtEin").update = s -> {
-			if (esRegnet()) {
-				motor.schnellzurück();
+			if (regenSensor.esRegnet()) {
+				motor.schnellZurück();
 			} else {
 				motor.zurück();
 			}
 		};
 
-		automat.change("FährtEin", "Eingefahren", this::anfangspunktErreicht, (s, t) -> motor.stop());
+		automat.change("FährtEin", "Eingefahren", () -> positionsSensor.startPositionErreicht(), (s, t) -> motor.stop());
 
 		automat.changeOnInput("stop", "FährtEin", "Gestoppt", (s, t) -> motor.stop());
 
@@ -72,43 +82,23 @@ public class Markise extends GameEntity {
 
 		automat.changeOnInput("down", "Gestoppt", "FährtAus");
 
-		automat.change("Gestoppt", "FährtEin", this::esRegnet);
-	}
+		automat.change("Gestoppt", "FährtEin", () -> regenSensor.esRegnet());
 
-	boolean endpunktErreicht() {
-		return tf.getX() >= 50;
-	}
-
-	boolean anfangspunktErreicht() {
-		return tf.getX() <= 0;
-	}
-
-	boolean esRegnet() {
-		return regenTropfen > 10;
+		// Tracing
+		automat.setLogger(Application.LOG);
+		automat.setFrequency(app.pulse.getFrequency());
 	}
 
 	@Override
 	public void init() {
-		automat.setLogger(Application.LOG);
-		automat.setFrequency(app.pulse.getFrequency());
+		positionsSensor.setStartPositionX(0);
+		positionsSensor.setEndPositionX(100);
 		automat.init();
-		tf.setVelocityX(0);
-		tf.setX(0);
 	}
 
 	@Override
 	public void update() {
-		if (Keyboard.keyPressedOnce(KeyEvent.VK_DOWN)) {
-			automat.addInput("down");
-		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_UP)) {
-			automat.addInput("up");
-		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_SPACE)) {
-			automat.addInput("stop");
-		} else if (Keyboard.keyDown(KeyEvent.VK_R)) {
-			regenTropfen += 1;
-		} else if (Keyboard.keyDown(KeyEvent.VK_S)) {
-			regenTropfen -= 1;
-		}
+		regenSensor.update();
 		automat.update();
 		motor.update();
 	}
@@ -119,8 +109,12 @@ public class Markise extends GameEntity {
 		g.setColor(Color.BLUE);
 		g.setFont(new Font("sans", Font.PLAIN, 20));
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.drawString(String.format("%s, Geschw: %.1f, Position: %.1f, Zustand: %s", (esRegnet() ? "Regen" : "Sonnenschein"),
-				tf.getVelocityX(), tf.getX(), automat.stateID()), 0, 0);
+		g.drawString(format("%s  Geschw: %.1f  Position: %.1f  Zustand: %s",
+				regenSensor.esRegnet() ? "Regen" : "Sonnenschein", tf.getVelocityX(), tf.getX(), automat.stateID()), 0, 0);
 		g.translate(-tf.getX(), -tf.getY());
+	}
+
+	public void raiseEvent(String event) {
+		automat.addInput(event);
 	}
 }
