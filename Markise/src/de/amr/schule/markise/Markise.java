@@ -20,7 +20,7 @@ public class Markise extends GameEntity {
 	private final WindSensor windSensor;
 	private final StateMachine<String, String> automat;
 
-	private float position;
+	private int position;
 
 	public Markise(MarkiseApp app) {
 		this.app = app;
@@ -39,28 +39,39 @@ public class Markise extends GameEntity {
 
 		// Eingefahren
 
-		automat.state("Eingefahren").entry = s -> {
-			position = 0;
-			motor.stop();
-		};
+		automat.state("Eingefahren").entry = s -> motor.stop();
 
 		automat.changeOnInput("down", "Eingefahren", "FährtAus", () -> !regenSensor.esRegnet());
 
-		automat.change("Eingefahren", "FährtAus", () -> !regenSensor.esRegnet());
-
 		// FährtAus
 
-		automat.state("FährtAus").update = s -> motor.vor();
+		automat.state("FährtAus").entry = s -> {
+			motor.vor();
+			app.assets.sound("bewegen.mp3").play();
+		};
 
-		automat.change("FährtAus", "Ausgefahren", () -> positionsSensor.endPositionErreicht(), (s, t) -> motor.stop());
+		automat.state("FährtAus").update = s -> {
+			if (position > 50 && !app.assets.sound("quietschen.mp3").isRunning()) {
+				app.assets.sound("quietschen.mp3").play();
+			}
+		};
 
-		automat.changeOnInput("stop", "FährtAus", "Gestoppt", (s, t) -> motor.stop());
+		automat.state("FährtAus").exit = s -> {
+			app.assets.sound("quietschen.mp3").stop();
+			app.assets.sound("bewegen.mp3").stop();
+		};
+
+		automat.change("FährtAus", "Ausgefahren", () -> positionsSensor.inEndPosition());
+
+		automat.changeOnInput("stop", "FährtAus", "Gestoppt");
 
 		automat.changeOnInput("up", "FährtAus", "FährtEin");
 
-		automat.change("FährtAus", "Gestoppt", () -> regenSensor.esRegnet(), (s, t) -> motor.stop());
+		automat.change("FährtAus", "Gestoppt", () -> regenSensor.esRegnet());
 
 		// Ausgefahren
+
+		automat.state("Ausgefahren").entry = s -> motor.stop();
 
 		automat.changeOnInput("up", "Ausgefahren", "FährtEin");
 
@@ -68,21 +79,28 @@ public class Markise extends GameEntity {
 
 		// FährtEin
 
-		automat.state("FährtEin").update = s -> {
+		automat.state("FährtEin").entry = s -> {
 			if (regenSensor.esRegnet()) {
 				motor.schnellZurück();
 			} else {
 				motor.zurück();
 			}
+			app.assets.sound("bewegen.mp3").play();
 		};
 
-		automat.change("FährtEin", "Eingefahren", () -> positionsSensor.startPositionErreicht(), (s, t) -> motor.stop());
+		automat.state("FährtEin").exit = s -> {
+			app.assets.sound("bewegen.mp3").stop();
+		};
 
-		automat.changeOnInput("stop", "FährtEin", "Gestoppt", (s, t) -> motor.stop());
+		automat.change("FährtEin", "Eingefahren", () -> positionsSensor.inStartPosition());
+
+		automat.changeOnInput("stop", "FährtEin", "Gestoppt");
 
 		automat.changeOnInput("down", "FährtEin", "FährtAus");
 
 		// Gestoppt
+
+		automat.state("Gestoppt").entry = s -> motor.stop();
 
 		automat.changeOnInput("up", "Gestoppt", "FährtEin");
 
@@ -99,14 +117,14 @@ public class Markise extends GameEntity {
 		return position;
 	}
 
-	public void setPosition(float position) {
+	public void setPosition(int position) {
 		this.position = position;
 	}
 
 	@Override
 	public void init() {
-		positionsSensor.setStartPosition(0);
-		positionsSensor.setEndPosition(100);
+		app.assets.sound("bewegen.mp3");
+		app.assets.sound("quietschen.mp3");
 		automat.init();
 	}
 
@@ -122,13 +140,13 @@ public class Markise extends GameEntity {
 	public void draw(Graphics2D g) {
 		g.translate(tf.getX(), tf.getY());
 		g.setColor(Color.BLUE);
-		g.fillRect(0, 0, Math.round(position / 100f * app.settings.width), 50);
+		g.fillRect(0, 0, Math.round(position / 100f * app.settings.width), 30);
 		g.translate(-tf.getX(), -tf.getY());
 
 		g.translate(tf.getX(), tf.getY() + 80);
 		g.setFont(new Font("sans", Font.PLAIN, 20));
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.drawString(format("Wetter: %s %s  Geschw: %.1f  Position: %.1f  Zustand: %s",
+		g.drawString(format("Wetter: %s %s  Geschw: %.1f  Position: %d%%  Zustand: %s",
 				regenSensor.esRegnet() ? "Regen" : "Sonnenschein", windSensor.esIstWindig() ? "Windig" : "Windstill",
 				tf.getVelocityX(), position, automat.stateID()), 0, 0);
 		g.translate(-tf.getX(), -(tf.getY() + 80));

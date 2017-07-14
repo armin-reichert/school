@@ -28,9 +28,12 @@ public class Motor extends GameEntity {
 
 	@Override
 	public void update() {
-		if (markise.getPosition() + markise.tf.getVelocityX() < 0) {
+		int newPosition = Math.round(markise.getPosition() + markise.tf.getVelocityX());
+		if (newPosition < 0) {
 			markise.tf.setVelocityX(-markise.getPosition());
+			markise.setPosition(Math.round(markise.getPosition() + markise.tf.getVelocityX()));
+		} else {
+			markise.setPosition(newPosition);
 		}
-		markise.setPosition(markise.getPosition() + markise.tf.getVelocityX());
 	}
 }
