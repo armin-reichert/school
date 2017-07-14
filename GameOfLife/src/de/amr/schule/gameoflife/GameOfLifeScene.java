@@ -10,25 +10,31 @@ import de.amr.easy.game.scene.Scene;
 
 public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 
-	private int gridSize = 500;
-	private int updatesPerSecond = 10;
+	private int gridSize = 250;
+	private int updatesPerSecond = 5;
 
 	private final Random rand = new Random();
-	private boolean[][] grid;
+	private boolean[][] current, grid1, grid2;
 
 	public GameOfLifeScene(GameOfLifeApp app) {
 		super(app);
-		grid = new boolean[gridSize][gridSize];
+		grid1 = new boolean[gridSize][gridSize];
+		grid2 = new boolean[gridSize][gridSize];
+		current = grid1;
 		app.pulse.setFrequency(updatesPerSecond);
 	}
 
 	@Override
 	public void init() {
+		int size = 100;
+		int center = gridSize / 2;
 		for (int row = 0; row < gridSize; row += 1) {
 			for (int col = 0; col < gridSize; col += 1) {
-				// grid[row][col] = (rand.nextInt(10) < 3 ? false : true);
-				// grid[row][col] = (row + col) % 4 == 0;
-				grid[row][col] = (row >= 50 && row <= gridSize - 50) && (col >= 50 && col <= gridSize - 50);
+				// current[row][col] = (row >= margin && row < gridSize - margin) && (col >= margin && col <
+				// gridSize - margin);
+				// current[row][col] = col % 3 == 0 || (col + row) % 5 == 0;
+				current[row][col] = center - size / 2 <= row && row <= center + size / 2 && center - size / 2 <= col
+						&& col <= center + size / 2;
 			}
 		}
 	}
@@ -38,20 +44,7 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 		if (Keyboard.keyPressedOnce(KeyEvent.VK_SPACE)) {
 			init();
 		}
-		boolean[][] next = new boolean[gridSize][gridSize];
-		for (int row = 0; row < gridSize; row += 1) {
-			for (int col = 0; col < gridSize; col += 1) {
-				int numNeighbors = countNeighbors(row, col);
-				if (numNeighbors > 3 || numNeighbors < 2) {
-					next[row][col] = false; // Tod
-				} else if (numNeighbors == 3) {
-					next[row][col] = true; // Geburt
-				} else {
-					next[row][col] = grid[row][col];
-				}
-			}
-		}
-		grid = next;
+		computeNextGrid();
 	}
 
 	@Override
@@ -60,12 +53,29 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 		g.setColor(Color.BLACK);
 		for (int row = 0; row < gridSize; row += 1) {
 			for (int col = 0; col < gridSize; col += 1) {
-				if (grid[row][col]) {
+				if (current[row][col]) {
 					// g.setColor(new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
 					g.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
 				}
 			}
 		}
+	}
+
+	private void computeNextGrid() {
+		boolean[][] next = current == grid1 ? grid2 : grid1;
+		for (int row = 0; row < gridSize; row += 1) {
+			for (int col = 0; col < gridSize; col += 1) {
+				int numNeighbors = countNeighbors(row, col);
+				if (numNeighbors > 3 || numNeighbors < 2) {
+					next[row][col] = false; // Tod
+				} else if (numNeighbors == 3) {
+					next[row][col] = true; // Geburt
+				} else {
+					next[row][col] = current[row][col];
+				}
+			}
+		}
+		current = next;
 	}
 
 	private int countNeighbors(int row, int col) {
@@ -84,12 +94,12 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 				} else if (nc == gridSize) {
 					nc = 0;
 				}
-				if (grid[nr][nc]) {
+				if (current[nr][nc]) {
 					++n;
 				}
 			}
 		}
-		if (grid[row][col]) {
+		if (current[row][col]) {
 			--n;
 		}
 		return n;
