@@ -13,26 +13,23 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 	private int gridSize = 250;
 	private int updatesPerSecond = 5;
 
-	private final Random rand = new Random();
 	private boolean[][] current, grid1, grid2;
 
 	public GameOfLifeScene(GameOfLifeApp app) {
 		super(app);
+		app.pulse.setFrequency(updatesPerSecond);
 		grid1 = new boolean[gridSize][gridSize];
 		grid2 = new boolean[gridSize][gridSize];
 		current = grid1;
-		app.pulse.setFrequency(updatesPerSecond);
 	}
 
 	@Override
 	public void init() {
-		int size = 100;
+		Random rand = new Random();
+		int size = rand.nextInt(gridSize - 20);
 		int center = gridSize / 2;
 		for (int row = 0; row < gridSize; row += 1) {
 			for (int col = 0; col < gridSize; col += 1) {
-				// current[row][col] = (row >= margin && row < gridSize - margin) && (col >= margin && col <
-				// gridSize - margin);
-				// current[row][col] = col % 3 == 0 || (col + row) % 5 == 0;
 				current[row][col] = center - size / 2 <= row && row <= center + size / 2 && center - size / 2 <= col
 						&& col <= center + size / 2;
 			}
@@ -79,29 +76,27 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 	}
 
 	private int countNeighbors(int row, int col) {
+		int rowBefore = row > 0 ? row - 1 : gridSize - 1;
+		int colBefore = col > 0 ? col - 1 : gridSize - 1;
+		int rowAfter = row < gridSize - 1 ? row + 1 : 0;
+		int colAfter = col < gridSize - 1 ? col + 1 : 0;
 		int n = 0;
-		for (int r = row - 1; r <= row + 1; ++r) {
-			for (int c = col - 1; c <= col + 1; ++c) {
-				int nr = r;
-				if (nr < 0) {
-					nr = gridSize - 1;
-				} else if (nr == gridSize) {
-					nr = 0;
-				}
-				int nc = c;
-				if (nc < 0) {
-					nc = gridSize - 1;
-				} else if (nc == gridSize) {
-					nc = 0;
-				}
-				if (current[nr][nc]) {
-					++n;
-				}
-			}
-		}
-		if (current[row][col]) {
-			--n;
-		}
+		if (current[rowBefore][colBefore])
+			++n;
+		if (current[rowBefore][col])
+			++n;
+		if (current[rowBefore][colAfter])
+			++n;
+		if (current[row][colBefore])
+			++n;
+		if (current[row][colAfter])
+			++n;
+		if (current[rowAfter][colBefore])
+			++n;
+		if (current[rowAfter][col])
+			++n;
+		if (current[rowAfter][colAfter])
+			++n;
 		return n;
 	}
 }
