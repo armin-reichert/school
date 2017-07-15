@@ -12,14 +12,12 @@ public class MarkiseApp extends Application {
 		app.settings.width = 800;
 		app.settings.height = 600;
 		app.settings.bgColor = Color.WHITE;
+		app.pulse.setFrequency(5);
 		launch(app);
 	}
 
 	@Override
 	public void init() {
-		pulse.setFrequency(5);
-		MarkiseScene scene = new MarkiseScene(this);
-		views.add(scene);
-		views.show(scene);
+		views.show(new MarkiseScene(this));
 	}
 }

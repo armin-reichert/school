@@ -1,53 +1,107 @@
 package de.amr.schule.gameoflife;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.util.LinkedHashMap;
 import java.util.Random;
 
 import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.game.scene.Scene;
 
+/**
+ * Game of life.
+ * 
+ * @author Armin Reichert & Anna Schillo
+ */
 public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 
-	private int gridSize = 250;
-	private int updatesPerSecond = 5;
+	private static final LinkedHashMap<String, String> FIGURES = new LinkedHashMap<>();
+	static {
+		FIGURES.put("GLIDER", ".x.\n..x\nxxx");
+		FIGURES.put("SMALL_EXPLODER", ".x.\nxxx\nx.x\n.x.");
+		FIGURES.put("EXPLODER", "x.x.x\nx...x\nx...x\nx...x\nx.x.x");
+		FIGURES.put("TEN_CELL_ROW", "xxxxxxxxxx");
+		FIGURES.put("LIGHTWEIGHT_SPACESHIP", ".xxxx\nx...x\n....x\nx..x.");
+		FIGURES.put("Tumbler", ".xx.xx.\n.xx.xx.\n..x.x..\nx.x.x.x\nx.x.x.x\nxx...xx");
+	}
+	private static String[] FIGURE_NAMES = FIGURES.keySet().toArray(new String[FIGURES.size()]);
 
+	private final int gridSize = 500;
+	private final int cellSize;
+	private int updatesPerSecond = 10;
 	private boolean[][] current, grid1, grid2;
+	private int selectedIndex;
 
 	public GameOfLifeScene(GameOfLifeApp app) {
 		super(app);
+		cellSize = app.settings.width / gridSize;
 		app.pulse.setFrequency(updatesPerSecond);
-		grid1 = new boolean[gridSize][gridSize];
-		grid2 = new boolean[gridSize][gridSize];
-		current = grid1;
 	}
 
 	@Override
 	public void init() {
-		Random rand = new Random();
-		int size = rand.nextInt(gridSize - 20);
-		int center = gridSize / 2;
-		for (int row = 0; row < gridSize; row += 1) {
-			for (int col = 0; col < gridSize; col += 1) {
-				current[row][col] = center - size / 2 <= row && row <= center + size / 2 && center - size / 2 <= col
-						&& col <= center + size / 2;
-			}
-		}
+		grid1 = new boolean[gridSize][gridSize];
+		grid2 = new boolean[gridSize][gridSize];
+		current = grid1;
+		selectedIndex = 0;
+		selectFigure();
 	}
 
 	@Override
 	public void update() {
 		if (Keyboard.keyPressedOnce(KeyEvent.VK_SPACE)) {
-			init();
+			grid1 = new boolean[gridSize][gridSize];
+			grid2 = new boolean[gridSize][gridSize];
+			current = grid1;
+			selectedIndex += 1;
+			if (selectedIndex > FIGURES.size()) {
+				selectedIndex = 0;
+			}
+			selectFigure();
 		}
-		computeNextGrid();
+		updateGrid();
+	}
+
+	private String selectedFigureName() {
+		return FIGURE_NAMES[selectedIndex];
+	}
+
+	private void selectFigure() {
+		if (selectedIndex == FIGURES.size()) {
+			randomSquare(gridSize / 2, gridSize / 2);
+		} else {
+			figure(FIGURES.get(selectedFigureName()), gridSize / 2, gridSize / 2);
+		}
+	}
+
+	private void randomSquare(int row, int col) {
+		Random rand = new Random();
+		int halfSize = rand.nextInt(gridSize - 20) / 2;
+		int center = gridSize / 2;
+		for (int r = 0; r < gridSize; r += 1) {
+			for (int c = 0; c < gridSize; c += 1) {
+				if (r > center - halfSize && r < center + halfSize && c > center - halfSize && c < center + halfSize) {
+					current[r][c] = true;
+				}
+			}
+		}
+	}
+
+	private void figure(String bits, int row, int col) {
+		String[] bitRows = bits.split("\n");
+		for (int r = 0; r < bitRows.length; ++r) {
+			String bitRow = bitRows[r];
+			for (int c = 0; c < bitRow.length(); ++c) {
+				current[row + r][col + c] = bitRow.charAt(c) == 'x';
+			}
+		}
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		int cellSize = app.settings.width / gridSize;
-		g.setColor(Color.BLACK);
+		g.setColor(Color.YELLOW);
 		for (int row = 0; row < gridSize; row += 1) {
 			for (int col = 0; col < gridSize; col += 1) {
 				if (current[row][col]) {
@@ -56,46 +110,47 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 				}
 			}
 		}
+		g.setFont(new Font("Monospaced", Font.BOLD, 20));
+		g.setColor(Color.WHITE);
+		if (selectedIndex < FIGURES.size()) {
+			g.drawString(selectedFigureName(), 20, getHeight() - 40);
+		} else {
+			g.drawString("Random square", 20, getHeight() - 40);
+		}
 	}
 
-	private void computeNextGrid() {
+	private void updateGrid() {
 		boolean[][] next = current == grid1 ? grid2 : grid1;
 		for (int row = 0; row < gridSize; row += 1) {
 			for (int col = 0; col < gridSize; col += 1) {
-				int numNeighbors = countNeighbors(row, col);
-				if (numNeighbors > 3 || numNeighbors < 2) {
-					next[row][col] = false; // Tod
-				} else if (numNeighbors == 3) {
-					next[row][col] = true; // Geburt
-				} else {
-					next[row][col] = current[row][col];
-				}
+				int numNeighbors = countNeighbors(current, row, col);
+				next[row][col] = (current[row][col] && (numNeighbors == 2 || numNeighbors == 3)) || numNeighbors == 3;
 			}
 		}
 		current = next;
 	}
 
-	private int countNeighbors(int row, int col) {
+	private int countNeighbors(boolean[][] grid, int row, int col) {
 		int rowBefore = row > 0 ? row - 1 : gridSize - 1;
 		int colBefore = col > 0 ? col - 1 : gridSize - 1;
 		int rowAfter = row < gridSize - 1 ? row + 1 : 0;
 		int colAfter = col < gridSize - 1 ? col + 1 : 0;
 		int n = 0;
-		if (current[rowBefore][colBefore])
+		if (grid[rowBefore][colBefore])
 			++n;
-		if (current[rowBefore][col])
+		if (grid[rowBefore][col])
 			++n;
-		if (current[rowBefore][colAfter])
+		if (grid[rowBefore][colAfter])
 			++n;
-		if (current[row][colBefore])
+		if (grid[row][colBefore])
 			++n;
-		if (current[row][colAfter])
+		if (grid[row][colAfter])
 			++n;
-		if (current[rowAfter][colBefore])
+		if (grid[rowAfter][colBefore])
 			++n;
-		if (current[rowAfter][col])
+		if (grid[rowAfter][col])
 			++n;
-		if (current[rowAfter][colAfter])
+		if (grid[rowAfter][colAfter])
 			++n;
 		return n;
 	}

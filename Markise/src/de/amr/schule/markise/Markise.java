@@ -11,6 +11,11 @@ import de.amr.easy.game.Application;
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.statemachine.StateMachine;
 
+/**
+ * Modell einer Markise mit Wind- und Regensensor.
+ * 
+ * @author Armin Reichert & Anna u. Peter Schillo
+ */
 public class Markise extends GameEntity {
 
 	private final MarkiseApp app;
@@ -113,6 +118,10 @@ public class Markise extends GameEntity {
 		automat.setFrequency(app.pulse.getFrequency());
 	}
 
+	public void raiseEvent(String event) {
+		automat.addInput(event);
+	}
+
 	public float getPosition() {
 		return position;
 	}
@@ -138,21 +147,20 @@ public class Markise extends GameEntity {
 
 	@Override
 	public void draw(Graphics2D g) {
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		// Balken zum Anzeigen der Ausfahrposition
 		g.translate(tf.getX(), tf.getY());
 		g.setColor(Color.BLUE);
 		g.fillRect(0, 0, Math.round(position / 100f * app.settings.width), 30);
 		g.translate(-tf.getX(), -tf.getY());
 
+		// Statustext
 		g.translate(tf.getX(), tf.getY() + 80);
-		g.setFont(new Font("sans", Font.PLAIN, 20));
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setFont(new Font("Monospaced", Font.BOLD, 16));
 		g.drawString(format("Wetter: %s %s  Geschw: %.1f  Position: %d%%  Zustand: %s",
 				regenSensor.esRegnet() ? "Regen" : "Sonnenschein", windSensor.esIstWindig() ? "Windig" : "Windstill",
 				tf.getVelocityX(), position, automat.stateID()), 0, 0);
 		g.translate(-tf.getX(), -(tf.getY() + 80));
-	}
-
-	public void raiseEvent(String event) {
-		automat.addInput(event);
 	}
 }

@@ -4,6 +4,11 @@ import java.awt.Color;
 
 import de.amr.easy.game.Application;
 
+/**
+ * Game of life.
+ * 
+ * @author Armin Reichert & Anna Schillo
+ */
 public class GameOfLifeApp extends Application {
 
 	public static void main(String[] args) {
@@ -11,15 +16,12 @@ public class GameOfLifeApp extends Application {
 		app.settings.title = "Game of Life";
 		app.settings.width = 1000;
 		app.settings.height = 1000;
-		app.settings.bgColor = Color.WHITE;
+		app.settings.bgColor = Color.DARK_GRAY;
 		launch(app);
 	}
 
 	@Override
 	public void init() {
-		GameOfLifeScene scene = new GameOfLifeScene(this);
-		views.add(scene);
-		views.show(scene);
+		views.show(new GameOfLifeScene(this));
 	}
-
 }
