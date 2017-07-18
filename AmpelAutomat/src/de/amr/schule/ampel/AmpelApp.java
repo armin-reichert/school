@@ -2,6 +2,11 @@ package de.amr.schule.ampel;
 
 import de.amr.easy.game.Application;
 
+/**
+ * Simuliert eine Ampel mithilfe eines Zustandsautomaten.
+ * 
+ * @author Armin Reichert & Anna Schillo
+ */
 public class AmpelApp extends Application {
 
 	public static void main(String[] args) {
@@ -14,7 +19,6 @@ public class AmpelApp extends Application {
 
 	@Override
 	public void init() {
-		AmpelScene scene = views.add(new AmpelScene(this));
-		views.show(scene);
+		views.select(new AmpelScene(this));
 	}
 }

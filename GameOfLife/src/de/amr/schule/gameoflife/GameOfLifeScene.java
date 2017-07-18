@@ -78,7 +78,7 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 
 	private void randomSquare(int row, int col) {
 		Random rand = new Random();
-		int halfSize = rand.nextInt(gridSize - 20) / 2;
+		int halfSize = rand.nextInt(gridSize * 3 / 4) / 2;
 		int center = gridSize / 2;
 		for (int r = 0; r < gridSize; r += 1) {
 			for (int c = 0; c < gridSize; c += 1) {

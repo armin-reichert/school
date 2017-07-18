@@ -18,6 +18,6 @@ public class MarkiseApp extends Application {
 
 	@Override
 	public void init() {
-		views.show(new MarkiseScene(this));
+		views.select(new MarkiseScene(this));
 	}
 }

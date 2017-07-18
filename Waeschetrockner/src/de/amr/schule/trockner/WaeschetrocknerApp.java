@@ -16,6 +16,6 @@ public class WaeschetrocknerApp extends Application {
 	public void init() {
 		WaeschetrocknerScene scene = new WaeschetrocknerScene(this);
 		views.add(scene);
-		views.show(scene);
+		views.select(scene);
 	}
 }

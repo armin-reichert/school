@@ -26,12 +26,12 @@ public class Garagentor extends GameEntity {
 		// Geschlossen
 
 		automat.state("Geschlossen").entry = s -> {
-			lichtBrennt = true;
+			lichtAn();
 			s.setDuration(app.pulse.secToTicks(5));
 		};
 
 		automat.state("Geschlossen").exit = s -> {
-			lichtBrennt = false;
+			lichtAus();
 		};
 
 		automat.changeOnInput("SchalterGedrückt", "Geschlossen", "Öffnet");
@@ -39,7 +39,7 @@ public class Garagentor extends GameEntity {
 		automat.changeOnInput("FBGedrückt", "Geschlossen", "Öffnet");
 
 		automat.changeOnTimeout("Geschlossen", "Geschlossen", (s, t) -> {
-			lichtBrennt = false;
+			lichtAus();
 		});
 
 		// Öffnet
@@ -94,6 +94,14 @@ public class Garagentor extends GameEntity {
 
 	private boolean hindernisErkannt() {
 		return hindernis;
+	}
+
+	private void lichtAn() {
+		lichtBrennt = true;
+	}
+
+	private void lichtAus() {
+		lichtBrennt = false;
 	}
 
 	@Override

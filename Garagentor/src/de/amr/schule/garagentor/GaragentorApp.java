@@ -23,7 +23,7 @@ public class GaragentorApp extends Application {
 
 	@Override
 	public void init() {
-		views.show(new GaragentorScene(this));
+		views.select(new GaragentorScene(this));
 	}
 
 }

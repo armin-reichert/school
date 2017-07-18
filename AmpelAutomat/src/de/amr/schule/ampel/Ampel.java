@@ -11,25 +11,36 @@ import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.statemachine.StateMachine;
 
+/**
+ * Die Ampel.
+ * 
+ * @author Armin Reichert & Anna Schillo
+ *
+ */
 public class Ampel extends GameEntity {
 
-	private StateMachine<String, String> automat;
+	private final StateMachine<String, String> automat;
 	private int width;
 	private int height;
 
 	public Ampel(AmpelApp app) {
-
 		width = 100;
 		height = 3 * width;
 
-		automat = new StateMachine<>("Ampel", String.class, "Aus");
+		// Definiere die Steuerung durch einen Automaten:
+		automat = new StateMachine<>("Ampel Steuerung", String.class, "Aus");
 
-		automat.change("Aus", "Rot", () -> Keyboard.keyPressedOnce(KeyEvent.VK_6), (aus, rot) -> rot.setDuration(3 * 60));
+		// Ampel beim Drücken der SPACE-Taste einschalten, für 3 Sekunden auf Rot
+		automat.change("Aus", "Rot", () -> Keyboard.keyPressedOnce(KeyEvent.VK_SPACE),
+				(aus, rot) -> rot.setDuration(3 * 60));
 
+		// Für 5 Sekunden auf Grün
 		automat.changeOnTimeout("Rot", "Grün", (rot, grün) -> grün.setDuration(5 * 60));
 
+		// Für 1 Sekunde auf Gelb
 		automat.changeOnTimeout("Grün", "Gelb", (grün, gelb) -> gelb.setDuration(1 * 60));
 
+		// Für 3 Sekunden auf Rot
 		automat.changeOnTimeout("Gelb", "Rot", (gelb, rot) -> rot.setDuration(3 * 60));
 	}
 
