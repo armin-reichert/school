@@ -20,6 +20,6 @@ public class MarkiseApp extends Application {
 
 	@Override
 	public void init() {
-		views.select(new MarkiseScene(this));
+		selectView(new MarkiseScene(this));
 	}
 }

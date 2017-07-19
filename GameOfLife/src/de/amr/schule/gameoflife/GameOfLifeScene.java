@@ -12,33 +12,36 @@ import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.game.scene.Scene;
 
 /**
- * Game of life.
+ * Game of life scene.
  * 
  * @author Armin Reichert & Anna Schillo
  */
 public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 
-	private static final Map<String, String> FIGURES = new LinkedHashMap<>();
+	private static final Map<String, String> FIGURES;
+	private static final String[] FIGURE_NAMES;
+
 	static {
+		FIGURES = new LinkedHashMap<>();
 		FIGURES.put("GLIDER", ".x.\n..x\nxxx");
 		FIGURES.put("SMALL_EXPLODER", ".x.\nxxx\nx.x\n.x.");
 		FIGURES.put("EXPLODER", "x.x.x\nx...x\nx...x\nx...x\nx.x.x");
 		FIGURES.put("TEN_CELL_ROW", "xxxxxxxxxx");
 		FIGURES.put("LIGHTWEIGHT_SPACESHIP", ".xxxx\nx...x\n....x\nx..x.");
 		FIGURES.put("Tumbler", ".xx.xx.\n.xx.xx.\n..x.x..\nx.x.x.x\nx.x.x.x\nxx...xx");
+		FIGURE_NAMES = FIGURES.keySet().toArray(new String[FIGURES.size()]);
 	}
-	private static String[] FIGURE_NAMES = FIGURES.keySet().toArray(new String[FIGURES.size()]);
 
-	private final int gridSize = 100;
-	private final int cellSize;
-	private int updatesPerSecond = 10;
+	private int gridSize;
+	private int cellSize;
 	private boolean[][] current, grid1, grid2;
-	private int selectedIndex;
+	private int selectedFigureIndex;
 
 	public GameOfLifeScene(GameOfLifeApp app) {
 		super(app);
+		gridSize = 100;
 		cellSize = app.settings.width / gridSize;
-		app.pulse.setFrequency(updatesPerSecond);
+		app.pulse.setFrequency(10);
 	}
 
 	@Override
@@ -46,7 +49,7 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 		grid1 = new boolean[gridSize][gridSize];
 		grid2 = new boolean[gridSize][gridSize];
 		current = grid1;
-		selectedIndex = 0;
+		selectedFigureIndex = 0;
 		selectFigure();
 	}
 
@@ -56,9 +59,9 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 			grid1 = new boolean[gridSize][gridSize];
 			grid2 = new boolean[gridSize][gridSize];
 			current = grid1;
-			selectedIndex += 1;
-			if (selectedIndex > FIGURES.size()) {
-				selectedIndex = 0;
+			selectedFigureIndex += 1;
+			if (selectedFigureIndex > FIGURES.size()) {
+				selectedFigureIndex = 0;
 			}
 			selectFigure();
 		}
@@ -66,11 +69,11 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 	}
 
 	private String selectedFigureName() {
-		return FIGURE_NAMES[selectedIndex];
+		return FIGURE_NAMES[selectedFigureIndex];
 	}
 
 	private void selectFigure() {
-		if (selectedIndex == FIGURES.size()) {
+		if (selectedFigureIndex == FIGURES.size()) {
 			randomSquare(gridSize / 2, gridSize / 2);
 		} else {
 			figure(FIGURES.get(selectedFigureName()), gridSize / 2, gridSize / 2);
@@ -113,7 +116,7 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 		}
 		g.setFont(new Font("Monospaced", Font.BOLD, 20));
 		g.setColor(Color.WHITE);
-		if (selectedIndex < FIGURES.size()) {
+		if (selectedFigureIndex < FIGURES.size()) {
 			g.drawString(selectedFigureName(), 20, getHeight() - 40);
 		} else {
 			g.drawString("Random square", 20, getHeight() - 40);

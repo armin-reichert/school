@@ -21,6 +21,6 @@ public class AmpelApp extends Application {
 
 	@Override
 	public void init() {
-		views.select(new AmpelScene(this));
+		selectView(new AmpelScene(this));
 	}
 }

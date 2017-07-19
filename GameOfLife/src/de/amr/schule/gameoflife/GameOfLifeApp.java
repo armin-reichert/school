@@ -24,6 +24,6 @@ public class GameOfLifeApp extends Application {
 
 	@Override
 	public void init() {
-		views.select(new GameOfLifeScene(this));
+		selectView(new GameOfLifeScene(this));
 	}
 }

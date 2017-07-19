@@ -16,6 +16,6 @@ public class WaeschetrocknerApp extends Application {
 
 	@Override
 	public void init() {
-		views.select(new WaeschetrocknerScene(this));
+		selectView(new WaeschetrocknerScene(this));
 	}
 }
