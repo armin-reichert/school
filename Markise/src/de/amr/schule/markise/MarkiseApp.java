@@ -7,13 +7,15 @@ import de.amr.easy.game.Application;
 public class MarkiseApp extends Application {
 
 	public static void main(String[] args) {
-		MarkiseApp app = new MarkiseApp();
-		app.settings.title = "Markise Simulation";
-		app.settings.width = 800;
-		app.settings.height = 600;
-		app.settings.bgColor = Color.WHITE;
-		app.pulse.setFrequency(5);
-		launch(app);
+		launch(new MarkiseApp());
+	}
+
+	public MarkiseApp() {
+		settings.title = "Markise Simulation";
+		settings.width = 800;
+		settings.height = 600;
+		settings.bgColor = Color.WHITE;
+		pulse.setFrequency(5);
 	}
 
 	@Override

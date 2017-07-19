@@ -12,12 +12,14 @@ import de.amr.easy.game.Application;
 public class GameOfLifeApp extends Application {
 
 	public static void main(String[] args) {
-		GameOfLifeApp app = new GameOfLifeApp();
-		app.settings.title = "Game of Life";
-		app.settings.width = 1000;
-		app.settings.height = 1000;
-		app.settings.bgColor = Color.DARK_GRAY;
-		launch(app);
+		launch(new GameOfLifeApp());
+	}
+
+	public GameOfLifeApp() {
+		settings.title = "Game of Life";
+		settings.width = 1000;
+		settings.height = 1000;
+		settings.bgColor = Color.DARK_GRAY;
 	}
 
 	@Override

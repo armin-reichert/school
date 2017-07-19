@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 
 import de.amr.easy.game.input.Keyboard;
@@ -17,7 +18,7 @@ import de.amr.easy.game.scene.Scene;
  */
 public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 
-	private static final LinkedHashMap<String, String> FIGURES = new LinkedHashMap<>();
+	private static final Map<String, String> FIGURES = new LinkedHashMap<>();
 	static {
 		FIGURES.put("GLIDER", ".x.\n..x\nxxx");
 		FIGURES.put("SMALL_EXPLODER", ".x.\nxxx\nx.x\n.x.");
@@ -28,7 +29,7 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 	}
 	private static String[] FIGURE_NAMES = FIGURES.keySet().toArray(new String[FIGURES.size()]);
 
-	private final int gridSize = 500;
+	private final int gridSize = 100;
 	private final int cellSize;
 	private int updatesPerSecond = 10;
 	private boolean[][] current, grid1, grid2;

@@ -10,11 +10,13 @@ import de.amr.easy.game.Application;
 public class AmpelApp extends Application {
 
 	public static void main(String[] args) {
-		AmpelApp app = new AmpelApp();
-		app.settings.title = "Ampel Simulation";
-		app.settings.height = 600;
-		app.settings.width = 600;
-		launch(app);
+		launch(new AmpelApp());
+	}
+
+	public AmpelApp() {
+		settings.title = "Ampel Simulation";
+		settings.height = 600;
+		settings.width = 600;
 	}
 
 	@Override

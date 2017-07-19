@@ -12,18 +12,19 @@ import de.amr.easy.game.Application;
 public class GaragentorApp extends Application {
 
 	public static void main(String[] args) {
-		GaragentorApp app = new GaragentorApp();
-		app.settings.title = "Garagentor Simulation";
-		app.settings.width = 800;
-		app.settings.height = 600;
-		app.settings.bgColor = Color.WHITE;
-		app.pulse.setFrequency(10);
-		launch(app);
+		launch(new GaragentorApp());
+	}
+
+	public GaragentorApp() {
+		settings.title = "Garagentor Simulation";
+		settings.width = 800;
+		settings.height = 600;
+		settings.bgColor = Color.WHITE;
+		pulse.setFrequency(10);
 	}
 
 	@Override
 	public void init() {
 		views.select(new GaragentorScene(this));
 	}
-
 }
