@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 import de.amr.easy.game.Application;
+import de.amr.easy.game.assets.Assets;
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.statemachine.StateMachine;
 
@@ -52,18 +53,18 @@ public class Markise extends GameEntity {
 
 		automat.state("FährtAus").entry = s -> {
 			motor.vor();
-			app.assets.sound("bewegen.mp3").play();
+			Assets.sound("bewegen.mp3").play();
 		};
 
 		automat.state("FährtAus").update = s -> {
-			if (position > 50 && !app.assets.sound("quietschen.mp3").isRunning()) {
-				app.assets.sound("quietschen.mp3").play();
+			if (position > 50 && !Assets.sound("quietschen.mp3").isRunning()) {
+				Assets.sound("quietschen.mp3").play();
 			}
 		};
 
 		automat.state("FährtAus").exit = s -> {
-			app.assets.sound("quietschen.mp3").stop();
-			app.assets.sound("bewegen.mp3").stop();
+			Assets.sound("quietschen.mp3").stop();
+			Assets.sound("bewegen.mp3").stop();
 		};
 
 		automat.change("FährtAus", "Ausgefahren", () -> positionsSensor.inEndPosition());
@@ -90,11 +91,11 @@ public class Markise extends GameEntity {
 			} else {
 				motor.zurück();
 			}
-			app.assets.sound("bewegen.mp3").play();
+			Assets.sound("bewegen.mp3").play();
 		};
 
 		automat.state("FährtEin").exit = s -> {
-			app.assets.sound("bewegen.mp3").stop();
+			Assets.sound("bewegen.mp3").stop();
 		};
 
 		automat.change("FährtEin", "Eingefahren", () -> positionsSensor.inStartPosition());
@@ -132,8 +133,8 @@ public class Markise extends GameEntity {
 
 	@Override
 	public void init() {
-		app.assets.sound("bewegen.mp3");
-		app.assets.sound("quietschen.mp3");
+		Assets.sound("bewegen.mp3");
+		Assets.sound("quietschen.mp3");
 		automat.init();
 	}
 

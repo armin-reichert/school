@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.amr.easy.game.assets.Assets;
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.sprite.Sprite;
 
@@ -23,7 +24,7 @@ public class Fernbedienung extends GameEntity {
 
 	public Fernbedienung(MarkiseApp app, Markise markise) {
 		this.markise = markise;
-		setSprites(new Sprite(app.assets.image("remotecontrol.jpg")));
+		setSprites(new Sprite(Assets.image("remotecontrol.jpg")));
 		app.getShell().getCanvas().addMouseListener(new MouseAdapter() {
 
 			@Override

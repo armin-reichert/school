@@ -36,8 +36,7 @@ public class UhrFenster extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Color gewählteFarbe = JColorChooser.showDialog(UhrFenster.this, "Textfarbe auswählen",
-					textFarbe);
+			Color gewählteFarbe = JColorChooser.showDialog(UhrFenster.this, "Textfarbe auswählen", textFarbe);
 			if (gewählteFarbe != null) {
 				textFarbe = gewählteFarbe;
 				bahnhofsUhr.setFarbe(gewählteFarbe);
@@ -66,8 +65,7 @@ public class UhrFenster extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Color gewählteFarbe = JColorChooser.showDialog(UhrFenster.this, "Hintergrundfarbe auswählen",
-					Color.BLUE);
+			Color gewählteFarbe = JColorChooser.showDialog(UhrFenster.this, "Hintergrundfarbe auswählen", Color.BLUE);
 			if (gewählteFarbe != null) {
 				contentPanel.setzeFarbe(gewählteFarbe);
 			}
@@ -77,7 +75,6 @@ public class UhrFenster extends JFrame {
 	public UhrFenster() {
 		super("Uhr");
 		Uhrwerk uhrwerk = new Uhrwerk();
-		Assets assets = new Assets();
 		bahnhofsUhr = new BahnhofsUhr(150);
 		bahnhofsUhr.setUhrwerk(uhrwerk);
 		bahnhofsUhr.setFarbe(textFarbe);
@@ -93,7 +90,7 @@ public class UhrFenster extends JFrame {
 		viewsArea.add(textUhr, "cell 0 2 3 1,growx");
 		UhrController uhrenController = new UhrController();
 		uhrenController.setUhrwerk(uhrwerk);
-		contentPanel = new ImagePanel(assets.image("zwick.jpg"));
+		contentPanel = new ImagePanel(Assets.image("zwick.jpg"));
 		contentPanel.setLayout(new BorderLayout());
 		contentPanel.add(viewsArea, BorderLayout.CENTER);
 		contentPanel.add(uhrenController, BorderLayout.SOUTH);

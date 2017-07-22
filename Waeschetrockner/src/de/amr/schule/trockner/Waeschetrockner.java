@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import de.amr.easy.game.Application;
+import de.amr.easy.game.assets.Assets;
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.game.sprite.Sprite;
@@ -24,7 +25,7 @@ public class Waeschetrockner extends GameEntity {
 
 	public Waeschetrockner(WaeschetrocknerApp app) {
 		this.app = app;
-		setSprites(new Sprite(app.assets.image("trockner.jpg")));
+		setSprites(new Sprite(Assets.image("trockner.jpg")));
 
 		// Steuerung
 
@@ -39,9 +40,9 @@ public class Waeschetrockner extends GameEntity {
 
 		// Läuft
 		hauptAutomat.state("Läuft").entry = state -> state.setDuration(app.pulse.secToTicks(zeitAutomat.stateID()));
-		hauptAutomat.changeOnInput("EinAusTaste", "Läuft", "Aus", (läuft, aus) -> türAutomat.addInput("TürAuf"));
+		hauptAutomat.changeOnInput("EinAusTaste", "Läuft", "Aus", (taste, läuft, aus) -> türAutomat.addInput("TürAuf"));
 		hauptAutomat.changeOnInput("TürAuf", "Läuft", "Aus");
-		hauptAutomat.changeOnTimeout("Läuft", "Aus", (läuft, aus) -> app.assets.sound("fertig.mp3").play());
+		hauptAutomat.changeOnTimeout("Läuft", "Aus", (läuft, aus) -> Assets.sound("fertig.mp3").play());
 
 		türAutomat = new StateMachine<>("Tür", String.class, "Zu");
 		türAutomat.changeOnInput("TürAuf", "Zu", "Auf");

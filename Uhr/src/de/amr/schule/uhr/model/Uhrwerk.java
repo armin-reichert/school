@@ -26,7 +26,6 @@ public class Uhrwerk {
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	private boolean soundAn;
-	private Assets assets = new Assets();
 
 	public Uhrwerk() {
 		soundAn = false;
@@ -69,7 +68,7 @@ public class Uhrwerk {
 		}
 		neueZeitVerkünden();
 		if (soundAn) {
-			assets.sound("tick.mp3").play();
+			Assets.sound("tick.mp3").play();
 		}
 	}
 
@@ -141,7 +140,7 @@ public class Uhrwerk {
 
 	public void spieleStundenGong() {
 		if (soundAn) {
-			Sound gong = assets.sound("stunde.mp3");
+			Sound gong = Assets.sound("stunde.mp3");
 			gong.play();
 		}
 	}
