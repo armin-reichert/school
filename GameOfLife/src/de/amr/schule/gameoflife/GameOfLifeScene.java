@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.util.BitSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
@@ -32,22 +33,28 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 		FIGURE_NAMES = FIGURES.keySet().toArray(new String[FIGURES.size()]);
 	}
 
+	private BitSet grid1;
+	private BitSet grid2;
+	private BitSet current;
 	private int gridSize;
 	private int cellSize;
-	private boolean[][] current, grid1, grid2;
 	private int selectedFigureIndex;
 
 	public GameOfLifeScene(GameOfLifeApp app) {
 		super(app);
-		gridSize = 100;
-		cellSize = app.settings.width / gridSize;
+		gridSize = 16;
 		app.pulse.setFrequency(10);
 	}
 
 	@Override
 	public void init() {
-		grid1 = new boolean[gridSize][gridSize];
-		grid2 = new boolean[gridSize][gridSize];
+		reset();
+	}
+
+	private void reset() {
+		grid1 = new BitSet(gridSize * gridSize);
+		grid2 = new BitSet(gridSize * gridSize);
+		cellSize = app.settings.width / gridSize;
 		current = grid1;
 		selectedFigureIndex = 0;
 		selectFigure();
@@ -55,9 +62,15 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 
 	@Override
 	public void update() {
-		if (Keyboard.keyPressedOnce(KeyEvent.VK_SPACE)) {
-			grid1 = new boolean[gridSize][gridSize];
-			grid2 = new boolean[gridSize][gridSize];
+		if (Keyboard.keyPressedOnce(KeyEvent.VK_PLUS)) {
+			gridSize = gridSize * 2;
+			reset();
+		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_MINUS)) {
+			gridSize = gridSize / 2;
+			reset();
+		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_SPACE)) {
+			grid1.clear();
+			grid2.clear();
 			current = grid1;
 			selectedFigureIndex += 1;
 			if (selectedFigureIndex > FIGURES.size()) {
@@ -68,26 +81,36 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 		updateGrid();
 	}
 
+	private void set(BitSet bs, int row, int col) {
+		bs.set(row * gridSize + col);
+	}
+
+	private void unset(BitSet bs, int row, int col) {
+		bs.set(row * gridSize + col, false);
+	}
+
+	private boolean isSet(BitSet bs, int row, int col) {
+		return bs.get(row * gridSize + col);
+	}
+
 	private String selectedFigureName() {
 		return FIGURE_NAMES[selectedFigureIndex];
 	}
 
 	private void selectFigure() {
 		if (selectedFigureIndex == FIGURES.size()) {
-			randomSquare(gridSize / 2, gridSize / 2);
+			square(gridSize / 2, gridSize / 2);
 		} else {
 			figure(FIGURES.get(selectedFigureName()), gridSize / 2, gridSize / 2);
 		}
 	}
 
-	private void randomSquare(int row, int col) {
+	private void square(int row, int col) {
 		Random rand = new Random();
-		int halfSize = rand.nextInt(gridSize * 3 / 4) / 2;
-		int center = gridSize / 2;
 		for (int r = 0; r < gridSize; r += 1) {
 			for (int c = 0; c < gridSize; c += 1) {
-				if (r > center - halfSize && r < center + halfSize && c > center - halfSize && c < center + halfSize) {
-					current[r][c] = true;
+				if (rand.nextBoolean()) {
+					set(current, r, c);
 				}
 			}
 		}
@@ -98,7 +121,11 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 		for (int r = 0; r < bitRows.length; ++r) {
 			String bitRow = bitRows[r];
 			for (int c = 0; c < bitRow.length(); ++c) {
-				current[row + r][col + c] = bitRow.charAt(c) == 'x';
+				if (bitRow.charAt(c) == 'x') {
+					set(current, row + r, col + c);
+				} else {
+					unset(current, row + r, col + c);
+				}
 			}
 		}
 	}
@@ -108,7 +135,7 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 		g.setColor(Color.YELLOW);
 		for (int row = 0; row < gridSize; row += 1) {
 			for (int col = 0; col < gridSize; col += 1) {
-				if (current[row][col]) {
+				if (isSet(current, row, col)) {
 					// g.setColor(new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
 					g.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
 				}
@@ -121,40 +148,45 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 		} else {
 			g.drawString("Random square", 20, getHeight() - 40);
 		}
+		g.drawString(String.format("Size: %d", gridSize), getWidth() - 150, getHeight() - 40);
 	}
 
 	private void updateGrid() {
-		boolean[][] next = current == grid1 ? grid2 : grid1;
+		BitSet next = current == grid1 ? grid2 : grid1;
 		for (int row = 0; row < gridSize; row += 1) {
 			for (int col = 0; col < gridSize; col += 1) {
 				int numNeighbors = countNeighbors(current, row, col);
-				next[row][col] = (current[row][col] && (numNeighbors == 2 || numNeighbors == 3)) || numNeighbors == 3;
+				if (isSet(current, row, col) && (numNeighbors == 2 || numNeighbors == 3) || numNeighbors == 3) {
+					set(next, row, col);
+				} else {
+					unset(next, row, col);
+				}
 			}
 		}
 		current = next;
 	}
 
-	private int countNeighbors(boolean[][] grid, int row, int col) {
+	private int countNeighbors(BitSet grid, int row, int col) {
 		int rowBefore = row > 0 ? row - 1 : gridSize - 1;
 		int colBefore = col > 0 ? col - 1 : gridSize - 1;
 		int rowAfter = row < gridSize - 1 ? row + 1 : 0;
 		int colAfter = col < gridSize - 1 ? col + 1 : 0;
 		int n = 0;
-		if (grid[rowBefore][colBefore])
+		if (isSet(grid, rowBefore, colBefore))
 			++n;
-		if (grid[rowBefore][col])
+		if (isSet(grid, rowBefore, col))
 			++n;
-		if (grid[rowBefore][colAfter])
+		if (isSet(grid, rowBefore, colAfter))
 			++n;
-		if (grid[row][colBefore])
+		if (isSet(grid, row, colBefore))
 			++n;
-		if (grid[row][colAfter])
+		if (isSet(grid, row, colAfter))
 			++n;
-		if (grid[rowAfter][colBefore])
+		if (isSet(grid, rowAfter, colBefore))
 			++n;
-		if (grid[rowAfter][col])
+		if (isSet(grid, rowAfter, col))
 			++n;
-		if (grid[rowAfter][colAfter])
+		if (isSet(grid, rowAfter, colAfter))
 			++n;
 		return n;
 	}

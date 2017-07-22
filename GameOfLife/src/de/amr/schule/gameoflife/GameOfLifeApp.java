@@ -17,8 +17,8 @@ public class GameOfLifeApp extends Application {
 
 	public GameOfLifeApp() {
 		settings.title = "Game of Life";
-		settings.width = 1000;
-		settings.height = 1000;
+		settings.width = 1024;
+		settings.height = 1024;
 		settings.bgColor = Color.DARK_GRAY;
 	}
 
