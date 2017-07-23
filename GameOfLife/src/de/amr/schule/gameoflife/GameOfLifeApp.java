@@ -36,8 +36,10 @@ public class GameOfLifeApp extends Application {
 	@Override
 	public void init() {
 		addView(new FiguresScene(this));
+		addView(new TriangleScene(this));
 		addView(new RandomFillScene(this));
-		selectView(RandomFillScene.class);
+		selectView(TriangleScene.class);
+
 		scenes = new ArrayList<>(views().collect(Collectors.toList()));
 		current = scenes.indexOf(getSelectedView());
 	}

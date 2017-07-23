@@ -14,7 +14,7 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 
 	private static final int MIN_SIZE = 16;
 
-	protected GameOfLifeWorld world;
+	protected final GameOfLifeWorld world;
 
 	public GameOfLifeScene(GameOfLifeApp app) {
 		super(app);
