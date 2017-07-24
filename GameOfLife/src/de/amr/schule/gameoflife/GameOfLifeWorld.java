@@ -40,12 +40,12 @@ public class GameOfLifeWorld extends GameEntity {
 		return gridSize;
 	}
 
-	public int getCellSize() {
-		return cellSize;
-	}
-
 	public void setCellSize(int cellSize) {
 		this.cellSize = cellSize;
+	}
+
+	public int getCellSize() {
+		return cellSize;
 	}
 
 	public void set(int row, int col) {
@@ -60,12 +60,8 @@ public class GameOfLifeWorld extends GameEntity {
 		return current.get(row * gridSize + col);
 	}
 
-	private void set(BitSet bs, int row, int col) {
-		bs.set(row * gridSize + col);
-	}
-
-	private void unset(BitSet bs, int row, int col) {
-		bs.set(row * gridSize + col, false);
+	private void set(BitSet bs, int row, int col, boolean bit) {
+		bs.set(row * gridSize + col, bit);
 	}
 
 	@Override
@@ -73,40 +69,36 @@ public class GameOfLifeWorld extends GameEntity {
 		BitSet next = current == grid1 ? grid2 : grid1;
 		for (int row = 0; row < gridSize; row += 1) {
 			for (int col = 0; col < gridSize; col += 1) {
-				int numNeighbors = countNeighbors(row, col);
-				if (isSet(row, col) && (numNeighbors == 2 || numNeighbors == 3) || numNeighbors == 3) {
-					set(next, row, col);
-				} else {
-					unset(next, row, col);
-				}
+				int neighbors = countNeighbors(row, col);
+				set(next, row, col, isSet(row, col) && (neighbors == 2 || neighbors == 3) || neighbors == 3);
 			}
 		}
 		current = next;
 	}
 
 	private int countNeighbors(int row, int col) {
-		int rowBefore = row > 0 ? row - 1 : gridSize - 1;
-		int colBefore = col > 0 ? col - 1 : gridSize - 1;
-		int rowAfter = row < gridSize - 1 ? row + 1 : 0;
-		int colAfter = col < gridSize - 1 ? col + 1 : 0;
-		int n = 0;
-		if (isSet(rowBefore, colBefore))
-			++n;
-		if (isSet(rowBefore, col))
-			++n;
-		if (isSet(rowBefore, colAfter))
-			++n;
-		if (isSet(row, colBefore))
-			++n;
-		if (isSet(row, colAfter))
-			++n;
-		if (isSet(rowAfter, colBefore))
-			++n;
-		if (isSet(rowAfter, col))
-			++n;
-		if (isSet(rowAfter, colAfter))
-			++n;
-		return n;
+		int rowAbove = row > 0 ? row - 1 : gridSize - 1;
+		int colLeft = col > 0 ? col - 1 : gridSize - 1;
+		int rowBelow = row < gridSize - 1 ? row + 1 : 0;
+		int colRight = col < gridSize - 1 ? col + 1 : 0;
+		int neighbors = 0;
+		if (isSet(rowAbove, colLeft))
+			++neighbors;
+		if (isSet(rowAbove, col))
+			++neighbors;
+		if (isSet(rowAbove, colRight))
+			++neighbors;
+		if (isSet(row, colLeft))
+			++neighbors;
+		if (isSet(row, colRight))
+			++neighbors;
+		if (isSet(rowBelow, colLeft))
+			++neighbors;
+		if (isSet(rowBelow, col))
+			++neighbors;
+		if (isSet(rowBelow, colRight))
+			++neighbors;
+		return neighbors;
 	}
 
 	@Override
