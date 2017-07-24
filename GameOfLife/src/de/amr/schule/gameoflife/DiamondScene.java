@@ -5,9 +5,9 @@ package de.amr.schule.gameoflife;
  * 
  * @author Armin Reichert & Anna Schillo
  */
-public class TriangleScene extends GameOfLifeScene {
+public class DiamondScene extends GameOfLifeScene {
 
-	public TriangleScene(GameOfLifeApp app) {
+	public DiamondScene(GameOfLifeApp app) {
 		super(app);
 	}
 
@@ -27,8 +27,14 @@ public class TriangleScene extends GameOfLifeScene {
 			xr++;
 			y++;
 		}
-		for (int x = xl; x <= xr; ++x) {
-			world.set(y, x);
+		xl++;
+		xr--;
+		for (int i = 0; i < a; ++i) {
+			world.set(y, xl);
+			world.set(y, xr);
+			xr--;
+			xl++;
+			y++;
 		}
 	}
 }

@@ -13,12 +13,13 @@ import de.amr.easy.game.scene.Scene;
 public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 
 	private static final int MIN_SIZE = 16;
+	private static final int MAX_SIZE = 512;
 
 	protected final GameOfLifeWorld world;
 
 	public GameOfLifeScene(GameOfLifeApp app) {
 		super(app);
-		world = new GameOfLifeWorld(MIN_SIZE, getWidth() / MIN_SIZE);
+		world = new GameOfLifeWorld(64, getWidth() / 64);
 	}
 
 	@Override
@@ -37,7 +38,7 @@ public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 	}
 
 	private void handleResizeKeys() {
-		if (keyPressedOnce(VK_PLUS) && world.getGridSize() * 2 < getWidth()) {
+		if (keyPressedOnce(VK_PLUS) && world.getGridSize() * 2 <= MAX_SIZE) {
 			world.setGridSize(2 * world.getGridSize());
 			world.setCellSize(getWidth() / world.getGridSize());
 			reset();

@@ -5,11 +5,9 @@ import static java.awt.event.KeyEvent.VK_LEFT;
 import static java.awt.event.KeyEvent.VK_RIGHT;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import de.amr.easy.game.Application;
-import de.amr.easy.game.view.View;
+import de.amr.easy.game.scene.Scene;
 
 /**
  * Game of life.
@@ -18,12 +16,12 @@ import de.amr.easy.game.view.View;
  */
 public class GameOfLifeApp extends Application {
 
-	private int current;
-	private ArrayList<View> scenes;
-
 	public static void main(String[] args) {
 		launch(new GameOfLifeApp());
 	}
+
+	private int current;
+	private Scene<?>[] scenes;
 
 	public GameOfLifeApp() {
 		settings.title = "Game of Life";
@@ -35,13 +33,11 @@ public class GameOfLifeApp extends Application {
 
 	@Override
 	public void init() {
-		addView(new FiguresScene(this));
-		addView(new TriangleScene(this));
-		addView(new RandomFillScene(this));
-		selectView(TriangleScene.class);
-
-		scenes = new ArrayList<>(views().collect(Collectors.toList()));
-		current = scenes.indexOf(getSelectedView());
+		scenes = new Scene<?>[3];
+		scenes[0] = addView(new FiguresScene(this));
+		scenes[1] = addView(new DiamondScene(this));
+		scenes[2] = addView(new RandomFillScene(this));
+		selectView(scenes[0]);
 	}
 
 	public void handleNavigationKeys() {
@@ -53,20 +49,12 @@ public class GameOfLifeApp extends Application {
 	}
 
 	public void nextScene() {
-		if (current == scenes.size() - 1) {
-			current = 0;
-		} else {
-			++current;
-		}
-		selectView(scenes.get(current));
+		current = current == scenes.length - 1 ? 0 : current + 1;
+		selectView(scenes[current]);
 	}
 
 	public void prevScene() {
-		if (current == 0) {
-			current = scenes.size() - 1;
-		} else {
-			--current;
-		}
-		selectView(scenes.get(current));
+		current = current == 0 ? scenes.length - 1 : current - 1;
+		selectView(scenes[current]);
 	}
 }
