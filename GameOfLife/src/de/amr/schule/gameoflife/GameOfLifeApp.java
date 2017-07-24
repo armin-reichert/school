@@ -8,6 +8,9 @@ import java.awt.Color;
 
 import de.amr.easy.game.Application;
 import de.amr.easy.game.scene.Scene;
+import de.amr.schule.gameoflife.scenes.DiamondScene;
+import de.amr.schule.gameoflife.scenes.FiguresScene;
+import de.amr.schule.gameoflife.scenes.RandomFillScene;
 
 /**
  * Game of life.

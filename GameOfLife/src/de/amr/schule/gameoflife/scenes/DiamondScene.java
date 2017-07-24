@@ -1,4 +1,6 @@
-package de.amr.schule.gameoflife;
+package de.amr.schule.gameoflife.scenes;
+
+import de.amr.schule.gameoflife.GameOfLifeApp;
 
 /**
  * Game of life scene.

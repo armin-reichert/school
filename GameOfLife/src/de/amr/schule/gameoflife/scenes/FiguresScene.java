@@ -1,4 +1,4 @@
-package de.amr.schule.gameoflife;
+package de.amr.schule.gameoflife.scenes;
 
 import static de.amr.easy.game.input.Keyboard.keyPressedOnce;
 import static java.awt.event.KeyEvent.VK_SPACE;
@@ -9,6 +9,8 @@ import java.awt.Graphics2D;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
+
+import de.amr.schule.gameoflife.GameOfLifeApp;
 
 /**
  * Game of life scene.

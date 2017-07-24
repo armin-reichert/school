@@ -1,6 +1,8 @@
-package de.amr.schule.gameoflife;
+package de.amr.schule.gameoflife.scenes;
 
 import java.util.Random;
+
+import de.amr.schule.gameoflife.GameOfLifeApp;
 
 /**
  * Game of life scene.

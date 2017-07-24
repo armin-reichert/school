@@ -1,4 +1,4 @@
-package de.amr.schule.gameoflife;
+package de.amr.schule.gameoflife.scenes;
 
 import static de.amr.easy.game.input.Keyboard.keyPressedOnce;
 import static java.awt.event.KeyEvent.VK_MINUS;
@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 import de.amr.easy.game.scene.Scene;
+import de.amr.schule.gameoflife.GameOfLifeApp;
+import de.amr.schule.gameoflife.GameOfLifeWorld;
 
 public class GameOfLifeScene extends Scene<GameOfLifeApp> {
 
