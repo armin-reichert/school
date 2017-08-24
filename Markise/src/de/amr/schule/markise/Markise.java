@@ -67,13 +67,13 @@ public class Markise extends GameEntity {
 			Assets.sound("bewegen.mp3").stop();
 		};
 
-		automat.change("FährtAus", "Ausgefahren", () -> positionsSensor.inEndPosition());
+		automat.change("FährtAus", "Ausgefahren", positionsSensor::inEndPosition);
 
 		automat.changeOnInput("stop", "FährtAus", "Gestoppt");
 
 		automat.changeOnInput("up", "FährtAus", "FährtEin");
 
-		automat.change("FährtAus", "Gestoppt", () -> regenSensor.esRegnet());
+		automat.change("FährtAus", "Gestoppt", regenSensor::esRegnet);
 
 		// Ausgefahren
 
@@ -81,7 +81,7 @@ public class Markise extends GameEntity {
 
 		automat.changeOnInput("up", "Ausgefahren", "FährtEin");
 
-		automat.change("Ausgefahren", "FährtEin", () -> regenSensor.esRegnet());
+		automat.change("Ausgefahren", "FährtEin", regenSensor::esRegnet);
 
 		// FährtEin
 
@@ -98,7 +98,7 @@ public class Markise extends GameEntity {
 			Assets.sound("bewegen.mp3").stop();
 		};
 
-		automat.change("FährtEin", "Eingefahren", () -> positionsSensor.inStartPosition());
+		automat.change("FährtEin", "Eingefahren", positionsSensor::inStartPosition);
 
 		automat.changeOnInput("stop", "FährtEin", "Gestoppt");
 
@@ -112,7 +112,7 @@ public class Markise extends GameEntity {
 
 		automat.changeOnInput("down", "Gestoppt", "FährtAus");
 
-		automat.change("Gestoppt", "FährtEin", () -> regenSensor.esRegnet());
+		automat.change("Gestoppt", "FährtEin", regenSensor::esRegnet);
 
 		// Tracing
 		automat.setLogger(Application.LOG);
