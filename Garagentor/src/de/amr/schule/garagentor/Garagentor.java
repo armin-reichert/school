@@ -38,9 +38,7 @@ public class Garagentor extends GameEntity {
 
 		automat.changeOnInput("FBGedrückt", "Geschlossen", "Öffnet");
 
-		automat.changeOnTimeout("Geschlossen", "Geschlossen", (s, t) -> {
-			lichtAus();
-		});
+		automat.changeOnTimeout("Geschlossen", "Geschlossen", t -> lichtAus());
 
 		// Öffnet
 

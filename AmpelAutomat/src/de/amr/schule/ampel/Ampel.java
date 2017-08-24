@@ -31,17 +31,16 @@ public class Ampel extends GameEntity {
 		automat = new StateMachine<>("Ampel Steuerung", String.class, "Aus");
 
 		// Ampel beim Drücken der SPACE-Taste einschalten, für 3 Sekunden auf Rot
-		automat.change("Aus", "Rot", () -> Keyboard.keyPressedOnce(KeyEvent.VK_SPACE),
-				(aus, rot) -> rot.setDuration(3 * 60));
+		automat.change("Aus", "Rot", () -> Keyboard.keyPressedOnce(KeyEvent.VK_SPACE), t -> t.to().setDuration(3 * 60));
 
 		// Für 5 Sekunden auf Grün
-		automat.changeOnTimeout("Rot", "Grün", (rot, grün) -> grün.setDuration(5 * 60));
+		automat.changeOnTimeout("Rot", "Grün", t -> t.to().setDuration(5 * 60));
 
 		// Für 1 Sekunde auf Gelb
-		automat.changeOnTimeout("Grün", "Gelb", (grün, gelb) -> gelb.setDuration(1 * 60));
+		automat.changeOnTimeout("Grün", "Gelb", t -> t.to().setDuration(1 * 60));
 
 		// Für 3 Sekunden auf Rot
-		automat.changeOnTimeout("Gelb", "Rot", (gelb, rot) -> rot.setDuration(3 * 60));
+		automat.changeOnTimeout("Gelb", "Rot", t -> t.to().setDuration(3 * 60));
 	}
 
 	@Override
