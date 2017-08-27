@@ -116,7 +116,7 @@ public class Markise extends GameEntity {
 
 		// Tracing
 		automat.setLogger(Application.LOG);
-		automat.setFrequency(app.pulse.getFrequency());
+		automat.ticksToSec = app.pulse::ticksToSec;
 	}
 
 	public void raiseEvent(String event) {
