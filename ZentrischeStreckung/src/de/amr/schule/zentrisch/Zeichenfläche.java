@@ -1,7 +1,7 @@
 package de.amr.schule.zentrisch;
 
-import static de.amr.easy.game.math.Vector2.sum;
-import static de.amr.easy.game.math.Vector2.times;
+import static de.amr.easy.game.math.Vector2f.sum;
+import static de.amr.easy.game.math.Vector2f.smul;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -24,7 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
-import de.amr.easy.game.math.Vector2;
+import de.amr.easy.game.math.Vector2f;
 
 public class Zeichenfläche extends JPanel {
 
@@ -140,10 +140,9 @@ public class Zeichenfläche extends JPanel {
 		Graphics2D stift = (Graphics2D) gg;
 
 		super.paintComponent(stift);
-		
+
 		stift.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		stift.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		stift.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 		Stroke thick = new BasicStroke(2);
 		Stroke normal = new BasicStroke();
@@ -190,8 +189,7 @@ public class Zeichenfläche extends JPanel {
 	}
 
 	void zeichneStrahlZuEllipse(Graphics2D stift, Ellipse2D.Float ellipse) {
-		stift.drawLine((int) S.x, (int) S.y, (int) (ellipse.getX() + ellipse.width / 2),
-				(int) ellipse.getY());
+		stift.drawLine((int) S.x, (int) S.y, (int) (ellipse.getX() + ellipse.width / 2), (int) ellipse.getY());
 		stift.drawLine((int) S.x, (int) S.y, (int) (ellipse.getX() + ellipse.width / 2),
 				(int) (ellipse.getY() + ellipse.height));
 	}
@@ -205,9 +203,9 @@ public class Zeichenfläche extends JPanel {
 	}
 
 	Point2D.Float streckePunkt(Point2D.Float P) {
-		Vector2 v = new Vector2(P.x - S.x, P.y - S.y);
-		Vector2 s = new Vector2(S.x, S.y);
-		Vector2 p_ = sum(s, times(k, v));
+		Vector2f v = Vector2f.of(P.x - S.x, P.y - S.y);
+		Vector2f s = Vector2f.of(S.x, S.y);
+		Vector2f p_ = sum(s, smul(k, v));
 		return new Point2D.Float(p_.x, p_.y);
 	}
 
