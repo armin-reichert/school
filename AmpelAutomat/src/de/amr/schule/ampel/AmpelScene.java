@@ -2,9 +2,9 @@ package de.amr.schule.ampel;
 
 import java.awt.Graphics2D;
 
-import de.amr.easy.game.scene.Scene;
+import de.amr.easy.game.scene.ActiveScene;
 
-public class AmpelScene extends Scene<AmpelApp> {
+public class AmpelScene extends ActiveScene<AmpelApp> {
 
 	private Ampel ampel;
 

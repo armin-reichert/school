@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import de.amr.easy.game.scene.Scene;
+import de.amr.easy.game.scene.ActiveScene;
 
-public class WaeschetrocknerScene extends Scene<WaeschetrocknerApp> {
+public class WaeschetrocknerScene extends ActiveScene<WaeschetrocknerApp> {
 
 	private Waeschetrockner trockner;
 

@@ -8,11 +8,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import de.amr.easy.game.scene.Scene;
+import de.amr.easy.game.scene.ActiveScene;
 import de.amr.schule.gameoflife.GameOfLifeApp;
 import de.amr.schule.gameoflife.GameOfLifeWorld;
 
-public class GameOfLifeScene extends Scene<GameOfLifeApp> {
+public class GameOfLifeScene extends ActiveScene<GameOfLifeApp> {
 
 	private static final int MIN_SIZE = 16;
 	private static final int MAX_SIZE = 512;

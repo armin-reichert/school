@@ -2,9 +2,9 @@ package de.amr.schule.markise;
 
 import java.awt.Graphics2D;
 
-import de.amr.easy.game.scene.Scene;
+import de.amr.easy.game.scene.ActiveScene;
 
-public class MarkiseScene extends Scene<MarkiseApp> {
+public class MarkiseScene extends ActiveScene<MarkiseApp> {
 
 	private Markise markise;
 	private Fernbedienung remote;
