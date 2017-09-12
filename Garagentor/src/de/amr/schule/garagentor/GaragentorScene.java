@@ -3,9 +3,9 @@ package de.amr.schule.garagentor;
 import java.awt.Graphics2D;
 
 import de.amr.easy.game.scene.Scene;
-import de.amr.easy.game.view.View;
+import de.amr.easy.game.view.ViewController;
 
-public class GaragentorScene extends Scene<GaragentorApp> implements View {
+public class GaragentorScene extends Scene<GaragentorApp> implements ViewController {
 
 	private Garagentor tor;
 
