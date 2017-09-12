@@ -37,10 +37,10 @@ public class GameOfLifeApp extends Application {
 	@Override
 	public void init() {
 		scenes = new ActiveScene<?>[3];
-		scenes[0] = addView(new FiguresScene(this));
-		scenes[1] = addView(new DiamondScene(this));
-		scenes[2] = addView(new RandomFillScene(this));
-		selectView(scenes[0]);
+		scenes[0] = new FiguresScene(this);
+		scenes[1] = new DiamondScene(this);
+		scenes[2] = new RandomFillScene(this);
+		select(scenes[0]);
 	}
 
 	public void handleNavigationKeys() {
@@ -53,11 +53,11 @@ public class GameOfLifeApp extends Application {
 
 	public void nextScene() {
 		current = current == scenes.length - 1 ? 0 : current + 1;
-		selectView(scenes[current]);
+		select(scenes[current]);
 	}
 
 	public void prevScene() {
 		current = current == 0 ? scenes.length - 1 : current - 1;
-		selectView(scenes[current]);
+		select(scenes[current]);
 	}
 }
