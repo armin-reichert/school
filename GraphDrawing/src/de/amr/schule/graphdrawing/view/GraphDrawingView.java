@@ -8,7 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -29,6 +28,7 @@ public class GraphDrawingView extends JPanel implements IGraphDrawingView {
 		this.controller = controller;
 		setBackground(Color.WHITE);
 		addComponentListener(new ComponentAdapter() {
+
 			@Override
 			public void componentResized(ComponentEvent e) {
 				areaResized();
@@ -76,18 +76,6 @@ public class GraphDrawingView extends JPanel implements IGraphDrawingView {
 		for (GraphPoint p : model.getPoints()) {
 			drawPoint(g, p.x, p.fx, Color.BLACK, 4, "", 0, 0);
 		}
-		List<Double> roots = model.getRoots();
-		if (roots.size() == 1) {
-			double x = roots.get(0);
-			drawPoint(g, x, 0, Color.RED, 8, String.valueOf(x), 10, -10);
-		} else if (roots.size() == 2) {
-			double x1 = roots.get(0);
-			double x2 = roots.get(1);
-			drawPoint(g, x1, 0, Color.RED, 8, String.valueOf(x1), 10, -10);
-			drawPoint(g, x2, 0, Color.RED, 8, String.valueOf(x2), -10, 25);
-		}
-		String vertexPointText = String.format("(%g, %g)", model.getSx(), model.getSy());
-		drawPoint(g, model.getSx(), model.getSy(), Color.GREEN, 8, vertexPointText, 15, 10);
 	}
 
 	private void drawAxes(Graphics2D g) {
@@ -142,7 +130,7 @@ public class GraphDrawingView extends JPanel implements IGraphDrawingView {
 	}
 
 	private void drawYCoord(Graphics2D g, int yvalue, int x, int y) {
-		if (model.getYscale() > 20 ||yvalue % 5 == 0)  {
+		if (model.getYscale() > 20 || yvalue % 5 == 0) {
 			g.drawString("" + yvalue, x, y);
 		}
 	}
@@ -150,13 +138,14 @@ public class GraphDrawingView extends JPanel implements IGraphDrawingView {
 	private void drawGrid(Graphics2D g) {
 	}
 
-	private void drawPoint(Graphics2D g, double mx, double my, Color color, int size, String text, int offsetX,
-			int offsetY) {
+	private void drawPoint(Graphics2D g, double mx, double my, Color color, int size, String text,
+			int offsetX, int offsetY) {
 		int x = toViewX(mx);
 		int y = toViewY(my);
 		g.setColor(color);
 		g.fillOval(x - size / 2, y - size / 2, size, size);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setFont(new Font("Arial", Font.PLAIN, 12));
 		g.drawString(text, x + offsetX, y + offsetY);
 	}

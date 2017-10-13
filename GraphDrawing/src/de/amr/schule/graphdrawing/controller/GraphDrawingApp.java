@@ -11,6 +11,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
+import de.amr.schule.graphdrawing.view.ConfigView;
 import de.amr.schule.graphdrawing.view.GraphDrawingView;
 import de.amr.schule.graphdrawing.view.GraphPointTableView;
 
@@ -34,8 +35,6 @@ public class GraphDrawingApp {
 		model.setStep(.2);
 		model.setXscale(20);
 		model.setYscale(20);
-		model.computeRoots();
-		model.computeVertexPoint();
 
 		controller = new GraphDrawingController(model);
 

@@ -22,8 +22,6 @@ public class GraphDrawingController {
 
 	public void functionChanged() {
 		model.computePoints();
-		model.computeRoots();
-		model.computeVertexPoint();
 		for (IGraphDrawingView view : views) {
 			view.update();
 		}
