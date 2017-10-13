@@ -6,10 +6,16 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 import de.amr.schule.graphdrawing.controller.GraphDrawingController;
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
@@ -17,16 +23,21 @@ import de.amr.schule.graphdrawing.model.GraphPoint;
 
 @SuppressWarnings("serial")
 public class GraphDrawingView extends JPanel implements IGraphDrawingView {
+	
+	private static final int POINT_SIZE = 4;
 
 	private int originX;
 	private int originY;
 	private GraphDrawingModel model;
 	private GraphDrawingController controller;
 
+	private boolean isOriginMoving;
+
 	public GraphDrawingView(GraphDrawingModel model, GraphDrawingController controller) {
 		this.model = model;
 		this.controller = controller;
 		setBackground(Color.WHITE);
+
 		addComponentListener(new ComponentAdapter() {
 
 			@Override
@@ -34,18 +45,78 @@ public class GraphDrawingView extends JPanel implements IGraphDrawingView {
 				areaResized();
 			}
 		});
+
+		MouseAdapter mouse = new MouseAdapter() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				onMousePressed(e);
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				onMouseReleased(e);
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				onMouseDragged(e);
+			}
+		};
+		addMouseListener(mouse);
+		addMouseMotionListener(mouse);
+
+		Action actionCenterOrigin = new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				centerOrigin();
+			}
+		};
+		getInputMap().put(KeyStroke.getKeyStroke("C"), "centerOrigin");
+		getActionMap().put("centerOrigin", actionCenterOrigin);
+
 		Dimension prefSize = getPreferredSize();
 		originX = prefSize.width / 2;
 		originY = prefSize.height / 2;
 	}
 
-	protected void areaResized() {
+	private void centerOrigin() {
+		originX = getWidth() / 2;
+		originY = getHeight() / 2;
+		areaResized();
+	}
+
+	private void areaResized() {
 		controller.updateInterval(getWidth(), originX);
+	}
+
+	private void onMousePressed(MouseEvent e) {
+		int x1 = e.getX(), y1 = e.getY();
+		int x2 = originX, y2 = originY;
+		if ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) <= 100) {
+			isOriginMoving = true;
+		}
+	}
+
+	private void onMouseReleased(MouseEvent e) {
+		if (isOriginMoving) {
+			originX = e.getX();
+			originY = e.getY();
+			areaResized();
+			isOriginMoving = false;
+		}
+	}
+	
+	private void onMouseDragged(MouseEvent e) {
+		onMouseReleased(e);
+		isOriginMoving = true;
 	}
 
 	@Override
 	public void update() {
 		repaint();
+		requestFocus();
 	}
 
 	public int getOriginX() {
@@ -74,7 +145,7 @@ public class GraphDrawingView extends JPanel implements IGraphDrawingView {
 		drawGrid(g);
 		drawAxes(g);
 		for (GraphPoint p : model.getPoints()) {
-			drawPoint(g, p.x, p.fx, Color.BLACK, 4, "", 0, 0);
+			drawPoint(g, p.x, p.fx, Color.BLACK, POINT_SIZE, "", 0, 0);
 		}
 	}
 

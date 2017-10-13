@@ -2,6 +2,7 @@ package de.amr.schule.graphdrawing.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
@@ -18,6 +19,8 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 @SuppressWarnings("serial")
 public class ConfigView extends JPanel implements IGraphDrawingView {
+	
+	private static final Font TEXT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 16);
 
 	private GraphDrawingModel model;
 	private GraphDrawingController controller;
@@ -43,6 +46,7 @@ public class ConfigView extends JPanel implements IGraphDrawingView {
 
 		JLabel labelTerm = new JLabel("function=");
 		fieldTerm = new JTextField();
+		fieldTerm.setFont(TEXT_FONT);
 		fieldTerm.setText("x");
 
 		JLabel labelXScale = new JLabel("xscale=");
