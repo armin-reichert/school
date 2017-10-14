@@ -30,9 +30,8 @@ public class ConfigView extends JPanel implements IView {
 	private JSlider sliderXScale, sliderYScale;
 	private JButton buttonOK;
 
-	public ConfigView(GraphDrawingModel model, GraphDrawingController controller) {
+	public ConfigView(GraphDrawingModel model) {
 		this.model = model;
-		this.controller = controller;
 
 		setBackground(Color.LIGHT_GRAY);
 
@@ -82,12 +81,15 @@ public class ConfigView extends JPanel implements IView {
 
 		registerEventHandlers();
 	}
-
+	
+	public void setController(GraphDrawingController controller) {
+		this.controller = controller;
+	}
+	
 	private void registerEventHandlers() {
 		sliderXScale.addChangeListener(this::xscaleChanged);
 		sliderYScale.addChangeListener(this::yscaleChanged);
 		buttonOK.addActionListener(this::okPressed);
-
 	}
 
 	private void xscaleChanged(ChangeEvent e) {

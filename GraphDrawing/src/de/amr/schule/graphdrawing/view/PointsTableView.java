@@ -16,6 +16,7 @@ public class PointsTableView extends JPanel implements IView {
 
 	private final GraphDrawingModel model;
 	private final PointsTableModel tableModel;
+	private GraphDrawingController controller;
 
 	private class PointsTableModel extends AbstractTableModel {
 
@@ -48,11 +49,15 @@ public class PointsTableView extends JPanel implements IView {
 		}
 	}
 
-	public PointsTableView(GraphDrawingModel model, GraphDrawingController controller) {
+	public PointsTableView(GraphDrawingModel model) {
 		this.model = model;
 		tableModel = new PointsTableModel();
 		setLayout(new BorderLayout());
 		add(new JScrollPane(new JTable(tableModel)), BorderLayout.CENTER);
+	}
+
+	public void setController(GraphDrawingController controller) {
+		this.controller = controller;
 	}
 
 	@Override

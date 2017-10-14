@@ -31,11 +31,14 @@ public class CanvasView extends JPanel implements IView {
 	private int originY;
 	private boolean originIsMoving;
 
-	public CanvasView(GraphDrawingModel model, GraphDrawingController controller) {
+	public CanvasView(GraphDrawingModel model) {
 		this.model = model;
-		this.controller = controller;
 		setBackground(Color.WHITE);
 		registerEventHandlers();
+	}
+	
+	public void setController(GraphDrawingController controller) {
+		this.controller = controller;
 	}
 
 	private void registerEventHandlers() {
