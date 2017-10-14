@@ -1,7 +1,6 @@
 package de.amr.schule.graphdrawing.view;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -21,10 +20,9 @@ import de.amr.schule.graphdrawing.controller.GraphDrawingController;
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
 import de.amr.schule.graphdrawing.model.GraphPoint;
 
-@SuppressWarnings("serial")
-public class GraphDrawingView extends JPanel implements IGraphDrawingView {
-	
-	private static final int POINT_SIZE = 4;
+public class GraphDrawingView extends JPanel implements IView {
+
+	private static final int POINT_SIZE = 2;
 
 	private int originX;
 	private int originY;
@@ -42,7 +40,7 @@ public class GraphDrawingView extends JPanel implements IGraphDrawingView {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				areaResized();
+				onResized();
 			}
 		});
 
@@ -57,7 +55,7 @@ public class GraphDrawingView extends JPanel implements IGraphDrawingView {
 			public void mouseReleased(MouseEvent e) {
 				onMouseReleased(e);
 			}
-			
+
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				onMouseDragged(e);
@@ -75,19 +73,17 @@ public class GraphDrawingView extends JPanel implements IGraphDrawingView {
 		};
 		getInputMap().put(KeyStroke.getKeyStroke("C"), "centerOrigin");
 		getActionMap().put("centerOrigin", actionCenterOrigin);
-
-		Dimension prefSize = getPreferredSize();
-		originX = prefSize.width / 2;
-		originY = prefSize.height / 2;
 	}
 
-	private void centerOrigin() {
-		originX = getWidth() / 2;
-		originY = getHeight() / 2;
-		areaResized();
+	public void centerOrigin() {
+		int width = getWidth() != 0 ? getWidth() : getPreferredSize().width;
+		int height = getHeight() != 0 ? getHeight() : getPreferredSize().height;
+		originX = width / 2;
+		originY = height / 2;
+		onResized();
 	}
 
-	private void areaResized() {
+	private void onResized() {
 		controller.updateInterval(getWidth(), originX);
 	}
 
@@ -103,11 +99,11 @@ public class GraphDrawingView extends JPanel implements IGraphDrawingView {
 		if (isOriginMoving) {
 			originX = e.getX();
 			originY = e.getY();
-			areaResized();
+			onResized();
 			isOriginMoving = false;
 		}
 	}
-	
+
 	private void onMouseDragged(MouseEvent e) {
 		onMouseReleased(e);
 		isOriginMoving = true;
@@ -144,8 +140,8 @@ public class GraphDrawingView extends JPanel implements IGraphDrawingView {
 	private void draw(Graphics2D g) {
 		drawGrid(g);
 		drawAxes(g);
-		for (GraphPoint p : model.getPoints()) {
-			drawPoint(g, p.x, p.fx, Color.BLACK, POINT_SIZE, "", 0, 0);
+		for (GraphPoint gp : model.getPoints()) {
+			drawPoint(g, gp.x, gp.fx, Color.BLACK, POINT_SIZE, "", 0, 0);
 		}
 	}
 
@@ -214,7 +210,8 @@ public class GraphDrawingView extends JPanel implements IGraphDrawingView {
 		int x = toViewX(mx);
 		int y = toViewY(my);
 		g.setColor(color);
-		g.fillOval(x - size / 2, y - size / 2, size, size);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.fillRect(x - size / 2, y - size / 2, size, size);
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setFont(new Font("Arial", Font.PLAIN, 12));

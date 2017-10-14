@@ -32,7 +32,7 @@ public class GraphDrawingApp {
 	public GraphDrawingApp() {
 
 		model = new GraphDrawingModel();
-		model.setStep(.2);
+		model.setStep(.05);
 		model.setXscale(20);
 		model.setYscale(20);
 
@@ -40,8 +40,7 @@ public class GraphDrawingApp {
 
 		canvas = new GraphDrawingView(model, controller);
 		canvas.setPreferredSize(new Dimension(700, 600));
-		canvas.setOriginX(250);
-		canvas.setOriginY(300);
+		canvas.centerOrigin();
 
 		tableView = new GraphPointTableView(model, controller);
 

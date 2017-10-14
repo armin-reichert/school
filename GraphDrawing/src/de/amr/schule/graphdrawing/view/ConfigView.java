@@ -18,7 +18,7 @@ import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 @SuppressWarnings("serial")
-public class ConfigView extends JPanel implements IGraphDrawingView {
+public class ConfigView extends JPanel implements IView {
 	
 	private static final Font TEXT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 16);
 

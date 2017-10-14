@@ -5,14 +5,14 @@ import java.util.Set;
 
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
 import de.amr.schule.graphdrawing.view.GraphDrawingView;
-import de.amr.schule.graphdrawing.view.IGraphDrawingView;
+import de.amr.schule.graphdrawing.view.IView;
 
 public class GraphDrawingController {
 
 	private GraphDrawingModel model;
-	private final Set<IGraphDrawingView> views = new HashSet<>();
+	private final Set<IView> views = new HashSet<>();
 
-	public void addView(IGraphDrawingView view) {
+	public void addView(IView view) {
 		views.add(view);
 	}
 
@@ -22,7 +22,7 @@ public class GraphDrawingController {
 
 	public void functionChanged() {
 		model.computePoints();
-		for (IGraphDrawingView view : views) {
+		for (IView view : views) {
 			view.update();
 		}
 	}
@@ -33,7 +33,7 @@ public class GraphDrawingController {
 		model.setXmin(xmin);
 		model.setXmax(xmax);
 		model.computePoints();
-		for (IGraphDrawingView view : views) {
+		for (IView view : views) {
 			view.update();
 		}
 	}
@@ -41,7 +41,7 @@ public class GraphDrawingController {
 	public void changeXScale(int xscale) {
 		model.setXscale(xscale);
 		// hack
-		for (IGraphDrawingView view : views) {
+		for (IView view : views) {
 			if (view instanceof GraphDrawingView) {
 				GraphDrawingView gdv = (GraphDrawingView) view;
 				updateInterval(gdv.getWidth(), gdv.getOriginX());
@@ -52,7 +52,7 @@ public class GraphDrawingController {
 	public void changeYScale(int yscale) {
 		model.setYscale(yscale);
 		// hack
-		for (IGraphDrawingView view : views) {
+		for (IView view : views) {
 			if (view instanceof GraphDrawingView) {
 				GraphDrawingView gdv = (GraphDrawingView) view;
 				updateInterval(gdv.getWidth(), gdv.getOriginX());
