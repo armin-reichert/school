@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -17,6 +18,7 @@ import de.amr.schule.graphdrawing.controller.GraphDrawingController;
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
+import net.objecthunter.exp4j.ValidationResult;
 
 public class ConfigView extends JPanel implements IView {
 
@@ -37,7 +39,7 @@ public class ConfigView extends JPanel implements IView {
 
 		fieldTerm = new JTextField();
 		fieldTerm.setFont(TEXT_FONT);
-		fieldTerm.setText("x"); //TODO
+		fieldTerm.setText("x"); // TODO
 
 		fieldStep = new JTextField();
 		fieldStep.setFont(TEXT_FONT);
@@ -81,11 +83,16 @@ public class ConfigView extends JPanel implements IView {
 
 		registerEventHandlers();
 	}
-	
+
 	public void setController(GraphDrawingController controller) {
 		this.controller = controller;
 	}
-	
+
+	@Override
+	public void update() {
+		// Nothing to do
+	}
+
 	private void registerEventHandlers() {
 		sliderXScale.addChangeListener(this::xscaleChanged);
 		sliderYScale.addChangeListener(this::yscaleChanged);
@@ -100,21 +107,23 @@ public class ConfigView extends JPanel implements IView {
 		controller.changeYScale(sliderYScale.getValue());
 	}
 
-	@Override
-	public void update() {
-
-	}
-
 	private void okPressed(ActionEvent e) {
 		try {
-			Expression term = new ExpressionBuilder(fieldTerm.getText()).variables("x").build();
-			model.setTerm(term);
-			// TODO validate expression
 			model.setStep(Double.parseDouble(fieldStep.getText()));
 		} catch (NumberFormatException x) {
 			fieldStep.setText(String.valueOf(model.getStep()));
-			return;
 		}
-		controller.functionChanged();
+		try {
+			Expression term = new ExpressionBuilder(fieldTerm.getText()).variables("x").build();
+			if (term.validate(false) != ValidationResult.SUCCESS) {
+				throw new IllegalArgumentException();
+			}
+			model.setTerm(term);
+			controller.functionChanged();
+		} catch (Exception x) {
+			JOptionPane.showMessageDialog(null, "Ungültiger Funktionsterm: " + fieldTerm.getText());
+			model.setTerm(new ExpressionBuilder("x").variable("x").build());
+			fieldTerm.setText("x");
+		}
 	}
 }

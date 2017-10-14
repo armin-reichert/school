@@ -32,12 +32,12 @@ public class GraphDrawingApp {
 	public GraphDrawingApp() {
 
 		model = new GraphDrawingModel();
-		model.setStep(.05);
+		model.setStep(.01);
 		model.setXscale(20);
 		model.setYscale(20);
 
 		canvasView = new CanvasView(model);
-		canvasView.setPreferredSize(new Dimension(700, 600));
+		canvasView.setPreferredSize(new Dimension(800, 800));
 		pointsTableView = new PointsTableView(model);
 		configView = new ConfigView(model);
 
