@@ -10,14 +10,14 @@ import javax.swing.table.AbstractTableModel;
 import de.amr.schule.graphdrawing.controller.GraphDrawingController;
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
 
-public class GraphPointTableView extends JPanel implements IView {
+public class PointsTableView extends JPanel implements IView {
 
-	private static final String[] COLUMN_NAMES = { "x", "f(x)" };
+	private static final String[] COLUMN_NAMES = { "#", "x", "f(x)" };
 
 	private final GraphDrawingModel model;
-	private final GraphPointTableModel tableModel;
+	private final PointsTableModel tableModel;
 
-	private class GraphPointTableModel extends AbstractTableModel {
+	private class PointsTableModel extends AbstractTableModel {
 
 		@Override
 		public int getRowCount() {
@@ -38,17 +38,19 @@ public class GraphPointTableView extends JPanel implements IView {
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			switch (columnIndex) {
 			case 0:
-				return model.getPoints().get(rowIndex).x;
+				return rowIndex + 1;
 			case 1:
+				return model.getPoints().get(rowIndex).x;
+			case 2:
 				return model.getPoints().get(rowIndex).fx;
 			}
 			return "";
 		}
 	}
 
-	public GraphPointTableView(GraphDrawingModel model, GraphDrawingController controller) {
+	public PointsTableView(GraphDrawingModel model, GraphDrawingController controller) {
 		this.model = model;
-		tableModel = new GraphPointTableModel();
+		tableModel = new PointsTableModel();
 		setLayout(new BorderLayout());
 		add(new JScrollPane(new JTable(tableModel)), BorderLayout.CENTER);
 	}

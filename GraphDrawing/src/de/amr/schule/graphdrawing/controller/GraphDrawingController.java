@@ -1,10 +1,11 @@
 package de.amr.schule.graphdrawing.controller;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
-import de.amr.schule.graphdrawing.view.GraphDrawingView;
+import de.amr.schule.graphdrawing.view.CanvasView;
 import de.amr.schule.graphdrawing.view.IView;
 
 public class GraphDrawingController {
@@ -12,8 +13,8 @@ public class GraphDrawingController {
 	private GraphDrawingModel model;
 	private final Set<IView> views = new HashSet<>();
 
-	public void addView(IView view) {
-		views.add(view);
+	public void addViews(IView... viewList) {
+		Arrays.stream(viewList).forEach(views::add);
 	}
 
 	public GraphDrawingController(GraphDrawingModel model) {
@@ -22,9 +23,7 @@ public class GraphDrawingController {
 
 	public void functionChanged() {
 		model.computePoints();
-		for (IView view : views) {
-			view.update();
-		}
+		views.stream().forEach(IView::update);
 	}
 
 	public void updateInterval(int width, int originX) {
@@ -33,17 +32,15 @@ public class GraphDrawingController {
 		model.setXmin(xmin);
 		model.setXmax(xmax);
 		model.computePoints();
-		for (IView view : views) {
-			view.update();
-		}
+		views.stream().forEach(IView::update);
 	}
 
 	public void changeXScale(int xscale) {
 		model.setXscale(xscale);
 		// hack
 		for (IView view : views) {
-			if (view instanceof GraphDrawingView) {
-				GraphDrawingView gdv = (GraphDrawingView) view;
+			if (view instanceof CanvasView) {
+				CanvasView gdv = (CanvasView) view;
 				updateInterval(gdv.getWidth(), gdv.getOriginX());
 			}
 		}
@@ -53,11 +50,10 @@ public class GraphDrawingController {
 		model.setYscale(yscale);
 		// hack
 		for (IView view : views) {
-			if (view instanceof GraphDrawingView) {
-				GraphDrawingView gdv = (GraphDrawingView) view;
+			if (view instanceof CanvasView) {
+				CanvasView gdv = (CanvasView) view;
 				updateInterval(gdv.getWidth(), gdv.getOriginX());
 			}
 		}
 	}
-
 }

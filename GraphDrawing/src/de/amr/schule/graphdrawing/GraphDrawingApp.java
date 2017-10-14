@@ -1,4 +1,4 @@
-package de.amr.schule.graphdrawing.controller;
+package de.amr.schule.graphdrawing;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -10,10 +10,12 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
+import de.amr.schule.graphdrawing.controller.GraphDrawingController;
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
 import de.amr.schule.graphdrawing.view.ConfigView;
-import de.amr.schule.graphdrawing.view.GraphDrawingView;
-import de.amr.schule.graphdrawing.view.GraphPointTableView;
+import de.amr.schule.graphdrawing.view.CanvasView;
+import de.amr.schule.graphdrawing.view.PointsTableView;
+import de.amr.schule.graphdrawing.view.MainWindowContent;
 
 public class GraphDrawingApp {
 
@@ -24,8 +26,8 @@ public class GraphDrawingApp {
 
 	private JFrame window;
 	private GraphDrawingController controller;
-	private GraphDrawingView canvas;
-	private GraphPointTableView tableView;
+	private CanvasView canvas;
+	private PointsTableView tableView;
 	private ConfigView controlView;
 	private GraphDrawingModel model;
 
@@ -38,27 +40,21 @@ public class GraphDrawingApp {
 
 		controller = new GraphDrawingController(model);
 
-		canvas = new GraphDrawingView(model, controller);
+		canvas = new CanvasView(model, controller);
 		canvas.setPreferredSize(new Dimension(700, 600));
 		canvas.centerOrigin();
 
-		tableView = new GraphPointTableView(model, controller);
+		tableView = new PointsTableView(model, controller);
 
 		controlView = new ConfigView(model, controller);
 
-		controller.addView(canvas);
-		controller.addView(tableView);
-		controller.addView(controlView);
-
-		JPanel east = new JPanel();
-		east.setLayout(new GridLayout(2, 1));
-		east.add(tableView);
-		east.add(controlView);
-
+		controller.addViews(canvas, tableView, controlView);
+		
+		MainWindowContent mainPanel = new MainWindowContent(canvas, tableView, controlView);
+		
 		window = new JFrame("Funktionsgraphen zeichnen");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.getContentPane().add(canvas, BorderLayout.CENTER);
-		window.getContentPane().add(east, BorderLayout.EAST);
+		window.getContentPane().add(mainPanel, BorderLayout.CENTER);
 		window.pack();
 		window.setVisible(true);
 	}
