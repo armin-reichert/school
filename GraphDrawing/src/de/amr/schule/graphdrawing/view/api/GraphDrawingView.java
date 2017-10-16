@@ -1,4 +1,4 @@
-package de.amr.schule.graphdrawing.view;
+package de.amr.schule.graphdrawing.view.api;
 
 public interface GraphDrawingView {
 

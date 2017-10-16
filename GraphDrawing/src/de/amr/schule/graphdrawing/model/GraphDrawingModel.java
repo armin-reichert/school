@@ -8,7 +8,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class GraphDrawingModel {
 
-	public static final String DEFAULT_TERM_TEXT = "x";
+	public static final String DEFAULT_TERM_TEXT = "x^2";
 	public static final Expression DEFAULT_TERM = new ExpressionBuilder(DEFAULT_TERM_TEXT)
 			.variable("x").build();
 
@@ -21,11 +21,11 @@ public class GraphDrawingModel {
 	private Expression term;
 
 	public GraphDrawingModel() {
-		xscale = 10;
-		yscale = 10;
+		xscale = 20;
+		yscale = 20;
+		step = 0.1;
 		xmin = -10;
 		xmax = 10;
-		step = 1;
 		term = DEFAULT_TERM;
 	}
 

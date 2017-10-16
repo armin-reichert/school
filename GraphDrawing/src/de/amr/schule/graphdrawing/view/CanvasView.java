@@ -1,6 +1,7 @@
 package de.amr.schule.graphdrawing.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -19,6 +20,7 @@ import javax.swing.KeyStroke;
 import de.amr.schule.graphdrawing.controller.GraphDrawingController;
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
 import de.amr.schule.graphdrawing.model.GraphPoint;
+import de.amr.schule.graphdrawing.view.api.GraphDrawingViewController;
 
 public class CanvasView extends JPanel implements GraphDrawingViewController {
 
@@ -31,8 +33,9 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 	private int originY;
 	private boolean originIsMoving;
 
-	public CanvasView(GraphDrawingModel model) {
+	public CanvasView(GraphDrawingModel model, int width, int height) {
 		this.model = model;
+		setPreferredSize(new Dimension(width, height));
 		setBackground(Color.WHITE);
 		registerEventHandlers();
 	}
@@ -108,7 +111,9 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 	}
 
 	private void onMouseDragged(MouseEvent e) {
-		moveOrigin(e.getX(), e.getY());
+		if (originIsMoving) {
+			moveOrigin(e.getX(), e.getY());
+		}
 	}
 
 	private void moveOrigin(int x, int y) {

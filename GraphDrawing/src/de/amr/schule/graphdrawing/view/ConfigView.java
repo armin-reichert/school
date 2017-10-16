@@ -1,6 +1,5 @@
 package de.amr.schule.graphdrawing.view;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -18,7 +17,7 @@ import javax.swing.event.ChangeEvent;
 
 import de.amr.schule.graphdrawing.controller.GraphDrawingController;
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
-import net.objecthunter.exp4j.ExpressionBuilder;
+import de.amr.schule.graphdrawing.view.api.GraphDrawingViewController;
 
 public class ConfigView extends JPanel implements GraphDrawingViewController {
 
@@ -34,8 +33,6 @@ public class ConfigView extends JPanel implements GraphDrawingViewController {
 
 	public ConfigView(GraphDrawingModel model) {
 		this.model = model;
-
-		setBackground(Color.LIGHT_GRAY);
 
 		fieldTerm = new JTextField();
 		fieldTerm.setFont(TEXT_FONT);
@@ -114,7 +111,6 @@ public class ConfigView extends JPanel implements GraphDrawingViewController {
 			controller.changeFunctionTerm(fieldTerm.getText());
 		} catch (IllegalArgumentException x) {
 			errors.add("Ungültiger Funktionsterm: " + fieldTerm.getText());
-			model.setTerm(new ExpressionBuilder("x").variable("x").build());
 		}
 		try {
 			controller.changeStep(fieldStep.getText());

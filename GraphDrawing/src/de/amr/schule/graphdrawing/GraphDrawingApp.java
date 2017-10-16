@@ -4,7 +4,6 @@ import static java.awt.EventQueue.invokeLater;
 import static javax.swing.UIManager.setLookAndFeel;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
@@ -27,13 +26,9 @@ public class GraphDrawingApp {
 
 		// Model
 		GraphDrawingModel model = new GraphDrawingModel();
-		model.setStep(.01);
-		model.setXscale(20);
-		model.setYscale(20);
 
 		// Views
-		CanvasView canvasView = new CanvasView(model);
-		canvasView.setPreferredSize(new Dimension(800, 800));
+		CanvasView canvasView = new CanvasView(model, 800, 800);
 
 		PointsTableView pointsTableView = new PointsTableView(model);
 

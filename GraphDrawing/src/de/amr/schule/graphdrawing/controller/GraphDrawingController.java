@@ -6,7 +6,7 @@ import java.util.Set;
 
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
 import de.amr.schule.graphdrawing.view.CanvasView;
-import de.amr.schule.graphdrawing.view.GraphDrawingView;
+import de.amr.schule.graphdrawing.view.api.GraphDrawingView;
 import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.ValidationResult;

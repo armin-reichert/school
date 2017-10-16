@@ -9,6 +9,7 @@ import javax.swing.table.AbstractTableModel;
 
 import de.amr.schule.graphdrawing.controller.GraphDrawingController;
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
+import de.amr.schule.graphdrawing.view.api.GraphDrawingViewController;
 
 public class PointsTableView extends JPanel implements GraphDrawingViewController {
 
