@@ -7,9 +7,9 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-public class MainWindowContent extends JPanel {
+public class MainWindowLayout extends JPanel {
 
-	public MainWindowContent(JPanel canvas, JPanel tableView, JPanel configView) {
+	public MainWindowLayout(JPanel canvas, JPanel tableView, JPanel configView) {
 		setLayout(new BorderLayout());
 		add(canvas, BorderLayout.CENTER);
 		JPanel right = new JPanel();

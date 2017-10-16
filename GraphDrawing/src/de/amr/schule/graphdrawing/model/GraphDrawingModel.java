@@ -8,22 +8,25 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class GraphDrawingModel {
 
+	public static final String DEFAULT_TERM_TEXT = "x";
+	public static final Expression DEFAULT_TERM = new ExpressionBuilder(DEFAULT_TERM_TEXT)
+			.variable("x").build();
+
+	private final List<GraphPoint> points = new ArrayList<>();
 	private int xscale;
 	private int yscale;
-
-	private final List<GraphPoint> points;
-
 	private double xmin;
 	private double xmax;
 	private double step;
-
-	// Allgemeine Funktion
 	private Expression term;
 
 	public GraphDrawingModel() {
-		points = new ArrayList<>();
+		xscale = 10;
+		yscale = 10;
+		xmin = -10;
+		xmax = 10;
 		step = 1;
-		term = new ExpressionBuilder("x").variable("x").build();
+		term = DEFAULT_TERM;
 	}
 
 	public int getXscale() {

@@ -6,24 +6,40 @@ import java.util.Set;
 
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
 import de.amr.schule.graphdrawing.view.CanvasView;
-import de.amr.schule.graphdrawing.view.IView;
+import de.amr.schule.graphdrawing.view.GraphDrawingView;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
+import net.objecthunter.exp4j.ValidationResult;
 
 public class GraphDrawingController {
 
-	private GraphDrawingModel model;
-	private final Set<IView> views = new HashSet<>();
-
-	public void addViews(IView... viewList) {
-		Arrays.stream(viewList).forEach(views::add);
-	}
+	private final GraphDrawingModel model;
+	private final Set<GraphDrawingView> views = new HashSet<>();
 
 	public GraphDrawingController(GraphDrawingModel model) {
 		this.model = model;
 	}
 
-	public void functionChanged() {
+	public void addViews(GraphDrawingView... viewList) {
+		Arrays.stream(viewList).forEach(views::add);
+	}
+
+	private void updateViews() {
+		views.stream().forEach(GraphDrawingView::update);
+	}
+
+	public void changeStep(String stepText) throws NumberFormatException {
+		model.setStep(Double.parseDouble(stepText));
+	}
+
+	public void changeFunctionTerm(String termText) throws IllegalArgumentException {
+		Expression term = new ExpressionBuilder(termText).variables("x").build();
+		if (term.validate(false) != ValidationResult.SUCCESS) {
+			throw new IllegalArgumentException();
+		}
+		model.setTerm(term);
 		model.computePoints();
-		views.stream().forEach(IView::update);
+		updateViews();
 	}
 
 	public void updateInterval(int width, int originX) {
@@ -32,13 +48,13 @@ public class GraphDrawingController {
 		model.setXmin(xmin);
 		model.setXmax(xmax);
 		model.computePoints();
-		views.stream().forEach(IView::update);
+		updateViews();
 	}
 
 	public void changeXScale(int xscale) {
 		model.setXscale(xscale);
 		// hack
-		for (IView view : views) {
+		for (GraphDrawingView view : views) {
 			if (view instanceof CanvasView) {
 				CanvasView gdv = (CanvasView) view;
 				updateInterval(gdv.getWidth(), gdv.getOriginX());
@@ -49,7 +65,7 @@ public class GraphDrawingController {
 	public void changeYScale(int yscale) {
 		model.setYscale(yscale);
 		// hack
-		for (IView view : views) {
+		for (GraphDrawingView view : views) {
 			if (view instanceof CanvasView) {
 				CanvasView gdv = (CanvasView) view;
 				updateInterval(gdv.getWidth(), gdv.getOriginX());

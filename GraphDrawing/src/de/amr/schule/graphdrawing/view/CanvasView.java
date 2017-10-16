@@ -20,7 +20,7 @@ import de.amr.schule.graphdrawing.controller.GraphDrawingController;
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
 import de.amr.schule.graphdrawing.model.GraphPoint;
 
-public class CanvasView extends JPanel implements IView {
+public class CanvasView extends JPanel implements GraphDrawingViewController {
 
 	private static final Font FONT = new Font("Arial", Font.PLAIN, 12);
 	private static final int POINT_SIZE = 2;
@@ -36,9 +36,16 @@ public class CanvasView extends JPanel implements IView {
 		setBackground(Color.WHITE);
 		registerEventHandlers();
 	}
-	
+
+	@Override
 	public void setController(GraphDrawingController controller) {
 		this.controller = controller;
+	}
+
+	@Override
+	public void update() {
+		repaint();
+		requestFocus();
 	}
 
 	private void registerEventHandlers() {
@@ -108,12 +115,6 @@ public class CanvasView extends JPanel implements IView {
 		originX = x;
 		originY = y;
 		controller.updateInterval(getWidth(), originX);
-	}
-
-	@Override
-	public void update() {
-		repaint();
-		requestFocus();
 	}
 
 	public void centerOrigin() {
@@ -220,7 +221,7 @@ public class CanvasView extends JPanel implements IView {
 	}
 
 	private void drawGrid(Graphics2D g) {
-		//TODO
+		// TODO
 	}
 
 	private void drawPoint(Graphics2D g, double mx, double my, Color color, int size, String text,

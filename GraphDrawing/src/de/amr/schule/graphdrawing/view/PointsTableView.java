@@ -10,7 +10,7 @@ import javax.swing.table.AbstractTableModel;
 import de.amr.schule.graphdrawing.controller.GraphDrawingController;
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
 
-public class PointsTableView extends JPanel implements IView {
+public class PointsTableView extends JPanel implements GraphDrawingViewController {
 
 	private static final String[] COLUMN_NAMES = { "#", "x", "f(x)" };
 
@@ -56,6 +56,7 @@ public class PointsTableView extends JPanel implements IView {
 		add(new JScrollPane(new JTable(tableModel)), BorderLayout.CENTER);
 	}
 
+	@Override
 	public void setController(GraphDrawingController controller) {
 		this.controller = controller;
 	}

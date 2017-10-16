@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -16,11 +18,9 @@ import javax.swing.event.ChangeEvent;
 
 import de.amr.schule.graphdrawing.controller.GraphDrawingController;
 import de.amr.schule.graphdrawing.model.GraphDrawingModel;
-import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
-import net.objecthunter.exp4j.ValidationResult;
 
-public class ConfigView extends JPanel implements IView {
+public class ConfigView extends JPanel implements GraphDrawingViewController {
 
 	private static final Font TEXT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 16);
 
@@ -39,7 +39,7 @@ public class ConfigView extends JPanel implements IView {
 
 		fieldTerm = new JTextField();
 		fieldTerm.setFont(TEXT_FONT);
-		fieldTerm.setText("x"); // TODO
+		fieldTerm.setText(GraphDrawingModel.DEFAULT_TERM_TEXT);
 
 		fieldStep = new JTextField();
 		fieldStep.setFont(TEXT_FONT);
@@ -84,6 +84,7 @@ public class ConfigView extends JPanel implements IView {
 		registerEventHandlers();
 	}
 
+	@Override
 	public void setController(GraphDrawingController controller) {
 		this.controller = controller;
 	}
@@ -108,22 +109,24 @@ public class ConfigView extends JPanel implements IView {
 	}
 
 	private void okPressed(ActionEvent e) {
+		List<String> errors = new ArrayList<>();
 		try {
-			model.setStep(Double.parseDouble(fieldStep.getText()));
-		} catch (NumberFormatException x) {
-			fieldStep.setText(String.valueOf(model.getStep()));
-		}
-		try {
-			Expression term = new ExpressionBuilder(fieldTerm.getText()).variables("x").build();
-			if (term.validate(false) != ValidationResult.SUCCESS) {
-				throw new IllegalArgumentException();
-			}
-			model.setTerm(term);
-			controller.functionChanged();
-		} catch (Exception x) {
-			JOptionPane.showMessageDialog(null, "Ungültiger Funktionsterm: " + fieldTerm.getText());
+			controller.changeFunctionTerm(fieldTerm.getText());
+		} catch (IllegalArgumentException x) {
+			errors.add("Ungültiger Funktionsterm: " + fieldTerm.getText());
 			model.setTerm(new ExpressionBuilder("x").variable("x").build());
-			fieldTerm.setText("x");
 		}
+		try {
+			controller.changeStep(fieldStep.getText());
+		} catch (NumberFormatException nfe) {
+			errors.add("Ungültige Schrittweite (keine Dezimalzahl): " + fieldStep.getText());
+		}
+		if (!errors.isEmpty()) {
+			JOptionPane.showMessageDialog(null, String.join("\n", errors));
+		}
+	}
+
+	public JButton getButtonOK() {
+		return buttonOK;
 	}
 }
