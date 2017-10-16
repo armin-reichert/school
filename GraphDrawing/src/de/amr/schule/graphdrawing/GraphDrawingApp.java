@@ -27,18 +27,19 @@ public class GraphDrawingApp {
 		// Model
 		GraphDrawingModel model = new GraphDrawingModel();
 
-		// Views
-		CanvasView canvasView = new CanvasView(model, 800, 800);
-
-		PointsTableView pointsTableView = new PointsTableView(model);
-
-		ConfigView configView = new ConfigView(model);
-
 		// Controller
 		GraphDrawingController controller = new GraphDrawingController(model);
+		
+		// ViewController
+		CanvasView canvasView = new CanvasView(model, 800, 800);
 		canvasView.setController(controller);
+
+		PointsTableView pointsTableView = new PointsTableView(model);
 		pointsTableView.setController(controller);
+
+		ConfigView configView = new ConfigView(model);
 		configView.setController(controller);
+		
 		controller.addViews(canvasView, pointsTableView, configView);
 
 		// Window

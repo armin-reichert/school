@@ -1,6 +1,7 @@
 package de.amr.schule.graphdrawing.view;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -26,15 +27,19 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 
 	private static final Font FONT = new Font("Arial", Font.PLAIN, 12);
 	private static final int POINT_SIZE = 2;
+	private static final Color GRID_COLOR = Color.LIGHT_GRAY;
 
 	private GraphDrawingModel model;
 	private GraphDrawingController controller;
+
 	private int originX;
 	private int originY;
-	private boolean originIsMoving;
+	private boolean originMovement;
+	private boolean gridVisible;
 
 	public CanvasView(GraphDrawingModel model, int width, int height) {
 		this.model = model;
+		this.gridVisible = true;
 		setPreferredSize(new Dimension(width, height));
 		setBackground(Color.WHITE);
 		registerEventHandlers();
@@ -43,6 +48,30 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 	@Override
 	public void setController(GraphDrawingController controller) {
 		this.controller = controller;
+	}
+
+	public void centerOrigin() {
+		int width = getWidth() != 0 ? getWidth() : getPreferredSize().width;
+		int height = getHeight() != 0 ? getHeight() : getPreferredSize().height;
+		originX = width / 2;
+		originY = height / 2;
+		controller.updateInterval(getWidth(), originX);
+	}
+
+	public int getOriginX() {
+		return originX;
+	}
+
+	public void setOriginX(int originX) {
+		this.originX = originX;
+	}
+
+	public int getOriginY() {
+		return originY;
+	}
+
+	public void setOriginY(int originY) {
+		this.originY = originY;
 	}
 
 	@Override
@@ -80,38 +109,65 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
 
-		Action actionCenterOrigin = new AbstractAction() {
+		registerActionForKey("C", new AbstractAction("centerOrigin") {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				centerOrigin();
 			}
-		};
-		getInputMap().put(KeyStroke.getKeyStroke("C"), "centerOrigin");
-		getActionMap().put("centerOrigin", actionCenterOrigin);
+		});
+
+		registerActionForKey("G", new AbstractAction("toggleGrid") {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				toggleGrid();
+			}
+		});
+	}
+
+	private void registerActionForKey(String key, Action action) {
+		getInputMap().put(KeyStroke.getKeyStroke(key), action.getValue(Action.NAME));
+		getActionMap().put(action.getValue(Action.NAME), action);
+
+	}
+
+	private void toggleGrid() {
+		gridVisible = !gridVisible;
+		repaint();
 	}
 
 	private void onResized() {
 		controller.updateInterval(getWidth(), originX);
 	}
 
+	private void startOriginMovement() {
+		setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+		originMovement = true;
+	}
+
+	private void stopOriginMovement() {
+		setCursor(Cursor.getDefaultCursor());
+		originMovement = false;
+	}
+
 	private void onMousePressed(MouseEvent e) {
 		int x1 = e.getX(), y1 = e.getY();
 		int x2 = originX, y2 = originY;
 		if ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) <= 100) {
-			originIsMoving = true;
+			startOriginMovement();
 		}
 	}
 
 	private void onMouseReleased(MouseEvent e) {
-		if (originIsMoving) {
+		if (originMovement) {
 			moveOrigin(e.getX(), e.getY());
-			originIsMoving = false;
+			stopOriginMovement();
 		}
 	}
 
 	private void onMouseDragged(MouseEvent e) {
-		if (originIsMoving) {
+		if (originMovement) {
 			moveOrigin(e.getX(), e.getY());
 		}
 	}
@@ -122,36 +178,12 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 		controller.updateInterval(getWidth(), originX);
 	}
 
-	public void centerOrigin() {
-		int width = getWidth() != 0 ? getWidth() : getPreferredSize().width;
-		int height = getHeight() != 0 ? getHeight() : getPreferredSize().height;
-		originX = width / 2;
-		originY = height / 2;
-		controller.updateInterval(getWidth(), originX);
+	private int viewX(double modelX) {
+		return (int) (originX + modelX * model.getXscale());
 	}
 
-	public int getOriginX() {
-		return originX;
-	}
-
-	public void setOriginX(int originX) {
-		this.originX = originX;
-	}
-
-	public int getOriginY() {
-		return originY;
-	}
-
-	public void setOriginY(int originY) {
-		this.originY = originY;
-	}
-
-	private int toViewX(double mx) {
-		return (int) (originX + mx * model.getXscale());
-	}
-
-	private int toViewY(double my) {
-		return (int) (originY - my * model.getYscale());
+	private int viewY(double modelY) {
+		return (int) (originY - modelY * model.getYscale());
 	}
 
 	@Override
@@ -161,7 +193,7 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 	}
 
 	private void draw(Graphics2D g) {
-		drawGrid(g);
+		drawGrid(g, GRID_COLOR);
 		drawAxes(g);
 		for (GraphPoint gp : model.getPoints()) {
 			drawPoint(g, gp.x, gp.fx, Color.BLACK, POINT_SIZE, "", 0, 0);
@@ -225,14 +257,28 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 		}
 	}
 
-	private void drawGrid(Graphics2D g) {
-		// TODO
+	private void drawGrid(Graphics2D g, Color color) {
+		if (gridVisible) {
+			g.setColor(color);
+			for (int y = originY; y >= 0; y -= model.getYscale()) {
+				g.drawLine(0, y, getWidth(), y);
+			}
+			for (int y = originY; y < getHeight(); y += model.getYscale()) {
+				g.drawLine(0, y, getWidth(), y);
+			}
+			for (int x = originX; x >= 0; x -= model.getXscale()) {
+				g.drawLine(x, 0, x, getHeight());
+			}
+			for (int x = originX; x < getWidth(); x += model.getXscale()) {
+				g.drawLine(x, 0, x, getHeight());
+			}
+		}
 	}
 
 	private void drawPoint(Graphics2D g, double mx, double my, Color color, int size, String text,
 			int offsetX, int offsetY) {
-		int x = toViewX(mx);
-		int y = toViewY(my);
+		int x = viewX(mx);
+		int y = viewY(my);
 		g.setColor(color);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.fillRect(x - size / 2, y - size / 2, size, size);
