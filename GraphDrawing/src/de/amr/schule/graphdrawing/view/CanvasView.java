@@ -27,6 +27,7 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 
 	private static final Font FONT = new Font("Arial", Font.PLAIN, 12);
 	private static final int POINT_SIZE = 2;
+	private static final Color AXIS_COLOR = Color.DARK_GRAY;
 	private static final Color GRID_COLOR = Color.LIGHT_GRAY;
 
 	private GraphDrawingModel model;
@@ -194,53 +195,41 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 
 	private void draw(Graphics2D g) {
 		drawGrid(g, GRID_COLOR);
-		drawAxes(g);
+		drawAxes(g, AXIS_COLOR);
 		for (GraphPoint gp : model.getPoints()) {
 			drawPoint(g, gp.x, gp.fx, Color.BLACK, POINT_SIZE, "", 0, 0);
 		}
 	}
 
-	private void drawAxes(Graphics2D g) {
-		g.setColor(Color.BLACK);
+	private void drawAxes(Graphics2D g, Color color) {
+		g.setColor(color);
+		// x-Achse
 		g.drawLine(0, originY, getWidth(), originY);
-		g.drawLine(originX, 0, originX, getHeight());
-
-		// Ticks x-Achse
 		int modelX = 1;
-		int x = originX + model.getXscale();
-		while (x <= getWidth()) {
-			g.setColor(Color.BLACK);
+		for (int x = originX + model.getXscale(); x <= getWidth(); x += model.getXscale()) {
 			g.fillRect(x, originY - 3, 1, 6);
 			drawXCoord(g, modelX, x - 3, originY - 10);
 			x += model.getXscale();
 			modelX += 1;
 		}
 		modelX = -1;
-		x = originX + -model.getXscale();
-		while (x >= 0) {
-			g.setColor(Color.BLACK);
+		for (int x = originX + -model.getXscale(); x >= 0; x -= model.getXscale()) {
 			g.fillRect(x, originY - 3, 1, 6);
 			drawXCoord(g, modelX, x - 3, originY - 10);
-			x -= model.getXscale();
 			modelX -= 1;
 		}
-		// Ticks y-Achse
+		// y-Achse
+		g.drawLine(originX, 0, originX, getHeight());
 		int modelY = -1;
-		int y = originY + model.getYscale();
-		while (y <= getHeight()) {
-			g.setColor(Color.BLACK);
+		for (int y = originY + model.getYscale(); y <= getHeight(); y += model.getYscale()) {
 			g.fillRect(originX - 3, y, 6, 1);
 			drawYCoord(g, modelY, originX + 6, y + 3);
-			y += model.getYscale();
 			modelY -= 1;
 		}
 		modelY = 1;
-		y = originY - model.getYscale();
-		while (y >= 0) {
-			g.setColor(Color.BLACK);
+		for (int y = originY - model.getYscale(); y >= 0; y -= model.getYscale()) {
 			g.fillRect(originX - 3, y, 6, 1);
 			drawYCoord(g, modelY, originX + 6, y + 3);
-			y -= model.getYscale();
 			modelY += 1;
 		}
 	}

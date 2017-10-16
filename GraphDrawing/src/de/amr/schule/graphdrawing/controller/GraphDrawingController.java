@@ -30,6 +30,8 @@ public class GraphDrawingController {
 
 	public void changeStep(String stepText) throws NumberFormatException {
 		model.setStep(Double.parseDouble(stepText));
+		model.computePoints();
+		updateViews();
 	}
 
 	public void changeFunctionTerm(String termText) throws IllegalArgumentException {
