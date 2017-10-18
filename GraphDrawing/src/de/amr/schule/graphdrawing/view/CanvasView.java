@@ -12,9 +12,9 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.function.Consumer;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
@@ -110,27 +110,21 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 		addMouseListener(mouse);
 		addMouseMotionListener(mouse);
 
-		registerActionForKey("C", new AbstractAction("centerOrigin") {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				centerOrigin();
-			}
-		});
-
-		registerActionForKey("G", new AbstractAction("toggleGrid") {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				toggleGrid();
-			}
-		});
+		registerActionForKey("C", "centerOrigin", e -> centerOrigin());
+		registerActionForKey("G", "toggleGrid", e -> toggleGrid());
 	}
 
-	private void registerActionForKey(String key, Action action) {
-		getInputMap().put(KeyStroke.getKeyStroke(key), action.getValue(Action.NAME));
-		getActionMap().put(action.getValue(Action.NAME), action);
+	private void registerActionForKey(String key, String actionName,
+			Consumer<ActionEvent> actionHandler) {
+		AbstractAction action = new AbstractAction(actionName) {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actionHandler.accept(e);
+			}
+		};
+		getInputMap().put(KeyStroke.getKeyStroke(key), actionName);
+		getActionMap().put(actionName, action);
 	}
 
 	private void toggleGrid() {

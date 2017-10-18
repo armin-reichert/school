@@ -60,7 +60,7 @@ public class ConfigView extends JPanel implements GraphDrawingViewController {
 
 		JPanel grid = new JPanel();
 		grid.setLayout(new GridLayout(4, 2));
-		grid.add(new JLabel("Funktion"));
+		grid.add(new JLabel("Funktionsterm"));
 		grid.add(fieldTerm);
 		grid.add(new JLabel("Schrittweite"));
 		grid.add(fieldStep);
@@ -118,7 +118,8 @@ public class ConfigView extends JPanel implements GraphDrawingViewController {
 			errors.add("Ungültige Schrittweite (keine Dezimalzahl): " + fieldStep.getText());
 		}
 		if (!errors.isEmpty()) {
-			JOptionPane.showMessageDialog(null, String.join("\n", errors));
+			JOptionPane.showMessageDialog(null, String.join("\n", errors), "Eingabedaten prüfen!",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
