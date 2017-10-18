@@ -1,6 +1,7 @@
 package de.amr.schule.graphdrawing.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.objecthunter.exp4j.Expression;
@@ -47,16 +48,11 @@ public class GraphDrawingModel {
 
 	public void computePoints() {
 		points.clear();
-		double x = xmin;
-		while (x <= xmax) {
-			GraphPoint p = new GraphPoint();
-			p.x = x;
-			term.setVariable("x", x);
-			p.fx = term.evaluate();
-			if (!new Double(p.fx).isNaN()) {
-				points.add(p);
+		for (double x = xmin; x <= xmax; x += step) {
+			Double value = term.setVariable("x", x).evaluate();
+			if (!value.isNaN()) {
+				points.add(new GraphPoint(x, value));
 			}
-			x += step;
 		}
 	}
 
@@ -79,7 +75,7 @@ public class GraphDrawingModel {
 	}
 
 	public List<GraphPoint> getPoints() {
-		return points;
+		return Collections.unmodifiableList(points);
 	}
 
 	public double getStep() {
