@@ -37,7 +37,7 @@ public class GraphDrawingApp {
 		PointsTableView pointsTableView = new PointsTableView(model);
 		pointsTableView.setController(controller);
 
-		ConfigView configView = new ConfigView(model);
+		ConfigView configView = new ConfigView(model, canvasView);
 		configView.setController(controller);
 		
 		controller.addViews(canvasView, pointsTableView, configView);

@@ -30,7 +30,6 @@ public class GraphDrawingController {
 
 	public void changeStep(String stepText) throws NumberFormatException {
 		model.setStep(Double.parseDouble(stepText));
-		model.computePoints();
 		updateViews();
 	}
 
@@ -40,38 +39,23 @@ public class GraphDrawingController {
 			throw new IllegalArgumentException();
 		}
 		model.setTerm(term);
-		model.computePoints();
 		updateViews();
 	}
 
-	public void updateInterval(int width, int originX) {
+	public void changeXRange(int canvasWidth, int originX) {
 		double xmin = -(double) originX / model.getXscale();
-		double xmax = (double) (width - originX) / model.getXscale();
-		model.setXmin(xmin);
-		model.setXmax(xmax);
-		model.computePoints();
+		double xmax = (double) (canvasWidth - originX) / model.getXscale();
+		model.setInterval(xmin, xmax);
 		updateViews();
 	}
-
-	public void changeXScale(int xscale) {
-		model.setXscale(xscale);
-		// hack
-		for (GraphDrawingView view : views) {
-			if (view instanceof CanvasView) {
-				CanvasView gdv = (CanvasView) view;
-				updateInterval(gdv.getWidth(), gdv.getOriginX());
-			}
-		}
+	
+	public void changeXScale(int xScale, int canvasWidth, int originX) {
+		model.setXscale(xScale);
+		changeXRange(canvasWidth, originX);
 	}
 
-	public void changeYScale(int yscale) {
-		model.setYscale(yscale);
-		// hack
-		for (GraphDrawingView view : views) {
-			if (view instanceof CanvasView) {
-				CanvasView gdv = (CanvasView) view;
-				updateInterval(gdv.getWidth(), gdv.getOriginX());
-			}
-		}
+	public void changeYScale(int yScale, int canvasWidth, int originX) {
+		model.setXscale(yScale);
+		changeXRange(canvasWidth, originX);
 	}
 }

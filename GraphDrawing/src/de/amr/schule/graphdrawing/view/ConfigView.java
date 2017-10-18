@@ -23,16 +23,18 @@ public class ConfigView extends JPanel implements GraphDrawingViewController {
 
 	private static final Font TEXT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 16);
 
-	private GraphDrawingModel model;
+	private final GraphDrawingModel model;
 	private GraphDrawingController controller;
+	private final CanvasView canvasView;
 
 	private JTextField fieldStep;
 	private JTextField fieldTerm;
 	private JSlider sliderXScale, sliderYScale;
 	private JButton buttonOK;
 
-	public ConfigView(GraphDrawingModel model) {
+	public ConfigView(GraphDrawingModel model, CanvasView canvasView) {
 		this.model = model;
+		this.canvasView = canvasView;
 
 		fieldTerm = new JTextField();
 		fieldTerm.setFont(TEXT_FONT);
@@ -71,12 +73,12 @@ public class ConfigView extends JPanel implements GraphDrawingViewController {
 
 		buttonOK = new JButton("OK");
 
-		JPanel south = new JPanel();
-		south.add(buttonOK);
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(buttonOK);
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		add(grid);
-		add(south);
+		add(buttonPanel);
 
 		registerEventHandlers();
 	}
@@ -98,11 +100,11 @@ public class ConfigView extends JPanel implements GraphDrawingViewController {
 	}
 
 	private void xscaleChanged(ChangeEvent e) {
-		controller.changeXScale(sliderXScale.getValue());
+		controller.changeXScale(sliderXScale.getValue(), canvasView.getWidth(), canvasView.getOriginX());
 	}
 
 	private void yscaleChanged(ChangeEvent e) {
-		controller.changeYScale(sliderYScale.getValue());
+		controller.changeYScale(sliderYScale.getValue(), canvasView.getWidth(), canvasView.getOriginX());
 	}
 
 	private void okPressed(ActionEvent e) {

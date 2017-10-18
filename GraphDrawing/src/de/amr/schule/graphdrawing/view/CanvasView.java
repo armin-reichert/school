@@ -56,7 +56,7 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 		int height = getHeight() != 0 ? getHeight() : getPreferredSize().height;
 		originX = width / 2;
 		originY = height / 2;
-		controller.updateInterval(getWidth(), originX);
+		controller.changeXRange(getWidth(), originX);
 	}
 
 	public int getOriginX() {
@@ -133,7 +133,7 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 	}
 
 	private void onResized() {
-		controller.updateInterval(getWidth(), originX);
+		controller.changeXRange(getWidth(), originX);
 	}
 
 	private void startOriginMovement() {
@@ -170,7 +170,7 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 	private void moveOrigin(int x, int y) {
 		originX = x;
 		originY = y;
-		controller.updateInterval(getWidth(), originX);
+		controller.changeXRange(getWidth(), originX);
 	}
 
 	private int viewX(double modelX) {

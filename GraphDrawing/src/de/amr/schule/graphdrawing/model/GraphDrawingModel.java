@@ -64,8 +64,10 @@ public class GraphDrawingModel {
 		return xmin;
 	}
 
-	public void setXmin(double xmin) {
+	public void setInterval(double xmin, double xmax) {
 		this.xmin = xmin;
+		this.xmax = xmax;
+		computePoints();
 	}
 
 	public double getXmax() {
@@ -86,6 +88,7 @@ public class GraphDrawingModel {
 
 	public void setStep(double step) {
 		this.step = step;
+		computePoints();
 	}
 
 	public Expression getTerm() {
@@ -94,6 +97,7 @@ public class GraphDrawingModel {
 
 	public void setTerm(Expression term) {
 		this.term = term;
+		computePoints();
 	}
 
 }
