@@ -60,18 +60,14 @@ public class GraphDrawingModel {
 		return xmin;
 	}
 
-	public void setInterval(double xmin, double xmax) {
-		this.xmin = xmin;
-		this.xmax = xmax;
-		computePoints();
-	}
-
 	public double getXmax() {
 		return xmax;
 	}
 
-	public void setXmax(double xmax) {
+	public void setInterval(double xmin, double xmax) {
+		this.xmin = xmin;
 		this.xmax = xmax;
+		computePoints();
 	}
 
 	public List<GraphPoint> getPoints() {
