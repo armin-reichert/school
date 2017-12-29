@@ -9,10 +9,10 @@ public class DartsApp {
 	private final int[][] intervals = { { 170, 150 }, { 149, 129 }, { 128, 108 }, { 107, 87 },
 			{ 86, 66 }, { 65, 45 }, { 44, 24 }, { 23, 2 } };
 
-	private final FinishTable solutions;
+	private final FinishesTable solutions;
 
 	public DartsApp() {
-		solutions = new FinishTable();
+		solutions = new FinishesTable();
 	}
 
 	public static void main(String[] args) {
