@@ -42,10 +42,14 @@ public class DartsApp {
 		sb.append("<head>\n");
 		sb.append("<style>\n");
 		sb.append(
-				".scorelink { text-align:right; font-family: Arial; font-size: 20pt; color: red;  } .scorelink a { text-decoration: none; }\n");
+				" .scorelink { text-align:right; font-family: Arial; font-size: 20pt; color: lightgray; });"
+				+ " .scorelink a { text-decoration: none; }"
+			  + " .scorelink a:visited { color: blue; }"
+				+ "\n");
 		sb.append("</style>\n");
 		sb.append("</head>\n");
 		sb.append("<body>\n");
+		sb.append("<h1>Darts Finishes</h1>\n");
 		sb.append("<table border=0 cellspacing=10>\n");
 
 		// 2-dimensional table with scores
@@ -59,9 +63,17 @@ public class DartsApp {
 				throw new IllegalStateException();
 			}
 			int upper = interval[0], lower = interval[1];
+			boolean hasFinish = !solutions.getFinishes(score).isEmpty();
 			url = "finishes-" + upper + "-" + lower + ".htm#" + +score;
-			sb.append("<td class='scorelink'>").append("<a href='").append(url).append("'>").append(score)
-					.append("</a></td>\n");
+			sb.append("<td class='scorelink'>");
+			if (hasFinish) {
+				sb.append("<a href='").append(url).append("'>");
+			}
+			sb.append(score);
+			if (hasFinish) {
+				sb.append("</a>");
+			}
+			sb.append("</td>\n");
 			column += 1;
 			if (column == 14) {
 				sb.append("</tr>");
@@ -96,7 +108,7 @@ public class DartsApp {
 			sb.append("<td>\n");
 			// Finishes zum score
 			for (Finish finish : solutions.getFinishes(score)) {
-				sb.append(finish).append("<br>\n");
+				sb.append(finish).append("&nbsp;&nbsp;\n");
 			}
 			sb.append("</td>\n");
 			sb.append("</tr>\n");
