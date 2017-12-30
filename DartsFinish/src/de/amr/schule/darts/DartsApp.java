@@ -2,30 +2,25 @@ package de.amr.schule.darts;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class DartsApp {
 
-	private final int[][] intervals = { { 170, 150 }, { 149, 129 }, { 128, 108 }, { 107, 87 },
+	private static final int[][] INTERVALS = { { 170, 150 }, { 149, 129 }, { 128, 108 }, { 107, 87 },
 			{ 86, 66 }, { 65, 45 }, { 44, 24 }, { 23, 2 } };
-
-	private final FinishesTable solutions;
-
-	public DartsApp() {
-		solutions = new FinishesTable();
-	}
-
+	
 	public static void main(String[] args) {
 		DartsApp app = new DartsApp();
-		for (int[] interval : app.intervals) {
+		for (int[] interval : INTERVALS) {
 			int upper = interval[0], lower = interval[1];
-			app.writeFile("finishes-" + upper + "-" + lower + ".htm", app.toHTML(upper, lower));
+			app.writeFile(getFilename(upper, lower), app.createHTML(upper, lower));
 		}
-		app.writeIndexFile("finishes-index.htm");
+		app.writeIndex("checkouts-index.htm");
 	}
 
-	private int[] findInterval(int score) {
-		for (int[] interval : intervals) {
+	private static int[] findInterval(int score) {
+		for (int[] interval : INTERVALS) {
 			int upper = interval[0], lower = interval[1];
 			if (upper >= score && score >= lower) {
 				return interval;
@@ -34,7 +29,17 @@ public class DartsApp {
 		return null;
 	}
 
-	private void writeIndexFile(String path) {
+	private static String getFilename(int upper, int lower) {
+		return "checkouts-" + upper + "-" + lower + ".htm";
+	}
+
+	private final CheckOutTable checkoutsTable;
+
+	public DartsApp() {
+		checkoutsTable = new CheckOutTable();
+	}
+
+	private void writeIndex(String path) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("<!doctype html>\n");
@@ -49,7 +54,7 @@ public class DartsApp {
 		sb.append("</style>\n");
 		sb.append("</head>\n");
 		sb.append("<body>\n");
-		sb.append("<h1>Darts Finishes</h1>\n");
+		sb.append("<h1>Darts Checkouts</h1>\n");
 		sb.append("<table border=0 cellspacing=10>\n");
 
 		// 2-dimensional table with scores
@@ -63,8 +68,8 @@ public class DartsApp {
 				throw new IllegalStateException();
 			}
 			int upper = interval[0], lower = interval[1];
-			boolean hasFinish = !solutions.getFinishes(score).isEmpty();
-			url = "finishes-" + upper + "-" + lower + ".htm#" + +score;
+			boolean hasFinish = !checkoutsTable.getCheckOuts(score).isEmpty();
+			url = getFilename(upper, lower) + "#" + +score;
 			sb.append("<td class='scorelink'>");
 			if (hasFinish) {
 				sb.append("<a href='").append(url).append("'>");
@@ -90,7 +95,7 @@ public class DartsApp {
 		writeFile(path, sb.toString());
 	}
 
-	private String toHTML(int upper, int lower) {
+	private String createHTML(int upper, int lower) {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("<!doctype html>\n");
@@ -100,14 +105,12 @@ public class DartsApp {
 		sb.append("<body>\n");
 		sb.append("<table border=1 cellpadding=3>\n");
 
-		// Schleife für die Finishes
 		for (int score = upper; score >= lower; score -= 1) {
 			sb.append("<tr>\n");
 			sb.append("<td valign='top'>").append("<a id='" + score + "'>\n").append(score)
 					.append("</a></td>\n");
 			sb.append("<td>\n");
-			// Finishes zum score
-			for (Finish finish : solutions.getFinishes(score)) {
+			for (CheckOut finish : checkoutsTable.getCheckOuts(score)) {
 				sb.append(finish).append("&nbsp;&nbsp;\n");
 			}
 			sb.append("</td>\n");
@@ -121,9 +124,10 @@ public class DartsApp {
 		return sb.toString();
 	}
 
-	private void writeFile(String path, String html) {
+	private void writeFile(String pathString, String text) {
 		try {
-			Files.write(Paths.get(path), html.getBytes());
+			Path path = Files.write(Paths.get(pathString), text.getBytes());
+			System.out.println("Created file: " + path);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
