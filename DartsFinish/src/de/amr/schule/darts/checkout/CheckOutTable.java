@@ -1,10 +1,12 @@
-package de.amr.schule.darts;
+package de.amr.schule.darts.checkout;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.amr.schule.darts.DartField;
 
 public class CheckOutTable {
 

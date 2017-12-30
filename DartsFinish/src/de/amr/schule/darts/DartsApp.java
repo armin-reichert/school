@@ -5,6 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import de.amr.schule.darts.checkout.CheckOut;
+import de.amr.schule.darts.checkout.CheckOutTable;
+
 public class DartsApp {
 
 	private static final int[][] INTERVALS = { { 170, 150 }, { 149, 129 }, { 128, 108 }, { 107, 87 },
