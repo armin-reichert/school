@@ -10,56 +10,93 @@ import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
 
 public class CounterWindow extends JFrame {
 
-	private int mode; // single, double, triple
-	private int enterCount;
-	private int pointsThrownLeft;
-	private int pointsThrownRight;
-
 	private CounterModel model;
 
-	private CheckOutsTableModel tableModelCheckOutsLeft;
-	private JTable tableCheckOutsLeft;
+	private int inputMode; // single, double, triple
+	private int numbersEntered;
 
-	private CheckOutsTableModel tableModelCheckOutsRight;
-	private JTable tableCheckOutsRight;
-
-	private JLabel lblPointsRemainingLeft;
-	private JLabel lblPointsRemainingRight;
 	private final ButtonGroup modeButtonGroup = new ButtonGroup();
-	private JButton button;
 	private JRadioButton rbSingle;
-	private JLabel lblThrownLeft;
-	private JLabel lblThrownRight;
+	private JButton button25;
+	private JPanel playerCounterGrid;
+	private PlayerCounter playerCounter0;
+	private PlayerCounter playerCounter1;
+	private PlayerCounter playerCounter2;
+	private PlayerCounter playerCounter3;
+
+	private void numberEntered(int number) {
+		final int thrownPoints = inputMode * number;
+		final int turn = model.getTurn();
+
+		if (model.getPointsRemaining(turn) - thrownPoints >= 0) {
+			model.setPointsRemaining(turn, model.getPointsRemaining(turn) - thrownPoints);
+		}
+		model.setPointsInTake(turn, model.getPointsInTake(turn) + thrownPoints);
+
+		++numbersEntered;
+		if (numbersEntered == 3) {
+			numbersEntered = 0;
+			model.nextTurn();
+			model.setPointsInTake(model.getTurn(), 0);
+		}
+
+		inputMode = 1;
+		// TODO move to updateView()
+		getRbSingle().setSelected(true);
+
+		updateView();
+	}
+
+	private void noScore() {
+		final int turn = model.getTurn();
+		model.setPointsRemaining(turn, model.getPointsRemaining(turn) + model.getPointsInTake(turn));
+		model.setPointsInTake(turn, 0);
+		numbersEntered = 0;
+		model.nextTurn();
+		model.setPointsInTake(model.getTurn(), 0);
+		inputMode = 1;
+		// TODO move to updateView()
+		getRbSingle().setSelected(true);
+
+		updateView();
+	}
+
+	public void newGame() {
+		model = new CounterModel(4, 501);
+
+		inputMode = 1;
+		getRbSingle().setSelected(true);
+		getButton_25().setEnabled(true);
+
+		numbersEntered = 0;
+
+		playerCounter0.setModel(model);
+		playerCounter0.setPlayer(0);
+
+		playerCounter1.setModel(model);
+		playerCounter1.setPlayer(1);
+
+		playerCounter2.setModel(model);
+		playerCounter2.setPlayer(2);
+
+		playerCounter3.setModel(model);
+		playerCounter3.setPlayer(3);
+		
+		updateView();
+	}
 
 	public void updateView() {
-
-		int turn = model.getTurn();
-
-		lblPointsRemainingLeft.setText("" + model.getPointsRemaining(0));
-		lblPointsRemainingLeft.setForeground(turn == 0 ? Color.RED : Color.BLACK);
-		lblPointsRemainingRight.setText("" + model.getPointsRemaining(1));
-		lblPointsRemainingRight.setForeground(turn == 1 ? Color.RED : Color.BLACK);
-
-		lblThrownLeft.setText("" + pointsThrownLeft);
-		lblThrownLeft.setForeground(turn == 0 ? Color.RED : Color.GRAY);
-		lblThrownRight.setText("" + pointsThrownRight);
-		lblThrownRight.setForeground(turn == 1 ? Color.RED : Color.GRAY);
-
-		tableModelCheckOutsLeft
-				.setResults(model.getCheckOutTable().getCheckOuts(model.getPointsRemaining(0)));
-		tableModelCheckOutsRight
-				.setResults(model.getCheckOutTable().getCheckOuts(model.getPointsRemaining(1)));
+		playerCounter0.updateView();
+		playerCounter1.updateView();
+		playerCounter2.updateView();
+		playerCounter3.updateView();
 	}
 
 	public CounterWindow() {
@@ -67,44 +104,24 @@ public class CounterWindow extends JFrame {
 		setTitle("Darts Counter");
 		setPreferredSize(new Dimension(920, 760));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().setLayout(new MigLayout("", "[grow][grow]", "[][grow][][grow][grow][]"));
+		getContentPane()
+				.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow][][grow][grow][]"));
 
-		lblPointsRemainingLeft = new JLabel("999");
-		lblPointsRemainingLeft.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPointsRemainingLeft.setFont(new Font("Tahoma", Font.PLAIN, 80));
-		getContentPane().add(lblPointsRemainingLeft, "cell 0 0,alignx center");
+		playerCounterGrid = new JPanel();
+		getContentPane().add(playerCounterGrid, "cell 0 0,grow");
+		playerCounterGrid.setLayout(new GridLayout(0, 4, 0, 0));
 
-		lblPointsRemainingRight = new JLabel("999");
-		lblPointsRemainingRight.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPointsRemainingRight.setFont(new Font("Tahoma", Font.PLAIN, 80));
-		getContentPane().add(lblPointsRemainingRight, "cell 1 0,alignx center");
+		playerCounter0 = new PlayerCounter();
+		playerCounterGrid.add(playerCounter0);
 
-		JScrollPane scrollPane = new JScrollPane();
-		getContentPane().add(scrollPane, "cell 0 1,grow");
+		playerCounter1 = new PlayerCounter();
+		playerCounterGrid.add(playerCounter1);
 
-		tableCheckOutsLeft = new JTable();
-		scrollPane.setViewportView(tableCheckOutsLeft);
+		playerCounter2 = new PlayerCounter();
+		playerCounterGrid.add(playerCounter2);
 
-		JScrollPane scrollPane_1 = new JScrollPane();
-		getContentPane().add(scrollPane_1, "cell 1 1,grow");
-
-		tableCheckOutsRight = new JTable();
-		scrollPane_1.setViewportView(tableCheckOutsRight);
-
-		lblThrownLeft = new JLabel("0");
-		lblThrownLeft.setForeground(Color.RED);
-		lblThrownLeft.setFont(new Font("Tahoma", Font.PLAIN, 80));
-		getContentPane().add(lblThrownLeft, "cell 0 2,alignx center");
-
-		lblThrownRight = new JLabel("0");
-		lblThrownRight.setForeground(Color.RED);
-		lblThrownRight.setFont(new Font("Tahoma", Font.PLAIN, 80));
-		getContentPane().add(lblThrownRight, "cell 1 2,alignx center");
-
-		tableModelCheckOutsLeft = new CheckOutsTableModel();
-		tableModelCheckOutsRight = new CheckOutsTableModel();
-		tableCheckOutsLeft.setModel(tableModelCheckOutsLeft);
-		tableCheckOutsRight.setModel(tableModelCheckOutsRight);
+		playerCounter3 = new PlayerCounter();
+		playerCounterGrid.add(playerCounter3);
 
 		JPanel keyboard = new JPanel();
 		getContentPane().add(keyboard, "cell 0 3 2 1,growy");
@@ -228,9 +245,10 @@ public class CounterWindow extends JFrame {
 				numberEntered(11);
 			}
 		});
-		
+
 		JButton btnNewButton = new JButton("Out");
 		btnNewButton.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				numberEntered(0);
@@ -340,19 +358,20 @@ public class CounterWindow extends JFrame {
 		button_20.setFont(new Font("Tahoma", Font.BOLD, 24));
 		keyboard.add(button_20, "cell 9 1,grow");
 
-		button = new JButton("25");
-		button.addActionListener(new ActionListener() {
+		button25 = new JButton("25");
+		button25.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				numberEntered(25);
 			}
 		});
-		button.setFont(new Font("Tahoma", Font.BOLD, 24));
-		keyboard.add(button, "cell 10 1,grow");
-		
+		button25.setFont(new Font("Tahoma", Font.BOLD, 24));
+		keyboard.add(button25, "cell 10 1,grow");
+
 		JButton btnNoScore = new JButton("No Score");
 		btnNoScore.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				noScore();
@@ -371,8 +390,8 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mode = 1;
-				button.setEnabled(true);
+				inputMode = 1;
+				button25.setEnabled(true);
 			}
 		});
 		modeButtonGroup.add(rbSingle);
@@ -384,8 +403,8 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mode = 2;
-				button.setEnabled(true);
+				inputMode = 2;
+				button25.setEnabled(true);
 			}
 		});
 		modeButtonGroup.add(rbDouble);
@@ -397,14 +416,14 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				mode = 3;
-				button.setEnabled(false);
+				inputMode = 3;
+				button25.setEnabled(false);
 			}
 		});
 		modeButtonGroup.add(rbTriple);
 		modePanel.add(rbTriple);
 
-		mode = 1;
+		inputMode = 1;
 		rbSingle.setSelected(true);
 
 		JButton btnNewGame = new JButton("New Game");
@@ -420,69 +439,12 @@ public class CounterWindow extends JFrame {
 		getContentPane().add(btnNewGame, "cell 0 5 2 1,growx");
 	}
 
-	private void numberEntered(int number) {
-		int thrown = mode * number;
-		int turn = model.getTurn();
-		int pointsRemaining = model.getPointsRemaining(turn);
-		if (pointsRemaining - thrown >= 0) {
-			model.setPointsRemaining(turn, pointsRemaining - thrown);
-		}
-		if (turn == 0) {
-			pointsThrownLeft += thrown;
-		} else {
-			pointsThrownRight += thrown;
-		}
-		++enterCount;
-		if (enterCount == 3) {
-			enterCount = 0;
-			model.setTurn(1 - model.getTurn());
-			if (model.getTurn() == 0) {
-				pointsThrownLeft = 0;
-			} else {
-				pointsThrownRight = 0;
-			}
-		}
-		mode = 1;
-		getRbSingle().setSelected(true);
-		updateView();
-	}
-	
-	private void noScore() {
-		if (model.getTurn() == 0) {
-			model.setPointsRemaining(0, model.getPointsRemaining(0) + pointsThrownLeft);
-			pointsThrownLeft = 0;
-		} else {
-			model.setPointsRemaining(1, model.getPointsRemaining(1) + pointsThrownRight);
-			pointsThrownRight = 0;
-		}
-		enterCount = 0;
-		model.setTurn(1 - model.getTurn());
-		updateView();
-	}
-
-	public void newGame() {
-		model = new CounterModel();
-		mode = 1;
-		enterCount = 0;
-		pointsThrownLeft = pointsThrownRight = 0;
-		getButton_21().setEnabled(true);
-		getRbSingle().setSelected(true);
-		updateView();
-	}
-
-	public JButton getButton_21() {
-		return button;
+	public JButton getButton_25() {
+		return button25;
 	}
 
 	public JRadioButton getRbSingle() {
 		return rbSingle;
 	}
 
-	public JLabel getLblThrownLeft() {
-		return lblThrownLeft;
-	}
-
-	public JLabel getLblThrownRight() {
-		return lblThrownRight;
-	}
 }

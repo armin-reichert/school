@@ -4,19 +4,37 @@ import de.amr.schule.darts.checkout.CheckOutTable;
 
 public class CounterModel {
 
-	private int turn; // 0,1
+	public static final CheckOutTable CHECKOUT_TABLE = new CheckOutTable();
+
+	private final int numPlayers;
+	private final int startPoints;
+
+	private int turn; // 0,1,...,numPlayers-1
 	private final int pointsRemaining[];
-	private int pointsThrown;
-	private final CheckOutTable checkOutTable;
-	
-	public CounterModel() {
+	private final int pointsInTake[];
+
+	public CounterModel(int numPlayers, int startPoints) {
+		this.numPlayers = numPlayers;
+		this.startPoints = startPoints;
 		turn = 0;
-		pointsRemaining = new int[2];
-		pointsRemaining[0] = pointsRemaining[1] = 501;
-		pointsThrown = 0;
-		checkOutTable = new CheckOutTable();
+		pointsRemaining = new int[numPlayers];
+		for (int player = 0; player < numPlayers; player += 1) {
+			pointsRemaining[player] = startPoints;
+		}
+		pointsInTake = new int[numPlayers];
+		for (int player = 0; player < numPlayers; player += 1) {
+			pointsInTake[player] = 0;
+		}
 	}
-	
+
+	public int getNumPlayers() {
+		return numPlayers;
+	}
+
+	public int getStartPoints() {
+		return startPoints;
+	}
+
 	public int getTurn() {
 		return turn;
 	}
@@ -24,25 +42,24 @@ public class CounterModel {
 	public void setTurn(int turn) {
 		this.turn = turn;
 	}
-	
-	public int getPointsThrown() {
-		return pointsThrown;
+
+	public void nextTurn() {
+		turn = (turn + 1) % numPlayers;
 	}
 	
-	public void setPointsThrown(int pointsThrown) {
-		this.pointsThrown = pointsThrown;
-	}
-	
-	public int getPointsRemaining(int turn) {
-		return pointsRemaining[turn];
+	public int getPointsRemaining(int player) {
+		return pointsRemaining[player];
 	}
 
-	public void setPointsRemaining(int turn, int points) {
-		pointsRemaining[turn] = points;
+	public void setPointsRemaining(int player, int points) {
+		pointsRemaining[player] = points;
 	}
 	
-	public CheckOutTable getCheckOutTable() {
-		return checkOutTable;
+	public int getPointsInTake(int player) {
+		return pointsInTake[player];
 	}
 	
+	public void setPointsInTake(int player, int points) {
+		pointsInTake[player] = points;
+	}
 }

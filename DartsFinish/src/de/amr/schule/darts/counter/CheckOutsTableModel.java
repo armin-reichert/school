@@ -11,7 +11,6 @@ public class CheckOutsTableModel extends AbstractTableModel {
 
 	private List<CheckOut> results;
 	
-	
 	public CheckOutsTableModel() {
 		results = Collections.emptyList();
 	}
