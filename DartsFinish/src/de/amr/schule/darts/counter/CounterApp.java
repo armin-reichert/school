@@ -22,7 +22,7 @@ public class CounterApp {
 
 		// UI erzeugen
 		CounterWindow window = new CounterWindow();
-		window.newGame();
+		window.newGame(4);
 
 		// UI anzeigen
 		window.pack();

@@ -31,13 +31,50 @@ public class CounterWindow extends JFrame {
 	private PlayerCounter playerCounter2;
 	private PlayerCounter playerCounter3;
 
+	public void newGame(int players) {
+		model = new CounterModel(players, 501);
+
+		inputMode = 1;
+		getRbSingle().setSelected(true);
+		getButton_25().setEnabled(true);
+
+		numbersEntered = 0;
+
+		playerCounter0.setModel(model);
+		playerCounter0.setPlayer(0);
+
+		playerCounter1.setModel(model);
+		playerCounter1.setPlayer(1);
+
+		if (players >= 3) {
+			playerCounter2.setModel(model);
+			playerCounter2.setPlayer(2);
+			playerCounter2.setVisible(true);
+		} else {
+			playerCounter2.setVisible(false);
+		}
+
+		if (players >= 4) {
+			playerCounter3.setModel(model);
+			playerCounter3.setPlayer(3);
+			playerCounter3.setVisible(true);
+		} else {
+			playerCounter3.setVisible(false);
+		}
+
+		updateView();
+	}
+
 	private void numberEntered(int number) {
 		final int thrownPoints = inputMode * number;
 		final int turn = model.getTurn();
 
-		if (model.getPointsRemaining(turn) - thrownPoints >= 0) {
-			model.setPointsRemaining(turn, model.getPointsRemaining(turn) - thrownPoints);
+		if (model.getPointsRemaining(turn) - thrownPoints < 0) {
+			noScore(); // überworfen
+			return;
 		}
+
+		model.setPointsRemaining(turn, model.getPointsRemaining(turn) - thrownPoints);
 		model.setPointsInTake(turn, model.getPointsInTake(turn) + thrownPoints);
 
 		++numbersEntered;
@@ -68,35 +105,15 @@ public class CounterWindow extends JFrame {
 		updateView();
 	}
 
-	public void newGame() {
-		model = new CounterModel(4, 501);
-
-		inputMode = 1;
-		getRbSingle().setSelected(true);
-		getButton_25().setEnabled(true);
-
-		numbersEntered = 0;
-
-		playerCounter0.setModel(model);
-		playerCounter0.setPlayer(0);
-
-		playerCounter1.setModel(model);
-		playerCounter1.setPlayer(1);
-
-		playerCounter2.setModel(model);
-		playerCounter2.setPlayer(2);
-
-		playerCounter3.setModel(model);
-		playerCounter3.setPlayer(3);
-		
-		updateView();
-	}
-
 	public void updateView() {
 		playerCounter0.updateView();
 		playerCounter1.updateView();
-		playerCounter2.updateView();
-		playerCounter3.updateView();
+		if (model.getNumPlayers() >= 3) {
+			playerCounter2.updateView();
+		}
+		if (model.getNumPlayers() >= 4) {
+			playerCounter3.updateView();
+		}
 	}
 
 	public CounterWindow() {
@@ -104,8 +121,8 @@ public class CounterWindow extends JFrame {
 		setTitle("Darts Counter");
 		setPreferredSize(new Dimension(920, 760));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane()
-				.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow][][grow][grow][]"));
+		getContentPane().setLayout(
+				new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow][][grow][grow][grow][]"));
 
 		playerCounterGrid = new JPanel();
 		getContentPane().add(playerCounterGrid, "cell 0 0,grow");
@@ -426,17 +443,45 @@ public class CounterWindow extends JFrame {
 		inputMode = 1;
 		rbSingle.setSelected(true);
 
-		JButton btnNewGame = new JButton("New Game");
-		btnNewGame.addActionListener(new ActionListener() {
+		JPanel panel = new JPanel();
+		getContentPane().add(panel, "cell 0 5,grow");
+		panel.setLayout(new GridLayout(0, 3, 0, 0));
+
+		JButton btnNewGame2 = new JButton("2 Players");
+		btnNewGame2.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				newGame();
+				newGame(2);
 			}
 		});
-		btnNewGame.setForeground(Color.BLUE);
-		btnNewGame.setFont(new Font("Tahoma", Font.BOLD, 40));
-		getContentPane().add(btnNewGame, "cell 0 5 2 1,growx");
+		panel.add(btnNewGame2);
+		btnNewGame2.setForeground(Color.BLUE);
+		btnNewGame2.setFont(new Font("Tahoma", Font.BOLD, 40));
+
+		JButton btnNewGame3 = new JButton("3 Players");
+		btnNewGame3.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				newGame(3);
+			}
+		});
+		btnNewGame3.setForeground(Color.BLUE);
+		btnNewGame3.setFont(new Font("Tahoma", Font.BOLD, 40));
+		panel.add(btnNewGame3);
+
+		JButton btnNewGame4 = new JButton("4 Players");
+		btnNewGame4.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				newGame(4);
+			}
+		});
+		btnNewGame4.setForeground(Color.BLUE);
+		btnNewGame4.setFont(new Font("Tahoma", Font.BOLD, 40));
+		panel.add(btnNewGame4);
 	}
 
 	public JButton getButton_25() {
