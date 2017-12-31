@@ -25,6 +25,7 @@ public class CounterApp {
 		window.newGame();
 
 		// UI anzeigen
+		window.pack();
 		window.setVisible(true);
 	}
 

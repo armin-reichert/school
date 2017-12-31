@@ -65,7 +65,7 @@ public class CounterWindow extends JFrame {
 	public CounterWindow() {
 
 		setTitle("Darts Counter");
-		setPreferredSize(new Dimension(800, 800));
+		setPreferredSize(new Dimension(920, 760));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(new MigLayout("", "[grow][grow]", "[][grow][][grow][grow][]"));
 
@@ -108,7 +108,7 @@ public class CounterWindow extends JFrame {
 
 		JPanel keyboard = new JPanel();
 		getContentPane().add(keyboard, "cell 0 3 2 1,growy");
-		keyboard.setLayout(new MigLayout("", "[][][][][][][][][][][][][][][]", "[][][][]"));
+		keyboard.setLayout(new MigLayout("", "[][][][][][][][][][][][][][][][]", "[][][][]"));
 
 		JButton button_1 = new JButton("1");
 		button_1.addActionListener(new ActionListener() {
@@ -228,6 +228,16 @@ public class CounterWindow extends JFrame {
 				numberEntered(11);
 			}
 		});
+		
+		JButton btnNewButton = new JButton("Out");
+		btnNewButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				numberEntered(0);
+			}
+		});
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 24));
+		keyboard.add(btnNewButton, "cell 11 0,growx");
 		button_11.setFont(new Font("Tahoma", Font.BOLD, 24));
 		keyboard.add(button_11, "cell 0 1,grow");
 
@@ -340,6 +350,16 @@ public class CounterWindow extends JFrame {
 		});
 		button.setFont(new Font("Tahoma", Font.BOLD, 24));
 		keyboard.add(button, "cell 10 1,grow");
+		
+		JButton btnNoScore = new JButton("No Score");
+		btnNoScore.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				noScore();
+			}
+		});
+		btnNoScore.setFont(new Font("Tahoma", Font.BOLD, 24));
+		keyboard.add(btnNoScore, "cell 11 1,growx");
 
 		JPanel modePanel = new JPanel();
 		getContentPane().add(modePanel, "cell 0 4 2 1,grow");
@@ -398,9 +418,6 @@ public class CounterWindow extends JFrame {
 		btnNewGame.setForeground(Color.BLUE);
 		btnNewGame.setFont(new Font("Tahoma", Font.BOLD, 40));
 		getContentPane().add(btnNewGame, "cell 0 5 2 1,growx");
-
-		pack();
-
 	}
 
 	private void numberEntered(int number) {
@@ -425,6 +442,21 @@ public class CounterWindow extends JFrame {
 				pointsThrownRight = 0;
 			}
 		}
+		mode = 1;
+		getRbSingle().setSelected(true);
+		updateView();
+	}
+	
+	private void noScore() {
+		if (model.getTurn() == 0) {
+			model.setPointsRemaining(0, model.getPointsRemaining(0) + pointsThrownLeft);
+			pointsThrownLeft = 0;
+		} else {
+			model.setPointsRemaining(1, model.getPointsRemaining(1) + pointsThrownRight);
+			pointsThrownRight = 0;
+		}
+		enterCount = 0;
+		model.setTurn(1 - model.getTurn());
 		updateView();
 	}
 
