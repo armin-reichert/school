@@ -10,6 +10,8 @@ public class CounterModel {
 	private final int startPoints;
 
 	private int turn; // 0,1,...,numPlayers-1
+	
+	private final String playerNames[];
 	private final int pointsRemaining[];
 	private final int pointsInTake[];
 
@@ -18,12 +20,12 @@ public class CounterModel {
 		this.startPoints = startPoints;
 		turn = 0;
 		pointsRemaining = new int[numPlayers];
+		pointsInTake = new int[numPlayers];
+		playerNames = new String[numPlayers];
 		for (int player = 0; player < numPlayers; player += 1) {
 			pointsRemaining[player] = startPoints;
-		}
-		pointsInTake = new int[numPlayers];
-		for (int player = 0; player < numPlayers; player += 1) {
 			pointsInTake[player] = 0;
+			playerNames[player] = "Player " + player;
 		}
 	}
 
@@ -61,5 +63,13 @@ public class CounterModel {
 	
 	public void setPointsInTake(int player, int points) {
 		pointsInTake[player] = points;
+	}
+	
+	public String getPlayerName(int player) {
+		return playerNames[player];
+	}
+	
+	public void setPlayerName(int player, String name) {
+		playerNames[player] = name;
 	}
 }

@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import net.miginfocom.swing.MigLayout;
+import java.awt.FlowLayout;
+import javax.swing.border.EmptyBorder;
 
 public class CounterWindow extends JFrame {
 
@@ -87,6 +89,7 @@ public class CounterWindow extends JFrame {
 		inputMode = 1;
 		// TODO move to updateView()
 		getRbSingle().setSelected(true);
+		getButton_25().setEnabled(true);
 
 		updateView();
 	}
@@ -101,6 +104,7 @@ public class CounterWindow extends JFrame {
 		inputMode = 1;
 		// TODO move to updateView()
 		getRbSingle().setSelected(true);
+		getButton_25().setEnabled(true);
 
 		updateView();
 	}
@@ -397,12 +401,11 @@ public class CounterWindow extends JFrame {
 		btnNoScore.setFont(new Font("Tahoma", Font.BOLD, 24));
 		keyboard.add(btnNoScore, "cell 11 1,growx");
 
-		JPanel modePanel = new JPanel();
-		getContentPane().add(modePanel, "cell 0 4 2 1,grow");
-		modePanel.setLayout(new GridLayout(1, 0, 0, 0));
+		JPanel panelInputMode = new JPanel();
+		getContentPane().add(panelInputMode, "cell 0 4 2 1,alignx left,growy");
 
 		rbSingle = new JRadioButton("Single");
-		rbSingle.setFont(new Font("Tahoma", Font.BOLD, 30));
+		rbSingle.setFont(new Font("Tahoma", Font.BOLD, 24));
 		rbSingle.addActionListener(new ActionListener() {
 
 			@Override
@@ -411,11 +414,12 @@ public class CounterWindow extends JFrame {
 				button25.setEnabled(true);
 			}
 		});
+		panelInputMode.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		modeButtonGroup.add(rbSingle);
-		modePanel.add(rbSingle);
+		panelInputMode.add(rbSingle);
 
 		JRadioButton rbDouble = new JRadioButton("Double");
-		rbDouble.setFont(new Font("Tahoma", Font.BOLD, 30));
+		rbDouble.setFont(new Font("Tahoma", Font.BOLD, 24));
 		rbDouble.addActionListener(new ActionListener() {
 
 			@Override
@@ -425,10 +429,10 @@ public class CounterWindow extends JFrame {
 			}
 		});
 		modeButtonGroup.add(rbDouble);
-		modePanel.add(rbDouble);
+		panelInputMode.add(rbDouble);
 
 		JRadioButton rbTriple = new JRadioButton("Triple");
-		rbTriple.setFont(new Font("Tahoma", Font.BOLD, 30));
+		rbTriple.setFont(new Font("Tahoma", Font.BOLD, 24));
 		rbTriple.addActionListener(new ActionListener() {
 
 			@Override
@@ -438,14 +442,15 @@ public class CounterWindow extends JFrame {
 			}
 		});
 		modeButtonGroup.add(rbTriple);
-		modePanel.add(rbTriple);
+		panelInputMode.add(rbTriple);
 
 		inputMode = 1;
 		rbSingle.setSelected(true);
 
-		JPanel panel = new JPanel();
-		getContentPane().add(panel, "cell 0 5,grow");
-		panel.setLayout(new GridLayout(0, 3, 0, 0));
+		JPanel panelGameModes = new JPanel();
+		panelGameModes.setBorder(new EmptyBorder(10, 0, 0, 0));
+		getContentPane().add(panelGameModes, "cell 0 5,grow");
+		panelGameModes.setLayout(new GridLayout(0, 3, 0, 0));
 
 		JButton btnNewGame2 = new JButton("2 Players");
 		btnNewGame2.addActionListener(new ActionListener() {
@@ -455,7 +460,7 @@ public class CounterWindow extends JFrame {
 				newGame(2);
 			}
 		});
-		panel.add(btnNewGame2);
+		panelGameModes.add(btnNewGame2);
 		btnNewGame2.setForeground(Color.BLUE);
 		btnNewGame2.setFont(new Font("Tahoma", Font.BOLD, 40));
 
@@ -469,7 +474,7 @@ public class CounterWindow extends JFrame {
 		});
 		btnNewGame3.setForeground(Color.BLUE);
 		btnNewGame3.setFont(new Font("Tahoma", Font.BOLD, 40));
-		panel.add(btnNewGame3);
+		panelGameModes.add(btnNewGame3);
 
 		JButton btnNewGame4 = new JButton("4 Players");
 		btnNewGame4.addActionListener(new ActionListener() {
@@ -481,7 +486,7 @@ public class CounterWindow extends JFrame {
 		});
 		btnNewGame4.setForeground(Color.BLUE);
 		btnNewGame4.setFont(new Font("Tahoma", Font.BOLD, 40));
-		panel.add(btnNewGame4);
+		panelGameModes.add(btnNewGame4);
 	}
 
 	public JButton getButton_25() {
