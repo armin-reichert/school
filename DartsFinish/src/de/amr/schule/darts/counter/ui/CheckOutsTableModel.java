@@ -1,4 +1,4 @@
-package de.amr.schule.darts.counter;
+package de.amr.schule.darts.counter.ui;
 
 import java.util.Collections;
 import java.util.List;

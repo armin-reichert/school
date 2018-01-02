@@ -1,7 +1,7 @@
 package de.amr.schule.darts;
 
 
-public enum FieldType {
+public enum DartBoardFieldType {
 
 	SINGLE, DOUBLE, TRIPLE;
 }

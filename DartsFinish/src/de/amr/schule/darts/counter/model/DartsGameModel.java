@@ -1,31 +1,29 @@
-package de.amr.schule.darts.counter;
+package de.amr.schule.darts.counter.model;
 
-import de.amr.schule.darts.checkout.CheckOutTable;
+public class DartsGameModel {
 
-public class CounterModel {
+	private int startPoints;
+	private int numPlayers;
+	private int turn;
 
-	public static final CheckOutTable CHECKOUT_TABLE = new CheckOutTable();
+	private String playerNames[];
+	private int pointsRemaining[];
+	private int pointsInTake[];
+	private int dartsThrown[];
 
-	private final int numPlayers;
-	private final int startPoints;
-
-	private int turn; // 0,1,...,numPlayers-1
-	
-	private final String playerNames[];
-	private final int pointsRemaining[];
-	private final int pointsInTake[];
-
-	public CounterModel(int numPlayers, int startPoints) {
+	public DartsGameModel(int numPlayers, int startPoints) {
 		this.numPlayers = numPlayers;
 		this.startPoints = startPoints;
-		turn = 0;
+		this.turn = 0;
+		playerNames = new String[numPlayers];
 		pointsRemaining = new int[numPlayers];
 		pointsInTake = new int[numPlayers];
-		playerNames = new String[numPlayers];
+		dartsThrown = new int[numPlayers];
 		for (int player = 0; player < numPlayers; player += 1) {
+			playerNames[player] = "Player " + (player + 1);
 			pointsRemaining[player] = startPoints;
 			pointsInTake[player] = 0;
-			playerNames[player] = "Player " + player;
+			dartsThrown[player] = 0;
 		}
 	}
 
@@ -48,7 +46,7 @@ public class CounterModel {
 	public void nextTurn() {
 		turn = (turn + 1) % numPlayers;
 	}
-	
+
 	public int getPointsRemaining(int player) {
 		return pointsRemaining[player];
 	}
@@ -56,20 +54,32 @@ public class CounterModel {
 	public void setPointsRemaining(int player, int points) {
 		pointsRemaining[player] = points;
 	}
-	
+
+	public void addPointsRemaining(int player, int points) {
+		pointsRemaining[player] += points;
+	}
+
 	public int getPointsInTake(int player) {
 		return pointsInTake[player];
 	}
-	
+
 	public void setPointsInTake(int player, int points) {
 		pointsInTake[player] = points;
 	}
-	
+
 	public String getPlayerName(int player) {
 		return playerNames[player];
 	}
-	
+
 	public void setPlayerName(int player, String name) {
 		playerNames[player] = name;
+	}
+
+	public int getDartsThrown(int player) {
+		return dartsThrown[player];
+	}
+
+	public void addDartsThrown(int player, int n) {
+		dartsThrown[player] += n;
 	}
 }

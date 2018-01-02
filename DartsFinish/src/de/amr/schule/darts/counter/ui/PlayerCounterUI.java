@@ -1,32 +1,38 @@
-package de.amr.schule.darts.counter;
+package de.amr.schule.darts.counter.ui;
 
-import javax.swing.JPanel;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.JLabel;
+import static de.amr.schule.darts.checkout.CheckOutTable.CHECKOUTS;
+
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
-public class PlayerCounter extends JPanel {
+import de.amr.schule.darts.counter.model.DartsGameModel;
+import net.miginfocom.swing.MigLayout;
 
-	private CounterModel model;
+public class PlayerCounterUI extends JPanel {
+
+	private DartsGameModel model;
 	private int player;
-	private CheckOutsTableModel tableModelCheckOuts;
 
+	private CheckOutsTableModel tableModelCheckOuts;
 	private JTable tblCheckOuts;
 	private JLabel lblRemainingPoints;
 	private JLabel lblPointsInTake;
 	private JTextField txtName;
+	private JLabel lblPointsAvg;
 
-	public PlayerCounter() {
+	public PlayerCounterUI() {
 		tableModelCheckOuts = new CheckOutsTableModel();
 
-		setLayout(new MigLayout("", "[grow]", "[][][grow][]"));
+		setLayout(new MigLayout("", "[grow]", "[][][grow][][]"));
 
 		txtName = new JTextField();
 		txtName.setForeground(Color.BLUE);
@@ -58,9 +64,14 @@ public class PlayerCounter extends JPanel {
 		lblPointsInTake.setForeground(Color.RED);
 		lblPointsInTake.setFont(new Font("Tahoma", Font.BOLD, 80));
 		add(lblPointsInTake, "cell 0 3,alignx center");
+
+		lblPointsAvg = new JLabel("000");
+		lblPointsAvg.setForeground(Color.GRAY);
+		lblPointsAvg.setFont(new Font("Tahoma", Font.BOLD, 40));
+		add(lblPointsAvg, "cell 0 4,alignx center");
 	}
 
-	public void setModel(CounterModel model) {
+	public void setModel(DartsGameModel model) {
 		this.model = model;
 	}
 
@@ -74,9 +85,14 @@ public class PlayerCounter extends JPanel {
 		lblRemainingPoints.setForeground(model.getTurn() == player ? Color.RED : Color.BLACK);
 		lblPointsInTake.setText("" + model.getPointsInTake(player));
 		lblPointsInTake.setForeground(model.getTurn() == player ? Color.RED : Color.GRAY);
-
-		tableModelCheckOuts
-				.setResults(CounterModel.CHECKOUT_TABLE.getCheckOuts(model.getPointsRemaining(player)));
+		if (model.getDartsThrown(player) > 0) {
+			float avg = (float)(model.getStartPoints() - model.getPointsRemaining(player))
+					/ model.getDartsThrown(player);
+			lblPointsAvg.setText(String.format("%.2f", avg));
+		} else {
+			lblPointsAvg.setText("0.00");
+		}
+		tableModelCheckOuts.setResults(CHECKOUTS.getCheckOuts(model.getPointsRemaining(player)));
 	}
 
 }

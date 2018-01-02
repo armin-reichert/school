@@ -3,30 +3,25 @@ package de.amr.schule.darts.counter;
 import java.awt.EventQueue;
 
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+
+import de.amr.schule.darts.counter.ui.DartsCounterUI;
 
 public class CounterApp {
 
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(NimbusLookAndFeel.class.getName());
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-				| UnsupportedLookAndFeelException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		EventQueue.invokeLater(() -> new CounterApp());
+		EventQueue.invokeLater(CounterApp::new);
 	}
 
 	public CounterApp() {
-
-		// UI erzeugen
-		CounterWindow window = new CounterWindow();
+		DartsCounterUI window = new DartsCounterUI();
 		window.newGame(4);
-
-		// UI anzeigen
 		window.pack();
 		window.setVisible(true);
 	}
-
 }

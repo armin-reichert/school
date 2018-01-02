@@ -1,7 +1,8 @@
-package de.amr.schule.darts.counter;
+package de.amr.schule.darts.counter.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,35 +13,40 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-
-import net.miginfocom.swing.MigLayout;
-import java.awt.FlowLayout;
 import javax.swing.border.EmptyBorder;
 
-public class CounterWindow extends JFrame {
+import de.amr.schule.darts.counter.model.DartsGameModel;
+import net.miginfocom.swing.MigLayout;
 
-	private CounterModel model;
+public class DartsCounterUI extends JFrame {
 
+	private DartsGameModel model;
 	private int inputMode; // single, double, triple
 	private int numbersEntered;
 
-	private final ButtonGroup modeButtonGroup = new ButtonGroup();
-	private JRadioButton rbSingle;
 	private JButton button25;
 	private JPanel playerCounterGrid;
-	private PlayerCounter playerCounter0;
-	private PlayerCounter playerCounter1;
-	private PlayerCounter playerCounter2;
-	private PlayerCounter playerCounter3;
+	private PlayerCounterUI playerCounter0;
+	private PlayerCounterUI playerCounter1;
+	private PlayerCounterUI playerCounter2;
+	private PlayerCounterUI playerCounter3;
+	private final ButtonGroup modeButtonGroup = new ButtonGroup();
+	private JRadioButton rbSingle;
+	private JRadioButton rbDouble;
+	private JRadioButton rbTriple;
 
-	public void newGame(int players) {
-		model = new CounterModel(players, 501);
+	private void setInputMode(int mode) {
+		inputMode = mode;
+		rbSingle.setSelected(mode == 1);
+		rbDouble.setSelected(mode == 2);
+		rbTriple.setSelected(mode == 3);
+		button25.setEnabled(mode == 1 || mode == 2);
+	}
 
-		inputMode = 1;
-		getRbSingle().setSelected(true);
-		getButton_25().setEnabled(true);
-
+	public void newGame(int numPlayers) {
+		model = new DartsGameModel(numPlayers, 501);
 		numbersEntered = 0;
+		setInputMode(1);
 
 		playerCounter0.setModel(model);
 		playerCounter0.setPlayer(0);
@@ -48,7 +54,7 @@ public class CounterWindow extends JFrame {
 		playerCounter1.setModel(model);
 		playerCounter1.setPlayer(1);
 
-		if (players >= 3) {
+		if (numPlayers >= 3) {
 			playerCounter2.setModel(model);
 			playerCounter2.setPlayer(2);
 			playerCounter2.setVisible(true);
@@ -56,7 +62,7 @@ public class CounterWindow extends JFrame {
 			playerCounter2.setVisible(false);
 		}
 
-		if (players >= 4) {
+		if (numPlayers >= 4) {
 			playerCounter3.setModel(model);
 			playerCounter3.setPlayer(3);
 			playerCounter3.setVisible(true);
@@ -67,44 +73,37 @@ public class CounterWindow extends JFrame {
 		updateView();
 	}
 
-	private void numberEntered(int number) {
-		final int thrownPoints = inputMode * number;
-		final int turn = model.getTurn();
-
-		if (model.getPointsRemaining(turn) - thrownPoints < 0) {
-			noScore(); // überworfen
+	private void enterScore(int field) {
+		final int player = model.getTurn();
+		final int score = inputMode * field;
+		model.addDartsThrown(player, 1);
+		if (model.getPointsRemaining(player) - score < 0) {
+			noScore();
 			return;
 		}
-
-		model.setPointsRemaining(turn, model.getPointsRemaining(turn) - thrownPoints);
-		model.setPointsInTake(turn, model.getPointsInTake(turn) + thrownPoints);
-
+		model.addPointsRemaining(player, -score);
+		model.setPointsInTake(player, model.getPointsInTake(player) + score);
 		++numbersEntered;
 		if (numbersEntered == 3) {
 			numbersEntered = 0;
 			model.nextTurn();
-			model.setPointsInTake(model.getTurn(), 0);
+			final int nextPlayer = model.getTurn();
+			model.setPointsInTake(nextPlayer, 0);
 		}
-
-		inputMode = 1;
-		// TODO move to updateView()
-		getRbSingle().setSelected(true);
-		getButton_25().setEnabled(true);
+		setInputMode(1);
 
 		updateView();
 	}
 
 	private void noScore() {
-		final int turn = model.getTurn();
-		model.setPointsRemaining(turn, model.getPointsRemaining(turn) + model.getPointsInTake(turn));
-		model.setPointsInTake(turn, 0);
+		final int player = model.getTurn();
+		model.addPointsRemaining(player, model.getPointsInTake(player));
+		model.setPointsInTake(player, 0);
 		numbersEntered = 0;
 		model.nextTurn();
-		model.setPointsInTake(model.getTurn(), 0);
-		inputMode = 1;
-		// TODO move to updateView()
-		getRbSingle().setSelected(true);
-		getButton_25().setEnabled(true);
+		final int nextPlayer = model.getTurn();
+		model.setPointsInTake(nextPlayer, 0);
+		setInputMode(1);
 
 		updateView();
 	}
@@ -120,10 +119,10 @@ public class CounterWindow extends JFrame {
 		}
 	}
 
-	public CounterWindow() {
+	public DartsCounterUI() {
+		getContentPane().setPreferredSize(new Dimension(900, 700));
 
 		setTitle("Darts Counter");
-		setPreferredSize(new Dimension(920, 760));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(
 				new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow][][grow][grow][grow][]"));
@@ -132,16 +131,16 @@ public class CounterWindow extends JFrame {
 		getContentPane().add(playerCounterGrid, "cell 0 0,grow");
 		playerCounterGrid.setLayout(new GridLayout(0, 4, 0, 0));
 
-		playerCounter0 = new PlayerCounter();
+		playerCounter0 = new PlayerCounterUI();
 		playerCounterGrid.add(playerCounter0);
 
-		playerCounter1 = new PlayerCounter();
+		playerCounter1 = new PlayerCounterUI();
 		playerCounterGrid.add(playerCounter1);
 
-		playerCounter2 = new PlayerCounter();
+		playerCounter2 = new PlayerCounterUI();
 		playerCounterGrid.add(playerCounter2);
 
-		playerCounter3 = new PlayerCounter();
+		playerCounter3 = new PlayerCounterUI();
 		playerCounterGrid.add(playerCounter3);
 
 		JPanel keyboard = new JPanel();
@@ -153,7 +152,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(1);
+				enterScore(1);
 			}
 		});
 		button_1.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -164,7 +163,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(2);
+				enterScore(2);
 			}
 		});
 		button_2.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -175,7 +174,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(3);
+				enterScore(3);
 			}
 		});
 		button_3.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -186,7 +185,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(4);
+				enterScore(4);
 			}
 		});
 		button_4.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -197,7 +196,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(5);
+				enterScore(5);
 			}
 		});
 		button_5.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -208,7 +207,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(6);
+				enterScore(6);
 			}
 		});
 		button_6.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -219,7 +218,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(7);
+				enterScore(7);
 			}
 		});
 		button_7.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -230,7 +229,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(8);
+				enterScore(8);
 			}
 		});
 		button_8.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -241,7 +240,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(9);
+				enterScore(9);
 			}
 		});
 		button_9.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -252,7 +251,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(10);
+				enterScore(10);
 			}
 		});
 		button_10.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -263,7 +262,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(11);
+				enterScore(11);
 			}
 		});
 
@@ -272,7 +271,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(0);
+				enterScore(0);
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -285,7 +284,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(12);
+				enterScore(12);
 			}
 		});
 		button_12.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -296,7 +295,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(13);
+				enterScore(13);
 			}
 		});
 		button_13.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -307,7 +306,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(14);
+				enterScore(14);
 			}
 		});
 		button_14.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -318,7 +317,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(15);
+				enterScore(15);
 			}
 		});
 		button_15.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -329,7 +328,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(16);
+				enterScore(16);
 			}
 		});
 		button_16.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -340,7 +339,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(17);
+				enterScore(17);
 			}
 		});
 		button_17.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -351,7 +350,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(18);
+				enterScore(18);
 			}
 		});
 		button_18.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -362,7 +361,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(19);
+				enterScore(19);
 			}
 		});
 		button_19.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -373,7 +372,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(20);
+				enterScore(20);
 			}
 		});
 		button_20.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -384,7 +383,7 @@ public class CounterWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				numberEntered(25);
+				enterScore(25);
 			}
 		});
 		button25.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -418,7 +417,7 @@ public class CounterWindow extends JFrame {
 		modeButtonGroup.add(rbSingle);
 		panelInputMode.add(rbSingle);
 
-		JRadioButton rbDouble = new JRadioButton("Double");
+		rbDouble = new JRadioButton("Double");
 		rbDouble.setFont(new Font("Tahoma", Font.BOLD, 24));
 		rbDouble.addActionListener(new ActionListener() {
 
@@ -431,7 +430,7 @@ public class CounterWindow extends JFrame {
 		modeButtonGroup.add(rbDouble);
 		panelInputMode.add(rbDouble);
 
-		JRadioButton rbTriple = new JRadioButton("Triple");
+		rbTriple = new JRadioButton("Triple");
 		rbTriple.setFont(new Font("Tahoma", Font.BOLD, 24));
 		rbTriple.addActionListener(new ActionListener() {
 
@@ -443,9 +442,6 @@ public class CounterWindow extends JFrame {
 		});
 		modeButtonGroup.add(rbTriple);
 		panelInputMode.add(rbTriple);
-
-		inputMode = 1;
-		rbSingle.setSelected(true);
 
 		JPanel panelGameModes = new JPanel();
 		panelGameModes.setBorder(new EmptyBorder(10, 0, 0, 0));
@@ -488,13 +484,4 @@ public class CounterWindow extends JFrame {
 		btnNewGame4.setFont(new Font("Tahoma", Font.BOLD, 40));
 		panelGameModes.add(btnNewGame4);
 	}
-
-	public JButton getButton_25() {
-		return button25;
-	}
-
-	public JRadioButton getRbSingle() {
-		return rbSingle;
-	}
-
 }
