@@ -1,6 +1,7 @@
 package de.amr.schule.darts.counter.ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -8,12 +9,12 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.border.EmptyBorder;
 
 import de.amr.schule.darts.counter.model.DartsGameModel;
 import net.miginfocom.swing.MigLayout;
@@ -22,7 +23,7 @@ public class DartsCounterUI extends JFrame {
 
 	private DartsGameModel model;
 	private int inputMode; // single, double, triple
-	private int numbersEntered;
+	private int dartsThrown;
 
 	private JButton button25;
 	private JPanel playerCounterGrid;
@@ -30,7 +31,7 @@ public class DartsCounterUI extends JFrame {
 	private PlayerCounterUI playerCounter1;
 	private PlayerCounterUI playerCounter2;
 	private PlayerCounterUI playerCounter3;
-	private final ButtonGroup modeButtonGroup = new ButtonGroup();
+	private final ButtonGroup inputModeButtonGroup = new ButtonGroup();
 	private JRadioButton rbSingle;
 	private JRadioButton rbDouble;
 	private JRadioButton rbTriple;
@@ -45,7 +46,7 @@ public class DartsCounterUI extends JFrame {
 
 	public void newGame(int numPlayers) {
 		model = new DartsGameModel(numPlayers, 501);
-		numbersEntered = 0;
+		dartsThrown = 0;
 		setInputMode(1);
 
 		playerCounter0.setModel(model);
@@ -76,16 +77,17 @@ public class DartsCounterUI extends JFrame {
 	private void enterScore(int field) {
 		final int player = model.getTurn();
 		final int score = inputMode * field;
-		model.addDartsThrown(player, 1);
 		if (model.getPointsRemaining(player) - score < 0) {
+			model.addLegPlayed(player);
 			noScore();
 			return;
 		}
 		model.addPointsRemaining(player, -score);
 		model.setPointsInTake(player, model.getPointsInTake(player) + score);
-		++numbersEntered;
-		if (numbersEntered == 3) {
-			numbersEntered = 0;
+		++dartsThrown;
+		if (dartsThrown == 3) {
+			model.addLegPlayed(player);
+			dartsThrown = 0;
 			model.nextTurn();
 			final int nextPlayer = model.getTurn();
 			model.setPointsInTake(nextPlayer, 0);
@@ -99,7 +101,7 @@ public class DartsCounterUI extends JFrame {
 		final int player = model.getTurn();
 		model.addPointsRemaining(player, model.getPointsInTake(player));
 		model.setPointsInTake(player, 0);
-		numbersEntered = 0;
+		dartsThrown = 0;
 		model.nextTurn();
 		final int nextPlayer = model.getTurn();
 		model.setPointsInTake(nextPlayer, 0);
@@ -122,10 +124,10 @@ public class DartsCounterUI extends JFrame {
 	public DartsCounterUI() {
 		getContentPane().setPreferredSize(new Dimension(900, 700));
 
-		setTitle("Darts Counter");
+		setTitle("Darts");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(
-				new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow][][grow][grow][grow][]"));
+				new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow][][grow][grow][][grow][]"));
 
 		playerCounterGrid = new JPanel();
 		getContentPane().add(playerCounterGrid, "cell 0 0,grow");
@@ -145,7 +147,7 @@ public class DartsCounterUI extends JFrame {
 
 		JPanel keyboard = new JPanel();
 		getContentPane().add(keyboard, "cell 0 3 2 1,growy");
-		keyboard.setLayout(new MigLayout("", "[][][][][][][][][][][][][][][][]", "[][][][]"));
+		keyboard.setLayout(new MigLayout("", "[][][][][][][][][][][][][][][][][]", "[][][][]"));
 
 		JButton button_1 = new JButton("1");
 		button_1.addActionListener(new ActionListener() {
@@ -274,8 +276,11 @@ public class DartsCounterUI extends JFrame {
 				enterScore(0);
 			}
 		});
+
+		Component horizontalStrut = Box.createHorizontalStrut(20);
+		keyboard.add(horizontalStrut, "cell 11 0");
 		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 24));
-		keyboard.add(btnNewButton, "cell 11 0,growx");
+		keyboard.add(btnNewButton, "cell 12 0,growx");
 		button_11.setFont(new Font("Tahoma", Font.BOLD, 24));
 		keyboard.add(button_11, "cell 0 1,grow");
 
@@ -398,7 +403,7 @@ public class DartsCounterUI extends JFrame {
 			}
 		});
 		btnNoScore.setFont(new Font("Tahoma", Font.BOLD, 24));
-		keyboard.add(btnNoScore, "cell 11 1,growx");
+		keyboard.add(btnNoScore, "cell 12 1,growx");
 
 		JPanel panelInputMode = new JPanel();
 		getContentPane().add(panelInputMode, "cell 0 4 2 1,alignx left,growy");
@@ -414,7 +419,7 @@ public class DartsCounterUI extends JFrame {
 			}
 		});
 		panelInputMode.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		modeButtonGroup.add(rbSingle);
+		inputModeButtonGroup.add(rbSingle);
 		panelInputMode.add(rbSingle);
 
 		rbDouble = new JRadioButton("Double");
@@ -427,7 +432,7 @@ public class DartsCounterUI extends JFrame {
 				button25.setEnabled(true);
 			}
 		});
-		modeButtonGroup.add(rbDouble);
+		inputModeButtonGroup.add(rbDouble);
 		panelInputMode.add(rbDouble);
 
 		rbTriple = new JRadioButton("Triple");
@@ -440,12 +445,14 @@ public class DartsCounterUI extends JFrame {
 				button25.setEnabled(false);
 			}
 		});
-		modeButtonGroup.add(rbTriple);
+		inputModeButtonGroup.add(rbTriple);
 		panelInputMode.add(rbTriple);
 
+		Component verticalStrut = Box.createVerticalStrut(20);
+		getContentPane().add(verticalStrut, "cell 0 5");
+
 		JPanel panelGameModes = new JPanel();
-		panelGameModes.setBorder(new EmptyBorder(10, 0, 0, 0));
-		getContentPane().add(panelGameModes, "cell 0 5,grow");
+		getContentPane().add(panelGameModes, "cell 0 6,grow");
 		panelGameModes.setLayout(new GridLayout(0, 3, 0, 0));
 
 		JButton btnNewGame2 = new JButton("2 Players");

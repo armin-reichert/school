@@ -85,13 +85,7 @@ public class PlayerCounterUI extends JPanel {
 		lblRemainingPoints.setForeground(model.getTurn() == player ? Color.RED : Color.BLACK);
 		lblPointsInTake.setText("" + model.getPointsInTake(player));
 		lblPointsInTake.setForeground(model.getTurn() == player ? Color.RED : Color.GRAY);
-		if (model.getDartsThrown(player) > 0) {
-			float avg = (float)(model.getStartPoints() - model.getPointsRemaining(player))
-					/ model.getDartsThrown(player);
-			lblPointsAvg.setText(String.format("%.2f", avg));
-		} else {
-			lblPointsAvg.setText("0.00");
-		}
+		lblPointsAvg.setText(String.format("%.2f", model.getPointsAverage(player)));
 		tableModelCheckOuts.setResults(CHECKOUTS.getCheckOuts(model.getPointsRemaining(player)));
 	}
 
