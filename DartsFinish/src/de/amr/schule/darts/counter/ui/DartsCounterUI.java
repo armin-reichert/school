@@ -17,13 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import de.amr.schule.darts.counter.model.DartsGameModel;
+import de.amr.schule.darts.counter.model.PlayerModel;
 import net.miginfocom.swing.MigLayout;
 
 public class DartsCounterUI extends JFrame {
 
-	private DartsGameModel model;
+	private DartsGameModel game;
 	private int inputMode; // single, double, triple
-	private int dartsThrown;
+	private int dartsThrownInLeg;
 
 	private JButton button25;
 	private JPanel playerCounterGrid;
@@ -45,52 +46,53 @@ public class DartsCounterUI extends JFrame {
 	}
 
 	public void newGame(int numPlayers) {
-		model = new DartsGameModel(numPlayers, 501);
-		dartsThrown = 0;
-		setInputMode(1);
 
-		playerCounter0.setModel(model);
-		playerCounter0.setPlayer(0);
+		dartsThrownInLeg = 0;
 
-		playerCounter1.setModel(model);
-		playerCounter1.setPlayer(1);
+		game = new DartsGameModel(numPlayers, 501);
+
+		playerCounter0.setPlayer(game.getPlayer(0));
+		playerCounter1.setPlayer(game.getPlayer(1));
 
 		if (numPlayers >= 3) {
-			playerCounter2.setModel(model);
-			playerCounter2.setPlayer(2);
+			playerCounter2.setPlayer(game.getPlayer(2));
 			playerCounter2.setVisible(true);
 		} else {
 			playerCounter2.setVisible(false);
 		}
 
 		if (numPlayers >= 4) {
-			playerCounter3.setModel(model);
-			playerCounter3.setPlayer(3);
+			playerCounter3.setPlayer(game.getPlayer(3));
 			playerCounter3.setVisible(true);
 		} else {
 			playerCounter3.setVisible(false);
 		}
 
+		setInputMode(1);
 		updateView();
 	}
 
 	private void enterScore(int field) {
-		final int player = model.getTurn();
 		final int score = inputMode * field;
-		if (model.getPointsRemaining(player) - score < 0) {
-			model.addLegPlayed(player);
+		final PlayerModel player = game.getCurrentPlayer();
+
+		dartsThrownInLeg += 1;
+		
+		if (score > player.getPointsRemaining()) {
 			noScore();
 			return;
 		}
-		model.addPointsRemaining(player, -score);
-		model.setPointsInTake(player, model.getPointsInTake(player) + score);
-		++dartsThrown;
-		if (dartsThrown == 3) {
-			model.addLegPlayed(player);
-			dartsThrown = 0;
-			model.nextTurn();
-			final int nextPlayer = model.getTurn();
-			model.setPointsInTake(nextPlayer, 0);
+
+		player.addToScore(score);
+		player.addToScoreInTake(score);
+		player.setPointsAverage(player.getPointsScored() / (player.getLegsCompleted() + 1));
+
+		if (dartsThrownInLeg == 3) {
+			player.setLegsCompleted(player.getLegsCompleted() + 1);
+			game.nextPlayer();
+			game.getCurrentPlayer().setPointsInTake(0);
+			dartsThrownInLeg = 0;
+		} else {
 		}
 		setInputMode(1);
 
@@ -98,13 +100,13 @@ public class DartsCounterUI extends JFrame {
 	}
 
 	private void noScore() {
-		final int player = model.getTurn();
-		model.addPointsRemaining(player, model.getPointsInTake(player));
-		model.setPointsInTake(player, 0);
-		dartsThrown = 0;
-		model.nextTurn();
-		final int nextPlayer = model.getTurn();
-		model.setPointsInTake(nextPlayer, 0);
+		final PlayerModel player = game.getCurrentPlayer();
+		player.addToScore(-player.getPointsInTake());
+		player.setLegsCompleted(player.getLegsCompleted() + 1);
+		player.setPointsInTake(0);
+		game.nextPlayer();
+		game.getCurrentPlayer().setPointsInTake(0);
+		dartsThrownInLeg = 0;
 		setInputMode(1);
 
 		updateView();
@@ -113,10 +115,10 @@ public class DartsCounterUI extends JFrame {
 	public void updateView() {
 		playerCounter0.updateView();
 		playerCounter1.updateView();
-		if (model.getNumPlayers() >= 3) {
+		if (game.getNumPlayers() >= 3) {
 			playerCounter2.updateView();
 		}
-		if (model.getNumPlayers() >= 4) {
+		if (game.getNumPlayers() >= 4) {
 			playerCounter3.updateView();
 		}
 	}

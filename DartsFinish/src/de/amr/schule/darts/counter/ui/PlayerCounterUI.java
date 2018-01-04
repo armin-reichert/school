@@ -1,6 +1,7 @@
 package de.amr.schule.darts.counter.ui;
 
 import static de.amr.schule.darts.checkout.CheckOutTable.CHECKOUTS;
+import static java.lang.String.format;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -14,23 +15,36 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import de.amr.schule.darts.counter.model.DartsGameModel;
+import de.amr.schule.darts.counter.model.PlayerModel;
 import net.miginfocom.swing.MigLayout;
 
 public class PlayerCounterUI extends JPanel {
 
-	private DartsGameModel model;
-	private int player;
+	private PlayerModel player;
 
-	private CheckOutsTableModel tableModelCheckOuts;
+	private CheckOutsTableModel tblModelCheckOuts;
 	private JTable tblCheckOuts;
-	private JLabel lblRemainingPoints;
-	private JLabel lblPointsInTake;
 	private JTextField txtName;
-	private JLabel lblPointsAvg;
+	private JLabel lblPointsRemaining;
+	private JLabel lblPointsInTake;
+	private JLabel lblPointsAverage;
+
+	public void setPlayer(PlayerModel player) {
+		this.player = player;
+	}
+
+	public void updateView() {
+		txtName.setText(player.getName());
+		lblPointsRemaining.setText(format("%d", player.getPointsRemaining()));
+		lblPointsRemaining.setForeground(player.isTurn() ? Color.RED : Color.BLACK);
+		lblPointsInTake.setText(format("%d", player.getPointsInTake()));
+		lblPointsInTake.setForeground(player.isTurn() ? Color.RED : Color.GRAY);
+		lblPointsAverage.setText(format("%.2f", player.getPointsAverage()));
+		tblModelCheckOuts.setResults(CHECKOUTS.getCheckOuts(player.getPointsRemaining()));
+	}
 
 	public PlayerCounterUI() {
-		tableModelCheckOuts = new CheckOutsTableModel();
+		tblModelCheckOuts = new CheckOutsTableModel();
 
 		setLayout(new MigLayout("", "[grow]", "[][][grow][][]"));
 
@@ -40,53 +54,37 @@ public class PlayerCounterUI extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				model.setPlayerName(player, txtName.getText());
+				player.setName(txtName.getText());
 			}
 		});
 		txtName.setHorizontalAlignment(SwingConstants.CENTER);
 		txtName.setFont(new Font("Tahoma", Font.BOLD, 40));
-		txtName.setText("Name");
+		txtName.setText("Player Name");
 		add(txtName, "cell 0 0,growx");
 		txtName.setColumns(10);
 
-		lblRemainingPoints = new JLabel("999");
-		lblRemainingPoints.setFont(new Font("Tahoma", Font.BOLD, 80));
-		add(lblRemainingPoints, "cell 0 1,alignx center");
+		lblPointsRemaining = new JLabel("501");
+		lblPointsRemaining.setToolTipText("Points remaining");
+		lblPointsRemaining.setFont(new Font("Tahoma", Font.BOLD, 80));
+		add(lblPointsRemaining, "cell 0 1,alignx center");
 
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, "cell 0 2,grow");
 
 		tblCheckOuts = new JTable();
-		tblCheckOuts.setModel(tableModelCheckOuts);
+		tblCheckOuts.setModel(tblModelCheckOuts);
 		scrollPane.setViewportView(tblCheckOuts);
 
-		lblPointsInTake = new JLabel("000");
+		lblPointsInTake = new JLabel("42");
+		lblPointsInTake.setToolTipText("Points in current take");
 		lblPointsInTake.setForeground(Color.RED);
 		lblPointsInTake.setFont(new Font("Tahoma", Font.BOLD, 80));
 		add(lblPointsInTake, "cell 0 3,alignx center");
 
-		lblPointsAvg = new JLabel("000");
-		lblPointsAvg.setForeground(Color.GRAY);
-		lblPointsAvg.setFont(new Font("Tahoma", Font.BOLD, 40));
-		add(lblPointsAvg, "cell 0 4,alignx center");
+		lblPointsAverage = new JLabel("59.25");
+		lblPointsAverage.setToolTipText("Points Average");
+		lblPointsAverage.setForeground(Color.GRAY);
+		lblPointsAverage.setFont(new Font("Tahoma", Font.BOLD, 40));
+		add(lblPointsAverage, "cell 0 4,alignx center");
 	}
-
-	public void setModel(DartsGameModel model) {
-		this.model = model;
-	}
-
-	public void setPlayer(int player) {
-		this.player = player;
-	}
-
-	public void updateView() {
-		txtName.setText(model.getPlayerName(player));
-		lblRemainingPoints.setText("" + model.getPointsRemaining(player));
-		lblRemainingPoints.setForeground(model.getTurn() == player ? Color.RED : Color.BLACK);
-		lblPointsInTake.setText("" + model.getPointsInTake(player));
-		lblPointsInTake.setForeground(model.getTurn() == player ? Color.RED : Color.GRAY);
-		lblPointsAvg.setText(String.format("%.2f", model.getPointsAverage(player)));
-		tableModelCheckOuts.setResults(CHECKOUTS.getCheckOuts(model.getPointsRemaining(player)));
-	}
-
 }
