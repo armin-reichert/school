@@ -1,4 +1,4 @@
-package de.amr.schule.darts.counter;
+package de.amr.schule.darts;
 
 import java.awt.EventQueue;
 
@@ -7,7 +7,7 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import de.amr.schule.darts.counter.ui.DartsCounterUI;
 
-public class CounterApp {
+public class DartsCounterApp {
 
 	public static void main(String[] args) {
 		try {
@@ -15,10 +15,10 @@ public class CounterApp {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		EventQueue.invokeLater(CounterApp::new);
+		EventQueue.invokeLater(DartsCounterApp::new);
 	}
 
-	public CounterApp() {
+	public DartsCounterApp() {
 		DartsCounterUI window = new DartsCounterUI();
 		window.newGame(4);
 		window.pack();

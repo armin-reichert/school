@@ -8,13 +8,13 @@ import java.nio.file.Paths;
 import de.amr.schule.darts.checkout.CheckOut;
 import de.amr.schule.darts.checkout.CheckOutTable;
 
-public class DartsApp {
+public class DartsComputeCheckOutsApp {
 
 	private static final int[][] INTERVALS = { { 170, 150 }, { 149, 129 }, { 128, 108 }, { 107, 87 },
 			{ 86, 66 }, { 65, 45 }, { 44, 24 }, { 23, 2 } };
 	
 	public static void main(String[] args) {
-		DartsApp app = new DartsApp();
+		DartsComputeCheckOutsApp app = new DartsComputeCheckOutsApp();
 		for (int[] interval : INTERVALS) {
 			int upper = interval[0], lower = interval[1];
 			app.writeFile(getFilename(upper, lower), app.createHTML(upper, lower));
@@ -38,7 +38,7 @@ public class DartsApp {
 
 	private final CheckOutTable checkoutsTable;
 
-	public DartsApp() {
+	public DartsComputeCheckOutsApp() {
 		checkoutsTable = new CheckOutTable();
 	}
 

@@ -24,7 +24,7 @@ public class DartsCounterUI extends JFrame {
 
 	private DartsGameModel game;
 	private int inputMode; // single, double, triple
-	private int dartsThrownInLeg;
+	private int dartsThrownInTake;
 
 	private JButton button25;
 	private JPanel playerCounterGrid;
@@ -47,7 +47,7 @@ public class DartsCounterUI extends JFrame {
 
 	public void newGame(int numPlayers) {
 
-		dartsThrownInLeg = 0;
+		dartsThrownInTake = 0;
 
 		game = new DartsGameModel(numPlayers, 501);
 
@@ -72,12 +72,12 @@ public class DartsCounterUI extends JFrame {
 		updateView();
 	}
 
-	private void enterScore(int field) {
+	private void saveScore(int field) {
 		final int score = inputMode * field;
 		final PlayerModel player = game.getCurrentPlayer();
 
-		dartsThrownInLeg += 1;
-		
+		dartsThrownInTake += 1;
+
 		if (score > player.getPointsRemaining()) {
 			noScore();
 			return;
@@ -87,12 +87,11 @@ public class DartsCounterUI extends JFrame {
 		player.addToScoreInTake(score);
 		player.setPointsAverage(player.getPointsScored() / (player.getLegsCompleted() + 1));
 
-		if (dartsThrownInLeg == 3) {
+		if (dartsThrownInTake == 3) {
 			player.setLegsCompleted(player.getLegsCompleted() + 1);
 			game.nextPlayer();
 			game.getCurrentPlayer().setPointsInTake(0);
-			dartsThrownInLeg = 0;
-		} else {
+			dartsThrownInTake = 0;
 		}
 		setInputMode(1);
 
@@ -106,7 +105,7 @@ public class DartsCounterUI extends JFrame {
 		player.setPointsInTake(0);
 		game.nextPlayer();
 		game.getCurrentPlayer().setPointsInTake(0);
-		dartsThrownInLeg = 0;
+		dartsThrownInTake = 0;
 		setInputMode(1);
 
 		updateView();
@@ -124,7 +123,7 @@ public class DartsCounterUI extends JFrame {
 	}
 
 	public DartsCounterUI() {
-		getContentPane().setPreferredSize(new Dimension(900, 700));
+		getContentPane().setPreferredSize(new Dimension(900, 750));
 
 		setTitle("Darts");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -156,7 +155,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(1);
+				saveScore(1);
 			}
 		});
 		button_1.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -167,7 +166,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(2);
+				saveScore(2);
 			}
 		});
 		button_2.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -178,7 +177,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(3);
+				saveScore(3);
 			}
 		});
 		button_3.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -189,7 +188,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(4);
+				saveScore(4);
 			}
 		});
 		button_4.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -200,7 +199,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(5);
+				saveScore(5);
 			}
 		});
 		button_5.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -211,7 +210,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(6);
+				saveScore(6);
 			}
 		});
 		button_6.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -222,7 +221,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(7);
+				saveScore(7);
 			}
 		});
 		button_7.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -233,7 +232,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(8);
+				saveScore(8);
 			}
 		});
 		button_8.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -244,7 +243,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(9);
+				saveScore(9);
 			}
 		});
 		button_9.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -255,7 +254,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(10);
+				saveScore(10);
 			}
 		});
 		button_10.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -266,7 +265,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(11);
+				saveScore(11);
 			}
 		});
 
@@ -275,7 +274,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(0);
+				saveScore(0);
 			}
 		});
 
@@ -291,7 +290,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(12);
+				saveScore(12);
 			}
 		});
 		button_12.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -302,7 +301,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(13);
+				saveScore(13);
 			}
 		});
 		button_13.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -313,7 +312,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(14);
+				saveScore(14);
 			}
 		});
 		button_14.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -324,7 +323,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(15);
+				saveScore(15);
 			}
 		});
 		button_15.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -335,7 +334,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(16);
+				saveScore(16);
 			}
 		});
 		button_16.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -346,7 +345,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(17);
+				saveScore(17);
 			}
 		});
 		button_17.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -357,7 +356,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(18);
+				saveScore(18);
 			}
 		});
 		button_18.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -368,7 +367,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(19);
+				saveScore(19);
 			}
 		});
 		button_19.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -379,7 +378,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(20);
+				saveScore(20);
 			}
 		});
 		button_20.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -390,7 +389,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				enterScore(25);
+				saveScore(25);
 			}
 		});
 		button25.setFont(new Font("Tahoma", Font.BOLD, 24));

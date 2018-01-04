@@ -1,4 +1,4 @@
-package de.amr.schule.darts;
+package de.amr.schule.darts.field;
 
 
 public enum DartBoardFieldType {

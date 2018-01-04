@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.amr.schule.darts.DartBoardField;
+import de.amr.schule.darts.field.DartBoardField;
 
 public class CheckOutTable {
 
