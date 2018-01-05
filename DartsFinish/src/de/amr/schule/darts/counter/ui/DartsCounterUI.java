@@ -19,12 +19,17 @@ import javax.swing.JRadioButton;
 import de.amr.schule.darts.counter.model.DartsGameModel;
 import de.amr.schule.darts.counter.model.PlayerModel;
 import net.miginfocom.swing.MigLayout;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JRadioButtonMenuItem;
 
 public class DartsCounterUI extends JFrame {
 
 	private DartsGameModel game;
 	private int inputMode; // single, double, triple
 	private int dartsThrownInTake;
+	private int startPoints;
 
 	private JButton button25;
 	private JPanel playerCounterGrid;
@@ -36,6 +41,9 @@ public class DartsCounterUI extends JFrame {
 	private JRadioButton rbSingle;
 	private JRadioButton rbDouble;
 	private JRadioButton rbTriple;
+	private final ButtonGroup startPointsButtonGroup = new ButtonGroup();
+	private JRadioButtonMenuItem miRbPoints501;
+	private JRadioButtonMenuItem miRbPoints301;
 
 	private void setInputMode(int mode) {
 		inputMode = mode;
@@ -45,11 +53,17 @@ public class DartsCounterUI extends JFrame {
 		button25.setEnabled(mode == 1 || mode == 2);
 	}
 
+	private void setStartPoints(int points) {
+		startPoints = points;
+		miRbPoints301.setSelected(points == 301);
+		miRbPoints501.setSelected(points == 501);
+	}
+
 	public void newGame(int numPlayers) {
 
 		dartsThrownInTake = 0;
 
-		game = new DartsGameModel(numPlayers, 501);
+		game = new DartsGameModel(numPlayers, startPoints);
 
 		playerCounter0.setPlayer(game.getPlayer(0));
 		playerCounter1.setPlayer(game.getPlayer(1));
@@ -123,7 +137,7 @@ public class DartsCounterUI extends JFrame {
 	}
 
 	public DartsCounterUI() {
-		getContentPane().setPreferredSize(new Dimension(900, 750));
+		getContentPane().setPreferredSize(new Dimension(900, 700));
 
 		setTitle("Darts");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -449,47 +463,74 @@ public class DartsCounterUI extends JFrame {
 		inputModeButtonGroup.add(rbTriple);
 		panelInputMode.add(rbTriple);
 
-		Component verticalStrut = Box.createVerticalStrut(20);
-		getContentPane().add(verticalStrut, "cell 0 5");
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
 
-		JPanel panelGameModes = new JPanel();
-		getContentPane().add(panelGameModes, "cell 0 6,grow");
-		panelGameModes.setLayout(new GridLayout(0, 3, 0, 0));
+		JMenu mnGame = new JMenu("Spielauswahl");
+		mnGame.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		menuBar.add(mnGame);
 
-		JButton btnNewGame2 = new JButton("2 Players");
-		btnNewGame2.addActionListener(new ActionListener() {
+		JMenuItem miPlayers2 = new JMenuItem("2 Spieler");
+		miPlayers2.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				newGame(2);
 			}
 		});
-		panelGameModes.add(btnNewGame2);
-		btnNewGame2.setForeground(Color.BLUE);
-		btnNewGame2.setFont(new Font("Tahoma", Font.BOLD, 40));
+		miPlayers2.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		mnGame.add(miPlayers2);
 
-		JButton btnNewGame3 = new JButton("3 Players");
-		btnNewGame3.addActionListener(new ActionListener() {
+		JMenuItem miPlayers3 = new JMenuItem("3 Spieler");
+		miPlayers3.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				newGame(3);
 			}
 		});
-		btnNewGame3.setForeground(Color.BLUE);
-		btnNewGame3.setFont(new Font("Tahoma", Font.BOLD, 40));
-		panelGameModes.add(btnNewGame3);
+		miPlayers3.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		mnGame.add(miPlayers3);
 
-		JButton btnNewGame4 = new JButton("4 Players");
-		btnNewGame4.addActionListener(new ActionListener() {
+		JMenuItem miPlayers4 = new JMenuItem("4 Spieler");
+		miPlayers4.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				newGame(4);
 			}
 		});
-		btnNewGame4.setForeground(Color.BLUE);
-		btnNewGame4.setFont(new Font("Tahoma", Font.BOLD, 40));
-		panelGameModes.add(btnNewGame4);
+		miPlayers4.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		mnGame.add(miPlayers4);
+
+		JMenu menuInitialPoints = new JMenu("Anfangspunktzahl");
+		menuInitialPoints.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		menuBar.add(menuInitialPoints);
+
+		miRbPoints501 = new JRadioButtonMenuItem("501");
+		miRbPoints501.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setStartPoints(501);
+			}
+		});
+		startPointsButtonGroup.add(miRbPoints501);
+		miRbPoints501.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		menuInitialPoints.add(miRbPoints501);
+
+		miRbPoints301 = new JRadioButtonMenuItem("301");
+		miRbPoints301.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setStartPoints(301);
+			}
+		});
+		startPointsButtonGroup.add(miRbPoints301);
+		miRbPoints301.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		menuInitialPoints.add(miRbPoints301);
+
+		setStartPoints(501);
 	}
 }
