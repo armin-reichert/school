@@ -37,6 +37,6 @@ public class DartsGameModel {
 	}
 
 	public PlayerModel getPlayer(int i) {
-		return players[i];
+		return i < players.length ? players[i] : null;
 	}
 }

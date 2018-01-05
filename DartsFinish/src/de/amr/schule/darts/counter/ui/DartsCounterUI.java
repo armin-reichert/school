@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.stream.Stream;
 
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
@@ -44,6 +45,7 @@ public class DartsCounterUI extends JFrame {
 	private final ButtonGroup startPointsButtonGroup = new ButtonGroup();
 	private JRadioButtonMenuItem miRbPoints501;
 	private JRadioButtonMenuItem miRbPoints301;
+	private JRadioButtonMenuItem miRbPoints101;
 
 	private void setInputMode(int mode) {
 		inputMode = mode;
@@ -55,33 +57,20 @@ public class DartsCounterUI extends JFrame {
 
 	private void setStartPoints(int points) {
 		startPoints = points;
+		miRbPoints101.setSelected(points == 101);
 		miRbPoints301.setSelected(points == 301);
 		miRbPoints501.setSelected(points == 501);
 	}
 
 	public void newGame(int numPlayers) {
-
-		dartsThrownInTake = 0;
-
 		game = new DartsGameModel(numPlayers, startPoints);
-
-		playerCounter0.setPlayer(game.getPlayer(0));
-		playerCounter1.setPlayer(game.getPlayer(1));
-
-		if (numPlayers >= 3) {
-			playerCounter2.setPlayer(game.getPlayer(2));
-			playerCounter2.setVisible(true);
-		} else {
-			playerCounter2.setVisible(false);
+		PlayerCounterUI[] playerCounters = { playerCounter0, playerCounter1, playerCounter2,
+				playerCounter3 };
+		for (int i = 0; i < playerCounters.length; ++i) {
+			playerCounters[i].setPlayer(game.getPlayer(i));
+			playerCounters[i].setVisible(i < numPlayers);
 		}
-
-		if (numPlayers >= 4) {
-			playerCounter3.setPlayer(game.getPlayer(3));
-			playerCounter3.setVisible(true);
-		} else {
-			playerCounter3.setVisible(false);
-		}
-
+		dartsThrownInTake = 0;
 		setInputMode(1);
 		updateView();
 	}
@@ -467,7 +456,7 @@ public class DartsCounterUI extends JFrame {
 		setJMenuBar(menuBar);
 
 		JMenu mnGame = new JMenu("Spielauswahl");
-		mnGame.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		mnGame.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		menuBar.add(mnGame);
 
 		JMenuItem miPlayers2 = new JMenuItem("2 Spieler");
@@ -478,7 +467,7 @@ public class DartsCounterUI extends JFrame {
 				newGame(2);
 			}
 		});
-		miPlayers2.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		miPlayers2.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		mnGame.add(miPlayers2);
 
 		JMenuItem miPlayers3 = new JMenuItem("3 Spieler");
@@ -489,7 +478,7 @@ public class DartsCounterUI extends JFrame {
 				newGame(3);
 			}
 		});
-		miPlayers3.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		miPlayers3.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		mnGame.add(miPlayers3);
 
 		JMenuItem miPlayers4 = new JMenuItem("4 Spieler");
@@ -500,11 +489,11 @@ public class DartsCounterUI extends JFrame {
 				newGame(4);
 			}
 		});
-		miPlayers4.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		miPlayers4.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		mnGame.add(miPlayers4);
 
 		JMenu menuInitialPoints = new JMenu("Anfangspunktzahl");
-		menuInitialPoints.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		menuInitialPoints.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		menuBar.add(menuInitialPoints);
 
 		miRbPoints501 = new JRadioButtonMenuItem("501");
@@ -516,7 +505,7 @@ public class DartsCounterUI extends JFrame {
 			}
 		});
 		startPointsButtonGroup.add(miRbPoints501);
-		miRbPoints501.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		miRbPoints501.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		menuInitialPoints.add(miRbPoints501);
 
 		miRbPoints301 = new JRadioButtonMenuItem("301");
@@ -528,8 +517,21 @@ public class DartsCounterUI extends JFrame {
 			}
 		});
 		startPointsButtonGroup.add(miRbPoints301);
-		miRbPoints301.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		miRbPoints301.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		menuInitialPoints.add(miRbPoints301);
+
+		miRbPoints101 = new JRadioButtonMenuItem("101");
+		miRbPoints101.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setStartPoints(101);
+			}
+		});
+		startPointsButtonGroup.add(miRbPoints101);
+		miRbPoints101.setSelected(false);
+		miRbPoints101.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		menuInitialPoints.add(miRbPoints101);
 
 		setStartPoints(501);
 	}

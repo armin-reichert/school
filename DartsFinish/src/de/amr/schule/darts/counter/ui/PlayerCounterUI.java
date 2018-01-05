@@ -46,7 +46,7 @@ public class PlayerCounterUI extends JPanel {
 	public PlayerCounterUI() {
 		tblModelCheckOuts = new CheckOutsTableModel();
 
-		setLayout(new MigLayout("", "[grow]", "[][][grow][][]"));
+		setLayout(new MigLayout("", "[grow]", "[][][][][][grow][][]"));
 
 		txtName = new JTextField();
 		txtName.setForeground(Color.BLUE);
