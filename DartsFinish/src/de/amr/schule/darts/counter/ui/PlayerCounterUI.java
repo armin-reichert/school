@@ -15,12 +15,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import de.amr.schule.darts.counter.model.PlayerModel;
+import de.amr.schule.darts.counter.model.Player;
 import net.miginfocom.swing.MigLayout;
 
 public class PlayerCounterUI extends JPanel {
 
-	private PlayerModel player;
+	private Player player;
 
 	private CheckOutsTableModel tblModelCheckOuts;
 	private JTable tblCheckOuts;
@@ -29,7 +29,7 @@ public class PlayerCounterUI extends JPanel {
 	private JLabel lblPointsInTake;
 	private JLabel lblPointsAverage;
 
-	public void setPlayer(PlayerModel player) {
+	public void setPlayer(Player player) {
 		this.player = player;
 	}
 

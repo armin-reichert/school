@@ -1,6 +1,5 @@
 package de.amr.schule.darts.counter.ui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -8,26 +7,25 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.stream.Stream;
 
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-
-import de.amr.schule.darts.counter.model.DartsGameModel;
-import de.amr.schule.darts.counter.model.PlayerModel;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+
+import de.amr.schule.darts.counter.model.DartsGame;
+import de.amr.schule.darts.counter.model.Player;
+import net.miginfocom.swing.MigLayout;
 
 public class DartsCounterUI extends JFrame {
 
-	private DartsGameModel game;
+	private DartsGame game;
 	private int inputMode; // single, double, triple
 	private int dartsThrownInTake;
 	private int startPoints;
@@ -63,7 +61,7 @@ public class DartsCounterUI extends JFrame {
 	}
 
 	public void newGame(int numPlayers) {
-		game = new DartsGameModel(numPlayers, startPoints);
+		game = new DartsGame(numPlayers, startPoints);
 		PlayerCounterUI[] playerCounters = { playerCounter0, playerCounter1, playerCounter2,
 				playerCounter3 };
 		for (int i = 0; i < playerCounters.length; ++i) {
@@ -77,19 +75,15 @@ public class DartsCounterUI extends JFrame {
 
 	private void saveScore(int field) {
 		final int score = inputMode * field;
-		final PlayerModel player = game.getCurrentPlayer();
-
+		final Player player = game.getCurrentPlayer();
 		dartsThrownInTake += 1;
-
 		if (score > player.getPointsRemaining()) {
 			noScore();
 			return;
 		}
-
 		player.addToScore(score);
 		player.addToScoreInTake(score);
 		player.setPointsAverage(player.getPointsScored() / (player.getLegsCompleted() + 1));
-
 		if (dartsThrownInTake == 3) {
 			player.setLegsCompleted(player.getLegsCompleted() + 1);
 			game.nextPlayer();
@@ -97,12 +91,11 @@ public class DartsCounterUI extends JFrame {
 			dartsThrownInTake = 0;
 		}
 		setInputMode(1);
-
 		updateView();
 	}
 
 	private void noScore() {
-		final PlayerModel player = game.getCurrentPlayer();
+		final Player player = game.getCurrentPlayer();
 		player.addToScore(-player.getPointsInTake());
 		player.setLegsCompleted(player.getLegsCompleted() + 1);
 		player.setPointsInTake(0);
@@ -110,7 +103,6 @@ public class DartsCounterUI extends JFrame {
 		game.getCurrentPlayer().setPointsInTake(0);
 		dartsThrownInTake = 0;
 		setInputMode(1);
-
 		updateView();
 	}
 
@@ -119,9 +111,9 @@ public class DartsCounterUI extends JFrame {
 		playerCounter1.updateView();
 		if (game.getNumPlayers() >= 3) {
 			playerCounter2.updateView();
-		}
-		if (game.getNumPlayers() >= 4) {
-			playerCounter3.updateView();
+			if (game.getNumPlayers() >= 4) {
+				playerCounter3.updateView();
+			}
 		}
 	}
 
@@ -455,9 +447,9 @@ public class DartsCounterUI extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
-		JMenu mnGame = new JMenu("Spielauswahl");
-		mnGame.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		menuBar.add(mnGame);
+		JMenu menuPlayers = new JMenu("Spieler");
+		menuPlayers.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		menuBar.add(menuPlayers);
 
 		JMenuItem miPlayers2 = new JMenuItem("2 Spieler");
 		miPlayers2.addActionListener(new ActionListener() {
@@ -468,7 +460,7 @@ public class DartsCounterUI extends JFrame {
 			}
 		});
 		miPlayers2.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		mnGame.add(miPlayers2);
+		menuPlayers.add(miPlayers2);
 
 		JMenuItem miPlayers3 = new JMenuItem("3 Spieler");
 		miPlayers3.addActionListener(new ActionListener() {
@@ -479,7 +471,7 @@ public class DartsCounterUI extends JFrame {
 			}
 		});
 		miPlayers3.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		mnGame.add(miPlayers3);
+		menuPlayers.add(miPlayers3);
 
 		JMenuItem miPlayers4 = new JMenuItem("4 Spieler");
 		miPlayers4.addActionListener(new ActionListener() {
@@ -490,9 +482,9 @@ public class DartsCounterUI extends JFrame {
 			}
 		});
 		miPlayers4.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		mnGame.add(miPlayers4);
+		menuPlayers.add(miPlayers4);
 
-		JMenu menuInitialPoints = new JMenu("Anfangspunktzahl");
+		JMenu menuInitialPoints = new JMenu("Anfangspunkte");
 		menuInitialPoints.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		menuBar.add(menuInitialPoints);
 

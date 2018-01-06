@@ -1,8 +1,8 @@
 package de.amr.schule.darts.counter.model;
 
-public class PlayerModel {
+public class Player {
 
-	private final DartsGameModel game;
+	private final DartsGame game;
 
 	private String name;
 	private int pointsScored;
@@ -10,11 +10,11 @@ public class PlayerModel {
 	private int legsCompleted;
 	private float pointsAverage;
 
-	public PlayerModel(DartsGameModel game) {
+	public Player(DartsGame game) {
 		this.game = game;
 	}
 
-	public DartsGameModel getGame() {
+	public DartsGame getGame() {
 		return game;
 	}
 
