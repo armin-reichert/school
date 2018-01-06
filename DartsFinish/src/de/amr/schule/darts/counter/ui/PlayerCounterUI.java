@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -17,6 +18,8 @@ import javax.swing.SwingConstants;
 
 import de.amr.schule.darts.counter.model.Player;
 import net.miginfocom.swing.MigLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PlayerCounterUI extends JPanel {
 
@@ -51,6 +54,16 @@ public class PlayerCounterUI extends JPanel {
 		setLayout(new MigLayout("", "[grow]", "[][][][][][grow][][]"));
 
 		txtName = new JTextField();
+		txtName.setEnabled(false);
+		txtName.setEditable(false);
+		txtName.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					editName();
+				}
+			}
+		});
 		txtName.setForeground(Color.BLUE);
 		txtName.addActionListener(new ActionListener() {
 
@@ -89,5 +102,13 @@ public class PlayerCounterUI extends JPanel {
 		lblPointsAverage.setForeground(Color.GRAY);
 		lblPointsAverage.setFont(new Font("Tahoma", Font.BOLD, 36));
 		add(lblPointsAverage, "cell 0 4,alignx center");
+	}
+
+	protected void editName() {
+		String newName = JOptionPane.showInputDialog(this, "Name für Spieler", player.getName());
+		if (newName != null && newName.trim().length() > 0) {
+			player.setName(newName);
+			updateView();
+		}
 	}
 }
