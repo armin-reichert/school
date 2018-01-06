@@ -34,6 +34,8 @@ public class PlayerCounterUI extends JPanel {
 	}
 
 	public void updateView() {
+		if (player == null)
+			return;
 		txtName.setText(player.getName());
 		lblPointsRemaining.setText(format("%d", player.getPointsRemaining()));
 		lblPointsRemaining.setForeground(player.isTurn() ? Color.RED : Color.BLACK);

@@ -26,12 +26,9 @@ import net.miginfocom.swing.MigLayout;
 public class DartsCounterUI extends JFrame {
 
 	private DartsGame game;
-	private int inputMode; // single, double, triple
 	private int dartsThrownInTake;
-	private int startPoints;
 
 	private JButton button25;
-	private JPanel playerCounterGrid;
 	private PlayerCounterUI playerCounter0;
 	private PlayerCounterUI playerCounter1;
 	private PlayerCounterUI playerCounter2;
@@ -46,22 +43,50 @@ public class DartsCounterUI extends JFrame {
 	private JRadioButtonMenuItem miRbPoints101;
 
 	private void setInputMode(int mode) {
-		inputMode = mode;
-		rbSingle.setSelected(mode == 1);
-		rbDouble.setSelected(mode == 2);
-		rbTriple.setSelected(mode == 3);
-		button25.setEnabled(mode == 1 || mode == 2);
+		switch (mode) {
+		case 1:
+			rbSingle.setSelected(true);
+			button25.setEnabled(true);
+			break;
+		case 2:
+			rbDouble.setSelected(true);
+			button25.setEnabled(true);
+			break;
+		case 3:
+			rbTriple.setSelected(true);
+			button25.setEnabled(false);
+			break;
+		}
+	}
+
+	private int getInputMode() {
+		if (rbSingle.isSelected())
+			return 1;
+		if (rbDouble.isSelected())
+			return 2;
+		if (rbTriple.isSelected())
+			return 3;
+		return 1;
 	}
 
 	private void setStartPoints(int points) {
-		startPoints = points;
 		miRbPoints101.setSelected(points == 101);
 		miRbPoints301.setSelected(points == 301);
 		miRbPoints501.setSelected(points == 501);
 	}
 
+	private int getStartPoints() {
+		if (miRbPoints101.isSelected())
+			return 101;
+		if (miRbPoints301.isSelected())
+			return 301;
+		if (miRbPoints501.isSelected())
+			return 501;
+		return 501;
+	}
+
 	public void newGame(int numPlayers) {
-		game = new DartsGame(numPlayers, startPoints);
+		game = new DartsGame(numPlayers, getStartPoints());
 		PlayerCounterUI[] playerCounters = { playerCounter0, playerCounter1, playerCounter2,
 				playerCounter3 };
 		for (int i = 0; i < playerCounters.length; ++i) {
@@ -74,7 +99,7 @@ public class DartsCounterUI extends JFrame {
 	}
 
 	private void saveScore(int field) {
-		final int score = inputMode * field;
+		final int score = getInputMode() * field;
 		final Player player = game.getCurrentPlayer();
 		dartsThrownInTake += 1;
 		if (score > player.getPointsRemaining()) {
@@ -109,12 +134,8 @@ public class DartsCounterUI extends JFrame {
 	public void updateView() {
 		playerCounter0.updateView();
 		playerCounter1.updateView();
-		if (game.getNumPlayers() >= 3) {
-			playerCounter2.updateView();
-			if (game.getNumPlayers() >= 4) {
-				playerCounter3.updateView();
-			}
-		}
+		playerCounter2.updateView();
+		playerCounter3.updateView();
 	}
 
 	public DartsCounterUI() {
@@ -125,7 +146,7 @@ public class DartsCounterUI extends JFrame {
 		getContentPane().setLayout(
 				new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow][][grow][grow][][grow][]"));
 
-		playerCounterGrid = new JPanel();
+		JPanel playerCounterGrid = new JPanel();
 		getContentPane().add(playerCounterGrid, "cell 0 0,grow");
 		playerCounterGrid.setLayout(new GridLayout(0, 4, 0, 0));
 
@@ -410,8 +431,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				inputMode = 1;
-				button25.setEnabled(true);
+				setInputMode(1);
 			}
 		});
 		panelInputMode.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -424,8 +444,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				inputMode = 2;
-				button25.setEnabled(true);
+				setInputMode(2);
 			}
 		});
 		inputModeButtonGroup.add(rbDouble);
@@ -437,8 +456,7 @@ public class DartsCounterUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				inputMode = 3;
-				button25.setEnabled(false);
+				setInputMode(3);
 			}
 		});
 		inputModeButtonGroup.add(rbTriple);
@@ -447,7 +465,7 @@ public class DartsCounterUI extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
-		JMenu menuPlayers = new JMenu("Spieler");
+		JMenu menuPlayers = new JMenu("Neues Spiel");
 		menuPlayers.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		menuBar.add(menuPlayers);
 
@@ -485,8 +503,8 @@ public class DartsCounterUI extends JFrame {
 		menuPlayers.add(miPlayers4);
 
 		JMenu menuInitialPoints = new JMenu("Anfangspunkte");
+		menuPlayers.add(menuInitialPoints);
 		menuInitialPoints.setFont(new Font("Arial Black", Font.PLAIN, 20));
-		menuBar.add(menuInitialPoints);
 
 		miRbPoints501 = new JRadioButtonMenuItem("501");
 		miRbPoints501.addActionListener(new ActionListener() {
