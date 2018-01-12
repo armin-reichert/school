@@ -11,7 +11,7 @@ public class DartsGame {
 		players = new Player[numPlayers];
 		for (int i = 0; i < numPlayers; i += 1) {
 			players[i] = new Player(this);
-			players[i].setName("Player " + (i + 1));
+			players[i].setName("Spieler " + (i + 1));
 			players[i].setPointsScored(0);
 			players[i].setPointsInTake(0);
 			players[i].setPointsAverage(0);

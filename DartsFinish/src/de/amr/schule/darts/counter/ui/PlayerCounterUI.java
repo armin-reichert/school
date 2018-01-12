@@ -88,8 +88,10 @@ public class PlayerCounterUI extends JPanel {
 		add(scrollPane, "cell 0 2,grow");
 
 		tblCheckOuts = new JTable();
+		tblCheckOuts.setFont(new Font("Courier New", Font.PLAIN, 16));
 		tblCheckOuts.setModel(tblModelCheckOuts);
 		scrollPane.setViewportView(tblCheckOuts);
+		tblCheckOuts.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 16));
 
 		lblPointsInTake = new JLabel("42");
 		lblPointsInTake.setToolTipText("Points in current take");

@@ -317,20 +317,31 @@ public class DartsCounterUI extends JFrame {
 				saveScore(11);
 			}
 		});
+		
+				JButton btnNewButton = new JButton("Aus");
+				btnNewButton.addActionListener(new ActionListener() {
 
-		JButton btnNewButton = new JButton("Out");
-		btnNewButton.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						saveScore(0);
+					}
+				});
+				btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 24));
+				keyboard.add(btnNewButton, "cell 10 0,growx");
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(0);
-			}
-		});
-
-		Component horizontalStrut = Box.createHorizontalStrut(20);
+		Component horizontalStrut = Box.createHorizontalStrut(25);
 		keyboard.add(horizontalStrut, "cell 11 0");
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 24));
-		keyboard.add(btnNewButton, "cell 12 0,growx");
+		
+				JButton btnNoScore = new JButton("No Score");
+				btnNoScore.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						noScore();
+					}
+				});
+				btnNoScore.setFont(new Font("Tahoma", Font.BOLD, 24));
+				keyboard.add(btnNoScore, "cell 12 0 1 2,grow");
 		button_11.setFont(new Font("Tahoma", Font.BOLD, 24));
 		keyboard.add(button_11, "cell 0 1,grow");
 
@@ -444,21 +455,10 @@ public class DartsCounterUI extends JFrame {
 		button25.setFont(new Font("Tahoma", Font.BOLD, 24));
 		keyboard.add(button25, "cell 10 1,grow");
 
-		JButton btnNoScore = new JButton("No Score");
-		btnNoScore.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				noScore();
-			}
-		});
-		btnNoScore.setFont(new Font("Tahoma", Font.BOLD, 24));
-		keyboard.add(btnNoScore, "cell 12 1,growx");
-
 		JPanel panelInputMode = new JPanel();
 		getContentPane().add(panelInputMode, "cell 0 4 2 1,alignx left,growy");
 
-		rbSingle = new JRadioButton("Single");
+		rbSingle = new JRadioButton("1x");
 		rbSingle.setFont(new Font("Tahoma", Font.BOLD, 24));
 		rbSingle.addActionListener(new ActionListener() {
 
@@ -467,11 +467,11 @@ public class DartsCounterUI extends JFrame {
 				setInputMode(1);
 			}
 		});
-		panelInputMode.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panelInputMode.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
 		inputModeButtonGroup.add(rbSingle);
 		panelInputMode.add(rbSingle);
 
-		rbDouble = new JRadioButton("Double");
+		rbDouble = new JRadioButton("2x");
 		rbDouble.setFont(new Font("Tahoma", Font.BOLD, 24));
 		rbDouble.addActionListener(new ActionListener() {
 
@@ -483,7 +483,7 @@ public class DartsCounterUI extends JFrame {
 		inputModeButtonGroup.add(rbDouble);
 		panelInputMode.add(rbDouble);
 
-		rbTriple = new JRadioButton("Triple");
+		rbTriple = new JRadioButton("3x");
 		rbTriple.setFont(new Font("Tahoma", Font.BOLD, 24));
 		rbTriple.addActionListener(new ActionListener() {
 
