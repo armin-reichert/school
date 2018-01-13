@@ -10,16 +10,26 @@ import de.amr.schule.darts.checkout.CheckOutTable;
 
 public class DartsComputeCheckOutsApp {
 
-	private static final int[][] INTERVALS = { { 170, 150 }, { 149, 129 }, { 128, 108 }, { 107, 87 },
-			{ 86, 66 }, { 65, 45 }, { 44, 24 }, { 23, 2 } };
-	
+	private static final int[][] INTERVALS = {
+		/*@formatter:off*/
+		{ 170, 150 }, 
+		{ 149, 129 }, 
+		{ 128, 108 }, 
+		{ 107, 87 },
+		{ 86, 66 }, 
+		{ 65, 45 }, 
+		{ 44, 24 }, 
+		{ 23, 2 }
+		/*@formatter:on*/
+	};
+
 	public static void main(String[] args) {
 		DartsComputeCheckOutsApp app = new DartsComputeCheckOutsApp();
 		for (int[] interval : INTERVALS) {
 			int upper = interval[0], lower = interval[1];
-			app.writeFile(getFilename(upper, lower), app.createHTML(upper, lower));
+			app.writeFile("html/" + getFilename(upper, lower), app.createHTML(upper, lower));
 		}
-		app.writeIndex("checkouts-index.htm");
+		app.writeIndex("html/checkouts-index.htm");
 	}
 
 	private static int[] findInterval(int score) {
@@ -51,9 +61,8 @@ public class DartsComputeCheckOutsApp {
 		sb.append("<style>\n");
 		sb.append(
 				" .scorelink { text-align:right; font-family: Arial; font-size: 20pt; color: lightgray; });"
-				+ " .scorelink a { text-decoration: none; }"
-			  + " .scorelink a:visited { color: blue; }"
-				+ "\n");
+						+ " .scorelink a { text-decoration: none; }" + " .scorelink a:visited { color: blue; }"
+						+ "\n");
 		sb.append("</style>\n");
 		sb.append("</head>\n");
 		sb.append("<body>\n");

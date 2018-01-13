@@ -11,7 +11,7 @@ public class DartsCounterApp {
 
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel(NimbusLookAndFeel.class.getName());
+			UIManager.setLookAndFeel(NimbusLookAndFeel.class.getCanonicalName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
