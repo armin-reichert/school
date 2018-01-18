@@ -74,13 +74,23 @@ public class DartsCounterUI extends JFrame {
 		return 1;
 	}
 
-	private void setStartPoints(int points) {
-		miRbPoints101.setSelected(points == 101);
-		miRbPoints301.setSelected(points == 301);
-		miRbPoints501.setSelected(points == 501);
+	public void setStartPoints(int points) {
+		switch (points) {
+		case 101:
+			miRbPoints101.setSelected(true);
+			break;
+		case 301:
+			miRbPoints301.setSelected(true);
+			break;
+		case 501:
+			miRbPoints501.setSelected(true);
+			break;
+		default:
+			miRbPoints501.setSelected(true);
+		}
 	}
 
-	private int getStartPoints() {
+	public int getStartPoints() {
 		if (miRbPoints101.isSelected())
 			return 101;
 		if (miRbPoints301.isSelected())
@@ -90,7 +100,7 @@ public class DartsCounterUI extends JFrame {
 		return 501;
 	}
 
-	private void setNumPlayers(int number) {
+	public void setNumPlayers(int number) {
 		switch (number) {
 		case 2:
 			miPlayers2.setSelected(true);
@@ -101,10 +111,12 @@ public class DartsCounterUI extends JFrame {
 		case 4:
 			miPlayers4.setSelected(true);
 			break;
+		default:
+			miPlayers4.setSelected(true);
 		}
 	}
 
-	private int getNumPlayers() {
+	public int getNumPlayers() {
 		if (miPlayers2.isSelected())
 			return 2;
 		if (miPlayers3.isSelected())
@@ -114,11 +126,8 @@ public class DartsCounterUI extends JFrame {
 		return 4;
 	}
 
-	private void newGame() {
-		newGame(getNumPlayers());
-	}
-
-	public void newGame(int numPlayers) {
+	public void newGame() {
+		int numPlayers = getNumPlayers();
 		game = new DartsGame(numPlayers, getStartPoints());
 		PlayerCounterUI[] playerCounters = { playerCounter0, playerCounter1, playerCounter2,
 				playerCounter3 };
@@ -317,31 +326,31 @@ public class DartsCounterUI extends JFrame {
 				saveScore(11);
 			}
 		});
-		
-				JButton btnNewButton = new JButton("Aus");
-				btnNewButton.addActionListener(new ActionListener() {
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						saveScore(0);
-					}
-				});
-				btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 24));
-				keyboard.add(btnNewButton, "cell 10 0,growx");
+		JButton btnNewButton = new JButton("Aus");
+		btnNewButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveScore(0);
+			}
+		});
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 24));
+		keyboard.add(btnNewButton, "cell 10 0,growx");
 
 		Component horizontalStrut = Box.createHorizontalStrut(25);
 		keyboard.add(horizontalStrut, "cell 11 0");
-		
-				JButton btnNoScore = new JButton("No Score");
-				btnNoScore.addActionListener(new ActionListener() {
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						noScore();
-					}
-				});
-				btnNoScore.setFont(new Font("Tahoma", Font.BOLD, 24));
-				keyboard.add(btnNoScore, "cell 12 0 1 2,grow");
+		JButton btnNoScore = new JButton("No Score");
+		btnNoScore.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				noScore();
+			}
+		});
+		btnNoScore.setFont(new Font("Tahoma", Font.BOLD, 24));
+		keyboard.add(btnNoScore, "cell 12 0 1 2,grow");
 		button_11.setFont(new Font("Tahoma", Font.BOLD, 24));
 		keyboard.add(button_11, "cell 0 1,grow");
 
@@ -518,6 +527,7 @@ public class DartsCounterUI extends JFrame {
 
 		JMenuItem miQuit = new JMenuItem("Beenden");
 		miQuit.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
@@ -525,7 +535,7 @@ public class DartsCounterUI extends JFrame {
 		});
 		miQuit.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		menuGame.add(miQuit);
-		
+
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		menuBar.add(horizontalStrut_1);
 

@@ -20,8 +20,11 @@ public class DartsCounterApp {
 
 	public DartsCounterApp() {
 		DartsCounterUI window = new DartsCounterUI();
-		window.newGame(4);
+		window.setNumPlayers(4);
+		window.setStartPoints(501);
+		window.newGame();
 		window.pack();
+		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 	}
 }
