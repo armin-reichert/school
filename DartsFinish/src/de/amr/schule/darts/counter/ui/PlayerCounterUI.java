@@ -1,12 +1,13 @@
 package de.amr.schule.darts.counter.ui;
 
-import static de.amr.schule.darts.checkout.CheckOutTable.CHECKOUTS;
 import static java.lang.String.format;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,10 +17,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import de.amr.schule.darts.checkout.CheckOutTable;
 import de.amr.schule.darts.counter.model.Player;
 import net.miginfocom.swing.MigLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class PlayerCounterUI extends JPanel {
 
@@ -45,7 +45,7 @@ public class PlayerCounterUI extends JPanel {
 		lblPointsInTake.setText(format("%d", player.getPointsInTake()));
 		lblPointsInTake.setForeground(player.isTurn() ? Color.RED : Color.GRAY);
 		lblPointsAverage.setText(format("%.2f", player.getPointsAverage()));
-		tblModelCheckOuts.setResults(CHECKOUTS.getCheckOuts(player.getPointsRemaining()));
+		tblModelCheckOuts.setResults(CheckOutTable.getCheckOuts(player.getPointsRemaining()));
 	}
 
 	public PlayerCounterUI() {

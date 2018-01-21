@@ -46,10 +46,7 @@ public class DartsComputeCheckOutsApp {
 		return "checkouts-" + upper + "-" + lower + ".htm";
 	}
 
-	private final CheckOutTable checkoutsTable;
-
 	public DartsComputeCheckOutsApp() {
-		checkoutsTable = new CheckOutTable();
 	}
 
 	private void writeIndex(String path) {
@@ -80,7 +77,7 @@ public class DartsComputeCheckOutsApp {
 				throw new IllegalStateException();
 			}
 			int upper = interval[0], lower = interval[1];
-			boolean hasFinish = !checkoutsTable.getCheckOuts(score).isEmpty();
+			boolean hasFinish = !CheckOutTable.getCheckOuts(score).isEmpty();
 			url = getFilename(upper, lower) + "#" + +score;
 			sb.append("<td class='scorelink'>");
 			if (hasFinish) {
@@ -122,7 +119,7 @@ public class DartsComputeCheckOutsApp {
 			sb.append("<td valign='top'>").append("<a id='" + score + "'>\n").append(score)
 					.append("</a></td>\n");
 			sb.append("<td>\n");
-			for (CheckOut finish : checkoutsTable.getCheckOuts(score)) {
+			for (CheckOut finish : CheckOutTable.getCheckOuts(score)) {
 				sb.append(finish).append("&nbsp;&nbsp;\n");
 			}
 			sb.append("</td>\n");

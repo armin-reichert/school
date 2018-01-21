@@ -10,7 +10,7 @@ import de.amr.schule.darts.field.DartBoardField;
 
 public class CheckOutTable {
 
-	public static final CheckOutTable CHECKOUTS = new CheckOutTable();
+	private final static CheckOutTable INSTANCE = new CheckOutTable();
 
 	private final Map<Integer, List<CheckOut>> checkOutsByScore = new HashMap<>();
 
@@ -22,7 +22,7 @@ public class CheckOutTable {
 		checkOutsByScore.get(score).add(co);
 	}
 
-	public CheckOutTable() {
+	private CheckOutTable() {
 
 		final int[] fields = new int[20];
 		final int[] fields25 = new int[21];
@@ -149,9 +149,8 @@ public class CheckOutTable {
 		}
 	}
 
-	public List<CheckOut> getCheckOuts(int score) {
-		return checkOutsByScore.containsKey(score)
-				? Collections.unmodifiableList(checkOutsByScore.get(score))
-				: Collections.emptyList();
+	public static List<CheckOut> getCheckOuts(int score) {
+		List<CheckOut> checkOuts = INSTANCE.checkOutsByScore.get(score);
+		return checkOuts == null ? Collections.emptyList() : Collections.unmodifiableList(checkOuts);
 	}
 }

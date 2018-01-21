@@ -61,6 +61,9 @@ public class DartsCounterUI extends JFrame {
 			rbTriple.setSelected(true);
 			button25.setEnabled(false);
 			break;
+		default:
+			rbSingle.setSelected(true);
+			button25.setEnabled(true);
 		}
 	}
 
