@@ -1,5 +1,10 @@
 package de.amr.schule.darts.counter.ui;
 
+import static java.lang.Math.atan2;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.toDegrees;
+import static java.lang.Math.toRadians;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -15,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.MissingResourceException;
+import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -27,7 +33,7 @@ public class DartBoard extends JPanel {
 		TRIPLE(190, 208),
 		DOUBLE(317, 335),
 		OUT(336, Integer.MAX_VALUE),
-		SIMPLE(-1, -1);
+		SIMPLE(0, 335);
 
 		public boolean contains(int radius) {
 			return inner <= radius && radius <= outer;
@@ -38,8 +44,8 @@ public class DartBoard extends JPanel {
 			this.outer = outer;
 		}
 
-		int inner;
-		int outer;
+		public final int inner;
+		public final int outer;
 	};
 
 	private static int[] SEGMENT_VALUES = {
@@ -48,13 +54,12 @@ public class DartBoard extends JPanel {
 			/*@formatter:on*/
 	};
 
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private final Image board;
 	private final Point center;
 
 	private Ring currentRing;
 	private int currentSegmentValue;
-
-	private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -70,39 +75,37 @@ public class DartBoard extends JPanel {
 		try {
 			board = ImageIO.read(getClass().getResourceAsStream(imagePath)).getScaledInstance(size, size,
 					BufferedImage.SCALE_SMOOTH);
-			int offsetX = -2, offsetY = 4;
+			int offsetX = -2, offsetY = 4; // TODO: handle scaling
 			center = new Point(size / 2 + offsetX, size / 2 + offsetY);
-			setPreferredSize(new Dimension(size, size));
-			setSize(getPreferredSize());
-			addMouseListener(new MouseAdapter() {
-
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					onMouseClicked(e.getX(), e.getY());
-				}
-			});
-			addMouseMotionListener(new MouseMotionAdapter() {
-
-				@Override
-				public void mouseMoved(MouseEvent e) {
-					onMouseMoved(e.getX(), e.getY());
-				}
-			});
 		} catch (Exception e) {
 			throw new MissingResourceException("Dart board image not found", getClass().getName(),
 					imagePath);
 		}
+		setPreferredSize(new Dimension(size, size));
+		setSize(getPreferredSize());
+		addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				onMouseClicked(e.getX(), e.getY());
+			}
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				onMouseMoved(e.getX(), e.getY());
+			}
+		});
 	}
 
 	protected void onMouseMoved(int viewX, int viewY) {
-		identifyPosition(viewX, viewY);
+		updatePosition(viewX, viewY);
 		repaint();
 	}
 
 	protected void onMouseClicked(int viewX, int viewY) {
-		// System.out.println("Clicked at x=" + viewX + ",y=" + viewY);
-		identifyPosition(viewX, viewY);
-//		System.out.println(currentRing + " " + currentSegmentValue);
+		updatePosition(viewX, viewY);
 		repaint();
 		pcs.firePropertyChange("points", -1, computePoints());
 	}
@@ -125,28 +128,71 @@ public class DartBoard extends JPanel {
 		throw new IllegalStateException();
 	}
 
-	private void identifyPosition(int viewX, int viewY) {
+	private void updatePosition(int viewX, int viewY) {
 		// Compute model coordinates
 		int x = viewX - center.x;
 		int y = center.y - viewY;
-		// System.out.println("Model coordinate: x=" + x + ",y=" + y);
 		// Compute polar coordinate
-		double radius = Math.sqrt(x * x + y * y);
-		double phi = Math.atan2(y, x);
-		double phiDeg = Math.toDegrees(phi);
-		if (phiDeg < 0) {
-			phiDeg += 360;
+		int radius = (int) sqrt(x * x + y * y);
+		int angle = ((int) toDegrees(atan2(y, x)) + 360) % 360;
+		currentSegmentValue = computeSegmentValue(angle);
+		currentRing = computeRing(radius);
+	}
+
+	private int computeSegmentValue(int angle) {
+		if (angle < 0 || angle > 360) {
+			throw new IllegalArgumentException();
 		}
-		// System.out.println("Polar coordinate: r=" + radius + ", phi=" + phiDeg + " degrees");
-		currentSegmentValue = computeSegmentValue(phiDeg);
-		currentRing = computeRing((int) radius);
+		angle = (angle + 9) % 360;
+		return SEGMENT_VALUES[angle / 18];
+	}
+
+	private Ring computeRing(int radius) {
+		return Stream.of(Ring.BULLS_EYE, Ring.SINGLE_BULL, Ring.TRIPLE, Ring.DOUBLE, Ring.OUT)
+				.filter(ring -> ring.contains(radius)).findFirst().orElse(Ring.SIMPLE);
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		draw((Graphics2D) g);
+	}
+
+	private void draw(Graphics2D g) {
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.drawImage(board, 0, 0, getWidth(), getHeight(), null);
+		g.setColor(Color.YELLOW);
+		drawRing(g, Ring.BULLS_EYE);
+		drawRing(g, Ring.SINGLE_BULL);
+		drawRing(g, Ring.TRIPLE);
+		drawRing(g, Ring.DOUBLE);
+		for (int angle = 9; angle < 360; angle += 18) {
+			double rad = toRadians(angle);
+			g.translate(center.x, center.y);
+			g.rotate(-rad);
+			g.drawLine(Ring.SINGLE_BULL.outer, 0, Ring.DOUBLE.outer, 0);
+			g.rotate(rad);
+			g.translate(-center.x, -center.y);
+		}
+		drawCurrentValue(g);
+	}
+
+	private void drawRing(Graphics2D g, Ring ring) {
+		int radius = ring.inner;
+		if (radius > 0) {
+			g.drawOval(center.x - radius, center.y - radius, 2 * radius, 2 * radius);
+		}
+		radius = ring.outer;
+		if (radius <= getWidth()) {
+			g.drawOval(center.x - radius, center.y - radius, 2 * radius, 2 * radius);
+		}
 	}
 
 	private void drawCurrentValue(Graphics2D g) {
-		String text = "";
 		if (currentRing == null) {
 			return;
 		}
+		String text = "";
 		switch (currentRing) {
 		case OUT:
 			text = "Aus";
@@ -172,81 +218,6 @@ public class DartBoard extends JPanel {
 		g.setColor(Color.GRAY);
 		g.setFont(new Font("Arial", Font.BOLD, 30));
 		g.drawString(text, 20, 60);
-	}
-
-	/**
-	 * 
-	 * @param angle
-	 *          angle in degrees
-	 * @return segment value or <code>-1</code>
-	 */
-	private int computeSegmentValue(double angle) {
-		if (angle > 353) {
-			return SEGMENT_VALUES[0];
-		}
-		int segment = 0;
-		int lower = -9;
-		while (segment < SEGMENT_VALUES.length) {
-			if (angle > lower && angle <= lower + 18) {
-				return SEGMENT_VALUES[segment];
-			}
-			lower += 18;
-			++segment;
-		}
-		System.out.println("No segment found for angle " + angle);
-		return -1;
-	}
-
-	private Ring computeRing(int radius) {
-		if (Ring.BULLS_EYE.contains(radius))
-			return Ring.BULLS_EYE;
-		if (Ring.SINGLE_BULL.contains(radius))
-			return Ring.SINGLE_BULL;
-		if (Ring.TRIPLE.contains(radius))
-			return Ring.TRIPLE;
-		if (Ring.DOUBLE.contains(radius))
-			return Ring.DOUBLE;
-		if (Ring.OUT.contains(radius))
-			return Ring.OUT;
-		return Ring.SIMPLE;
-	}
-
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		draw((Graphics2D) g);
-	}
-
-	private void draw(Graphics2D g) {
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.drawImage(board, 0, 0, getWidth(), getHeight(), null);
-
-		g.setColor(Color.YELLOW);
-		drawRing(g, Ring.BULLS_EYE);
-		drawRing(g, Ring.SINGLE_BULL);
-		drawRing(g, Ring.TRIPLE);
-		drawRing(g, Ring.DOUBLE);
-
-		for (int angle = 9; angle < 360; angle += 18) {
-			g.translate(center.x, center.y);
-			g.rotate(-Math.toRadians(angle));
-			g.drawLine(Ring.SINGLE_BULL.outer, 0, Ring.DOUBLE.outer, 0);
-			g.rotate(Math.toRadians(angle));
-			g.translate(-center.x, -center.y);
-		}
-
-		drawCurrentValue(g);
-	}
-
-	private void drawRing(Graphics2D g, Ring ring) {
-		int radius = ring.inner;
-		if (radius > 0) {
-			g.drawOval(center.x - radius, center.y - radius, 2 * radius, 2 * radius);
-		}
-		radius = ring.outer;
-		if (radius <= getWidth()) {
-			g.drawOval(center.x - radius, center.y - radius, 2 * radius, 2 * radius);
-		}
 	}
 
 }

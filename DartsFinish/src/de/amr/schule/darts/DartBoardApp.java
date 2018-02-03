@@ -12,7 +12,7 @@ public class DartBoardApp {
 		EventQueue.invokeLater(() -> {
 			DartBoard board = new DartBoard("/dartboard.png", 900);
 			board.addPropertyChangeListener(evt -> {
-				int points = (int) evt.getNewValue();
+				Integer points = (Integer) evt.getNewValue();
 				System.out.println(points + " Punkte");
 			});
 			JFrame frame = new JFrame("Dart Board");
