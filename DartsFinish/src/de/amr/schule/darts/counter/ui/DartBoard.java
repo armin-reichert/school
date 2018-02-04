@@ -18,10 +18,8 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.MissingResourceException;
 import java.util.stream.Stream;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class DartBoard extends JPanel {
@@ -72,17 +70,12 @@ public class DartBoard extends JPanel {
 		pcs.removePropertyChangeListener(listener);
 	}
 
-	public DartBoard(String imagePath, int size) {
+	public DartBoard(BufferedImage board, int size) {
+		this.board = board;
 		this.size = size;
-		try {
-			board = ImageIO.read(getClass().getResourceAsStream(imagePath));
-			scaling = (double) size / board.getWidth();
-			int offsetX = (int) (scaling * -2), offsetY = (int) (scaling * 4);
-			center = new Point(size / 2 + offsetX, size / 2 + offsetY);
-		} catch (Exception e) {
-			throw new MissingResourceException("Dart board image not found", getClass().getName(),
-					imagePath);
-		}
+		scaling = (double) size / board.getWidth();
+		int offsetX = (int) (scaling * -2), offsetY = (int) (scaling * 4);
+		center = new Point(size / 2 + offsetX, size / 2 + offsetY);
 		setPreferredSize(new Dimension(size, size));
 		setSize(getPreferredSize());
 		addMouseListener(new MouseAdapter() {
