@@ -10,7 +10,7 @@ public class DartBoardApp {
 
 	public static void main(String... args) {
 		EventQueue.invokeLater(() -> {
-			DartBoard board = new DartBoard("/dartboard.png", 900);
+			DartBoard board = new DartBoard("/dartboard.png", 600);
 			board.addPropertyChangeListener(evt -> {
 				Integer points = (Integer) evt.getNewValue();
 				System.out.println(points + " Punkte");

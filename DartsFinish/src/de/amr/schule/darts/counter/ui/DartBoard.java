@@ -10,7 +10,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
@@ -35,8 +34,8 @@ public class DartBoard extends JPanel {
 		OUT(336, Integer.MAX_VALUE),
 		SIMPLE(0, 335);
 
-		public boolean contains(int radius) {
-			return inner <= radius && radius <= outer;
+		public boolean contains(int radius, double scaling) {
+			return (int) (scaling * inner) <= radius && radius <= (int) (scaling * outer);
 		}
 
 		private Ring(int inner, int outer) {
@@ -55,8 +54,10 @@ public class DartBoard extends JPanel {
 	};
 
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	private final Image board;
+	private final BufferedImage board;
 	private final Point center;
+	private final double scaling;
+	private final int size;
 
 	private Ring currentRing;
 	private int currentSegmentValue;
@@ -72,10 +73,11 @@ public class DartBoard extends JPanel {
 	}
 
 	public DartBoard(String imagePath, int size) {
+		this.size = size;
 		try {
-			board = ImageIO.read(getClass().getResourceAsStream(imagePath)).getScaledInstance(size, size,
-					BufferedImage.SCALE_SMOOTH);
-			int offsetX = -2, offsetY = 4; // TODO: handle scaling
+			board = ImageIO.read(getClass().getResourceAsStream(imagePath));
+			scaling = (double) size / board.getWidth();
+			int offsetX = (int) (scaling * -2), offsetY = (int) (scaling * 4);
 			center = new Point(size / 2 + offsetX, size / 2 + offsetY);
 		} catch (Exception e) {
 			throw new MissingResourceException("Dart board image not found", getClass().getName(),
@@ -149,7 +151,7 @@ public class DartBoard extends JPanel {
 
 	private Ring computeRing(int radius) {
 		return Stream.of(Ring.BULLS_EYE, Ring.SINGLE_BULL, Ring.TRIPLE, Ring.DOUBLE, Ring.OUT)
-				.filter(ring -> ring.contains(radius)).findFirst().orElse(Ring.SIMPLE);
+				.filter(ring -> ring.contains(radius, scaling)).findFirst().orElse(Ring.SIMPLE);
 	}
 
 	@Override
@@ -160,7 +162,7 @@ public class DartBoard extends JPanel {
 
 	private void draw(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.drawImage(board, 0, 0, getWidth(), getHeight(), null);
+		g.drawImage(board, 0, 0, size, size, null);
 		g.setColor(Color.YELLOW);
 		drawRing(g, Ring.BULLS_EYE);
 		drawRing(g, Ring.SINGLE_BULL);
@@ -170,7 +172,8 @@ public class DartBoard extends JPanel {
 			double rad = toRadians(angle);
 			g.translate(center.x, center.y);
 			g.rotate(-rad);
-			g.drawLine(Ring.SINGLE_BULL.outer, 0, Ring.DOUBLE.outer, 0);
+			g.drawLine((int) (scaling * Ring.SINGLE_BULL.outer), 0, (int) (scaling * Ring.DOUBLE.outer),
+					0);
 			g.rotate(rad);
 			g.translate(-center.x, -center.y);
 		}
@@ -178,11 +181,11 @@ public class DartBoard extends JPanel {
 	}
 
 	private void drawRing(Graphics2D g, Ring ring) {
-		int radius = ring.inner;
+		int radius = (int) (scaling * ring.inner);
 		if (radius > 0) {
 			g.drawOval(center.x - radius, center.y - radius, 2 * radius, 2 * radius);
 		}
-		radius = ring.outer;
+		radius = (int) (scaling * ring.outer);
 		if (radius <= getWidth()) {
 			g.drawOval(center.x - radius, center.y - radius, 2 * radius, 2 * radius);
 		}
@@ -192,32 +195,28 @@ public class DartBoard extends JPanel {
 		if (currentRing == null) {
 			return;
 		}
-		String text = "";
-		switch (currentRing) {
-		case OUT:
-			text = "Aus";
-			break;
-		case DOUBLE:
-			text = "Doppel " + currentSegmentValue;
-			break;
-		case TRIPLE:
-			text = "Triple " + currentSegmentValue;
-			break;
-		case SINGLE_BULL:
-			text = "Single Bull";
-			break;
-		case BULLS_EYE:
-			text = "Bulls-Eye";
-			break;
-		case SIMPLE:
-			text = "" + currentSegmentValue;
-			break;
-		}
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setColor(Color.GRAY);
-		g.setFont(new Font("Arial", Font.BOLD, 30));
-		g.drawString(text, 20, 60);
+		g.setFont(new Font("Arial", Font.BOLD, size / 30));
+		g.drawString(getCurrentValueAsText(), 5, getHeight() - size / 60);
 	}
 
+	private String getCurrentValueAsText() {
+		switch (currentRing) {
+		case OUT:
+			return "Out";
+		case DOUBLE:
+			return "Double " + currentSegmentValue;
+		case TRIPLE:
+			return "Triple " + currentSegmentValue;
+		case SINGLE_BULL:
+			return "Single-Bull";
+		case BULLS_EYE:
+			return "Bulls-Eye";
+		case SIMPLE:
+			return "" + currentSegmentValue;
+		}
+		return "";
+	}
 }
