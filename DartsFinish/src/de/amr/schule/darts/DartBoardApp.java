@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import de.amr.schule.darts.counter.ui.DartBoard;
 
@@ -23,11 +24,7 @@ public class DartBoardApp {
 	}
 
 	public static void main(String... args) {
-		DartBoardApp app = new DartBoardApp(450);
-		app.board.addPropertyChangeListener(evt -> {
-			Integer points = (Integer) evt.getNewValue();
-			System.out.println(points + " Punkte");
-		});
+		DartBoardApp app = new DartBoardApp(800);
 		EventQueue.invokeLater(() -> {
 			JFrame frame = new JFrame("Dart Board");
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,6 +32,10 @@ public class DartBoardApp {
 			frame.getContentPane().add(app.board);
 			frame.pack();
 			frame.setVisible(true);
+			app.board.addPropertyChangeListener(evt -> {
+				Integer points = (Integer) evt.getNewValue();
+				JOptionPane.showMessageDialog(frame, points + " points");
+			});
 		});
 	}
 }

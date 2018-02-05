@@ -1,5 +1,11 @@
 package de.amr.schule.darts.counter.ui;
 
+import static de.amr.schule.darts.counter.model.BoardRing.BULLS_EYE;
+import static de.amr.schule.darts.counter.model.BoardRing.DOUBLE;
+import static de.amr.schule.darts.counter.model.BoardRing.OUT;
+import static de.amr.schule.darts.counter.model.BoardRing.SIMPLE;
+import static de.amr.schule.darts.counter.model.BoardRing.SINGLE_BULL;
+import static de.amr.schule.darts.counter.model.BoardRing.TRIPLE;
 import static java.lang.Math.atan2;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.toDegrees;
@@ -22,43 +28,23 @@ import java.util.stream.Stream;
 
 import javax.swing.JPanel;
 
+import de.amr.schule.darts.counter.model.BoardRing;
+
 public class DartBoard extends JPanel {
 
-	public enum Ring {
-		BULLS_EYE(0, 12),
-		SINGLE_BULL(13, 32),
-		TRIPLE(190, 208),
-		DOUBLE(317, 335),
-		OUT(336, Integer.MAX_VALUE),
-		SIMPLE(0, 335);
+	/* List starts with segment "6" (0 degree position) in counter-clockwise direction. */
+	private static int[] SEGMENT_LIST = { 6, 13, 4, 18, 1, 20, 5, 12, 9, 14, 11, 8, 16, 7, 19, 3, 17,
+			2, 15, 10 };
 
-		public boolean contains(int radius, double scaling) {
-			return (int) (scaling * inner) <= radius && radius <= (int) (scaling * outer);
-		}
-
-		private Ring(int inner, int outer) {
-			this.inner = inner;
-			this.outer = outer;
-		}
-
-		public final int inner;
-		public final int outer;
-	};
-
-	private static int[] SEGMENT_VALUES = {
-			/*@formatter:off*/
-			6, 13, 4, 18, 1, 20, 5, 12, 9, 14, 11, 8, 16, 7, 19, 3, 17, 2, 15, 10
-			/*@formatter:on*/
-	};
-
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	private final BufferedImage board;
+	private final BufferedImage boardImage;
 	private final Point center;
 	private final double scaling;
-	private final int size;
+	private final int boardSize;
 
-	private Ring currentRing;
-	private int currentSegmentValue;
+	private BoardRing currentRing;
+	private int currentSegment;
+
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -70,14 +56,19 @@ public class DartBoard extends JPanel {
 		pcs.removePropertyChangeListener(listener);
 	}
 
-	public DartBoard(BufferedImage board, int size) {
-		this.board = board;
-		this.size = size;
-		scaling = (double) size / board.getWidth();
+	public DartBoard(BufferedImage boardImage, int boardSize) {
+		this.boardImage = boardImage;
+		this.boardSize = boardSize;
+		scaling = (double) boardSize / BoardRing.BOARD_REFERENCE_SIZE;
+		// correction for image inaccuracy
 		int offsetX = (int) (scaling * -2), offsetY = (int) (scaling * 4);
-		center = new Point(size / 2 + offsetX, size / 2 + offsetY);
-		setPreferredSize(new Dimension(size, size));
-		setSize(getPreferredSize());
+		center = new Point(boardSize / 2 + offsetX, boardSize / 2 + offsetY);
+
+		Dimension dim = new Dimension(boardSize, boardSize);
+		setMinimumSize(dim);
+		setPreferredSize(dim);
+		setSize(dim);
+
 		addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -95,12 +86,12 @@ public class DartBoard extends JPanel {
 	}
 
 	protected void onMouseMoved(int viewX, int viewY) {
-		updatePosition(viewX, viewY);
+		targetCoordinateChanged(viewX, viewY);
 		repaint();
 	}
 
 	protected void onMouseClicked(int viewX, int viewY) {
-		updatePosition(viewX, viewY);
+		targetCoordinateChanged(viewX, viewY);
 		repaint();
 		pcs.firePropertyChange("points", -1, computePoints());
 	}
@@ -110,11 +101,11 @@ public class DartBoard extends JPanel {
 		case OUT:
 			return 0;
 		case SIMPLE:
-			return currentSegmentValue;
+			return currentSegment;
 		case DOUBLE:
-			return 2 * currentSegmentValue;
+			return 2 * currentSegment;
 		case TRIPLE:
-			return 3 * currentSegmentValue;
+			return 3 * currentSegment;
 		case SINGLE_BULL:
 			return 25;
 		case BULLS_EYE:
@@ -123,14 +114,15 @@ public class DartBoard extends JPanel {
 		throw new IllegalStateException();
 	}
 
-	private void updatePosition(int viewX, int viewY) {
-		// Compute model coordinates
+	private void targetCoordinateChanged(int viewX, int viewY) {
+		// Convert view to model coordinate
 		int x = viewX - center.x;
 		int y = center.y - viewY;
 		// Compute polar coordinate
 		int radius = (int) sqrt(x * x + y * y);
 		int angle = ((int) toDegrees(atan2(y, x)) + 360) % 360;
-		currentSegmentValue = computeSegmentValue(angle);
+		// Update segment and ring
+		currentSegment = computeSegmentValue(angle);
 		currentRing = computeRing(radius);
 	}
 
@@ -139,12 +131,12 @@ public class DartBoard extends JPanel {
 			throw new IllegalArgumentException();
 		}
 		angle = (angle + 9) % 360;
-		return SEGMENT_VALUES[angle / 18];
+		return SEGMENT_LIST[angle / 18];
 	}
 
-	private Ring computeRing(int radius) {
-		return Stream.of(Ring.BULLS_EYE, Ring.SINGLE_BULL, Ring.TRIPLE, Ring.DOUBLE, Ring.OUT)
-				.filter(ring -> ring.contains(radius, scaling)).findFirst().orElse(Ring.SIMPLE);
+	private BoardRing computeRing(int radius) {
+		return Stream.of(BULLS_EYE, SINGLE_BULL, TRIPLE, DOUBLE, OUT)
+				.filter(ring -> ring.contains(radius, scaling)).findFirst().orElse(SIMPLE);
 	}
 
 	@Override
@@ -155,25 +147,24 @@ public class DartBoard extends JPanel {
 
 	private void draw(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.drawImage(board, 0, 0, size, size, null);
+		g.drawImage(boardImage, 0, 0, boardSize, boardSize, null);
 		g.setColor(Color.YELLOW);
-		drawRing(g, Ring.BULLS_EYE);
-		drawRing(g, Ring.SINGLE_BULL);
-		drawRing(g, Ring.TRIPLE);
-		drawRing(g, Ring.DOUBLE);
+		drawRing(g, BULLS_EYE);
+		drawRing(g, SINGLE_BULL);
+		drawRing(g, TRIPLE);
+		drawRing(g, DOUBLE);
 		for (int angle = 9; angle < 360; angle += 18) {
 			double rad = toRadians(angle);
 			g.translate(center.x, center.y);
 			g.rotate(-rad);
-			g.drawLine((int) (scaling * Ring.SINGLE_BULL.outer), 0, (int) (scaling * Ring.DOUBLE.outer),
-					0);
+			g.drawLine((int) (scaling * SINGLE_BULL.outer), 0, (int) (scaling * DOUBLE.outer), 0);
 			g.rotate(rad);
 			g.translate(-center.x, -center.y);
 		}
 		drawCurrentValue(g);
 	}
 
-	private void drawRing(Graphics2D g, Ring ring) {
+	private void drawRing(Graphics2D g, BoardRing ring) {
 		int radius = (int) (scaling * ring.inner);
 		if (radius > 0) {
 			g.drawOval(center.x - radius, center.y - radius, 2 * radius, 2 * radius);
@@ -191,25 +182,25 @@ public class DartBoard extends JPanel {
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setColor(Color.GRAY);
-		g.setFont(new Font("Arial", Font.BOLD, size / 30));
-		g.drawString(getCurrentValueAsText(), 5, getHeight() - size / 60);
+		g.setFont(new Font("Arial", Font.BOLD, boardSize / 30));
+		g.drawString(getCurrentValueAsText(), 5, getHeight() - boardSize / 60);
 	}
 
 	private String getCurrentValueAsText() {
 		switch (currentRing) {
 		case OUT:
 			return "Out";
+		case SIMPLE:
+			return "" + currentSegment;
 		case DOUBLE:
-			return "Double " + currentSegmentValue;
+			return "Double " + currentSegment;
 		case TRIPLE:
-			return "Triple " + currentSegmentValue;
+			return "Triple " + currentSegment;
 		case SINGLE_BULL:
 			return "Single-Bull";
 		case BULLS_EYE:
 			return "Bulls-Eye";
-		case SIMPLE:
-			return "" + currentSegmentValue;
 		}
-		return "";
+		return "???";
 	}
 }
