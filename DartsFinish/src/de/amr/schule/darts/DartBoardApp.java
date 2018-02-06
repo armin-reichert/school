@@ -7,17 +7,17 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import de.amr.schule.darts.counter.ui.DartBoard;
+import de.amr.schule.darts.counter.ui.DartBoardUI;
 
 public class DartBoardApp {
 
-	private DartBoard board;
+	private DartBoardUI board;
 
 	public DartBoardApp(int boardSize) {
 		try {
 			BufferedImage boardImage = ImageIO
-					.read(DartBoard.class.getResourceAsStream("/dartboard.png"));
-			board = new DartBoard(boardImage, boardSize);
+					.read(DartBoardUI.class.getResourceAsStream("/dartboard.png"));
+			board = new DartBoardUI(boardImage, boardSize);
 		} catch (Exception x) {
 			throw new RuntimeException("Board image not found");
 		}
@@ -32,7 +32,7 @@ public class DartBoardApp {
 			frame.getContentPane().add(app.board);
 			frame.pack();
 			frame.setVisible(true);
-			app.board.addPropertyChangeListener(evt -> {
+			app.board.addPointsListener(evt -> {
 				Integer points = (Integer) evt.getNewValue();
 				JOptionPane.showMessageDialog(frame, points + " points");
 			});

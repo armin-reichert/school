@@ -26,37 +26,51 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.stream.Stream;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import de.amr.schule.darts.counter.model.BoardRing;
 
-public class DartBoard extends JPanel {
+public class DartBoardUI extends JPanel {
 
 	/* List starts with segment "6" (0 degree position) in counter-clockwise direction. */
 	private static int[] SEGMENT_LIST = { 6, 13, 4, 18, 1, 20, 5, 12, 9, 14, 11, 8, 16, 7, 19, 3, 17,
 			2, 15, 10 };
 
-	private final BufferedImage boardImage;
-	private final Point center;
-	private final double scaling;
-	private final int boardSize;
+	private BufferedImage boardImage;
+	private Point center;
+	private double scaling;
+	private int boardSize;
 
 	private BoardRing currentRing;
 	private int currentSegment;
 
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
+	public void addPointsListener(PropertyChangeListener listener) {
 		pcs.addPropertyChangeListener(listener);
 	}
 
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
+	public void removePointsListener(PropertyChangeListener listener) {
 		pcs.removePropertyChangeListener(listener);
 	}
+	
+	public DartBoardUI(int boardSize) {
+		try {
+			BufferedImage boardImage = ImageIO.read(getClass().getResourceAsStream("/dartboard.png"));
+			init(boardImage, boardSize);
+		}
+		catch (Exception x) {
+			throw new RuntimeException("Could not load board image");
+		}
+	}
 
-	public DartBoard(BufferedImage boardImage, int boardSize) {
+	
+	public DartBoardUI(BufferedImage boardImage, int boardSize) {
+		init(boardImage, boardSize);
+	}
+	
+	private void init(BufferedImage boardImage, int boardSize) {
 		this.boardImage = boardImage;
 		this.boardSize = boardSize;
 		scaling = (double) boardSize / BoardRing.BOARD_REFERENCE_SIZE;

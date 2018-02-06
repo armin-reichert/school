@@ -1,5 +1,6 @@
 package de.amr.schule.darts.counter.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -46,6 +47,7 @@ public class DartsCounterUI extends JFrame {
 	private JRadioButtonMenuItem miPlayers2;
 	private JRadioButtonMenuItem miPlayers3;
 	private JRadioButtonMenuItem miPlayers4;
+	private JFrame boardEditorWindow;
 
 	private void setInputMode(int mode) {
 		switch (mode) {
@@ -181,6 +183,21 @@ public class DartsCounterUI extends JFrame {
 		playerCounter1.updateView();
 		playerCounter2.updateView();
 		playerCounter3.updateView();
+	}
+	
+	private void showBoardEditorWindow() {
+		if (boardEditorWindow == null) {
+			DartBoardUI board = new DartBoardUI((int)(0.9*getHeight()));
+			board.addPointsListener(evt -> {
+				saveScore((int)evt.getNewValue());
+			});
+			boardEditorWindow = new JFrame("Board Editor");
+			boardEditorWindow.setResizable(false);
+			boardEditorWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		  boardEditorWindow.getContentPane().add(board, BorderLayout.CENTER);
+			boardEditorWindow.pack();
+		}
+		boardEditorWindow.setVisible(true);
 	}
 
 	public DartsCounterUI() {
@@ -468,7 +485,7 @@ public class DartsCounterUI extends JFrame {
 		keyboard.add(button25, "cell 10 1,grow");
 
 		JPanel panelInputMode = new JPanel();
-		getContentPane().add(panelInputMode, "cell 0 4 2 1,alignx left,growy");
+		getContentPane().add(panelInputMode, "flowx,cell 0 4,alignx left");
 
 		rbSingle = new JRadioButton("1x");
 		rbSingle.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -605,6 +622,23 @@ public class DartsCounterUI extends JFrame {
 		miRbPoints101.setSelected(false);
 		miRbPoints101.setFont(new Font("Arial Black", Font.PLAIN, 20));
 		menuInitialPoints.add(miRbPoints101);
+		
+		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
+		menuBar.add(horizontalStrut_2);
+		
+		JMenu mnAnsicht = new JMenu("Ansicht");
+		mnAnsicht.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		menuBar.add(mnAnsicht);
+		
+		JMenuItem miBoardAnzeigen = new JMenuItem("Board anzeigen");
+		miBoardAnzeigen.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showBoardEditorWindow();
+			}
+		});
+		miBoardAnzeigen.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		mnAnsicht.add(miBoardAnzeigen);
 
 		setStartPoints(501);
 		setNumPlayers(4);
