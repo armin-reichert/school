@@ -107,7 +107,7 @@ public class DartsCounterUI extends JFrame {
 		updateView();
 	}
 
-	private void saveScore(int points) {
+	private void updateScore(int points) {
 		final Player player = game.getCurrentPlayer();
 		dartsThrownInTake += 1;
 		if (points > player.getPointsRemaining()) {
@@ -148,8 +148,9 @@ public class DartsCounterUI extends JFrame {
 	private void showBoardEditorWindow() {
 		if (boardEditorWindow == null) {
 			DartBoardUI board = new DartBoardUI((int) (0.9 * getHeight()));
-			board.addPointsListener(evt -> {
-				saveScore((int) evt.getNewValue());
+			board.addPropertyChangeListener(DartBoardUI.PROPERTY_POINTS, evt -> {
+				int points = (int) evt.getNewValue();
+				updateScore(points);
 			});
 			boardEditorWindow = new JFrame("Board Editor");
 			boardEditorWindow.setResizable(false);
@@ -324,7 +325,7 @@ public class DartsCounterUI extends JFrame {
 		setNumPlayers(4);
 		pointsKeyboard.addPropertyChangeListener(PointsKeyboard.PROPERTY_POINTS, evt -> {
 			int points = (int) evt.getNewValue();
-			saveScore(points);
+			updateScore(points);
 		});
 	}
 }

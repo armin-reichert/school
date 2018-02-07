@@ -32,7 +32,7 @@ public class DartBoardApp {
 			frame.getContentPane().add(app.board);
 			frame.pack();
 			frame.setVisible(true);
-			app.board.addPointsListener(evt -> {
+			app.board.addPropertyChangeListener(DartBoardUI.PROPERTY_POINTS, evt -> {
 				Integer points = (Integer) evt.getNewValue();
 				JOptionPane.showMessageDialog(frame, points + " points");
 			});

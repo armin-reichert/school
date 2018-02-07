@@ -22,8 +22,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
@@ -32,6 +30,8 @@ import javax.swing.JPanel;
 import de.amr.schule.darts.counter.model.BoardRing;
 
 public class DartBoardUI extends JPanel {
+
+	public static final String PROPERTY_POINTS = "points";
 
 	/* List starts with segment "6" (0 degree position) in counter-clockwise direction. */
 	private static int[] SEGMENT_LIST = { 6, 13, 4, 18, 1, 20, 5, 12, 9, 14, 11, 8, 16, 7, 19, 3, 17,
@@ -45,31 +45,19 @@ public class DartBoardUI extends JPanel {
 	private BoardRing currentRing;
 	private int currentSegment;
 
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
-	public void addPointsListener(PropertyChangeListener listener) {
-		pcs.addPropertyChangeListener(listener);
-	}
-
-	public void removePointsListener(PropertyChangeListener listener) {
-		pcs.removePropertyChangeListener(listener);
-	}
-	
 	public DartBoardUI(int boardSize) {
 		try {
 			BufferedImage boardImage = ImageIO.read(getClass().getResourceAsStream("/dartboard.png"));
 			init(boardImage, boardSize);
-		}
-		catch (Exception x) {
+		} catch (Exception x) {
 			throw new RuntimeException("Could not load board image");
 		}
 	}
 
-	
 	public DartBoardUI(BufferedImage boardImage, int boardSize) {
 		init(boardImage, boardSize);
 	}
-	
+
 	private void init(BufferedImage boardImage, int boardSize) {
 		this.boardImage = boardImage;
 		this.boardSize = boardSize;
@@ -107,7 +95,7 @@ public class DartBoardUI extends JPanel {
 	protected void onMouseClicked(int viewX, int viewY) {
 		targetCoordinateChanged(viewX, viewY);
 		repaint();
-		pcs.firePropertyChange("points", -1, computePoints());
+		firePropertyChange(PROPERTY_POINTS, -1, computePoints());
 	}
 
 	private int computePoints() {
