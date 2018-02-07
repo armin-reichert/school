@@ -53,4 +53,22 @@ public class DartBoard {
 		return Stream.of(BULLS_EYE, SINGLE_BULL, TRIPLE, DOUBLE, OUT)
 				.filter(ring -> ring.contains(radius, scaling)).findFirst().orElse(SIMPLE);
 	}
+
+	public static int getPoints(Ring ring, int segment) {
+		switch (ring) {
+		case OUT:
+			return 0;
+		case SIMPLE:
+			return segment;
+		case DOUBLE:
+			return 2 * segment;
+		case TRIPLE:
+			return 3 * segment;
+		case SINGLE_BULL:
+			return 25;
+		case BULLS_EYE:
+			return 50;
+		}
+		throw new IllegalStateException();
+	}
 }

@@ -88,25 +88,8 @@ public class DartBoardUI extends JPanel {
 	protected void onMouseClicked(int viewX, int viewY) {
 		targetCoordinateChanged(viewX, viewY);
 		repaint();
-		firePropertyChange(PROPERTY_POINTS, -1, computePoints());
-	}
-
-	private int computePoints() {
-		switch (currentRing) {
-		case OUT:
-			return 0;
-		case SIMPLE:
-			return currentSegment;
-		case DOUBLE:
-			return 2 * currentSegment;
-		case TRIPLE:
-			return 3 * currentSegment;
-		case SINGLE_BULL:
-			return 25;
-		case BULLS_EYE:
-			return 50;
-		}
-		throw new IllegalStateException();
+		int points = DartBoard.getPoints(currentRing, currentSegment);
+		firePropertyChange(PROPERTY_POINTS, -1, points);
 	}
 
 	private void targetCoordinateChanged(int viewX, int viewY) {
