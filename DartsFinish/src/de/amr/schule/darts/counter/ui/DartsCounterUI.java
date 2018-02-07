@@ -201,7 +201,7 @@ public class DartsCounterUI extends JFrame {
 	}
 
 	public DartsCounterUI() {
-		getContentPane().setPreferredSize(new Dimension(900, 700));
+		getContentPane().setPreferredSize(new Dimension(600, 400));
 
 		setTitle("Darts");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -236,7 +236,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(1);
 			}
 		});
-		button_1.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_1, "cell 0 0,grow");
 
 		JButton button_2 = new JButton("2");
@@ -247,7 +247,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(2);
 			}
 		});
-		button_2.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_2.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_2, "cell 1 0,grow");
 
 		JButton button_3 = new JButton("3");
@@ -258,7 +258,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(3);
 			}
 		});
-		button_3.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_3.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_3, "cell 2 0,grow");
 
 		JButton button_4 = new JButton("4");
@@ -269,7 +269,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(4);
 			}
 		});
-		button_4.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_4.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_4, "cell 3 0,grow");
 
 		JButton button_5 = new JButton("5");
@@ -280,7 +280,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(5);
 			}
 		});
-		button_5.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_5.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_5, "cell 4 0,grow");
 
 		JButton button_6 = new JButton("6");
@@ -291,7 +291,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(6);
 			}
 		});
-		button_6.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_6.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_6, "cell 5 0,grow");
 
 		JButton button_7 = new JButton("7");
@@ -302,7 +302,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(7);
 			}
 		});
-		button_7.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_7.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_7, "cell 6 0,grow");
 
 		JButton button_8 = new JButton("8");
@@ -313,7 +313,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(8);
 			}
 		});
-		button_8.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_8.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_8, "cell 7 0,grow");
 
 		JButton button_9 = new JButton("9");
@@ -324,7 +324,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(9);
 			}
 		});
-		button_9.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_9.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_9, "cell 8 0,grow");
 
 		JButton button_10 = new JButton("10");
@@ -335,7 +335,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(10);
 			}
 		});
-		button_10.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_10.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_10, "cell 9 0,grow");
 
 		JButton button_11 = new JButton("11");
@@ -355,7 +355,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(0);
 			}
 		});
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 24));
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(btnNewButton, "cell 10 0,growx");
 
 		Component horizontalStrut = Box.createHorizontalStrut(25);
@@ -369,9 +369,9 @@ public class DartsCounterUI extends JFrame {
 				noScore();
 			}
 		});
-		btnNoScore.setFont(new Font("Tahoma", Font.BOLD, 24));
+		btnNoScore.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(btnNoScore, "cell 12 0 1 2,grow");
-		button_11.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_11.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_11, "cell 0 1,grow");
 
 		JButton button_12 = new JButton("12");
@@ -382,7 +382,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(12);
 			}
 		});
-		button_12.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_12.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_12, "cell 1 1,grow");
 
 		JButton button_13 = new JButton("13");
@@ -393,7 +393,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(13);
 			}
 		});
-		button_13.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_13.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_13, "cell 2 1,grow");
 
 		JButton button_14 = new JButton("14");
@@ -404,7 +404,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(14);
 			}
 		});
-		button_14.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_14.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_14, "cell 3 1,grow");
 
 		JButton button_15 = new JButton("15");
@@ -415,7 +415,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(15);
 			}
 		});
-		button_15.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_15.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_15, "cell 4 1,grow");
 
 		JButton button_16 = new JButton("16");
@@ -426,7 +426,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(16);
 			}
 		});
-		button_16.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_16.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_16, "cell 5 1,grow");
 
 		JButton button_17 = new JButton("17");
@@ -437,7 +437,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(17);
 			}
 		});
-		button_17.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_17.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_17, "cell 6 1,grow");
 
 		JButton button_18 = new JButton("18");
@@ -448,7 +448,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(18);
 			}
 		});
-		button_18.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_18.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_18, "cell 7 1,grow");
 
 		JButton button_19 = new JButton("19");
@@ -459,7 +459,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(19);
 			}
 		});
-		button_19.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_19.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_19, "cell 8 1,grow");
 
 		JButton button_20 = new JButton("20");
@@ -470,7 +470,7 @@ public class DartsCounterUI extends JFrame {
 				saveScore(20);
 			}
 		});
-		button_20.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button_20.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button_20, "cell 9 1,grow");
 
 		button25 = new JButton("25");
@@ -481,14 +481,14 @@ public class DartsCounterUI extends JFrame {
 				saveScore(25);
 			}
 		});
-		button25.setFont(new Font("Tahoma", Font.BOLD, 24));
+		button25.setFont(new Font("Tahoma", Font.BOLD, 18));
 		keyboard.add(button25, "cell 10 1,grow");
 
 		JPanel panelInputMode = new JPanel();
 		getContentPane().add(panelInputMode, "flowx,cell 0 4,alignx left");
 
 		rbSingle = new JRadioButton("1x");
-		rbSingle.setFont(new Font("Tahoma", Font.BOLD, 24));
+		rbSingle.setFont(new Font("Tahoma", Font.BOLD, 18));
 		rbSingle.addActionListener(new ActionListener() {
 
 			@Override
@@ -501,7 +501,7 @@ public class DartsCounterUI extends JFrame {
 		panelInputMode.add(rbSingle);
 
 		rbDouble = new JRadioButton("2x");
-		rbDouble.setFont(new Font("Tahoma", Font.BOLD, 24));
+		rbDouble.setFont(new Font("Tahoma", Font.BOLD, 18));
 		rbDouble.addActionListener(new ActionListener() {
 
 			@Override
@@ -513,7 +513,7 @@ public class DartsCounterUI extends JFrame {
 		panelInputMode.add(rbDouble);
 
 		rbTriple = new JRadioButton("3x");
-		rbTriple.setFont(new Font("Tahoma", Font.BOLD, 24));
+		rbTriple.setFont(new Font("Tahoma", Font.BOLD, 18));
 		rbTriple.addActionListener(new ActionListener() {
 
 			@Override
@@ -528,7 +528,7 @@ public class DartsCounterUI extends JFrame {
 		setJMenuBar(menuBar);
 
 		JMenu menuGame = new JMenu("Spiel");
-		menuGame.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		menuGame.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuBar.add(menuGame);
 
 		JMenuItem miNewGame = new JMenuItem("Neu");
@@ -539,7 +539,7 @@ public class DartsCounterUI extends JFrame {
 				newGame();
 			}
 		});
-		miNewGame.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		miNewGame.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuGame.add(miNewGame);
 
 		JSeparator separator = new JSeparator();
@@ -553,38 +553,38 @@ public class DartsCounterUI extends JFrame {
 				System.exit(0);
 			}
 		});
-		miQuit.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		miQuit.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuGame.add(miQuit);
 
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		menuBar.add(horizontalStrut_1);
 
 		JMenu menuSettings = new JMenu("Einstellungen");
-		menuSettings.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		menuSettings.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuBar.add(menuSettings);
 
 		JMenu menuPlayers = new JMenu("Spieler");
 		menuSettings.add(menuPlayers);
-		menuPlayers.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		menuPlayers.setFont(new Font("Arial Black", Font.PLAIN, 16));
 
 		miPlayers2 = new JRadioButtonMenuItem("2 Spieler");
 		numPlayersButtonGroup.add(miPlayers2);
-		miPlayers2.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		miPlayers2.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuPlayers.add(miPlayers2);
 
 		miPlayers3 = new JRadioButtonMenuItem("3 Spieler");
 		numPlayersButtonGroup.add(miPlayers3);
-		miPlayers3.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		miPlayers3.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuPlayers.add(miPlayers3);
 
 		miPlayers4 = new JRadioButtonMenuItem("4 Spieler");
 		numPlayersButtonGroup.add(miPlayers4);
-		miPlayers4.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		miPlayers4.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuPlayers.add(miPlayers4);
 
 		JMenu menuInitialPoints = new JMenu("Anfangspunkte");
 		menuSettings.add(menuInitialPoints);
-		menuInitialPoints.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		menuInitialPoints.setFont(new Font("Arial Black", Font.PLAIN, 16));
 
 		miRbPoints501 = new JRadioButtonMenuItem("501");
 		miRbPoints501.addActionListener(new ActionListener() {
@@ -595,7 +595,7 @@ public class DartsCounterUI extends JFrame {
 			}
 		});
 		startPointsButtonGroup.add(miRbPoints501);
-		miRbPoints501.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		miRbPoints501.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuInitialPoints.add(miRbPoints501);
 
 		miRbPoints301 = new JRadioButtonMenuItem("301");
@@ -607,7 +607,7 @@ public class DartsCounterUI extends JFrame {
 			}
 		});
 		startPointsButtonGroup.add(miRbPoints301);
-		miRbPoints301.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		miRbPoints301.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuInitialPoints.add(miRbPoints301);
 
 		miRbPoints101 = new JRadioButtonMenuItem("101");
@@ -620,14 +620,14 @@ public class DartsCounterUI extends JFrame {
 		});
 		startPointsButtonGroup.add(miRbPoints101);
 		miRbPoints101.setSelected(false);
-		miRbPoints101.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		miRbPoints101.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuInitialPoints.add(miRbPoints101);
 		
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
 		menuBar.add(horizontalStrut_2);
 		
 		JMenu mnAnsicht = new JMenu("Ansicht");
-		mnAnsicht.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		mnAnsicht.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuBar.add(mnAnsicht);
 		
 		JMenuItem miBoardAnzeigen = new JMenuItem("Board anzeigen");
@@ -637,7 +637,7 @@ public class DartsCounterUI extends JFrame {
 				showBoardEditorWindow();
 			}
 		});
-		miBoardAnzeigen.setFont(new Font("Arial Black", Font.PLAIN, 20));
+		miBoardAnzeigen.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		mnAnsicht.add(miBoardAnzeigen);
 
 		setStartPoints(501);

@@ -73,7 +73,7 @@ public class PlayerCounterUI extends JPanel {
 			}
 		});
 		txtName.setHorizontalAlignment(SwingConstants.CENTER);
-		txtName.setFont(new Font("Tahoma", Font.BOLD, 32));
+		txtName.setFont(new Font("Tahoma", Font.BOLD, 24));
 		txtName.setText("Player Name");
 		add(txtName, "cell 0 0,growx");
 		txtName.setColumns(10);
@@ -81,7 +81,7 @@ public class PlayerCounterUI extends JPanel {
 		lblPointsRemaining = new JLabel("501");
 		lblPointsRemaining.setForeground(Color.RED);
 		lblPointsRemaining.setToolTipText("Points remaining");
-		lblPointsRemaining.setFont(new Font("Tahoma", Font.BOLD, 72));
+		lblPointsRemaining.setFont(new Font("Tahoma", Font.BOLD, 36));
 		add(lblPointsRemaining, "cell 0 1,alignx center");
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -96,13 +96,13 @@ public class PlayerCounterUI extends JPanel {
 		lblPointsInTake = new JLabel("42");
 		lblPointsInTake.setToolTipText("Points in current take");
 		lblPointsInTake.setForeground(Color.RED);
-		lblPointsInTake.setFont(new Font("Tahoma", Font.BOLD, 72));
+		lblPointsInTake.setFont(new Font("Tahoma", Font.BOLD, 36));
 		add(lblPointsInTake, "cell 0 3,alignx center");
 
 		lblPointsAverage = new JLabel("59.25");
 		lblPointsAverage.setToolTipText("Points Average");
 		lblPointsAverage.setForeground(Color.GRAY);
-		lblPointsAverage.setFont(new Font("Tahoma", Font.BOLD, 36));
+		lblPointsAverage.setFont(new Font("Tahoma", Font.BOLD, 24));
 		add(lblPointsAverage, "cell 0 4,alignx center");
 	}
 
