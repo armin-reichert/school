@@ -3,7 +3,6 @@ package de.amr.schule.darts.counter.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -17,7 +16,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 
@@ -29,16 +27,10 @@ public class DartsCounterUI extends JFrame {
 
 	private DartsGame game;
 	private int dartsThrownInTake;
-
-	private JButton button25;
 	private PlayerCounterUI playerCounter0;
 	private PlayerCounterUI playerCounter1;
 	private PlayerCounterUI playerCounter2;
 	private PlayerCounterUI playerCounter3;
-	private final ButtonGroup inputModeButtonGroup = new ButtonGroup();
-	private JRadioButton rbSingle;
-	private JRadioButton rbDouble;
-	private JRadioButton rbTriple;
 	private final ButtonGroup startPointsButtonGroup = new ButtonGroup();
 	private JRadioButtonMenuItem miRbPoints501;
 	private JRadioButtonMenuItem miRbPoints301;
@@ -48,36 +40,7 @@ public class DartsCounterUI extends JFrame {
 	private JRadioButtonMenuItem miPlayers3;
 	private JRadioButtonMenuItem miPlayers4;
 	private JFrame boardEditorWindow;
-
-	private void setInputMode(int mode) {
-		switch (mode) {
-		case 1:
-			rbSingle.setSelected(true);
-			button25.setEnabled(true);
-			break;
-		case 2:
-			rbDouble.setSelected(true);
-			button25.setEnabled(true);
-			break;
-		case 3:
-			rbTriple.setSelected(true);
-			button25.setEnabled(false);
-			break;
-		default:
-			rbSingle.setSelected(true);
-			button25.setEnabled(true);
-		}
-	}
-
-	private int getInputMode() {
-		if (rbSingle.isSelected())
-			return 1;
-		if (rbDouble.isSelected())
-			return 2;
-		if (rbTriple.isSelected())
-			return 3;
-		return 1;
-	}
+	private PointsKeyboard pointsKeyboard;
 
 	public void setStartPoints(int points) {
 		switch (points) {
@@ -141,12 +104,10 @@ public class DartsCounterUI extends JFrame {
 			playerCounters[i].setVisible(i < numPlayers);
 		}
 		dartsThrownInTake = 0;
-		setInputMode(1);
 		updateView();
 	}
 
-	private void saveScore(int number) {
-		final int points = getInputMode() * number;
+	private void saveScore(int points) {
 		final Player player = game.getCurrentPlayer();
 		dartsThrownInTake += 1;
 		if (points > player.getPointsRemaining()) {
@@ -162,7 +123,6 @@ public class DartsCounterUI extends JFrame {
 			game.getCurrentPlayer().setPointsInTake(0);
 			dartsThrownInTake = 0;
 		}
-		setInputMode(1);
 		updateView();
 	}
 
@@ -174,34 +134,34 @@ public class DartsCounterUI extends JFrame {
 		game.nextPlayer();
 		game.getCurrentPlayer().setPointsInTake(0);
 		dartsThrownInTake = 0;
-		setInputMode(1);
 		updateView();
 	}
 
 	public void updateView() {
+		pointsKeyboard.reset();
 		playerCounter0.updateView();
 		playerCounter1.updateView();
 		playerCounter2.updateView();
 		playerCounter3.updateView();
 	}
-	
+
 	private void showBoardEditorWindow() {
 		if (boardEditorWindow == null) {
-			DartBoardUI board = new DartBoardUI((int)(0.9*getHeight()));
+			DartBoardUI board = new DartBoardUI((int) (0.9 * getHeight()));
 			board.addPointsListener(evt -> {
-				saveScore((int)evt.getNewValue());
+				saveScore((int) evt.getNewValue());
 			});
 			boardEditorWindow = new JFrame("Board Editor");
 			boardEditorWindow.setResizable(false);
 			boardEditorWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		  boardEditorWindow.getContentPane().add(board, BorderLayout.CENTER);
+			boardEditorWindow.getContentPane().add(board, BorderLayout.CENTER);
 			boardEditorWindow.pack();
 		}
 		boardEditorWindow.setVisible(true);
 	}
 
 	public DartsCounterUI() {
-		getContentPane().setPreferredSize(new Dimension(600, 400));
+		getContentPane().setPreferredSize(new Dimension(800, 600));
 
 		setTitle("Darts");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -224,142 +184,12 @@ public class DartsCounterUI extends JFrame {
 		playerCounter3 = new PlayerCounterUI();
 		playerCounterGrid.add(playerCounter3);
 
-		JPanel keyboard = new JPanel();
-		getContentPane().add(keyboard, "cell 0 3 2 1,growy");
-		keyboard.setLayout(new MigLayout("", "[][][][][][][][][][][][][][][][][]", "[][][][]"));
+		JPanel panelKeyboard = new JPanel();
+		getContentPane().add(panelKeyboard, "flowx,cell 0 3 2 1,growy");
+		panelKeyboard.setLayout(new MigLayout("", "[grow][]", "[grow]"));
 
-		JButton button_1 = new JButton("1");
-		button_1.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(1);
-			}
-		});
-		button_1.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_1, "cell 0 0,grow");
-
-		JButton button_2 = new JButton("2");
-		button_2.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(2);
-			}
-		});
-		button_2.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_2, "cell 1 0,grow");
-
-		JButton button_3 = new JButton("3");
-		button_3.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(3);
-			}
-		});
-		button_3.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_3, "cell 2 0,grow");
-
-		JButton button_4 = new JButton("4");
-		button_4.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(4);
-			}
-		});
-		button_4.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_4, "cell 3 0,grow");
-
-		JButton button_5 = new JButton("5");
-		button_5.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(5);
-			}
-		});
-		button_5.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_5, "cell 4 0,grow");
-
-		JButton button_6 = new JButton("6");
-		button_6.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(6);
-			}
-		});
-		button_6.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_6, "cell 5 0,grow");
-
-		JButton button_7 = new JButton("7");
-		button_7.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(7);
-			}
-		});
-		button_7.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_7, "cell 6 0,grow");
-
-		JButton button_8 = new JButton("8");
-		button_8.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(8);
-			}
-		});
-		button_8.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_8, "cell 7 0,grow");
-
-		JButton button_9 = new JButton("9");
-		button_9.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(9);
-			}
-		});
-		button_9.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_9, "cell 8 0,grow");
-
-		JButton button_10 = new JButton("10");
-		button_10.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(10);
-			}
-		});
-		button_10.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_10, "cell 9 0,grow");
-
-		JButton button_11 = new JButton("11");
-		button_11.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(11);
-			}
-		});
-
-		JButton btnNewButton = new JButton("Aus");
-		btnNewButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(0);
-			}
-		});
-		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(btnNewButton, "cell 10 0,growx");
-
-		Component horizontalStrut = Box.createHorizontalStrut(25);
-		keyboard.add(horizontalStrut, "cell 11 0");
+		pointsKeyboard = new PointsKeyboard();
+		panelKeyboard.add(pointsKeyboard, "cell 0 0,grow");
 
 		JButton btnNoScore = new JButton("No Score");
 		btnNoScore.addActionListener(new ActionListener() {
@@ -370,159 +200,7 @@ public class DartsCounterUI extends JFrame {
 			}
 		});
 		btnNoScore.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(btnNoScore, "cell 12 0 1 2,grow");
-		button_11.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_11, "cell 0 1,grow");
-
-		JButton button_12 = new JButton("12");
-		button_12.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(12);
-			}
-		});
-		button_12.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_12, "cell 1 1,grow");
-
-		JButton button_13 = new JButton("13");
-		button_13.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(13);
-			}
-		});
-		button_13.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_13, "cell 2 1,grow");
-
-		JButton button_14 = new JButton("14");
-		button_14.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(14);
-			}
-		});
-		button_14.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_14, "cell 3 1,grow");
-
-		JButton button_15 = new JButton("15");
-		button_15.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(15);
-			}
-		});
-		button_15.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_15, "cell 4 1,grow");
-
-		JButton button_16 = new JButton("16");
-		button_16.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(16);
-			}
-		});
-		button_16.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_16, "cell 5 1,grow");
-
-		JButton button_17 = new JButton("17");
-		button_17.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(17);
-			}
-		});
-		button_17.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_17, "cell 6 1,grow");
-
-		JButton button_18 = new JButton("18");
-		button_18.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(18);
-			}
-		});
-		button_18.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_18, "cell 7 1,grow");
-
-		JButton button_19 = new JButton("19");
-		button_19.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(19);
-			}
-		});
-		button_19.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_19, "cell 8 1,grow");
-
-		JButton button_20 = new JButton("20");
-		button_20.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(20);
-			}
-		});
-		button_20.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button_20, "cell 9 1,grow");
-
-		button25 = new JButton("25");
-		button25.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveScore(25);
-			}
-		});
-		button25.setFont(new Font("Tahoma", Font.BOLD, 18));
-		keyboard.add(button25, "cell 10 1,grow");
-
-		JPanel panelInputMode = new JPanel();
-		getContentPane().add(panelInputMode, "flowx,cell 0 4,alignx left");
-
-		rbSingle = new JRadioButton("1x");
-		rbSingle.setFont(new Font("Tahoma", Font.BOLD, 18));
-		rbSingle.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setInputMode(1);
-			}
-		});
-		panelInputMode.setLayout(new FlowLayout(FlowLayout.CENTER, 25, 5));
-		inputModeButtonGroup.add(rbSingle);
-		panelInputMode.add(rbSingle);
-
-		rbDouble = new JRadioButton("2x");
-		rbDouble.setFont(new Font("Tahoma", Font.BOLD, 18));
-		rbDouble.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setInputMode(2);
-			}
-		});
-		inputModeButtonGroup.add(rbDouble);
-		panelInputMode.add(rbDouble);
-
-		rbTriple = new JRadioButton("3x");
-		rbTriple.setFont(new Font("Tahoma", Font.BOLD, 18));
-		rbTriple.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setInputMode(3);
-			}
-		});
-		inputModeButtonGroup.add(rbTriple);
-		panelInputMode.add(rbTriple);
+		panelKeyboard.add(btnNoScore, "cell 1 0,grow");
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -622,16 +300,17 @@ public class DartsCounterUI extends JFrame {
 		miRbPoints101.setSelected(false);
 		miRbPoints101.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuInitialPoints.add(miRbPoints101);
-		
+
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
 		menuBar.add(horizontalStrut_2);
-		
+
 		JMenu mnAnsicht = new JMenu("Ansicht");
 		mnAnsicht.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuBar.add(mnAnsicht);
-		
+
 		JMenuItem miBoardAnzeigen = new JMenuItem("Board anzeigen");
 		miBoardAnzeigen.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				showBoardEditorWindow();
@@ -640,7 +319,12 @@ public class DartsCounterUI extends JFrame {
 		miBoardAnzeigen.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		mnAnsicht.add(miBoardAnzeigen);
 
+		// Initialize
 		setStartPoints(501);
 		setNumPlayers(4);
+		pointsKeyboard.addPropertyChangeListener(PointsKeyboard.PROPERTY_POINTS, evt -> {
+			int points = (int) evt.getNewValue();
+			saveScore(points);
+		});
 	}
 }
