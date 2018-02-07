@@ -1,11 +1,9 @@
 package de.amr.schule.darts.counter.ui;
 
-import static de.amr.schule.darts.counter.model.BoardRing.BULLS_EYE;
-import static de.amr.schule.darts.counter.model.BoardRing.DOUBLE;
-import static de.amr.schule.darts.counter.model.BoardRing.OUT;
-import static de.amr.schule.darts.counter.model.BoardRing.SIMPLE;
-import static de.amr.schule.darts.counter.model.BoardRing.SINGLE_BULL;
-import static de.amr.schule.darts.counter.model.BoardRing.TRIPLE;
+import static de.amr.schule.darts.counter.model.DartBoard.Ring.BULLS_EYE;
+import static de.amr.schule.darts.counter.model.DartBoard.Ring.DOUBLE;
+import static de.amr.schule.darts.counter.model.DartBoard.Ring.SINGLE_BULL;
+import static de.amr.schule.darts.counter.model.DartBoard.Ring.TRIPLE;
 import static java.lang.Math.atan2;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.toDegrees;
@@ -22,27 +20,22 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.util.stream.Stream;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import de.amr.schule.darts.counter.model.BoardRing;
+import de.amr.schule.darts.counter.model.DartBoard;
 
 public class DartBoardUI extends JPanel {
 
 	public static final String PROPERTY_POINTS = "points";
-
-	/* List starts with segment "6" (0 degree position) in counter-clockwise direction. */
-	private static int[] SEGMENT_LIST = { 6, 13, 4, 18, 1, 20, 5, 12, 9, 14, 11, 8, 16, 7, 19, 3, 17,
-			2, 15, 10 };
 
 	private BufferedImage boardImage;
 	private Point center;
 	private double scaling;
 	private int boardSize;
 
-	private BoardRing currentRing;
+	private DartBoard.Ring currentRing;
 	private int currentSegment;
 
 	public DartBoardUI(int boardSize) {
@@ -61,7 +54,7 @@ public class DartBoardUI extends JPanel {
 	private void init(BufferedImage boardImage, int boardSize) {
 		this.boardImage = boardImage;
 		this.boardSize = boardSize;
-		scaling = (double) boardSize / BoardRing.BOARD_REFERENCE_SIZE;
+		scaling = (double) boardSize / DartBoard.BOARD_REFERENCE_SIZE;
 		// correction for image inaccuracy
 		int offsetX = (int) (scaling * -2), offsetY = (int) (scaling * 4);
 		center = new Point(boardSize / 2 + offsetX, boardSize / 2 + offsetY);
@@ -123,22 +116,9 @@ public class DartBoardUI extends JPanel {
 		// Compute polar coordinate
 		int radius = (int) sqrt(x * x + y * y);
 		int angle = ((int) toDegrees(atan2(y, x)) + 360) % 360;
-		// Update segment and ring
-		currentSegment = computeSegmentValue(angle);
-		currentRing = computeRing(radius);
-	}
-
-	private int computeSegmentValue(int angle) {
-		if (angle < 0 || angle > 360) {
-			throw new IllegalArgumentException();
-		}
-		angle = (angle + 9) % 360;
-		return SEGMENT_LIST[angle / 18];
-	}
-
-	private BoardRing computeRing(int radius) {
-		return Stream.of(BULLS_EYE, SINGLE_BULL, TRIPLE, DOUBLE, OUT)
-				.filter(ring -> ring.contains(radius, scaling)).findFirst().orElse(SIMPLE);
+		// Compute segment and ring
+		currentSegment = DartBoard.getSegment(angle);
+		currentRing = DartBoard.getRing(radius, scaling);
 	}
 
 	@Override
@@ -166,7 +146,7 @@ public class DartBoardUI extends JPanel {
 		drawCurrentValue(g);
 	}
 
-	private void drawRing(Graphics2D g, BoardRing ring) {
+	private void drawRing(Graphics2D g, DartBoard.Ring ring) {
 		int radius = (int) (scaling * ring.inner);
 		if (radius > 0) {
 			g.drawOval(center.x - radius, center.y - radius, 2 * radius, 2 * radius);
