@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 public class DartBoard {
 
-	public static final int BOARD_REFERENCE_SIZE = 900;
+	public static final int BOARD_REFERENCE_DIAMETER = 900;
 
 	/* List starts with segment "6" (0 degree position) in counter-clockwise direction. */
 	private static int[] SEGMENTS = { 6, 13, 4, 18, 1, 20, 5, 12, 9, 14, 11, 8, 16, 7, 19, 3, 17, 2,
@@ -32,13 +32,13 @@ public class DartBoard {
 			return (int) (scaling * inner) <= radius && radius <= (int) (scaling * outer);
 		}
 
-		private Ring(int inner, int outer) {
+		private Ring(float inner, float outer) {
 			this.inner = inner;
 			this.outer = outer;
 		}
 
-		public final int inner;
-		public final int outer;
+		public final float inner;
+		public final float outer;
 	}
 
 	public static int getSegment(int angle) {
@@ -55,6 +55,9 @@ public class DartBoard {
 	}
 
 	public static int getPoints(Ring ring, int segment) {
+		if (ring == null) {
+			throw new IllegalArgumentException("Ring is NULL");
+		}
 		switch (ring) {
 		case OUT:
 			return 0;
@@ -68,7 +71,8 @@ public class DartBoard {
 			return 25;
 		case BULLS_EYE:
 			return 50;
+		default:
+			throw new IllegalArgumentException("Illegal value for ring: " + ring);
 		}
-		throw new IllegalStateException();
 	}
 }

@@ -30,36 +30,36 @@ public class DartBoardUI extends JPanel {
 
 	public static final String PROPERTY_POINTS = "points";
 
-	private BufferedImage boardImage;
+	private BufferedImage image;
 	private Point center;
 	private double scaling;
-	private int boardSize;
+	private int diameter;
 
 	private DartBoard.Ring currentRing;
 	private int currentSegment;
 
-	public DartBoardUI(int boardSize) {
+	public DartBoardUI(int diameter) {
 		try {
-			BufferedImage boardImage = ImageIO.read(getClass().getResourceAsStream("/dartboard.png"));
-			init(boardImage, boardSize);
+			BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/dartboard.png"));
+			init(image, diameter);
 		} catch (Exception x) {
 			throw new RuntimeException("Could not load board image");
 		}
 	}
 
-	public DartBoardUI(BufferedImage boardImage, int boardSize) {
-		init(boardImage, boardSize);
+	public DartBoardUI(BufferedImage image, int diameter) {
+		init(image, diameter);
 	}
 
-	private void init(BufferedImage boardImage, int boardSize) {
-		this.boardImage = boardImage;
-		this.boardSize = boardSize;
-		scaling = (double) boardSize / DartBoard.BOARD_REFERENCE_SIZE;
+	private void init(BufferedImage image, int diameter) {
+		this.image = image;
+		this.diameter = diameter;
+		scaling = (double) diameter / DartBoard.BOARD_REFERENCE_DIAMETER;
 		// correction for image inaccuracy
 		int offsetX = (int) (scaling * -2), offsetY = (int) (scaling * 4);
-		center = new Point(boardSize / 2 + offsetX, boardSize / 2 + offsetY);
+		center = new Point(diameter / 2 + offsetX, diameter / 2 + offsetY);
 
-		Dimension dim = new Dimension(boardSize, boardSize);
+		Dimension dim = new Dimension(diameter, diameter);
 		setMinimumSize(dim);
 		setPreferredSize(dim);
 		setSize(dim);
@@ -112,7 +112,7 @@ public class DartBoardUI extends JPanel {
 
 	private void draw(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.drawImage(boardImage, 0, 0, boardSize, boardSize, null);
+		g.drawImage(image, 0, 0, diameter, diameter, null);
 		g.setColor(Color.YELLOW);
 		drawRing(g, BULLS_EYE);
 		drawRing(g, SINGLE_BULL);
@@ -121,9 +121,9 @@ public class DartBoardUI extends JPanel {
 		for (int angle = 9; angle < 360; angle += 18) {
 			double rad = toRadians(angle);
 			g.translate(center.x, center.y);
-			g.rotate(-rad);
-			g.drawLine((int) (scaling * SINGLE_BULL.outer), 0, (int) (scaling * DOUBLE.outer), 0);
 			g.rotate(rad);
+			g.drawLine((int) (scaling * SINGLE_BULL.outer), 0, (int) (scaling * DOUBLE.outer), 0);
+			g.rotate(-rad);
 			g.translate(-center.x, -center.y);
 		}
 		drawCurrentValue(g);
@@ -147,8 +147,8 @@ public class DartBoardUI extends JPanel {
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setColor(Color.GRAY);
-		g.setFont(new Font("Arial", Font.BOLD, boardSize / 30));
-		g.drawString(getCurrentValueAsText(), 5, getHeight() - boardSize / 60);
+		g.setFont(new Font("Arial", Font.BOLD, diameter / 30));
+		g.drawString(getCurrentValueAsText(), 5, getHeight() - diameter / 60);
 	}
 
 	private String getCurrentValueAsText() {

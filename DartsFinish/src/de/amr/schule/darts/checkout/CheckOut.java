@@ -1,6 +1,6 @@
 package de.amr.schule.darts.checkout;
 
-import de.amr.schule.darts.field.DartBoardField;
+import de.amr.schule.darts.checkout.field.DartBoardField;
 
 public class CheckOut {
 
