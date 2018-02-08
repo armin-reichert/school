@@ -14,46 +14,78 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 import de.amr.schule.darts.counter.model.DartBoard;
 
-public class DartBoardUI extends JPanel {
+public class DartBoardUI extends JComponent {
 
 	public static final String PROPERTY_POINTS = "points";
 
-	private BufferedImage image;
-	private Point center;
-	private double scaling;
-	private int diameter;
+	private static String getValueAsText(DartBoard.Ring ring, int segment) {
+		switch (ring) {
+		case OUT:
+			return "Out";
+		case SIMPLE:
+			return "" + segment;
+		case DOUBLE:
+			return "Double " + segment;
+		case TRIPLE:
+			return "Triple " + segment;
+		case SINGLE_BULL:
+			return "Single Bull";
+		case BULLS_EYE:
+			return "Bulls-Eye";
+		}
+		return "";
+	}
 
+	private final Image boardImage;
+	private final Image dartImage;
+	private final Point center;
+	private final double scaling;
+	private final int diameter;
+
+	private Point currentTarget;
 	private DartBoard.Ring currentRing;
 	private int currentSegment;
 
+	public DartBoardUI() {
+		this(600);
+	}
+
 	public DartBoardUI(int diameter) {
+		this.diameter = diameter;
+		InputStream dartImageSource = getClass().getResourceAsStream("/dart.png");
+		if (dartImageSource == null) {
+			throw new RuntimeException("Dart image not found");
+		}
 		try {
-			BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/dartboard.png"));
-			init(image, diameter);
-		} catch (Exception x) {
+			dartImage = ImageIO.read(dartImageSource);
+		} catch (IOException e) {
+			throw new RuntimeException("Dart image could not be loaded");
+		}
+		InputStream boardImageSource = getClass().getResourceAsStream("/dartboard.png");
+		if (boardImageSource == null) {
+			throw new RuntimeException("Board image not found");
+		}
+		try {
+			boardImage = ImageIO.read(boardImageSource).getScaledInstance(diameter, diameter,
+					BufferedImage.SCALE_SMOOTH);
+		} catch (IOException x) {
 			throw new RuntimeException("Could not load board image");
 		}
-	}
-
-	public DartBoardUI(BufferedImage image, int diameter) {
-		init(image, diameter);
-	}
-
-	private void init(BufferedImage image, int diameter) {
-		this.image = image;
-		this.diameter = diameter;
 		scaling = (double) diameter / DartBoard.BOARD_REFERENCE_DIAMETER;
 		// correction for image inaccuracy
 		int offsetX = (int) (scaling * -2), offsetY = (int) (scaling * 4);
@@ -81,18 +113,19 @@ public class DartBoardUI extends JPanel {
 	}
 
 	protected void onMouseMoved(int viewX, int viewY) {
-		targetCoordinateChanged(viewX, viewY);
+		setCurrentTarget(viewX, viewY);
 		repaint();
 	}
 
 	protected void onMouseClicked(int viewX, int viewY) {
-		targetCoordinateChanged(viewX, viewY);
+		setCurrentTarget(viewX, viewY);
 		repaint();
 		int points = DartBoard.getPoints(currentRing, currentSegment);
 		firePropertyChange(PROPERTY_POINTS, -1, points);
 	}
 
-	private void targetCoordinateChanged(int viewX, int viewY) {
+	private void setCurrentTarget(int viewX, int viewY) {
+		currentTarget = new Point(viewX, viewY);
 		// Convert view to model coordinate
 		int x = viewX - center.x;
 		int y = center.y - viewY;
@@ -112,7 +145,9 @@ public class DartBoardUI extends JPanel {
 
 	private void draw(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.drawImage(image, 0, 0, diameter, diameter, null);
+		// g.setColor(Color.BLACK);
+		// g.fillOval(0, 0, diameter, diameter);
+		g.drawImage(boardImage, 0, 0, diameter, diameter, null);
 		g.setColor(Color.YELLOW);
 		drawRing(g, BULLS_EYE);
 		drawRing(g, SINGLE_BULL);
@@ -126,7 +161,23 @@ public class DartBoardUI extends JPanel {
 			g.rotate(-rad);
 			g.translate(-center.x, -center.y);
 		}
-		drawCurrentValue(g);
+		if (currentTarget != null && currentRing != DartBoard.Ring.OUT) {
+			g.setColor(Color.PINK);
+			double scale = scaling / 2;
+			int targetWidth = (int) (scale * dartImage.getWidth(null)),
+					targetHeight = (int) (scale * dartImage.getHeight(null));
+			g.fillOval(currentTarget.x - 5, currentTarget.y - 5, 10, 10);
+			g.drawImage(dartImage, currentTarget.x, currentTarget.y - targetHeight, targetWidth,
+					targetHeight, null);
+		}
+		// draw current value text
+		if (currentRing != null) {
+			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g.setColor(Color.RED);
+			g.setFont(new Font("Arial", Font.BOLD, diameter / 30));
+			g.drawString(getValueAsText(currentRing, currentSegment), 5, getHeight() - diameter / 60);
+		}
 	}
 
 	private void drawRing(Graphics2D g, DartBoard.Ring ring) {
@@ -138,34 +189,5 @@ public class DartBoardUI extends JPanel {
 		if (radius <= getWidth()) {
 			g.drawOval(center.x - radius, center.y - radius, 2 * radius, 2 * radius);
 		}
-	}
-
-	private void drawCurrentValue(Graphics2D g) {
-		if (currentRing == null) {
-			return;
-		}
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		g.setColor(Color.GRAY);
-		g.setFont(new Font("Arial", Font.BOLD, diameter / 30));
-		g.drawString(getCurrentValueAsText(), 5, getHeight() - diameter / 60);
-	}
-
-	private String getCurrentValueAsText() {
-		switch (currentRing) {
-		case OUT:
-			return "Out";
-		case SIMPLE:
-			return "" + currentSegment;
-		case DOUBLE:
-			return "Double " + currentSegment;
-		case TRIPLE:
-			return "Triple " + currentSegment;
-		case SINGLE_BULL:
-			return "Single-Bull";
-		case BULLS_EYE:
-			return "Bulls-Eye";
-		}
-		return "???";
 	}
 }

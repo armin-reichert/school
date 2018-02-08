@@ -25,8 +25,8 @@ public class DartBoard {
 		SINGLE_BULL(13, 32),
 		TRIPLE(190, 208),
 		DOUBLE(317, 335),
-		OUT(336, Integer.MAX_VALUE),
-		SIMPLE(0, 335);
+		SIMPLE(0, 335),
+		OUT(336, Integer.MAX_VALUE);
 
 		public boolean contains(int radius, double scaling) {
 			return (int) (scaling * inner) <= radius && radius <= (int) (scaling * outer);
@@ -50,8 +50,8 @@ public class DartBoard {
 	}
 
 	public static Ring getRing(int radius, double scaling) {
-		return Stream.of(BULLS_EYE, SINGLE_BULL, TRIPLE, DOUBLE, OUT)
-				.filter(ring -> ring.contains(radius, scaling)).findFirst().orElse(SIMPLE);
+		return Stream.of(BULLS_EYE, SINGLE_BULL, TRIPLE, DOUBLE, SIMPLE)
+				.filter(ring -> ring.contains(radius, scaling)).findFirst().orElse(OUT);
 	}
 
 	public static int getPoints(Ring ring, int segment) {
