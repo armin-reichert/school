@@ -1,10 +1,10 @@
 package de.amr.schule.darts.counter.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -162,46 +162,48 @@ public class DartsCounterUI extends JFrame {
 	}
 
 	public DartsCounterUI() {
+		getContentPane().setBackground(new Color(245, 245, 220));
 		getContentPane().setPreferredSize(new Dimension(800, 600));
 
 		setTitle("Darts");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().setLayout(
-				new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow][][grow][grow][][grow][]"));
+		getContentPane().setLayout(new MigLayout("", "[grow]", "[grow][][grow]"));
 
 		JPanel playerCounterGrid = new JPanel();
+		playerCounterGrid.setOpaque(false);
 		getContentPane().add(playerCounterGrid, "cell 0 0,grow");
-		playerCounterGrid.setLayout(new GridLayout(0, 4, 0, 0));
+		playerCounterGrid.setLayout(new MigLayout("", "[][][][]", "[][]"));
 
 		playerCounter0 = new PlayerCounterUI();
-		playerCounterGrid.add(playerCounter0);
+		playerCounterGrid.add(playerCounter0, "cell 0 0,grow");
 
 		playerCounter1 = new PlayerCounterUI();
-		playerCounterGrid.add(playerCounter1);
+		playerCounterGrid.add(playerCounter1, "cell 1 0,grow");
 
 		playerCounter2 = new PlayerCounterUI();
-		playerCounterGrid.add(playerCounter2);
+		playerCounterGrid.add(playerCounter2, "cell 2 0,grow");
 
 		playerCounter3 = new PlayerCounterUI();
-		playerCounterGrid.add(playerCounter3);
+		playerCounterGrid.add(playerCounter3, "cell 3 0,grow");
 
 		JPanel panelKeyboard = new JPanel();
-		getContentPane().add(panelKeyboard, "flowx,cell 0 3 2 1,growy");
+		panelKeyboard.setBackground(new Color(245, 245, 220));
+		getContentPane().add(panelKeyboard, "flowx,cell 0 2,growy");
 		panelKeyboard.setLayout(new MigLayout("", "[grow][]", "[grow]"));
 
 		pointsKeyboard = new PointsKeyboard();
-		panelKeyboard.add(pointsKeyboard, "cell 0 0,grow");
+		panelKeyboard.add(pointsKeyboard, "cell 0 0");
 
-		JButton btnNoScore = new JButton("No Score");
-		btnNoScore.addActionListener(new ActionListener() {
+		JButton button_NoScore = new JButton("No Score");
+		button_NoScore.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				noScore();
 			}
 		});
-		btnNoScore.setFont(new Font("Tahoma", Font.BOLD, 18));
-		panelKeyboard.add(btnNoScore, "cell 1 0,grow");
+		button_NoScore.setFont(new Font("Tahoma", Font.BOLD, 18));
+		panelKeyboard.add(button_NoScore, "cell 1 0,growy");
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);

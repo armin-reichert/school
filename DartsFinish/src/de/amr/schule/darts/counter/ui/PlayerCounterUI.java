@@ -49,6 +49,7 @@ public class PlayerCounterUI extends JPanel {
 	}
 
 	public PlayerCounterUI() {
+		setOpaque(false);
 		tblModelCheckOuts = new CheckOutsTableModel();
 
 		setLayout(new MigLayout("", "[grow]", "[][][][][][grow][][]"));
@@ -73,7 +74,7 @@ public class PlayerCounterUI extends JPanel {
 			}
 		});
 		txtName.setHorizontalAlignment(SwingConstants.CENTER);
-		txtName.setFont(new Font("Tahoma", Font.BOLD, 24));
+		txtName.setFont(new Font("Tahoma", Font.BOLD, 20));
 		txtName.setText("Player Name");
 		add(txtName, "cell 0 0,growx");
 		txtName.setColumns(10);
@@ -91,7 +92,7 @@ public class PlayerCounterUI extends JPanel {
 		tblCheckOuts.setFont(new Font("Courier New", Font.PLAIN, 16));
 		tblCheckOuts.setModel(tblModelCheckOuts);
 		scrollPane.setViewportView(tblCheckOuts);
-		tblCheckOuts.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 16));
+		tblCheckOuts.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		lblPointsInTake = new JLabel("42");
 		lblPointsInTake.setToolTipText("Points in current take");

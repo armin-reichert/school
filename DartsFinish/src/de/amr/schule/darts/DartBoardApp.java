@@ -9,25 +9,21 @@ import de.amr.schule.darts.counter.ui.DartBoardUI;
 
 public class DartBoardApp {
 
-	private final DartBoardUI boardUI;
-
 	public DartBoardApp(int boardSize) {
-		boardUI = new DartBoardUI(boardSize);
+		JFrame frame = new JFrame("Dart Board");
+		DartBoardUI boardUI = new DartBoardUI(boardSize);
+		boardUI.addPropertyChangeListener(DartBoardUI.PROPERTY_POINTS, evt -> {
+			Integer points = (Integer) evt.getNewValue();
+			JOptionPane.showMessageDialog(frame, points + " points");
+		});
+		frame.getContentPane().add(boardUI);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 	public static void main(String... args) {
-		EventQueue.invokeLater(() -> {
-			DartBoardApp app = new DartBoardApp(900);
-			JFrame frame = new JFrame("Dart Board");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setResizable(false);
-			frame.getContentPane().add(app.boardUI);
-			frame.pack();
-			frame.setVisible(true);
-			app.boardUI.addPropertyChangeListener(DartBoardUI.PROPERTY_POINTS, evt -> {
-				Integer points = (Integer) evt.getNewValue();
-				JOptionPane.showMessageDialog(frame, points + " points");
-			});
-		});
+		EventQueue.invokeLater(() -> new DartBoardApp(900));
 	}
 }

@@ -24,12 +24,53 @@ public class PointsKeyboard extends JPanel {
 	private JButton button_25;
 
 	public PointsKeyboard() {
-		setPreferredSize(new Dimension(640, 160));
-		setLayout(new MigLayout("", "[grow]", "[grow][grow]"));
+		setOpaque(false);
+		setPreferredSize(new Dimension(622, 126));
+		setLayout(new MigLayout("", "[grow]", "[][grow]"));
+		
+				JPanel panelFactor = new JPanel();
+				panelFactor.setOpaque(false);
+				add(panelFactor, "cell 0 0,alignx center");
+				panelFactor.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
+				
+						rbSingle = new JRadioButton("1x");
+						rbSingle.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								button_25.setEnabled(true);
+							}
+						});
+						rbSingle.setFont(new Font("Tahoma", Font.BOLD, 18));
+						rbSingle.setSelected(true);
+						rbgFactor.add(rbSingle);
+						panelFactor.add(rbSingle);
+						
+								rbDouble = new JRadioButton("2x");
+								rbDouble.addActionListener(new ActionListener() {
+									@Override
+									public void actionPerformed(ActionEvent e) {
+										button_25.setEnabled(true);
+									}
+								});
+								rbDouble.setFont(new Font("Tahoma", Font.BOLD, 18));
+								rbgFactor.add(rbDouble);
+								panelFactor.add(rbDouble);
+								
+										rbTriple = new JRadioButton("3x");
+										rbTriple.addActionListener(new ActionListener() {
+											@Override
+											public void actionPerformed(ActionEvent e) {
+												button_25.setEnabled(false);
+											}
+										});
+										rbTriple.setFont(new Font("Tahoma", Font.BOLD, 18));
+										rbgFactor.add(rbTriple);
+										panelFactor.add(rbTriple);
 
 		JPanel panelButtons = new JPanel();
-		add(panelButtons, "cell 0 0,grow");
-		panelButtons.setLayout(new MigLayout("", "[][][][][][][][][][]", "[][]"));
+		panelButtons.setOpaque(false);
+		add(panelButtons, "cell 0 1");
+		panelButtons.setLayout(new MigLayout("", "[][][][][][][][][][][]", "[][]"));
 
 		JButton button_1 = new JButton("1");
 		button_1.addActionListener(new ActionListener() {
@@ -141,17 +182,6 @@ public class PointsKeyboard extends JPanel {
 		button_10.setFont(new Font("Tahoma", Font.BOLD, 18));
 		panelButtons.add(button_10, "flowx,cell 9 0,growx");
 
-		JButton button_Out = new JButton("Out");
-		button_Out.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				numberButtonPressed(0);
-			}
-		});
-		button_Out.setFont(new Font("Tahoma", Font.BOLD, 18));
-		panelButtons.add(button_Out, "cell 9 0,growx");
-
 		JButton button_11 = new JButton("11");
 		button_11.addActionListener(new ActionListener() {
 
@@ -160,6 +190,17 @@ public class PointsKeyboard extends JPanel {
 				numberButtonPressed(11);
 			}
 		});
+		
+				JButton button_Out = new JButton("Out");
+				button_Out.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						numberButtonPressed(0);
+					}
+				});
+				button_Out.setFont(new Font("Tahoma", Font.BOLD, 18));
+				panelButtons.add(button_Out, "cell 10 0,growx");
 		button_11.setFont(new Font("Tahoma", Font.BOLD, 18));
 		panelButtons.add(button_11, "cell 0 1,growx");
 
@@ -261,55 +302,17 @@ public class PointsKeyboard extends JPanel {
 		});
 		button_20.setFont(new Font("Tahoma", Font.BOLD, 18));
 		panelButtons.add(button_20, "flowx,cell 9 1,growx");
+		
+				button_25 = new JButton("25");
+				button_25.addActionListener(new ActionListener() {
 
-		button_25 = new JButton("25");
-		button_25.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				numberButtonPressed(25);
-			}
-		});
-		button_25.setFont(new Font("Tahoma", Font.BOLD, 18));
-		panelButtons.add(button_25, "cell 9 1,growx");
-
-		JPanel panelFactor = new JPanel();
-		add(panelFactor, "cell 0 1,growx");
-		panelFactor.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
-
-		rbSingle = new JRadioButton("1x");
-		rbSingle.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				button_25.setEnabled(true);
-			}
-		});
-		rbSingle.setFont(new Font("Tahoma", Font.BOLD, 18));
-		rbSingle.setSelected(true);
-		rbgFactor.add(rbSingle);
-		panelFactor.add(rbSingle);
-
-		rbDouble = new JRadioButton("2x");
-		rbDouble.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				button_25.setEnabled(true);
-			}
-		});
-		rbDouble.setFont(new Font("Tahoma", Font.BOLD, 18));
-		rbgFactor.add(rbDouble);
-		panelFactor.add(rbDouble);
-
-		rbTriple = new JRadioButton("3x");
-		rbTriple.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				button_25.setEnabled(false);
-			}
-		});
-		rbTriple.setFont(new Font("Tahoma", Font.BOLD, 18));
-		rbgFactor.add(rbTriple);
-		panelFactor.add(rbTriple);
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						numberButtonPressed(25);
+					}
+				});
+				button_25.setFont(new Font("Tahoma", Font.BOLD, 18));
+				panelButtons.add(button_25, "cell 10 1,growx");
 	}
 
 	private void numberButtonPressed(int number) {

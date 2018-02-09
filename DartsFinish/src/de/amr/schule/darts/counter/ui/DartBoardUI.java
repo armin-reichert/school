@@ -161,8 +161,9 @@ public class DartBoardUI extends JComponent {
 			g.rotate(-rad);
 			g.translate(-center.x, -center.y);
 		}
-		if (currentTarget != null && currentRing != DartBoard.Ring.OUT) {
-			g.setColor(Color.PINK);
+		// draw dart at target position
+		if (currentTarget != null && currentTarget.distance(center) <= diameter / 2) {
+			g.setColor(currentRing == DartBoard.Ring.OUT ? Color.GRAY : Color.PINK);
 			double scale = scaling / 2;
 			int targetWidth = (int) (scale * dartImage.getWidth(null)),
 					targetHeight = (int) (scale * dartImage.getHeight(null));
