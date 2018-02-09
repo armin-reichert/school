@@ -1,6 +1,5 @@
 package de.amr.schule.darts.counter.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -39,8 +38,9 @@ public class DartsCounterUI extends JFrame {
 	private JRadioButtonMenuItem miPlayers2;
 	private JRadioButtonMenuItem miPlayers3;
 	private JRadioButtonMenuItem miPlayers4;
-	private JFrame boardEditorWindow;
 	private PointsKeyboard pointsKeyboard;
+	private JPanel panelBoard;
+	private DartBoardUI dartBoardUI;
 
 	public void setStartPoints(int points) {
 		switch (points) {
@@ -145,50 +145,47 @@ public class DartsCounterUI extends JFrame {
 		playerCounter3.updateView();
 	}
 
-	private void showBoardEditorWindow() {
-		if (boardEditorWindow == null) {
-			DartBoardUI board = new DartBoardUI((int) (0.9 * getHeight()));
-			board.addPropertyChangeListener(DartBoardUI.PROPERTY_POINTS, evt -> {
-				int points = (int) evt.getNewValue();
-				updateScore(points);
-			});
-			boardEditorWindow = new JFrame("Board Editor");
-			boardEditorWindow.setResizable(false);
-			boardEditorWindow.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-			boardEditorWindow.getContentPane().add(board, BorderLayout.CENTER);
-			boardEditorWindow.pack();
-		}
-		boardEditorWindow.setVisible(true);
-	}
-
 	public DartsCounterUI() {
+		setPreferredSize(new Dimension(1355, 700));
 		getContentPane().setBackground(new Color(245, 245, 220));
-		getContentPane().setPreferredSize(new Dimension(800, 600));
 
 		setTitle("Darts");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().setLayout(new MigLayout("", "[grow]", "[grow][][grow]"));
+		getContentPane().setLayout(new MigLayout("", "[grow][grow]", "[grow][grow]"));
 
-		JPanel playerCounterGrid = new JPanel();
-		playerCounterGrid.setOpaque(false);
-		getContentPane().add(playerCounterGrid, "cell 0 0,grow");
-		playerCounterGrid.setLayout(new MigLayout("", "[][][][]", "[][]"));
+		JPanel panelPlayers = new JPanel();
+		panelPlayers.setMaximumSize(new Dimension(800, 32767));
+		panelPlayers.setOpaque(false);
+		getContentPane().add(panelPlayers, "cell 0 0,growy");
+		panelPlayers.setLayout(new MigLayout("", "[][][][]", "[][]"));
 
 		playerCounter0 = new PlayerCounterUI();
-		playerCounterGrid.add(playerCounter0, "cell 0 0,grow");
+		panelPlayers.add(playerCounter0, "cell 0 0,grow");
 
 		playerCounter1 = new PlayerCounterUI();
-		playerCounterGrid.add(playerCounter1, "cell 1 0,grow");
+		panelPlayers.add(playerCounter1, "cell 1 0,grow");
 
 		playerCounter2 = new PlayerCounterUI();
-		playerCounterGrid.add(playerCounter2, "cell 2 0,grow");
+		panelPlayers.add(playerCounter2, "cell 2 0,grow");
 
 		playerCounter3 = new PlayerCounterUI();
-		playerCounterGrid.add(playerCounter3, "cell 3 0,grow");
+		panelPlayers.add(playerCounter3, "cell 3 0,grow");
+
+		panelBoard = new JPanel();
+		panelBoard.setOpaque(false);
+		getContentPane().add(panelBoard, "cell 1 0 1 2,grow");
+		panelBoard.setLayout(new MigLayout("", "[fill]", "[]"));
+
+		dartBoardUI = new DartBoardUI();
+		dartBoardUI.addPropertyChangeListener(DartBoardUI.PROPERTY_POINTS, evt -> {
+			int points = (int) evt.getNewValue();
+			updateScore(points);
+		});
+		panelBoard.add(dartBoardUI, "cell 0 0,growx");
 
 		JPanel panelKeyboard = new JPanel();
 		panelKeyboard.setBackground(new Color(245, 245, 220));
-		getContentPane().add(panelKeyboard, "flowx,cell 0 2,growy");
+		getContentPane().add(panelKeyboard, "flowx,cell 0 1,growy");
 		panelKeyboard.setLayout(new MigLayout("", "[grow][]", "[grow]"));
 
 		pointsKeyboard = new PointsKeyboard();
@@ -202,7 +199,7 @@ public class DartsCounterUI extends JFrame {
 				noScore();
 			}
 		});
-		button_NoScore.setFont(new Font("Tahoma", Font.BOLD, 18));
+		button_NoScore.setFont(new Font("Tahoma", Font.BOLD, 16));
 		panelKeyboard.add(button_NoScore, "cell 1 0,growy");
 
 		JMenuBar menuBar = new JMenuBar();
@@ -306,21 +303,6 @@ public class DartsCounterUI extends JFrame {
 
 		Component horizontalStrut_2 = Box.createHorizontalStrut(20);
 		menuBar.add(horizontalStrut_2);
-
-		JMenu mnAnsicht = new JMenu("Ansicht");
-		mnAnsicht.setFont(new Font("Arial Black", Font.PLAIN, 16));
-		menuBar.add(mnAnsicht);
-
-		JMenuItem miBoardAnzeigen = new JMenuItem("Board anzeigen");
-		miBoardAnzeigen.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				showBoardEditorWindow();
-			}
-		});
-		miBoardAnzeigen.setFont(new Font("Arial Black", Font.PLAIN, 16));
-		mnAnsicht.add(miBoardAnzeigen);
 
 		// Initialize
 		setStartPoints(501);

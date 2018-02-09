@@ -74,7 +74,7 @@ public class PlayerCounterUI extends JPanel {
 			}
 		});
 		txtName.setHorizontalAlignment(SwingConstants.CENTER);
-		txtName.setFont(new Font("Tahoma", Font.BOLD, 20));
+		txtName.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		txtName.setText("Player Name");
 		add(txtName, "cell 0 0,growx");
 		txtName.setColumns(10);

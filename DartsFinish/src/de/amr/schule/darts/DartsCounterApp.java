@@ -23,6 +23,7 @@ public class DartsCounterApp {
 		window.setNumPlayers(4);
 		window.setStartPoints(501);
 		window.newGame();
+		window.setResizable(false);
 		window.pack();
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);

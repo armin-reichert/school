@@ -175,9 +175,12 @@ public class DartBoardUI extends JComponent {
 		if (currentRing != null) {
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g.setColor(Color.RED);
-			g.setFont(new Font("Arial", Font.BOLD, diameter / 30));
-			g.drawString(getValueAsText(currentRing, currentSegment), 5, getHeight() - diameter / 60);
+			g.setColor(Color.GRAY);
+			Font font = new Font("Arial", Font.BOLD, diameter / 30); 
+			g.setFont(font);
+			String text = getValueAsText(currentRing, currentSegment);
+			int width = g.getFontMetrics().stringWidth(text);
+			g.drawString(text, getWidth() - width, getHeight() -  g.getFontMetrics().getDescent());
 		}
 	}
 
