@@ -146,7 +146,7 @@ public class DartsCounterUI extends JFrame {
 	}
 
 	public DartsCounterUI() {
-		setPreferredSize(new Dimension(1355, 700));
+		setPreferredSize(new Dimension(1360, 700));
 		getContentPane().setBackground(new Color(245, 245, 220));
 
 		setTitle("Darts");

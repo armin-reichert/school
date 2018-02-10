@@ -20,6 +20,8 @@ import javax.swing.SwingConstants;
 import de.amr.schule.darts.checkout.CheckOutTable;
 import de.amr.schule.darts.counter.model.Player;
 import net.miginfocom.swing.MigLayout;
+import java.awt.Component;
+import javax.swing.Box;
 
 public class PlayerCounterUI extends JPanel {
 
@@ -27,10 +29,11 @@ public class PlayerCounterUI extends JPanel {
 
 	private CheckOutsTableModel tblModelCheckOuts;
 	private JTable tblCheckOuts;
-	private JTextField txtName;
+	private JLabel lblName;
 	private JLabel lblPointsRemaining;
 	private JLabel lblPointsInTake;
 	private JLabel lblPointsAverage;
+	private Component verticalStrut;
 
 	public void setPlayer(Player player) {
 		this.player = player;
@@ -39,7 +42,7 @@ public class PlayerCounterUI extends JPanel {
 	public void updateView() {
 		if (player == null)
 			return;
-		txtName.setText(player.getName());
+		lblName.setText(player.getName());
 		lblPointsRemaining.setText(format("%d", player.getPointsRemaining()));
 		lblPointsRemaining.setForeground(player.isTurn() ? Color.RED : Color.BLACK);
 		lblPointsInTake.setText(format("%d", player.getPointsInTake()));
@@ -52,12 +55,17 @@ public class PlayerCounterUI extends JPanel {
 		setOpaque(false);
 		tblModelCheckOuts = new CheckOutsTableModel();
 
-		setLayout(new MigLayout("", "[grow]", "[][][][][][grow][][]"));
+		setLayout(new MigLayout("", "[grow]", "[][][][][][][grow][][]"));
 
-		txtName = new JTextField();
-		txtName.setEnabled(false);
-		txtName.setEditable(false);
-		txtName.addMouseListener(new MouseAdapter() {
+		lblName = new JLabel();
+		lblName.setOpaque(true);
+		lblName.setBackground(Color.WHITE);
+		lblName.setForeground(new Color(0, 0, 255));
+		lblName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblName.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 26));
+		lblName.setText("Player Name");
+		add(lblName, "cell 0 0,growx");
+		lblName.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -65,28 +73,19 @@ public class PlayerCounterUI extends JPanel {
 				}
 			}
 		});
-		txtName.setForeground(Color.BLUE);
-		txtName.addActionListener(new ActionListener() {
+		
+		verticalStrut = Box.createVerticalStrut(20);
+		add(verticalStrut, "cell 0 1");
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				player.setName(txtName.getText());
-			}
-		});
-		txtName.setHorizontalAlignment(SwingConstants.CENTER);
-		txtName.setFont(new Font("Tahoma", Font.ITALIC, 16));
-		txtName.setText("Player Name");
-		add(txtName, "cell 0 0,growx");
-		txtName.setColumns(10);
 
 		lblPointsRemaining = new JLabel("501");
 		lblPointsRemaining.setForeground(Color.RED);
 		lblPointsRemaining.setToolTipText("Points remaining");
 		lblPointsRemaining.setFont(new Font("Tahoma", Font.BOLD, 36));
-		add(lblPointsRemaining, "cell 0 1,alignx center");
+		add(lblPointsRemaining, "cell 0 2,alignx center");
 
 		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane, "cell 0 2,grow");
+		add(scrollPane, "cell 0 3,grow");
 
 		tblCheckOuts = new JTable();
 		tblCheckOuts.setFont(new Font("Courier New", Font.PLAIN, 16));
@@ -98,13 +97,13 @@ public class PlayerCounterUI extends JPanel {
 		lblPointsInTake.setToolTipText("Points in current take");
 		lblPointsInTake.setForeground(Color.RED);
 		lblPointsInTake.setFont(new Font("Tahoma", Font.BOLD, 36));
-		add(lblPointsInTake, "cell 0 3,alignx center");
+		add(lblPointsInTake, "cell 0 4,alignx center");
 
 		lblPointsAverage = new JLabel("59.25");
 		lblPointsAverage.setToolTipText("Points Average");
 		lblPointsAverage.setForeground(Color.GRAY);
 		lblPointsAverage.setFont(new Font("Tahoma", Font.BOLD, 24));
-		add(lblPointsAverage, "cell 0 4,alignx center");
+		add(lblPointsAverage, "cell 0 5,alignx center");
 	}
 
 	protected void editName() {
