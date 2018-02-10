@@ -55,7 +55,7 @@ public class PlayerCounterUI extends JPanel {
 		setOpaque(false);
 		tblModelCheckOuts = new CheckOutsTableModel();
 
-		setLayout(new MigLayout("", "[grow]", "[][][][][][][grow][][]"));
+		setLayout(new MigLayout("", "[grow]", "[][][][][][][grow]"));
 
 		lblName = new JLabel();
 		lblName.setOpaque(true);
