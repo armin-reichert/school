@@ -3,25 +3,22 @@ package de.amr.schule.darts.counter.ui;
 import static java.lang.String.format;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import de.amr.schule.darts.checkout.CheckOutTable;
 import de.amr.schule.darts.counter.model.Player;
 import net.miginfocom.swing.MigLayout;
-import java.awt.Component;
-import javax.swing.Box;
 
 public class PlayerCounterUI extends JPanel {
 
@@ -55,7 +52,7 @@ public class PlayerCounterUI extends JPanel {
 		setOpaque(false);
 		tblModelCheckOuts = new CheckOutsTableModel();
 
-		setLayout(new MigLayout("", "[grow]", "[][][][][][][grow]"));
+		setLayout(new MigLayout("", "[grow]", "[][][][][][]"));
 
 		lblName = new JLabel();
 		lblName.setOpaque(true);
@@ -66,6 +63,7 @@ public class PlayerCounterUI extends JPanel {
 		lblName.setText("Player Name");
 		add(lblName, "cell 0 0,growx");
 		lblName.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -73,10 +71,9 @@ public class PlayerCounterUI extends JPanel {
 				}
 			}
 		});
-		
+
 		verticalStrut = Box.createVerticalStrut(20);
 		add(verticalStrut, "cell 0 1");
-
 
 		lblPointsRemaining = new JLabel("501");
 		lblPointsRemaining.setForeground(Color.RED);

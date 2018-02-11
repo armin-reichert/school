@@ -44,17 +44,17 @@ public class DartsCounterUI extends JFrame {
 
 	public void setStartPoints(int points) {
 		switch (points) {
-		case 101:
-			miRbPoints101.setSelected(true);
+			case 101:
+				miRbPoints101.setSelected(true);
 			break;
-		case 301:
-			miRbPoints301.setSelected(true);
+			case 301:
+				miRbPoints301.setSelected(true);
 			break;
-		case 501:
-			miRbPoints501.setSelected(true);
+			case 501:
+				miRbPoints501.setSelected(true);
 			break;
-		default:
-			miRbPoints501.setSelected(true);
+			default:
+				miRbPoints501.setSelected(true);
 		}
 	}
 
@@ -70,17 +70,17 @@ public class DartsCounterUI extends JFrame {
 
 	public void setNumPlayers(int number) {
 		switch (number) {
-		case 2:
-			miPlayers2.setSelected(true);
+			case 2:
+				miPlayers2.setSelected(true);
 			break;
-		case 3:
-			miPlayers3.setSelected(true);
+			case 3:
+				miPlayers3.setSelected(true);
 			break;
-		case 4:
-			miPlayers4.setSelected(true);
+			case 4:
+				miPlayers4.setSelected(true);
 			break;
-		default:
-			miPlayers4.setSelected(true);
+			default:
+				miPlayers4.setSelected(true);
 		}
 	}
 
@@ -97,8 +97,7 @@ public class DartsCounterUI extends JFrame {
 	public void newGame() {
 		int numPlayers = getNumPlayers();
 		game = new DartsGame(numPlayers, getStartPoints());
-		PlayerCounterUI[] playerCounters = { playerCounter0, playerCounter1, playerCounter2,
-				playerCounter3 };
+		PlayerCounterUI[] playerCounters = { playerCounter0, playerCounter1, playerCounter2, playerCounter3 };
 		for (int i = 0; i < playerCounters.length; ++i) {
 			playerCounters[i].setPlayer(game.getPlayer(i));
 			playerCounters[i].setVisible(i < numPlayers);
@@ -151,7 +150,7 @@ public class DartsCounterUI extends JFrame {
 
 		setTitle("Darts");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().setLayout(new MigLayout("", "[grow][grow]", "[grow][grow]"));
+		getContentPane().setLayout(new MigLayout("", "[][]", "[][]"));
 
 		JPanel panelPlayers = new JPanel();
 		panelPlayers.setMaximumSize(new Dimension(800, 32767));
@@ -181,7 +180,7 @@ public class DartsCounterUI extends JFrame {
 			int points = (int) evt.getNewValue();
 			updateScore(points);
 		});
-		panelBoard.add(dartBoardUI, "cell 0 0,growx");
+		panelBoard.add(dartBoardUI, "cell 0 0,alignx left");
 
 		JPanel panelKeyboard = new JPanel();
 		panelKeyboard.setBackground(new Color(245, 245, 220));

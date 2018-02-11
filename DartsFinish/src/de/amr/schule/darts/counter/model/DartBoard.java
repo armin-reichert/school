@@ -14,8 +14,7 @@ public class DartBoard {
 	public static final int BOARD_REFERENCE_DIAMETER = 900;
 
 	/* List starts with segment "6" (0 degree position) in counter-clockwise direction. */
-	private static int[] SEGMENTS = { 6, 13, 4, 18, 1, 20, 5, 12, 9, 14, 11, 8, 16, 7, 19, 3, 17, 2,
-			15, 10 };
+	private static int[] SEGMENTS = { 6, 13, 4, 18, 1, 20, 5, 12, 9, 14, 11, 8, 16, 7, 19, 3, 17, 2, 15, 10 };
 
 	/**
 	 * Ring dimensions are given for a board diameter of 900;
@@ -50,8 +49,8 @@ public class DartBoard {
 	}
 
 	public static Ring getRing(int radius, double scaling) {
-		return Stream.of(BULLS_EYE, SINGLE_BULL, TRIPLE, DOUBLE, SIMPLE)
-				.filter(ring -> ring.contains(radius, scaling)).findFirst().orElse(OUT);
+		return Stream.of(BULLS_EYE, SINGLE_BULL, TRIPLE, DOUBLE, SIMPLE).filter(ring -> ring.contains(radius, scaling))
+				.findFirst().orElse(OUT);
 	}
 
 	public static int getPoints(Ring ring, int segment) {
@@ -59,20 +58,20 @@ public class DartBoard {
 			throw new IllegalArgumentException("Ring is NULL");
 		}
 		switch (ring) {
-		case OUT:
-			return 0;
-		case SIMPLE:
-			return segment;
-		case DOUBLE:
-			return 2 * segment;
-		case TRIPLE:
-			return 3 * segment;
-		case SINGLE_BULL:
-			return 25;
-		case BULLS_EYE:
-			return 50;
-		default:
-			throw new IllegalArgumentException("Illegal value for ring: " + ring);
+			case OUT:
+				return 0;
+			case SIMPLE:
+				return segment;
+			case DOUBLE:
+				return 2 * segment;
+			case TRIPLE:
+				return 3 * segment;
+			case SINGLE_BULL:
+				return 25;
+			case BULLS_EYE:
+				return 50;
+			default:
+				throw new IllegalArgumentException("Illegal value for ring: " + ring);
 		}
 	}
 }

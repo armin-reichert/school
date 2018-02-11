@@ -35,18 +35,18 @@ public class DartBoardUI extends JComponent {
 
 	private static String getValueAsText(DartBoard.Ring ring, int segment) {
 		switch (ring) {
-		case OUT:
-			return "Out";
-		case SIMPLE:
-			return "" + segment;
-		case DOUBLE:
-			return "Double " + segment;
-		case TRIPLE:
-			return "Triple " + segment;
-		case SINGLE_BULL:
-			return "Single Bull";
-		case BULLS_EYE:
-			return "Bulls-Eye";
+			case OUT:
+				return "Out";
+			case SIMPLE:
+				return "" + segment;
+			case DOUBLE:
+				return "Double " + segment;
+			case TRIPLE:
+				return "Triple " + segment;
+			case SINGLE_BULL:
+				return "Single Bull";
+			case BULLS_EYE:
+				return "Bulls-Eye";
 		}
 		return "";
 	}
@@ -60,6 +60,8 @@ public class DartBoardUI extends JComponent {
 	private Point currentTarget;
 	private DartBoard.Ring currentRing;
 	private int currentSegment;
+
+	private Font textFont;
 
 	public DartBoardUI() {
 		this(600);
@@ -81,8 +83,7 @@ public class DartBoardUI extends JComponent {
 			throw new RuntimeException("Board image not found");
 		}
 		try {
-			boardImage = ImageIO.read(boardImageSource).getScaledInstance(diameter, diameter,
-					BufferedImage.SCALE_SMOOTH);
+			boardImage = ImageIO.read(boardImageSource).getScaledInstance(diameter, diameter, BufferedImage.SCALE_SMOOTH);
 		} catch (IOException x) {
 			throw new RuntimeException("Could not load board image");
 		}
@@ -90,6 +91,8 @@ public class DartBoardUI extends JComponent {
 		// correction for image inaccuracy
 		int offsetX = (int) (scaling * -2), offsetY = (int) (scaling * 4);
 		center = new Point(diameter / 2 + offsetX, diameter / 2 + offsetY);
+
+		textFont = new Font("Arial", Font.BOLD, diameter / 20);
 
 		Dimension dim = new Dimension(diameter, diameter);
 		setMinimumSize(dim);
@@ -145,8 +148,6 @@ public class DartBoardUI extends JComponent {
 
 	private void draw(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		// g.setColor(Color.BLACK);
-		// g.fillOval(0, 0, diameter, diameter);
 		g.drawImage(boardImage, 0, 0, diameter, diameter, null);
 		g.setColor(Color.YELLOW);
 		drawRing(g, BULLS_EYE);
@@ -168,19 +169,16 @@ public class DartBoardUI extends JComponent {
 			int targetWidth = (int) (scale * dartImage.getWidth(null)),
 					targetHeight = (int) (scale * dartImage.getHeight(null));
 			g.fillOval(currentTarget.x - 5, currentTarget.y - 5, 10, 10);
-			g.drawImage(dartImage, currentTarget.x, currentTarget.y - targetHeight, targetWidth,
-					targetHeight, null);
+			g.drawImage(dartImage, currentTarget.x, currentTarget.y - targetHeight, targetWidth, targetHeight, null);
 		}
 		// draw current value text
 		if (currentRing != null) {
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			g.setColor(Color.GRAY);
-			Font font = new Font("Arial", Font.BOLD, diameter / 30); 
-			g.setFont(font);
+			g.setFont(textFont);
 			String text = getValueAsText(currentRing, currentSegment);
 			int width = g.getFontMetrics().stringWidth(text);
-			g.drawString(text, getWidth() - width, getHeight() -  g.getFontMetrics().getDescent());
+			g.drawString(text, getWidth() - width - 10, getHeight() - g.getFontMetrics().getDescent());
 		}
 	}
 

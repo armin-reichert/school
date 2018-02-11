@@ -10,7 +10,7 @@ import de.amr.schule.darts.checkout.CheckOut;
 public class CheckOutsTableModel extends AbstractTableModel {
 
 	private List<CheckOut> results;
-	
+
 	public CheckOutsTableModel() {
 		results = Collections.emptyList();
 	}
@@ -34,7 +34,7 @@ public class CheckOutsTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		return results.get(rowIndex).toString();
 	}
-	
+
 	@Override
 	public String getColumnName(int column) {
 		return "Check-Outs";
