@@ -53,9 +53,9 @@ public class DartBoardField {
 	public String toString() {
 		switch (type) {
 			case SINGLE:
-				return "" + number;
+				return number == 25 ? "SBull" : "" + number;
 			case DOUBLE:
-				return "D" + number;
+				return number == 25 ? "Bull" : "D" + number;
 			case TRIPLE:
 				return "T" + number;
 		}

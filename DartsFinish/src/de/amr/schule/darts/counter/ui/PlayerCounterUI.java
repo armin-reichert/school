@@ -85,7 +85,7 @@ public class PlayerCounterUI extends JPanel {
 		add(scrollPane, "cell 0 3,grow");
 
 		tblCheckOuts = new JTable();
-		tblCheckOuts.setFont(new Font("Courier New", Font.PLAIN, 16));
+		tblCheckOuts.setFont(new Font("Courier New", Font.PLAIN, 14));
 		tblCheckOuts.setModel(tblModelCheckOuts);
 		scrollPane.setViewportView(tblCheckOuts);
 		tblCheckOuts.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 12));
