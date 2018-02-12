@@ -20,9 +20,7 @@ public class DartsCounterApp {
 
 	public DartsCounterApp() {
 		DartsCounterUI window = new DartsCounterUI();
-		window.setNumPlayers(4);
-		window.setStartPoints(501);
-		window.newGame();
+		window.newGame(4, 501);
 		window.pack();
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
