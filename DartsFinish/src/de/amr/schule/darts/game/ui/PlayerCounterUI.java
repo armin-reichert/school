@@ -1,4 +1,4 @@
-package de.amr.schule.darts.counter.ui;
+package de.amr.schule.darts.game.ui;
 
 import static java.lang.String.format;
 
@@ -17,7 +17,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import de.amr.schule.darts.checkout.CheckOutTable;
-import de.amr.schule.darts.counter.model.Player;
+import de.amr.schule.darts.game.model.Player;
 import net.miginfocom.swing.MigLayout;
 
 public class PlayerCounterUI extends JPanel {

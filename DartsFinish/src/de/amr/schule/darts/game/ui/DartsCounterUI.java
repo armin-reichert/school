@@ -1,4 +1,4 @@
-package de.amr.schule.darts.counter.ui;
+package de.amr.schule.darts.game.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,8 +14,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
-import de.amr.schule.darts.counter.model.DartsGame;
-import de.amr.schule.darts.counter.model.Player;
+import de.amr.schule.darts.game.model.DartsGame;
+import de.amr.schule.darts.game.model.Player;
 import net.miginfocom.swing.MigLayout;
 
 public class DartsCounterUI extends JFrame {
@@ -30,6 +30,7 @@ public class DartsCounterUI extends JFrame {
 	private JPanel panelBoard;
 	private DartBoardUI dartBoardUI;
 	private NewGameDialog newGameDialog;
+	private JPanel panelPlayers;
 
 	public void newGame(int numPlayers, int startPoints) {
 		game = new DartsGame(numPlayers, startPoints);
@@ -45,10 +46,11 @@ public class DartsCounterUI extends JFrame {
 	private void openNewGameDialog() {
 		if (newGameDialog == null) {
 			newGameDialog = new NewGameDialog(this);
+			newGameDialog.setTitle("Neues Spiel");
 			newGameDialog.onOK = () -> newGame(newGameDialog.getNumPlayers(), newGameDialog.getStartPoints());
+			newGameDialog.pack();
 		}
-		newGameDialog.setLocationRelativeTo(this);
-		newGameDialog.pack();
+		newGameDialog.setLocationRelativeTo(panelPlayers);
 		newGameDialog.setVisible(true);
 	}
 
@@ -98,7 +100,7 @@ public class DartsCounterUI extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(new MigLayout("", "[][]", "[][]"));
 
-		JPanel panelPlayers = new JPanel();
+		panelPlayers = new JPanel();
 		panelPlayers.setMaximumSize(new Dimension(800, 32767));
 		panelPlayers.setOpaque(false);
 		getContentPane().add(panelPlayers, "cell 0 0,growy");

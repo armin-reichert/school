@@ -1,4 +1,4 @@
-package de.amr.schule.darts.counter.model;
+package de.amr.schule.darts.game.model;
 
 public class Player {
 

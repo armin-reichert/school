@@ -1,9 +1,9 @@
-package de.amr.schule.darts.counter.ui;
+package de.amr.schule.darts.game.ui;
 
-import static de.amr.schule.darts.counter.model.DartBoard.Ring.BULLS_EYE;
-import static de.amr.schule.darts.counter.model.DartBoard.Ring.DOUBLE;
-import static de.amr.schule.darts.counter.model.DartBoard.Ring.SINGLE_BULL;
-import static de.amr.schule.darts.counter.model.DartBoard.Ring.TRIPLE;
+import static de.amr.schule.darts.game.model.DartBoard.Ring.BULLS_EYE;
+import static de.amr.schule.darts.game.model.DartBoard.Ring.DOUBLE;
+import static de.amr.schule.darts.game.model.DartBoard.Ring.SINGLE_BULL;
+import static de.amr.schule.darts.game.model.DartBoard.Ring.TRIPLE;
 import static java.lang.Math.atan2;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.toDegrees;
@@ -27,7 +27,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
-import de.amr.schule.darts.counter.model.DartBoard;
+import de.amr.schule.darts.game.model.DartBoard;
 
 public class DartBoardUI extends JComponent {
 

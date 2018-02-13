@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import de.amr.schule.darts.counter.ui.DartBoardUI;
+import de.amr.schule.darts.game.ui.DartBoardUI;
 
 public class DartBoardApp {
 

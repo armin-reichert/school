@@ -1,11 +1,11 @@
-package de.amr.schule.darts.counter.model;
+package de.amr.schule.darts.game.model;
 
-import static de.amr.schule.darts.counter.model.DartBoard.Ring.BULLS_EYE;
-import static de.amr.schule.darts.counter.model.DartBoard.Ring.DOUBLE;
-import static de.amr.schule.darts.counter.model.DartBoard.Ring.OUT;
-import static de.amr.schule.darts.counter.model.DartBoard.Ring.SIMPLE;
-import static de.amr.schule.darts.counter.model.DartBoard.Ring.SINGLE_BULL;
-import static de.amr.schule.darts.counter.model.DartBoard.Ring.TRIPLE;
+import static de.amr.schule.darts.game.model.DartBoard.Ring.BULLS_EYE;
+import static de.amr.schule.darts.game.model.DartBoard.Ring.DOUBLE;
+import static de.amr.schule.darts.game.model.DartBoard.Ring.OUT;
+import static de.amr.schule.darts.game.model.DartBoard.Ring.SIMPLE;
+import static de.amr.schule.darts.game.model.DartBoard.Ring.SINGLE_BULL;
+import static de.amr.schule.darts.game.model.DartBoard.Ring.TRIPLE;
 
 import java.util.stream.Stream;
 

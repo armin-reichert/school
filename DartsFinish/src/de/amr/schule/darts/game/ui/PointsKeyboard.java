@@ -1,4 +1,4 @@
-package de.amr.schule.darts.counter.ui;
+package de.amr.schule.darts.game.ui;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;

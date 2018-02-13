@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
-import de.amr.schule.darts.counter.ui.DartsCounterUI;
+import de.amr.schule.darts.game.ui.DartsCounterUI;
 
 public class DartsCounterApp {
 

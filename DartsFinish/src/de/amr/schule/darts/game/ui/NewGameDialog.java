@@ -1,4 +1,4 @@
-package de.amr.schule.darts.counter.ui;
+package de.amr.schule.darts.game.ui;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -34,7 +34,7 @@ public class NewGameDialog extends JDialog {
 
 	public NewGameDialog(JFrame owner) {
 		super(owner);
-		setTitle("Start New Game");
+		setTitle("New Game");
 		getContentPane().setLayout(new MigLayout("", "[][grow]", "[][][][]"));
 
 		JLabel lblAnzahlSpieler = new JLabel("Anzahl Spieler");
