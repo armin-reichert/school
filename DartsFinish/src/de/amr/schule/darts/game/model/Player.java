@@ -9,6 +9,7 @@ public class Player {
 	private int pointsInTake;
 	private int legsCompleted;
 	private float pointsAverage;
+	private int dartsThrown;
 
 	public Player(DartsGame game) {
 		this.game = game;
@@ -74,4 +75,11 @@ public class Player {
 		this.pointsAverage = pointsAverage;
 	}
 
+	public int getDartsThrown() {
+		return dartsThrown;
+	}
+
+	public void setDartsThrown(int dartsThrown) {
+		this.dartsThrown = dartsThrown;
+	}
 }

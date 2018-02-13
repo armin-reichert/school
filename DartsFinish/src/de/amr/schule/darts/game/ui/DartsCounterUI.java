@@ -21,7 +21,6 @@ import net.miginfocom.swing.MigLayout;
 public class DartsCounterUI extends JFrame {
 
 	private DartsGame game;
-	private int dartsThrownInTake;
 	private PlayerCounterUI playerCounter0;
 	private PlayerCounterUI playerCounter1;
 	private PlayerCounterUI playerCounter2;
@@ -39,7 +38,6 @@ public class DartsCounterUI extends JFrame {
 			playerCounters[i].setPlayer(game.getPlayer(i));
 			playerCounters[i].setVisible(i < numPlayers);
 		}
-		dartsThrownInTake = 0;
 		updateView();
 	}
 
@@ -56,19 +54,20 @@ public class DartsCounterUI extends JFrame {
 
 	private void updateScore(int points) {
 		final Player player = game.getCurrentPlayer();
-		dartsThrownInTake += 1;
+		player.setDartsThrown(player.getDartsThrown() + 1);
+		game.setDartsThrownInTake(game.getDartsThrownInTake() + 1);
 		if (points > player.getPointsRemaining()) {
 			noScore();
 			return;
 		}
 		player.addToScore(points);
 		player.addToScoreInTake(points);
-		player.setPointsAverage(player.getPointsScored() / (player.getLegsCompleted() + 1));
-		if (dartsThrownInTake == 3) {
+		player.setPointsAverage((float)player.getPointsScored() / player.getDartsThrown());
+		if (game.getDartsThrownInTake() == 3) {
 			player.setLegsCompleted(player.getLegsCompleted() + 1);
 			game.nextPlayer();
 			game.getCurrentPlayer().setPointsInTake(0);
-			dartsThrownInTake = 0;
+			game.setDartsThrownInTake(0);
 		}
 		updateView();
 	}
@@ -78,9 +77,11 @@ public class DartsCounterUI extends JFrame {
 		player.addToScore(-player.getPointsInTake());
 		player.setLegsCompleted(player.getLegsCompleted() + 1);
 		player.setPointsInTake(0);
+		player.setDartsThrown(player.getDartsThrown() - game.getDartsThrownInTake() + 3);
+		player.setPointsAverage((float)player.getPointsScored() / player.getDartsThrown());
 		game.nextPlayer();
 		game.getCurrentPlayer().setPointsInTake(0);
-		dartsThrownInTake = 0;
+		game.setDartsThrownInTake(0);
 		updateView();
 	}
 

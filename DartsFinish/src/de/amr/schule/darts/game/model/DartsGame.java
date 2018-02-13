@@ -5,6 +5,7 @@ public class DartsGame {
 	private final int startPoints;
 	private final Player[] players;
 	private int turn;
+	private int dartsThrownInTake;
 
 	public DartsGame(int numPlayers, int startPoints) {
 		this.startPoints = startPoints;
@@ -18,6 +19,7 @@ public class DartsGame {
 			players[i].setLegsCompleted(0);
 		}
 		turn = 0;
+		dartsThrownInTake = 0;
 	}
 
 	public int getNumPlayers() {
@@ -38,5 +40,13 @@ public class DartsGame {
 
 	public Player getPlayer(int i) {
 		return i < players.length ? players[i] : null;
+	}
+
+	public int getDartsThrownInTake() {
+		return dartsThrownInTake;
+	}
+
+	public void setDartsThrownInTake(int dartsThrownInTake) {
+		this.dartsThrownInTake = dartsThrownInTake;
 	}
 }
