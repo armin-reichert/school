@@ -26,10 +26,9 @@ public class DartsCounterUI extends JFrame {
 	private PlayerCounterUI playerCounter2;
 	private PlayerCounterUI playerCounter3;
 	private PointsKeyboard pointsKeyboard;
-	private JPanel panelBoard;
-	private DartBoardUI dartBoardUI;
 	private NewGameDialog newGameDialog;
 	private JPanel panelPlayers;
+	private DartBoardUI dartBoardUI;
 
 	public void newGame(int numPlayers, int startPoints) {
 		game = new DartsGame(numPlayers, startPoints);
@@ -99,7 +98,7 @@ public class DartsCounterUI extends JFrame {
 
 		setTitle("Darts");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().setLayout(new MigLayout("", "[][]", "[][]"));
+		getContentPane().setLayout(new MigLayout("", "[][grow,fill]", "[][]"));
 
 		panelPlayers = new JPanel();
 		panelPlayers.setMaximumSize(new Dimension(800, 32767));
@@ -118,18 +117,9 @@ public class DartsCounterUI extends JFrame {
 
 		playerCounter3 = new PlayerCounterUI();
 		panelPlayers.add(playerCounter3, "cell 3 0,grow");
-
-		panelBoard = new JPanel();
-		panelBoard.setOpaque(false);
-		getContentPane().add(panelBoard, "cell 1 0 1 2,grow");
-		panelBoard.setLayout(new MigLayout("", "[fill]", "[]"));
-
+		
 		dartBoardUI = new DartBoardUI();
-		dartBoardUI.addPropertyChangeListener(DartBoardUI.PROPERTY_POINTS, evt -> {
-			int points = (int) evt.getNewValue();
-			updateScore(points);
-		});
-		panelBoard.add(dartBoardUI, "cell 0 0,alignx left");
+		getContentPane().add(dartBoardUI, "cell 1 0 1 2,growx,aligny center");
 
 		JPanel panelKeyboard = new JPanel();
 		panelKeyboard.setBackground(new Color(245, 245, 220));
