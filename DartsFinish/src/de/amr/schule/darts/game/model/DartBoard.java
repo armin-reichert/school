@@ -6,6 +6,9 @@ import static de.amr.schule.darts.game.model.DartBoard.Ring.OUT;
 import static de.amr.schule.darts.game.model.DartBoard.Ring.SIMPLE;
 import static de.amr.schule.darts.game.model.DartBoard.Ring.SINGLE_BULL;
 import static de.amr.schule.darts.game.model.DartBoard.Ring.TRIPLE;
+import static java.lang.Math.atan2;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.toDegrees;
 
 import java.util.stream.Stream;
 
@@ -40,6 +43,14 @@ public class DartBoard {
 		public final float outer;
 	}
 
+	public static int computeRadius(int x, int y) {
+		return (int) sqrt(x * x + y * y);
+	}
+
+	public static int computeAngle(int x, int y) {
+		return ((int) toDegrees(atan2(y, x)) + 360) % 360;
+	}
+
 	public static int getSegment(int angle) {
 		if (angle < 0 || angle > 360) {
 			throw new IllegalArgumentException();
@@ -58,20 +69,20 @@ public class DartBoard {
 			throw new IllegalArgumentException("Ring is NULL");
 		}
 		switch (ring) {
-			case OUT:
-				return 0;
-			case SIMPLE:
-				return segment;
-			case DOUBLE:
-				return 2 * segment;
-			case TRIPLE:
-				return 3 * segment;
-			case SINGLE_BULL:
-				return 25;
-			case BULLS_EYE:
-				return 50;
-			default:
-				throw new IllegalArgumentException("Illegal value for ring: " + ring);
+		case OUT:
+			return 0;
+		case SIMPLE:
+			return segment;
+		case DOUBLE:
+			return 2 * segment;
+		case TRIPLE:
+			return 3 * segment;
+		case SINGLE_BULL:
+			return 25;
+		case BULLS_EYE:
+			return 50;
+		default:
+			throw new IllegalArgumentException("Illegal value for ring: " + ring);
 		}
 	}
 }

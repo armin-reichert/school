@@ -18,7 +18,6 @@ public class DartBoardApp {
 		});
 		frame.getContentPane().add(boardUI);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
 		frame.pack();
 		frame.setVisible(true);
 	}

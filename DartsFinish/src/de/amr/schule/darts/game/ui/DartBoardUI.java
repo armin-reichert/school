@@ -4,9 +4,6 @@ import static de.amr.schule.darts.game.model.DartBoard.Ring.BULLS_EYE;
 import static de.amr.schule.darts.game.model.DartBoard.Ring.DOUBLE;
 import static de.amr.schule.darts.game.model.DartBoard.Ring.SINGLE_BULL;
 import static de.amr.schule.darts.game.model.DartBoard.Ring.TRIPLE;
-import static java.lang.Math.atan2;
-import static java.lang.Math.sqrt;
-import static java.lang.Math.toDegrees;
 import static java.lang.Math.toRadians;
 
 import java.awt.Color;
@@ -17,10 +14,11 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -35,32 +33,30 @@ public class DartBoardUI extends JComponent {
 
 	private static String getValueAsText(DartBoard.Ring ring, int segment) {
 		switch (ring) {
-			case OUT:
-				return "Out";
-			case SIMPLE:
-				return "" + segment;
-			case DOUBLE:
-				return "Double " + segment;
-			case TRIPLE:
-				return "Triple " + segment;
-			case SINGLE_BULL:
-				return "Single Bull";
-			case BULLS_EYE:
-				return "Bulls-Eye";
+		case OUT:
+			return "Out";
+		case SIMPLE:
+			return "" + segment;
+		case DOUBLE:
+			return "Double " + segment;
+		case TRIPLE:
+			return "Triple " + segment;
+		case SINGLE_BULL:
+			return "Single Bull";
+		case BULLS_EYE:
+			return "Bulls-Eye";
 		}
 		return "";
 	}
 
-	private final Image boardImage;
-	private final Image dartImage;
-	private final Point center;
-	private final double scaling;
-	private final int diameter;
-
+	private Image boardImage;
+	private Image dartImage;
+	private Point center;
+	private double scaling;
+	private int diameter;
 	private Point currentTarget;
 	private DartBoard.Ring currentRing;
 	private int currentSegment;
-
 	private Font textFont;
 
 	public DartBoardUI() {
@@ -68,37 +64,8 @@ public class DartBoardUI extends JComponent {
 	}
 
 	public DartBoardUI(int diameter) {
-		this.diameter = diameter;
-		InputStream dartImageSource = getClass().getResourceAsStream("/dart.png");
-		if (dartImageSource == null) {
-			throw new RuntimeException("Dart image not found");
-		}
-		try {
-			dartImage = ImageIO.read(dartImageSource);
-		} catch (IOException e) {
-			throw new RuntimeException("Dart image could not be loaded");
-		}
-		InputStream boardImageSource = getClass().getResourceAsStream("/dartboard.png");
-		if (boardImageSource == null) {
-			throw new RuntimeException("Board image not found");
-		}
-		try {
-			boardImage = ImageIO.read(boardImageSource).getScaledInstance(diameter, diameter, BufferedImage.SCALE_SMOOTH);
-		} catch (IOException x) {
-			throw new RuntimeException("Could not load board image");
-		}
-		scaling = (double) diameter / DartBoard.BOARD_REFERENCE_DIAMETER;
-		// correction for image inaccuracy
-		int offsetX = (int) (scaling * -2), offsetY = (int) (scaling * 4);
-		center = new Point(diameter / 2 + offsetX, diameter / 2 + offsetY);
-
-		textFont = new Font("Arial", Font.BOLD, diameter / 20);
-
-		Dimension dim = new Dimension(diameter, diameter);
-		setMinimumSize(dim);
-		setPreferredSize(dim);
-		setSize(dim);
-
+		loadImages();
+		setDiameter(diameter);
 		addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -113,6 +80,51 @@ public class DartBoardUI extends JComponent {
 				onMouseMoved(e.getX(), e.getY());
 			}
 		});
+		addComponentListener(new ComponentAdapter() {
+
+			@Override
+			public void componentResized(ComponentEvent e) {
+				setDiameter(Math.min(getWidth(), getHeight()));
+			}
+		});
+	}
+
+	private void loadImages() {
+		InputStream dartImageSource = getClass().getResourceAsStream("/dart.png");
+		if (dartImageSource == null) {
+			throw new RuntimeException("Dart image not found");
+		}
+		try {
+			dartImage = ImageIO.read(dartImageSource);
+		} catch (IOException e) {
+			throw new RuntimeException("Dart image could not be loaded");
+		}
+		InputStream boardImageSource = getClass().getResourceAsStream("/dartboard.png");
+		if (boardImageSource == null) {
+			throw new RuntimeException("Board image not found");
+		}
+		try {
+			boardImage = ImageIO.read(boardImageSource);
+		} catch (IOException x) {
+			throw new RuntimeException("Could not load board image");
+		}
+	}
+
+	public void setDiameter(int diameter) {
+		this.diameter = diameter;
+		scaling = (double) diameter / DartBoard.BOARD_REFERENCE_DIAMETER;
+		// correction for image inaccuracy
+		int offsetX = (int) (scaling * -2), offsetY = (int) (scaling * 4);
+		center = new Point(diameter / 2 + offsetX, diameter / 2 + offsetY);
+		textFont = new Font("Arial", Font.BOLD, diameter / 20);
+		Dimension dim = new Dimension(diameter, diameter);
+		setMinimumSize(dim);
+		setPreferredSize(dim);
+		setSize(dim);
+	}
+
+	public int getDiameter() {
+		return diameter;
 	}
 
 	protected void onMouseMoved(int viewX, int viewY) {
@@ -133,8 +145,8 @@ public class DartBoardUI extends JComponent {
 		int x = viewX - center.x;
 		int y = center.y - viewY;
 		// Compute polar coordinate
-		int radius = (int) sqrt(x * x + y * y);
-		int angle = ((int) toDegrees(atan2(y, x)) + 360) % 360;
+		int radius = DartBoard.computeRadius(x, y);
+		int angle = DartBoard.computeAngle(x, y);
 		// Compute segment and ring
 		currentSegment = DartBoard.getSegment(angle);
 		currentRing = DartBoard.getRing(radius, scaling);
