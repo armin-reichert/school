@@ -14,6 +14,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -23,7 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
 import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 import de.amr.schule.darts.game.model.DartBoard;
 
@@ -58,6 +61,7 @@ public class DartBoardUI extends JComponent {
 	private DartBoard.Ring currentRing;
 	private int currentSegment;
 	private Font textFont;
+	private boolean drawSegments;
 
 	public DartBoardUI() {
 		this(600);
@@ -87,6 +91,15 @@ public class DartBoardUI extends JComponent {
 				setDiameter(Math.min(getWidth(), getHeight()));
 			}
 		});
+		getInputMap().put(KeyStroke.getKeyStroke('s'), "showSegments");
+		getActionMap().put("showSegments", new AbstractAction() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				drawSegments = !drawSegments;
+				repaint();
+			}
+		});
 	}
 
 	private void loadImages() {
@@ -113,9 +126,7 @@ public class DartBoardUI extends JComponent {
 	public void setDiameter(int diameter) {
 		this.diameter = diameter;
 		scaling = (double) diameter / DartBoard.BOARD_REFERENCE_DIAMETER;
-		// correction for image inaccuracy
-		int offsetX = (int) (scaling * -2), offsetY = (int) (scaling * 4);
-		center = new Point(diameter / 2 + offsetX, diameter / 2 + offsetY);
+		center = new Point(diameter / 2 - 2, diameter / 2 + 4);
 		textFont = new Font("Arial", Font.BOLD, diameter / 20);
 		Dimension dim = new Dimension(diameter, diameter);
 		setMinimumSize(dim);
@@ -161,29 +172,30 @@ public class DartBoardUI extends JComponent {
 	private void draw(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.drawImage(boardImage, 0, 0, diameter, diameter, null);
-		g.setColor(Color.YELLOW);
-		drawRing(g, BULLS_EYE);
-		drawRing(g, SINGLE_BULL);
-		drawRing(g, TRIPLE);
-		drawRing(g, DOUBLE);
-		for (int angle = 9; angle < 360; angle += 18) {
-			double rad = toRadians(angle);
-			g.translate(center.x, center.y);
-			g.rotate(rad);
-			g.drawLine((int) (scaling * SINGLE_BULL.outer), 0, (int) (scaling * DOUBLE.outer), 0);
-			g.rotate(-rad);
-			g.translate(-center.x, -center.y);
+		if (drawSegments) {
+			g.setColor(Color.YELLOW);
+			drawRing(g, BULLS_EYE);
+			drawRing(g, SINGLE_BULL);
+			drawRing(g, TRIPLE);
+			drawRing(g, DOUBLE);
+			for (int angle = 9; angle < 360; angle += 18) {
+				double rad = toRadians(angle);
+				g.translate(center.x, center.y);
+				g.rotate(rad);
+				g.drawLine((int) (scaling * SINGLE_BULL.outer), 0, (int) (scaling * DOUBLE.outer), 0);
+				g.rotate(-rad);
+				g.translate(-center.x, -center.y);
+			}
 		}
 		// draw dart at target position
 		if (currentTarget != null && currentTarget.distance(center) <= diameter / 2) {
 			g.setColor(currentRing == DartBoard.Ring.OUT ? Color.GRAY : Color.PINK);
-			double scale = scaling / 2;
-			int targetWidth = (int) (scale * dartImage.getWidth(null)),
-					targetHeight = (int) (scale * dartImage.getHeight(null));
+			int targetWidth = diameter / 5;
+			int targetHeight = diameter / 5;
 			g.fillOval(currentTarget.x - 5, currentTarget.y - 5, 10, 10);
 			g.drawImage(dartImage, currentTarget.x, currentTarget.y - targetHeight, targetWidth, targetHeight, null);
 		}
-		// draw current value text
+		// draw current value as text
 		if (currentRing != null) {
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			g.setColor(Color.GRAY);

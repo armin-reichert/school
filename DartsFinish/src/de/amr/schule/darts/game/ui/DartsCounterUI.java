@@ -61,7 +61,7 @@ public class DartsCounterUI extends JFrame {
 		}
 		player.addToScore(points);
 		player.addToScoreInTake(points);
-		player.setPointsAverage((float)player.getPointsScored() / player.getDartsThrown());
+		player.setPointsAverage((float) player.getPointsScored() / player.getDartsThrown());
 		if (game.getDartsThrownInTake() == 3) {
 			player.setLegsCompleted(player.getLegsCompleted() + 1);
 			game.nextPlayer();
@@ -77,7 +77,7 @@ public class DartsCounterUI extends JFrame {
 		player.setLegsCompleted(player.getLegsCompleted() + 1);
 		player.setPointsInTake(0);
 		player.setDartsThrown(player.getDartsThrown() - game.getDartsThrownInTake() + 3);
-		player.setPointsAverage((float)player.getPointsScored() / player.getDartsThrown());
+		player.setPointsAverage((float) player.getPointsScored() / player.getDartsThrown());
 		game.nextPlayer();
 		game.getCurrentPlayer().setPointsInTake(0);
 		game.setDartsThrownInTake(0);
@@ -117,7 +117,7 @@ public class DartsCounterUI extends JFrame {
 
 		playerCounter3 = new PlayerCounterUI();
 		panelPlayers.add(playerCounter3, "cell 3 0,grow");
-		
+
 		dartBoardUI = new DartBoardUI();
 		getContentPane().add(dartBoardUI, "cell 1 0 1 2,growx,aligny center");
 
@@ -172,8 +172,12 @@ public class DartsCounterUI extends JFrame {
 		miQuit.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		menuGame.add(miQuit);
 
-		// Initialize
+		// Event handlers
 		pointsKeyboard.addPropertyChangeListener(PointsKeyboard.PROPERTY_POINTS, evt -> {
+			int points = (int) evt.getNewValue();
+			updateScore(points);
+		});
+		dartBoardUI.addPropertyChangeListener(DartBoardUI.PROPERTY_POINTS, evt -> {
 			int points = (int) evt.getNewValue();
 			updateScore(points);
 		});

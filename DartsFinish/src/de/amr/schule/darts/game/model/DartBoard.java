@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 public class DartBoard {
 
-	public static final int BOARD_REFERENCE_DIAMETER = 900;
+	public static final float BOARD_REFERENCE_DIAMETER = 451f;
 
 	/* List starts with segment "6" (0 degree position) in counter-clockwise direction. */
 	private static int[] SEGMENTS = { 6, 13, 4, 18, 1, 20, 5, 12, 9, 14, 11, 8, 16, 7, 19, 3, 17, 2, 15, 10 };
@@ -23,12 +23,12 @@ public class DartBoard {
 	 * Ring dimensions are given for a board diameter of 900;
 	 */
 	public enum Ring {
-		BULLS_EYE(0, 12),
-		SINGLE_BULL(13, 32),
-		TRIPLE(190, 208),
-		DOUBLE(317, 335),
-		SIMPLE(0, 335),
-		OUT(336, Integer.MAX_VALUE);
+		BULLS_EYE(0, 6.35f),
+		SINGLE_BULL(6.35f, 15.9f),
+		TRIPLE(97.4f, 107f),
+		DOUBLE(160.4f, 170f),
+		SIMPLE(0, 170f),
+		OUT(170f, Integer.MAX_VALUE);
 
 		public boolean contains(int radius, double scaling) {
 			return (int) (scaling * inner) <= radius && radius <= (int) (scaling * outer);
