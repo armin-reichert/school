@@ -7,6 +7,7 @@ import static de.amr.schule.darts.game.model.DartBoard.Ring.SIMPLE;
 import static de.amr.schule.darts.game.model.DartBoard.Ring.SINGLE_BULL;
 import static de.amr.schule.darts.game.model.DartBoard.Ring.TRIPLE;
 import static java.lang.Math.atan2;
+import static java.lang.Math.round;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.toDegrees;
 
@@ -48,7 +49,8 @@ public class DartBoard {
 	}
 
 	public static int computeAngle(int x, int y) {
-		return ((int) toDegrees(atan2(y, x)) + 360) % 360;
+		int angle = (int) round(toDegrees(atan2(y, x)));
+		return angle < 0 ? angle + 360 : angle;
 	}
 
 	public static int getSegment(int angle) {

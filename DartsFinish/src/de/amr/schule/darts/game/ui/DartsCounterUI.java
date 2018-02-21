@@ -119,7 +119,7 @@ public class DartsCounterUI extends JFrame {
 		panelPlayers.add(playerCounter3, "cell 3 0,grow");
 
 		dartBoardUI = new DartBoardUI();
-		getContentPane().add(dartBoardUI, "cell 1 0 1 2,growx,aligny center");
+		getContentPane().add(dartBoardUI, "cell 1 0 1 2,alignx center,aligny center");
 
 		JPanel panelKeyboard = new JPanel();
 		panelKeyboard.setBackground(new Color(245, 245, 220));
