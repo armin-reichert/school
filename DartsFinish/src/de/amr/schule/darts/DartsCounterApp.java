@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
-import de.amr.schule.darts.game.ui.DartsCounterUI;
+import de.amr.schule.darts.game.ui.DartsCounterComponent;
 
 public class DartsCounterApp {
 
@@ -19,7 +19,7 @@ public class DartsCounterApp {
 	}
 
 	public DartsCounterApp() {
-		DartsCounterUI window = new DartsCounterUI();
+		DartsCounterComponent window = new DartsCounterComponent();
 		window.newGame(4, 501);
 		window.pack();
 		window.setLocationRelativeTo(null);

@@ -18,21 +18,21 @@ import de.amr.schule.darts.game.model.DartsGame;
 import de.amr.schule.darts.game.model.Player;
 import net.miginfocom.swing.MigLayout;
 
-public class DartsCounterUI extends JFrame {
+public class DartsCounterComponent extends JFrame {
 
 	private DartsGame game;
-	private PlayerCounterUI playerCounter0;
-	private PlayerCounterUI playerCounter1;
-	private PlayerCounterUI playerCounter2;
-	private PlayerCounterUI playerCounter3;
-	private PointsKeyboard pointsKeyboard;
+	private PlayerCounterComponent playerCounter0;
+	private PlayerCounterComponent playerCounter1;
+	private PlayerCounterComponent playerCounter2;
+	private PlayerCounterComponent playerCounter3;
+	private PointsKeyboardComponent pointsKeyboard;
 	private NewGameDialog newGameDialog;
 	private JPanel panelPlayers;
-	private DartBoardUI dartBoardUI;
+	private DartBoardComponent dartBoardUI;
 
 	public void newGame(int numPlayers, int startPoints) {
 		game = new DartsGame(numPlayers, startPoints);
-		PlayerCounterUI[] playerCounters = { playerCounter0, playerCounter1, playerCounter2, playerCounter3 };
+		PlayerCounterComponent[] playerCounters = { playerCounter0, playerCounter1, playerCounter2, playerCounter3 };
 		for (int i = 0; i < playerCounters.length; ++i) {
 			playerCounters[i].setPlayer(game.getPlayer(i));
 			playerCounters[i].setVisible(i < numPlayers);
@@ -92,9 +92,9 @@ public class DartsCounterUI extends JFrame {
 		playerCounter3.updateView();
 	}
 
-	public DartsCounterUI() {
+	public DartsCounterComponent() {
 		setPreferredSize(new Dimension(1360, 700));
-		getContentPane().setBackground(new Color(245, 245, 220));
+		getContentPane().setBackground(new Color(255, 235, 205));
 
 		setTitle("Darts");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -103,30 +103,43 @@ public class DartsCounterUI extends JFrame {
 		panelPlayers = new JPanel();
 		panelPlayers.setMaximumSize(new Dimension(800, 32767));
 		panelPlayers.setOpaque(false);
-		getContentPane().add(panelPlayers, "cell 0 0,growy");
+		getContentPane().add(panelPlayers, "cell 0 0,alignx left,growy");
 		panelPlayers.setLayout(new MigLayout("", "[][][][]", "[][]"));
 
-		playerCounter0 = new PlayerCounterUI();
+		playerCounter0 = new PlayerCounterComponent();
+		playerCounter0.setNameFont(new Font("Arial Black", Font.PLAIN, 16));
 		panelPlayers.add(playerCounter0, "cell 0 0,grow");
 
-		playerCounter1 = new PlayerCounterUI();
+		playerCounter1 = new PlayerCounterComponent();
+		playerCounter1.setNameFont(new Font("Arial Black", Font.PLAIN, 16));
 		panelPlayers.add(playerCounter1, "cell 1 0,grow");
 
-		playerCounter2 = new PlayerCounterUI();
+		playerCounter2 = new PlayerCounterComponent();
+		playerCounter2.setNameFont(new Font("Arial Black", Font.PLAIN, 16));
 		panelPlayers.add(playerCounter2, "cell 2 0,grow");
 
-		playerCounter3 = new PlayerCounterUI();
+		playerCounter3 = new PlayerCounterComponent();
+		playerCounter3.setNameFont(new Font("Arial Black", Font.PLAIN, 16));
 		panelPlayers.add(playerCounter3, "cell 3 0,grow");
+		
+		JPanel panelBoard = new JPanel();
+		panelBoard.setBackground(new Color(255, 250, 250));
+		getContentPane().add(panelBoard, "cell 1 0 1 2,grow");
+		panelBoard.setLayout(new MigLayout("", "[624px]", "[686px]"));
 
-		dartBoardUI = new DartBoardUI();
-		getContentPane().add(dartBoardUI, "cell 1 0 1 2,alignx center,aligny center");
+		dartBoardUI = new DartBoardComponent();
+		panelBoard.add(dartBoardUI, "cell 0 0,grow");
+		dartBoardUI.addPropertyChangeListener(DartBoardComponent.PROPERTY_POINTS, evt -> {
+			int points = (int) evt.getNewValue();
+			updateScore(points);
+		});
 
 		JPanel panelKeyboard = new JPanel();
-		panelKeyboard.setBackground(new Color(245, 245, 220));
-		getContentPane().add(panelKeyboard, "flowx,cell 0 1,growy");
+		panelKeyboard.setOpaque(false);
+		getContentPane().add(panelKeyboard, "flowx,cell 0 1,alignx left,growy");
 		panelKeyboard.setLayout(new MigLayout("", "[grow][]", "[grow]"));
 
-		pointsKeyboard = new PointsKeyboard();
+		pointsKeyboard = new PointsKeyboardComponent();
 		panelKeyboard.add(pointsKeyboard, "cell 0 0");
 
 		JButton button_NoScore = new JButton("No Score");
@@ -173,11 +186,7 @@ public class DartsCounterUI extends JFrame {
 		menuGame.add(miQuit);
 
 		// Event handlers
-		pointsKeyboard.addPropertyChangeListener(PointsKeyboard.PROPERTY_POINTS, evt -> {
-			int points = (int) evt.getNewValue();
-			updateScore(points);
-		});
-		dartBoardUI.addPropertyChangeListener(DartBoardUI.PROPERTY_POINTS, evt -> {
+		pointsKeyboard.addPropertyChangeListener(PointsKeyboardComponent.PROPERTY_POINTS, evt -> {
 			int points = (int) evt.getNewValue();
 			updateScore(points);
 		});

@@ -30,7 +30,7 @@ import javax.swing.KeyStroke;
 
 import de.amr.schule.darts.game.model.DartBoard;
 
-public class DartBoardUI extends JComponent {
+public class DartBoardComponent extends JComponent {
 
 	public static final String PROPERTY_POINTS = "points";
 
@@ -38,7 +38,7 @@ public class DartBoardUI extends JComponent {
 	private static Image DART_IMAGE;
 
 	static {
-		InputStream dartImageSource = DartBoardUI.class.getResourceAsStream("/dart.png");
+		InputStream dartImageSource = DartBoardComponent.class.getResourceAsStream("/dart.png");
 		if (dartImageSource == null) {
 			throw new RuntimeException("Dart image not found");
 		}
@@ -47,7 +47,7 @@ public class DartBoardUI extends JComponent {
 		} catch (IOException e) {
 			throw new RuntimeException("Dart image could not be loaded");
 		}
-		InputStream boardImageSource = DartBoardUI.class.getResourceAsStream("/dartboard.png");
+		InputStream boardImageSource = DartBoardComponent.class.getResourceAsStream("/dartboard.png");
 		if (boardImageSource == null) {
 			throw new RuntimeException("Board image not found");
 		}
@@ -67,11 +67,11 @@ public class DartBoardUI extends JComponent {
 	private Font textFont;
 	private boolean drawSegments;
 
-	public DartBoardUI() {
+	public DartBoardComponent() {
 		this(600);
 	}
 
-	public DartBoardUI(int diameter) {
+	public DartBoardComponent(int diameter) {
 		setDiameter(diameter);
 		registerEventHandlers();
 	}

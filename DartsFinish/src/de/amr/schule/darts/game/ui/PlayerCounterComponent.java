@@ -9,9 +9,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.Box;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -20,7 +20,7 @@ import de.amr.schule.darts.checkout.CheckOutTable;
 import de.amr.schule.darts.game.model.Player;
 import net.miginfocom.swing.MigLayout;
 
-public class PlayerCounterUI extends JPanel {
+public class PlayerCounterComponent extends JComponent {
 
 	private Player player;
 
@@ -31,15 +31,26 @@ public class PlayerCounterUI extends JPanel {
 	private JLabel lblPointsInTake;
 	private JLabel lblPointsAverage;
 	private Component verticalStrut;
+	private Font nameFont;
 
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+	
+	public Font getNameFont() {
+		return nameFont;
+	}
+	
+	public void setNameFont(Font nameFont) {
+		this.nameFont = nameFont;
+		lblName.setFont(nameFont);
 	}
 
 	public void updateView() {
 		if (player == null)
 			return;
 		lblName.setText(player.getName());
+		lblName.setFont(nameFont);
 		lblPointsRemaining.setText(format("%d", player.getPointsRemaining()));
 		lblPointsRemaining.setForeground(player.isTurn() ? Color.RED : Color.BLACK);
 		lblPointsInTake.setText(format("%d", player.getPointsInTake()));
@@ -48,7 +59,7 @@ public class PlayerCounterUI extends JPanel {
 		tblModelCheckOuts.setResults(CheckOutTable.getCheckOuts(player.getPointsRemaining()));
 	}
 
-	public PlayerCounterUI() {
+	public PlayerCounterComponent() {
 		setOpaque(false);
 		tblModelCheckOuts = new CheckOutsTableModel();
 
@@ -59,7 +70,7 @@ public class PlayerCounterUI extends JPanel {
 		lblName.setBackground(Color.WHITE);
 		lblName.setForeground(new Color(0, 0, 255));
 		lblName.setHorizontalAlignment(SwingConstants.CENTER);
-		lblName.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 26));
+		lblName.setFont(new Font("Arial Black", Font.PLAIN, 16));
 		lblName.setText("Player Name");
 		add(lblName, "cell 0 0,growx");
 		lblName.addMouseListener(new MouseAdapter() {
@@ -104,7 +115,7 @@ public class PlayerCounterUI extends JPanel {
 	}
 
 	protected void editName() {
-		String newName = JOptionPane.showInputDialog(this, "Name für Spieler", player.getName());
+		String newName = JOptionPane.showInputDialog(this, "Spieler benennen", player.getName());
 		if (newName != null && newName.trim().length() > 0) {
 			player.setName(newName);
 			updateView();

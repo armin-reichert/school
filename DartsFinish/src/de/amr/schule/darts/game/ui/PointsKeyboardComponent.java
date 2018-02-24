@@ -8,12 +8,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import net.miginfocom.swing.MigLayout;
 
-public class PointsKeyboard extends JPanel {
+public class PointsKeyboardComponent extends JComponent {
 
 	public static final String PROPERTY_POINTS = "points";
 
@@ -23,7 +24,7 @@ public class PointsKeyboard extends JPanel {
 	private JRadioButton rbTriple;
 	private JButton button_25;
 
-	public PointsKeyboard() {
+	public PointsKeyboardComponent() {
 		setOpaque(false);
 		setPreferredSize(new Dimension(612, 126));
 		setLayout(new MigLayout("", "[grow]", "[][grow]"));

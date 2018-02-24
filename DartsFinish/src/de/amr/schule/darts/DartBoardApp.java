@@ -5,14 +5,14 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import de.amr.schule.darts.game.ui.DartBoardUI;
+import de.amr.schule.darts.game.ui.DartBoardComponent;
 
 public class DartBoardApp {
 
 	public DartBoardApp(int boardSize) {
 		JFrame frame = new JFrame("Dart Board");
-		DartBoardUI boardUI = new DartBoardUI(boardSize);
-		boardUI.addPropertyChangeListener(DartBoardUI.PROPERTY_POINTS, evt -> {
+		DartBoardComponent boardUI = new DartBoardComponent(boardSize);
+		boardUI.addPropertyChangeListener(DartBoardComponent.PROPERTY_POINTS, evt -> {
 			Integer points = (Integer) evt.getNewValue();
 			JOptionPane.showMessageDialog(frame, points + " points");
 		});
