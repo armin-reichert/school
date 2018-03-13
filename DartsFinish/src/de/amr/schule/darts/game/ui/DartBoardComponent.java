@@ -34,8 +34,8 @@ public class DartBoardComponent extends JComponent {
 
 	public static final String PROPERTY_POINTS = "points";
 
-	private static Image BOARD_IMAGE;
-	private static Image DART_IMAGE;
+	private static Image boardImage;
+	private static Image dartImage;
 
 	static {
 		InputStream dartImageSource = DartBoardComponent.class.getResourceAsStream("/dart.png");
@@ -43,7 +43,7 @@ public class DartBoardComponent extends JComponent {
 			throw new RuntimeException("Dart image not found");
 		}
 		try {
-			DART_IMAGE = ImageIO.read(dartImageSource);
+			dartImage = ImageIO.read(dartImageSource);
 		} catch (IOException e) {
 			throw new RuntimeException("Dart image could not be loaded");
 		}
@@ -52,8 +52,8 @@ public class DartBoardComponent extends JComponent {
 			throw new RuntimeException("Board image not found");
 		}
 		try {
-			BOARD_IMAGE = ImageIO.read(boardImageSource);
-		} catch (IOException x) {
+			boardImage = ImageIO.read(boardImageSource);
+		} catch (IOException e) {
 			throw new RuntimeException("Board image could not be loaded");
 		}
 	}
@@ -132,9 +132,8 @@ public class DartBoardComponent extends JComponent {
 		scaling = (double) diameter / DartBoard.BOARD_REFERENCE_DIAMETER;
 		center = new Point(diameter / 2 - 2, diameter / 2 + 4);
 		textFont = new Font("Arial", Font.BOLD, diameter / 20);
-		Dimension dim = new Dimension(diameter, diameter);
-		setPreferredSize(dim);
-		setSize(dim);
+		setPreferredSize(new Dimension(diameter, diameter));
+		repaint();
 	}
 
 	public int getDiameter() {
@@ -169,12 +168,14 @@ public class DartBoardComponent extends JComponent {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		draw((Graphics2D) g);
+		Graphics2D g2 = (Graphics2D) g.create();
+		draw(g2);
+		g2.dispose();
 	}
 
 	private void draw(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.drawImage(BOARD_IMAGE, 0, 0, diameter, diameter, null);
+		g.drawImage(boardImage, 0, 0, diameter, diameter, null);
 		if (drawSegments) {
 			g.setColor(Color.YELLOW);
 			drawRing(g, BULLS_EYE);
@@ -192,11 +193,11 @@ public class DartBoardComponent extends JComponent {
 		}
 		// draw dart at target position
 		if (currentTarget != null && currentTarget.distance(center) <= diameter / 2) {
-			g.setColor(currentRing == DartBoard.Ring.OUT ? Color.GRAY : Color.PINK);
+			g.setColor(currentRing == DartBoard.Ring.OUT ? Color.GRAY : Color.YELLOW);
 			int targetWidth = diameter / 5;
 			int targetHeight = diameter / 5;
 			g.fillOval(currentTarget.x - 5, currentTarget.y - 5, 10, 10);
-			g.drawImage(DART_IMAGE, currentTarget.x, currentTarget.y - targetHeight, targetWidth, targetHeight, null);
+			g.drawImage(dartImage, currentTarget.x, currentTarget.y - targetHeight, targetWidth, targetHeight, null);
 		}
 		// draw current value as text
 		if (currentRing != null) {
