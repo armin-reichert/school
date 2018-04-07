@@ -6,13 +6,17 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.KeyStroke;
 
 import de.amr.schule.darts.game.model.DartsGame;
 import de.amr.schule.darts.game.model.Player;
@@ -29,6 +33,15 @@ public class DartsCounterComponent extends JFrame {
 	private NewGameDialog newGameDialog;
 	private JPanel panelPlayers;
 	private DartBoardComponent dartBoardUI;
+
+	private Action actionNextPlayer = new AbstractAction() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			game.nextPlayer();
+			updateView();
+		}
+	};
 
 	public void newGame(int numPlayers, int startPoints) {
 		game = new DartsGame(numPlayers, startPoints);
@@ -121,7 +134,7 @@ public class DartsCounterComponent extends JFrame {
 		playerCounter3 = new PlayerCounterComponent();
 		playerCounter3.setNameFont(new Font("Arial Black", Font.PLAIN, 16));
 		panelPlayers.add(playerCounter3, "cell 3 0,grow");
-		
+
 		JPanel panelBoard = new JPanel();
 		panelBoard.setBackground(new Color(255, 250, 250));
 		getContentPane().add(panelBoard, "cell 1 0 1 2,grow");
@@ -190,5 +203,8 @@ public class DartsCounterComponent extends JFrame {
 			int points = (int) evt.getNewValue();
 			updateScore(points);
 		});
+
+		panelPlayers.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("N"), "nextPlayer");
+		panelPlayers.getActionMap().put("nextPlayer", actionNextPlayer);
 	}
 }
