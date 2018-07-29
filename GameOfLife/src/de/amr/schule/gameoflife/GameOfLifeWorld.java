@@ -2,8 +2,10 @@ package de.amr.schule.gameoflife;
 
 import java.awt.Graphics2D;
 import java.util.BitSet;
+import java.util.stream.Stream;
 
 import de.amr.easy.game.entity.GameEntity;
+import de.amr.easy.game.sprite.Sprite;
 
 public class GameOfLifeWorld extends GameEntity {
 
@@ -70,7 +72,8 @@ public class GameOfLifeWorld extends GameEntity {
 		for (int row = 0; row < gridSize; row += 1) {
 			for (int col = 0; col < gridSize; col += 1) {
 				int neighbors = countNeighbors(row, col);
-				set(next, row, col, isSet(row, col) && (neighbors == 2 || neighbors == 3) || neighbors == 3);
+				set(next, row, col,
+						isSet(row, col) && (neighbors == 2 || neighbors == 3) || neighbors == 3);
 			}
 		}
 		current = next;
@@ -99,6 +102,16 @@ public class GameOfLifeWorld extends GameEntity {
 		if (isSet(rowBelow, colRight))
 			++neighbors;
 		return neighbors;
+	}
+
+	@Override
+	public Sprite currentSprite() {
+		return null;
+	}
+
+	@Override
+	public Stream<Sprite> getSprites() {
+		return Stream.empty();
 	}
 
 	@Override

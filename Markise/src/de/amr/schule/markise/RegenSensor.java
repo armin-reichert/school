@@ -1,9 +1,11 @@
 package de.amr.schule.markise;
 
 import java.awt.event.KeyEvent;
+import java.util.stream.Stream;
 
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
+import de.amr.easy.game.sprite.Sprite;
 
 public class RegenSensor extends GameEntity {
 
@@ -23,5 +25,15 @@ public class RegenSensor extends GameEntity {
 		} else if (Keyboard.keyDown(KeyEvent.VK_S)) {
 			regenTropfen -= 1;
 		}
+	}
+
+	@Override
+	public Sprite currentSprite() {
+		return null;
+	}
+
+	@Override
+	public Stream<Sprite> getSprites() {
+		return Stream.empty();
 	}
 }

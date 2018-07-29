@@ -4,9 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.util.stream.Stream;
 
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
+import de.amr.easy.game.sprite.Sprite;
 import de.amr.easy.statemachine.StateMachine;
 
 public class Garagentor extends GameEntity {
@@ -108,6 +110,16 @@ public class Garagentor extends GameEntity {
 	}
 
 	@Override
+	public Sprite currentSprite() {
+		return null;
+	}
+
+	@Override
+	public Stream<Sprite> getSprites() {
+		return Stream.empty();
+	}
+
+	@Override
 	public void draw(Graphics2D g) {
 		g.translate(tf.getX(), tf.getY());
 		g.setColor(Color.BLUE);
@@ -117,8 +129,8 @@ public class Garagentor extends GameEntity {
 
 		g.translate(tf.getX(), tf.getY() + 40);
 		g.setFont(new Font("Monospaced", Font.BOLD, 20));
-		g.drawString(String.format("Position: %d, Zustand: %s, Hindernis: %s, %s", position, automat.stateID(),
-				hindernis ? "Ja" : "Nein", lichtBrennt ? "Licht brennt" : ""), 0, 0);
+		g.drawString(String.format("Position: %d, Zustand: %s, Hindernis: %s, %s", position,
+				automat.stateID(), hindernis ? "Ja" : "Nein", lichtBrennt ? "Licht brennt" : ""), 0, 0);
 		g.translate(-tf.getX(), -tf.getY());
 	}
 

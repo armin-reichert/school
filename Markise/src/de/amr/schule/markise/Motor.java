@@ -1,6 +1,9 @@
 package de.amr.schule.markise;
 
+import java.util.stream.Stream;
+
 import de.amr.easy.game.entity.GameEntity;
+import de.amr.easy.game.sprite.Sprite;
 
 public class Motor extends GameEntity {
 
@@ -35,5 +38,15 @@ public class Motor extends GameEntity {
 		} else {
 			markise.setPosition(newPosition);
 		}
+	}
+
+	@Override
+	public Sprite currentSprite() {
+		return null;
+	}
+
+	@Override
+	public Stream<Sprite> getSprites() {
+		return Stream.empty();
 	}
 }

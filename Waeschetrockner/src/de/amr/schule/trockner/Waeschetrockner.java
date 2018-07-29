@@ -23,9 +23,11 @@ public class Waeschetrockner extends GameEntity {
 	public StateMachine<String, String> türAutomat;
 	public StateMachine<Integer, String> zeitAutomat;
 
+	private Sprite s_trockner;
+
 	public Waeschetrockner(WaeschetrocknerApp app) {
 		this.app = app;
-		setSprites(new Sprite(Assets.image("trockner.jpg")));
+		s_trockner = new Sprite(Assets.image("trockner.jpg"));
 
 		// Steuerung
 
@@ -39,7 +41,8 @@ public class Waeschetrockner extends GameEntity {
 		hauptAutomat.changeOnInput("StartTaste", "Bereit", "Läuft", () -> türAutomat.is("Zu"));
 
 		// Läuft
-		hauptAutomat.state("Läuft").entry = state -> state.setDuration(app.pulse.secToTicks(zeitAutomat.stateID()));
+		hauptAutomat.state("Läuft").entry = state -> state
+				.setDuration(app.pulse.secToTicks(zeitAutomat.stateID()));
 		hauptAutomat.changeOnInput("EinAusTaste", "Läuft", "Aus", t -> türAutomat.addInput("TürAuf"));
 		hauptAutomat.changeOnInput("TürAuf", "Läuft", "Aus");
 		hauptAutomat.changeOnTimeout("Läuft", "Aus", t -> Assets.sound("fertig.mp3").play());
@@ -109,4 +112,17 @@ public class Waeschetrockner extends GameEntity {
 			}
 		}
 	}
+
+	// drawing
+
+	@Override
+	public Sprite currentSprite() {
+		return s_trockner;
+	}
+
+	@Override
+	public Stream<Sprite> getSprites() {
+		return Stream.of(s_trockner);
+	}
+
 }

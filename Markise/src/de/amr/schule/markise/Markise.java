@@ -6,10 +6,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.stream.Stream;
 
 import de.amr.easy.game.Application;
 import de.amr.easy.game.assets.Assets;
 import de.amr.easy.game.entity.GameEntity;
+import de.amr.easy.game.sprite.Sprite;
 import de.amr.easy.statemachine.StateMachine;
 
 /**
@@ -147,6 +149,16 @@ public class Markise extends GameEntity {
 	}
 
 	@Override
+	public Sprite currentSprite() {
+		return null;
+	}
+
+	@Override
+	public Stream<Sprite> getSprites() {
+		return Stream.empty();
+	}
+
+	@Override
 	public void draw(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -160,8 +172,9 @@ public class Markise extends GameEntity {
 		g.translate(tf.getX(), tf.getY() + 80);
 		g.setFont(new Font("Monospaced", Font.BOLD, 16));
 		g.drawString(format("Wetter: %s %s  Geschw: %.1f  Position: %d%%  Zustand: %s",
-				regenSensor.esRegnet() ? "Regen" : "Sonnenschein", windSensor.esIstWindig() ? "Windig" : "Windstill",
-				tf.getVelocityX(), position, automat.stateID()), 0, 0);
+				regenSensor.esRegnet() ? "Regen" : "Sonnenschein",
+				windSensor.esIstWindig() ? "Windig" : "Windstill", tf.getVelocityX(), position,
+				automat.stateID()), 0, 0);
 		g.translate(-tf.getX(), -(tf.getY() + 80));
 	}
 }
