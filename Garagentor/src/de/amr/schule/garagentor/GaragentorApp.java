@@ -25,6 +25,6 @@ public class GaragentorApp extends Application {
 
 	@Override
 	public void init() {
-		select(new GaragentorScene(this));
+		setController(new GaragentorScene(this));
 	}
 }

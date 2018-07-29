@@ -21,6 +21,6 @@ public class AmpelApp extends Application {
 
 	@Override
 	public void init() {
-		select(new AmpelScene(this));
+		setController(new AmpelScene(this));
 	}
 }
