@@ -24,7 +24,7 @@ public class GameOfLifeApp extends Application {
 	}
 
 	private int current;
-	private ActiveScene<?>[] scenes;
+	private ActiveScene[] scenes;
 
 	public GameOfLifeApp() {
 		settings.title = "Game of Life";
@@ -36,7 +36,7 @@ public class GameOfLifeApp extends Application {
 
 	@Override
 	public void init() {
-		scenes = new ActiveScene<?>[3];
+		scenes = new ActiveScene[3];
 		scenes[0] = new FiguresScene(this);
 		scenes[1] = new DiamondScene(this);
 		scenes[2] = new RandomFillScene(this);

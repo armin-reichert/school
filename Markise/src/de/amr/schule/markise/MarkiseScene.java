@@ -4,13 +4,24 @@ import java.awt.Graphics2D;
 
 import de.amr.easy.game.scene.ActiveScene;
 
-public class MarkiseScene extends ActiveScene<MarkiseApp> {
+public class MarkiseScene implements ActiveScene {
 
+	private MarkiseApp app;
 	private Markise markise;
 	private Fernbedienung remote;
 
 	public MarkiseScene(MarkiseApp app) {
-		super(app);
+		this.app = app;
+	}
+
+	@Override
+	public int getWidth() {
+		return app.getWidth();
+	}
+
+	@Override
+	public int getHeight() {
+		return app.getHeight();
 	}
 
 	@Override

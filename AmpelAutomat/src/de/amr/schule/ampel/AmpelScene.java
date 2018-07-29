@@ -4,12 +4,23 @@ import java.awt.Graphics2D;
 
 import de.amr.easy.game.scene.ActiveScene;
 
-public class AmpelScene extends ActiveScene<AmpelApp> {
+public class AmpelScene implements ActiveScene {
 
+	private AmpelApp app;
 	private Ampel ampel;
 
 	public AmpelScene(AmpelApp app) {
-		super(app);
+		this.app = app;
+	}
+
+	@Override
+	public int getWidth() {
+		return app.getWidth();
+	}
+
+	@Override
+	public int getHeight() {
+		return app.getHeight();
 	}
 
 	@Override

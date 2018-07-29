@@ -12,16 +12,27 @@ import de.amr.easy.game.scene.ActiveScene;
 import de.amr.schule.gameoflife.GameOfLifeApp;
 import de.amr.schule.gameoflife.GameOfLifeWorld;
 
-public class GameOfLifeScene extends ActiveScene<GameOfLifeApp> {
+public class GameOfLifeScene implements ActiveScene {
 
 	private static final int MIN_SIZE = 16;
 	private static final int MAX_SIZE = 512;
 
+	protected final GameOfLifeApp app;
 	protected final GameOfLifeWorld world;
 
 	public GameOfLifeScene(GameOfLifeApp app) {
-		super(app);
+		this.app = app;
 		world = new GameOfLifeWorld(64, getWidth() / 64);
+	}
+
+	@Override
+	public int getWidth() {
+		return app.getWidth();
+	}
+
+	@Override
+	public int getHeight() {
+		return app.getHeight();
 	}
 
 	@Override
@@ -57,6 +68,7 @@ public class GameOfLifeScene extends ActiveScene<GameOfLifeApp> {
 		world.draw(g);
 		g.setFont(new Font("Monospaced", Font.BOLD, 20));
 		g.setColor(Color.WHITE);
-		g.drawString(String.format("Size: %d", world.getGridSize()), getWidth() - 150, getHeight() - 40);
+		g.drawString(String.format("Size: %d", world.getGridSize()), getWidth() - 150,
+				getHeight() - 40);
 	}
 }
