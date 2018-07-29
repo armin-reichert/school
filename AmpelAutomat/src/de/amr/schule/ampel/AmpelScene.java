@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 
 import de.amr.easy.game.scene.ActiveScene;
 
-public class AmpelScene implements ActiveScene {
+public class AmpelScene implements ActiveScene<Graphics2D> {
 
 	private AmpelApp app;
 	private Ampel ampel;

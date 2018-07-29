@@ -12,7 +12,7 @@ import de.amr.easy.game.scene.ActiveScene;
 import de.amr.schule.gameoflife.GameOfLifeApp;
 import de.amr.schule.gameoflife.GameOfLifeWorld;
 
-public class GameOfLifeScene implements ActiveScene {
+public class GameOfLifeScene implements ActiveScene<Graphics2D> {
 
 	private static final int MIN_SIZE = 16;
 	private static final int MAX_SIZE = 512;

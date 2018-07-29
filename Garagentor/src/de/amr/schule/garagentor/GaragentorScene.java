@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 
 import de.amr.easy.game.scene.ActiveScene;
 
-public class GaragentorScene implements ActiveScene {
+public class GaragentorScene implements ActiveScene<Graphics2D> {
 
 	private GaragentorApp app;
 	private Garagentor tor;

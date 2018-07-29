@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 
 import de.amr.easy.game.scene.ActiveScene;
 
-public class WaeschetrocknerScene implements ActiveScene {
+public class WaeschetrocknerScene implements ActiveScene<Graphics2D> {
 
 	private WaeschetrocknerApp app;
 	private Waeschetrockner trockner;

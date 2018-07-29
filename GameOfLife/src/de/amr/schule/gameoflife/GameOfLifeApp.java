@@ -24,7 +24,7 @@ public class GameOfLifeApp extends Application {
 	}
 
 	private int current;
-	private ActiveScene[] scenes;
+	private ActiveScene<?>[] scenes;
 
 	public GameOfLifeApp() {
 		settings.title = "Game of Life";

@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 
 import de.amr.easy.game.scene.ActiveScene;
 
-public class MarkiseScene implements ActiveScene {
+public class MarkiseScene implements ActiveScene<Graphics2D> {
 
 	private MarkiseApp app;
 	private Markise markise;
