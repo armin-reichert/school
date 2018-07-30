@@ -40,14 +40,11 @@ public class EbeneKoordF implements Ebene {
 	@Override
 	public EbeneParamF toParamF() {
 		if (c != 0) {
-			return new EbeneParamF(new Vec3(0, 0, d / c), new Vec3(1, 0, -a / c),
-					new Vec3(0, 1, -b / c));
+			return new EbeneParamF(new Vec3(0, 0, d / c), new Vec3(1, 0, -a / c), new Vec3(0, 1, -b / c));
 		} else if (b != 0) {
-			return new EbeneParamF(new Vec3(0, d / b, 0), new Vec3(1, -a / b, 0),
-					new Vec3(0, -c / b, 1));
+			return new EbeneParamF(new Vec3(0, d / b, 0), new Vec3(1, -a / b, 0), new Vec3(0, -c / b, 1));
 		} else if (a != 0) {
-			return new EbeneParamF(new Vec3(d / a, 0, 0), new Vec3(-b / a, 1, 0),
-					new Vec3(-c / a, 0, 1));
+			return new EbeneParamF(new Vec3(d / a, 0, 0), new Vec3(-b / a, 1, 0), new Vec3(-c / a, 0, 1));
 		}
 		throw new IllegalStateException("Ebene in Koordinatenform ist ungültig: " + this);
 	}

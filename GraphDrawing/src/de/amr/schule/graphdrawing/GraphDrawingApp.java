@@ -29,7 +29,7 @@ public class GraphDrawingApp {
 
 		// Controller
 		GraphDrawingController controller = new GraphDrawingController(model);
-		
+
 		// ViewController
 		CanvasView canvasView = new CanvasView(model, 800, 800);
 		canvasView.setController(controller);
@@ -39,7 +39,7 @@ public class GraphDrawingApp {
 
 		ConfigView configView = new ConfigView(model, canvasView);
 		configView.setController(controller);
-		
+
 		controller.addViews(canvasView, pointsTableView, configView);
 
 		// Window

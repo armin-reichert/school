@@ -27,12 +27,12 @@ public class Zeichenfläche extends JPanel {
 		this.radius = radius;
 		repaint();
 	}
-	
+
 	public void löschen() {
 		figuren.clear();
 		repaint();
 	}
-	
+
 	public void figurHinzufügen(Path2D figur) {
 		figuren.add(figur);
 		repaint();

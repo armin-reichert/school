@@ -36,11 +36,11 @@ public class PlayerCounterComponent extends JComponent {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-	
+
 	public Font getNameFont() {
 		return nameFont;
 	}
-	
+
 	public void setNameFont(Font nameFont) {
 		this.nameFont = nameFont;
 		lblName.setFont(nameFont);

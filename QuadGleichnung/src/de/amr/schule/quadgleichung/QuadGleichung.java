@@ -7,8 +7,8 @@ import static java.lang.System.out;
 public class QuadGleichung {
 
 	public static void main(String... args) {
-		solve(0,0,0);
-		solve(0,0,1);
+		solve(0, 0, 0);
+		solve(0, 0, 1);
 		solve(1, 0, 0);
 		solve(1, 1, -2);
 		solve(1, 3, 2);

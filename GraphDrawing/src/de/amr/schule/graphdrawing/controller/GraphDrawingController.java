@@ -47,7 +47,7 @@ public class GraphDrawingController {
 		model.setInterval(xmin, xmax);
 		updateViews();
 	}
-	
+
 	public void changeXScale(int xScale, int canvasWidth, int originX) {
 		model.setXscale(xScale);
 		changeXRange(canvasWidth, originX);

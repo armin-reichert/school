@@ -39,12 +39,12 @@ public class DartBoardField {
 
 	public int getValue() {
 		switch (type) {
-			case SINGLE:
-				return number;
-			case DOUBLE:
-				return 2 * number;
-			case TRIPLE:
-				return 3 * number;
+		case SINGLE:
+			return number;
+		case DOUBLE:
+			return 2 * number;
+		case TRIPLE:
+			return 3 * number;
 		}
 		throw new IllegalStateException();
 	}
@@ -52,12 +52,12 @@ public class DartBoardField {
 	@Override
 	public String toString() {
 		switch (type) {
-			case SINGLE:
-				return number == 25 ? "SBull" : "" + number;
-			case DOUBLE:
-				return number == 25 ? "Bull" : "D" + number;
-			case TRIPLE:
-				return "T" + number;
+		case SINGLE:
+			return number == 25 ? "SBull" : "" + number;
+		case DOUBLE:
+			return number == 25 ? "Bull" : "D" + number;
+		case TRIPLE:
+			return "T" + number;
 		}
 		return super.toString();
 	}

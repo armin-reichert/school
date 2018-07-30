@@ -30,11 +30,11 @@ public class SieveOfEratosthenes {
 		this.excluded = new BitSet(maxNumber);
 		this.current = 2;
 	}
-	
+
 	private void exclude(int number) {
 		excluded.set(number - 1);
 	}
-	
+
 	private boolean inSieve(int number) {
 		return !excluded.get(number - 1);
 	}

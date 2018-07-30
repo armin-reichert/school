@@ -61,7 +61,8 @@ public class CheckOutTable {
 		for (int i : fields25) {
 			for (int j : fields25) {
 				for (int k : fields25) {
-					add(new CheckOut(DartBoardField.Single(i), DartBoardField.Single(j), DartBoardField.Double(k)));
+					add(new CheckOut(DartBoardField.Single(i), DartBoardField.Single(j),
+							DartBoardField.Double(k)));
 				}
 			}
 		}
@@ -70,7 +71,8 @@ public class CheckOutTable {
 		for (int i : fields25) {
 			for (int j : fields25) {
 				for (int k : fields25) {
-					add(new CheckOut(DartBoardField.Single(i), DartBoardField.Double(j), DartBoardField.Double(k)));
+					add(new CheckOut(DartBoardField.Single(i), DartBoardField.Double(j),
+							DartBoardField.Double(k)));
 				}
 			}
 		}
@@ -79,7 +81,8 @@ public class CheckOutTable {
 		for (int i : fields25) {
 			for (int j : fields) {
 				for (int k : fields25) {
-					add(new CheckOut(DartBoardField.Single(i), DartBoardField.Triple(j), DartBoardField.Double(k)));
+					add(new CheckOut(DartBoardField.Single(i), DartBoardField.Triple(j),
+							DartBoardField.Double(k)));
 				}
 			}
 		}
@@ -88,7 +91,8 @@ public class CheckOutTable {
 		for (int i : fields25) {
 			for (int j : fields25) {
 				for (int k : fields25) {
-					add(new CheckOut(DartBoardField.Double(i), DartBoardField.Single(j), DartBoardField.Double(k)));
+					add(new CheckOut(DartBoardField.Double(i), DartBoardField.Single(j),
+							DartBoardField.Double(k)));
 				}
 			}
 		}
@@ -97,7 +101,8 @@ public class CheckOutTable {
 		for (int i : fields25) {
 			for (int j : fields25) {
 				for (int k : fields25) {
-					CheckOut finish = new CheckOut(DartBoardField.Double(i), DartBoardField.Double(j), DartBoardField.Double(k));
+					CheckOut finish = new CheckOut(DartBoardField.Double(i), DartBoardField.Double(j),
+							DartBoardField.Double(k));
 					add(finish);
 				}
 			}
@@ -107,7 +112,8 @@ public class CheckOutTable {
 		for (int i : fields25) {
 			for (int j : fields) {
 				for (int k : fields25) {
-					add(new CheckOut(DartBoardField.Double(i), DartBoardField.Triple(j), DartBoardField.Double(k)));
+					add(new CheckOut(DartBoardField.Double(i), DartBoardField.Triple(j),
+							DartBoardField.Double(k)));
 				}
 			}
 		}
@@ -116,7 +122,8 @@ public class CheckOutTable {
 		for (int i : fields) {
 			for (int j : fields25) {
 				for (int k : fields25) {
-					add(new CheckOut(DartBoardField.Triple(i), DartBoardField.Single(j), DartBoardField.Double(k)));
+					add(new CheckOut(DartBoardField.Triple(i), DartBoardField.Single(j),
+							DartBoardField.Double(k)));
 				}
 			}
 		}
@@ -125,7 +132,8 @@ public class CheckOutTable {
 		for (int i : fields) {
 			for (int j : fields25) {
 				for (int k : fields25) {
-					add(new CheckOut(DartBoardField.Triple(i), DartBoardField.Double(j), DartBoardField.Double(k)));
+					add(new CheckOut(DartBoardField.Triple(i), DartBoardField.Double(j),
+							DartBoardField.Double(k)));
 				}
 			}
 		}
@@ -134,7 +142,8 @@ public class CheckOutTable {
 		for (int i : fields) {
 			for (int j : fields) {
 				for (int k : fields25) {
-					add(new CheckOut(DartBoardField.Triple(i), DartBoardField.Triple(j), DartBoardField.Double(k)));
+					add(new CheckOut(DartBoardField.Triple(i), DartBoardField.Triple(j),
+							DartBoardField.Double(k)));
 				}
 			}
 		}

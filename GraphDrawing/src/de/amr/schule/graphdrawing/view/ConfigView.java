@@ -100,11 +100,13 @@ public class ConfigView extends JPanel implements GraphDrawingViewController {
 	}
 
 	private void xscaleChanged(ChangeEvent e) {
-		controller.changeXScale(sliderXScale.getValue(), canvasView.getWidth(), canvasView.getOriginX());
+		controller.changeXScale(sliderXScale.getValue(), canvasView.getWidth(),
+				canvasView.getOriginX());
 	}
 
 	private void yscaleChanged(ChangeEvent e) {
-		controller.changeYScale(sliderYScale.getValue(), canvasView.getWidth(), canvasView.getOriginX());
+		controller.changeYScale(sliderYScale.getValue(), canvasView.getWidth(),
+				canvasView.getOriginX());
 	}
 
 	private void okPressed(ActionEvent e) {

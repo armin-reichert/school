@@ -45,7 +45,8 @@ public class DartsCounterComponent extends JFrame {
 
 	public void newGame(int numPlayers, int startPoints) {
 		game = new DartsGame(numPlayers, startPoints);
-		PlayerCounterComponent[] playerCounters = { playerCounter0, playerCounter1, playerCounter2, playerCounter3 };
+		PlayerCounterComponent[] playerCounters = { playerCounter0, playerCounter1, playerCounter2,
+				playerCounter3 };
 		for (int i = 0; i < playerCounters.length; ++i) {
 			playerCounters[i].setPlayer(game.getPlayer(i));
 			playerCounters[i].setVisible(i < numPlayers);
@@ -57,7 +58,8 @@ public class DartsCounterComponent extends JFrame {
 		if (newGameDialog == null) {
 			newGameDialog = new NewGameDialog(this);
 			newGameDialog.setTitle("Neues Spiel");
-			newGameDialog.onOK = () -> newGame(newGameDialog.getNumPlayers(), newGameDialog.getStartPoints());
+			newGameDialog.onOK = () -> newGame(newGameDialog.getNumPlayers(),
+					newGameDialog.getStartPoints());
 			newGameDialog.pack();
 		}
 		newGameDialog.setLocationRelativeTo(panelPlayers);
@@ -204,7 +206,8 @@ public class DartsCounterComponent extends JFrame {
 			updateScore(points);
 		});
 
-		panelPlayers.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("N"), "nextPlayer");
+		panelPlayers.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("N"),
+				"nextPlayer");
 		panelPlayers.getActionMap().put("nextPlayer", actionNextPlayer);
 	}
 }

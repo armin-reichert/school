@@ -6,7 +6,7 @@ public class ZentrischeStreckungApp {
 
 	public static void main(String[] args) {
 
-		ZentrischeStreckungFenster fenster = new ZentrischeStreckungFenster(1024,700);
+		ZentrischeStreckungFenster fenster = new ZentrischeStreckungFenster(1024, 700);
 		EventQueue.invokeLater(() -> fenster.setVisible(true));
 	}
 

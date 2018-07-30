@@ -60,8 +60,7 @@ public class Kapitel2_3 extends VektorApp {
 	@Test
 	public void a19a() {
 		aufgabe("19a)");
-		EbeneParamF e = new EbeneParamF(new Vec3(0, 1, 0), new Vec3(1, 1, 0),
-				new Vec3(0, 4, 1));
+		EbeneParamF e = new EbeneParamF(new Vec3(0, 1, 0), new Vec3(1, 1, 0), new Vec3(0, 4, 1));
 		$(e);
 		EbeneKoordF ekf = e.toKoordF();
 		$(ekf);
@@ -70,8 +69,7 @@ public class Kapitel2_3 extends VektorApp {
 	@Test
 	public void a19b() {
 		aufgabe("19b)");
-		EbeneParamF e = new EbeneParamF(new Vec3(1, 0, 0), new Vec3(1, 0, 0),
-				new Vec3(0, 1, 0));
+		EbeneParamF e = new EbeneParamF(new Vec3(1, 0, 0), new Vec3(1, 0, 0), new Vec3(0, 1, 0));
 		$(e);
 		EbeneKoordF ekf = e.toKoordF();
 		$(ekf);
@@ -80,8 +78,7 @@ public class Kapitel2_3 extends VektorApp {
 	@Test
 	public void a19c() {
 		aufgabe("19c)");
-		EbeneParamF e = new EbeneParamF(new Vec3(2, 1, 4), new Vec3(3, 2, -1),
-				new Vec3(0, 4, -1));
+		EbeneParamF e = new EbeneParamF(new Vec3(2, 1, 4), new Vec3(3, 2, -1), new Vec3(0, 4, -1));
 		$(e);
 		EbeneKoordF ekf = e.toKoordF();
 		$(ekf);
@@ -90,8 +87,7 @@ public class Kapitel2_3 extends VektorApp {
 	@Test
 	public void a19d() {
 		aufgabe("19d)");
-		EbeneParamF e = new EbeneParamF(new Vec3(0, 0, 0), new Vec3(5, 0, 1),
-				new Vec3(-3, 1, 0));
+		EbeneParamF e = new EbeneParamF(new Vec3(0, 0, 0), new Vec3(5, 0, 1), new Vec3(-3, 1, 0));
 		$(e);
 		EbeneKoordF ekf = e.toKoordF();
 		$(ekf);
@@ -152,12 +148,12 @@ public class Kapitel2_3 extends VektorApp {
 		EbenePNF e = new EbenePNF(diff(b, a), times(0.5, sum(a, b)));
 		$(e.toANF());
 	}
-	
+
 	@Test
 	public void a99() {
 		Ebene e = new EbeneKoordF(4, 0, 1, -8);
 		$(e);
-		Vec3 p = new Vec3(2,1,1);
+		Vec3 p = new Vec3(2, 1, 1);
 		$(p, "Punkt P");
 		$(e.dist(p), "Abstand P von e");
 	}

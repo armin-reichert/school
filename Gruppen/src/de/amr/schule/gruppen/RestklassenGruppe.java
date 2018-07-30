@@ -23,14 +23,13 @@ public class RestklassenGruppe {
 		int spalte_b = Arrays.binarySearch(G, b);
 		return plus[zeile_a][spalte_b];
 	}
-	
+
 	public static void main(String[] args) {
 		prüfeAssoziativität();
 		prüfeNeutralesElement('0');
 		prüfeInversesElement('0');
 		prüfeKommutativität();
 	}
-
 
 	static void prüfeAssoziativität() {
 		out.println("Prüfe Assoziativität:");
@@ -56,7 +55,7 @@ public class RestklassenGruppe {
 		}
 		System.out.println("+ ist assoziativ");
 	}
-	
+
 	static void prüfeNeutralesElement(char e) {
 		out.println("Prüfe Existenz des neutralen Elements:");
 		for (char a : G) {
@@ -86,7 +85,7 @@ public class RestklassenGruppe {
 			}
 		}
 	}
-	
+
 	static void prüfeKommutativität() {
 		out.println("Prüfe Kommutativität:");
 		int zeile = 1;
@@ -95,7 +94,8 @@ public class RestklassenGruppe {
 				char aLinks = plus(a, b);
 				char aRechts = plus(b, a);
 				if (aLinks != aRechts) {
-					out.println(String.format("%2d: (%c + %c) = %c != (%c + %c) = %c", zeile, a, b, aLinks, b, a, aRechts));
+					out.println(String.format("%2d: (%c + %c) = %c != (%c + %c) = %c", zeile, a, b, aLinks, b,
+							a, aRechts));
 					out.println("+ ist nicht kommutativ");
 					return;
 				}
@@ -105,5 +105,5 @@ public class RestklassenGruppe {
 		}
 		System.out.println("+ ist kommutativ");
 	}
-	
+
 }

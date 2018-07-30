@@ -142,7 +142,8 @@ public class Zeichenfläche extends JPanel {
 		super.paintComponent(stift);
 
 		stift.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		stift.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		stift.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 		Stroke thick = new BasicStroke(2);
 		Stroke normal = new BasicStroke();
@@ -189,7 +190,8 @@ public class Zeichenfläche extends JPanel {
 	}
 
 	void zeichneStrahlZuEllipse(Graphics2D stift, Ellipse2D.Float ellipse) {
-		stift.drawLine((int) S.x, (int) S.y, (int) (ellipse.getX() + ellipse.width / 2), (int) ellipse.getY());
+		stift.drawLine((int) S.x, (int) S.y, (int) (ellipse.getX() + ellipse.width / 2),
+				(int) ellipse.getY());
 		stift.drawLine((int) S.x, (int) S.y, (int) (ellipse.getX() + ellipse.width / 2),
 				(int) (ellipse.getY() + ellipse.height));
 	}
