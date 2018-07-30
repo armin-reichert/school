@@ -1,7 +1,7 @@
 package de.amr.schule.zentrisch;
 
-import static de.amr.easy.game.math.Vector2f.sum;
 import static de.amr.easy.game.math.Vector2f.smul;
+import static de.amr.easy.game.math.Vector2f.sum;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

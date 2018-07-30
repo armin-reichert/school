@@ -2,9 +2,9 @@ package de.amr.schule.ampel;
 
 import java.awt.Graphics2D;
 
-import de.amr.easy.game.scene.ActiveScene;
+import de.amr.easy.game.view.ViewController;
 
-public class AmpelScene implements ActiveScene<Graphics2D> {
+public class AmpelScene implements ViewController {
 
 	private AmpelApp app;
 	private Ampel ampel;

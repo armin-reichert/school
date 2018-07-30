@@ -7,7 +7,7 @@ import static java.awt.event.KeyEvent.VK_RIGHT;
 import java.awt.Color;
 
 import de.amr.easy.game.Application;
-import de.amr.easy.game.scene.ActiveScene;
+import de.amr.easy.game.view.ViewController;
 import de.amr.schule.gameoflife.scenes.DiamondScene;
 import de.amr.schule.gameoflife.scenes.FiguresScene;
 import de.amr.schule.gameoflife.scenes.RandomFillScene;
@@ -24,7 +24,7 @@ public class GameOfLifeApp extends Application {
 	}
 
 	private int current;
-	private ActiveScene<?>[] scenes;
+	private ViewController[] scenes;
 
 	public GameOfLifeApp() {
 		settings.title = "Game of Life";
@@ -36,7 +36,7 @@ public class GameOfLifeApp extends Application {
 
 	@Override
 	public void init() {
-		scenes = new ActiveScene[3];
+		scenes = new ViewController[3];
 		scenes[0] = new FiguresScene(this);
 		scenes[1] = new DiamondScene(this);
 		scenes[2] = new RandomFillScene(this);

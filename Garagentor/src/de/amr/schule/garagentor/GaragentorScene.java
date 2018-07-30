@@ -2,9 +2,9 @@ package de.amr.schule.garagentor;
 
 import java.awt.Graphics2D;
 
-import de.amr.easy.game.scene.ActiveScene;
+import de.amr.easy.game.view.ViewController;
 
-public class GaragentorScene implements ActiveScene<Graphics2D> {
+public class GaragentorScene implements ViewController {
 
 	private GaragentorApp app;
 	private Garagentor tor;
