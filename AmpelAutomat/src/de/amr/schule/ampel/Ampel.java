@@ -48,7 +48,7 @@ public class Ampel extends GameEntity {
 
 	@Override
 	public void init() {
-		automat.setLogger(Application.LOG);
+		automat.setLogger(Application.logger);
 		automat.init();
 	}
 

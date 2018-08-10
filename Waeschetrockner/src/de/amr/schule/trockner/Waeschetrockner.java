@@ -66,7 +66,7 @@ public class Waeschetrockner extends GameEntity {
 			}
 		});
 		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(automat -> {
-			automat.setLogger(Application.LOG);
+			automat.setLogger(Application.logger);
 			automat.ticksToSec = app.pulse::ticksToSec;
 		});
 		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(StateMachine::init);
