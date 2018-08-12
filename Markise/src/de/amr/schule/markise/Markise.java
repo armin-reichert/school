@@ -117,8 +117,8 @@ public class Markise extends GameEntity {
 		automat.change("Gestoppt", "FährtEin", regenSensor::esRegnet);
 
 		// Tracing
-		automat.setLogger(Application.logger);
-		automat.ticksToSec = app.pulse::ticksToSec;
+		automat.setLogger(Application.LOGGER);
+		automat.ticksToSec = Application.PULSE::ticksToSec;
 	}
 
 	public void raiseEvent(String event) {

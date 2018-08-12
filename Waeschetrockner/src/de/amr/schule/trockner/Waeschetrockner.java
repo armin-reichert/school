@@ -42,7 +42,7 @@ public class Waeschetrockner extends GameEntity {
 
 		// Läuft
 		hauptAutomat.state("Läuft").entry = state -> state
-				.setDuration(app.pulse.secToTicks(zeitAutomat.stateID()));
+				.setDuration(Application.PULSE.secToTicks(zeitAutomat.stateID()));
 		hauptAutomat.changeOnInput("EinAusTaste", "Läuft", "Aus", t -> türAutomat.addInput("TürAuf"));
 		hauptAutomat.changeOnInput("TürAuf", "Läuft", "Aus");
 		hauptAutomat.changeOnTimeout("Läuft", "Aus", t -> Assets.sound("fertig.mp3").play());
@@ -66,8 +66,8 @@ public class Waeschetrockner extends GameEntity {
 			}
 		});
 		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(automat -> {
-			automat.setLogger(Application.logger);
-			automat.ticksToSec = app.pulse::ticksToSec;
+			automat.setLogger(Application.LOGGER);
+			automat.ticksToSec = Application.PULSE::ticksToSec;
 		});
 		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(StateMachine::init);
 	}

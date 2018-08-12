@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.util.stream.Stream;
 
+import de.amr.easy.game.Application;
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.game.sprite.Sprite;
@@ -29,7 +30,7 @@ public class Garagentor extends GameEntity {
 
 		automat.state("Geschlossen").entry = s -> {
 			lichtAn();
-			s.setDuration(app.pulse.secToTicks(5));
+			s.setDuration(Application.PULSE.secToTicks(5));
 		};
 
 		automat.state("Geschlossen").exit = s -> {
@@ -129,8 +130,8 @@ public class Garagentor extends GameEntity {
 
 		g.translate(tf.getX(), tf.getY() + 40);
 		g.setFont(new Font("Monospaced", Font.BOLD, 20));
-		g.drawString(String.format("Position: %d, Zustand: %s, Hindernis: %s, %s", position,
-				automat.stateID(), hindernis ? "Ja" : "Nein", lichtBrennt ? "Licht brennt" : ""), 0, 0);
+		g.drawString(String.format("Position: %d, Zustand: %s, Hindernis: %s, %s", position, automat.stateID(),
+				hindernis ? "Ja" : "Nein", lichtBrennt ? "Licht brennt" : ""), 0, 0);
 		g.translate(-tf.getX(), -tf.getY());
 	}
 
