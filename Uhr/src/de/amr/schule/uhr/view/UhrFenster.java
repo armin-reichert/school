@@ -36,8 +36,7 @@ public class UhrFenster extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Color gewählteFarbe = JColorChooser.showDialog(UhrFenster.this, "Textfarbe auswählen",
-					textFarbe);
+			Color gewählteFarbe = JColorChooser.showDialog(UhrFenster.this, "Textfarbe auswählen", textFarbe);
 			if (gewählteFarbe != null) {
 				textFarbe = gewählteFarbe;
 				bahnhofsUhr.setFarbe(gewählteFarbe);
@@ -66,8 +65,7 @@ public class UhrFenster extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Color gewählteFarbe = JColorChooser.showDialog(UhrFenster.this, "Hintergrundfarbe auswählen",
-					Color.BLUE);
+			Color gewählteFarbe = JColorChooser.showDialog(UhrFenster.this, "Hintergrundfarbe auswählen", Color.BLUE);
 			if (gewählteFarbe != null) {
 				contentPanel.setzeFarbe(gewählteFarbe);
 			}

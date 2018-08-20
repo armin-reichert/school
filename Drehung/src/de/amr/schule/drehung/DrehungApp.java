@@ -14,8 +14,7 @@ public class DrehungApp {
 		Point2D p = new Point2D.Double(5, 0);
 		for (double phi = 0; phi <= 360; phi = phi + 30) {
 			Point2D q = drehe(p, toRadians(phi));
-			out.println(
-					format("(%g|%g) drehe(%g) -> (%g|%g)", p.getX(), p.getY(), phi, q.getX(), q.getY()));
+			out.println(format("(%g|%g) drehe(%g) -> (%g|%g)", p.getX(), p.getY(), phi, q.getX(), q.getY()));
 		}
 	}
 

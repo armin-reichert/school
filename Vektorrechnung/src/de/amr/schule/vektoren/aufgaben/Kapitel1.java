@@ -127,8 +127,7 @@ public class Kapitel1 extends VektorApp {
 
 	@Test
 	public void a17() {
-		Vec3 a = new Vec3(3, -1, -2), b = new Vec3(-2, 1, -3), c = new Vec3(-1, 5, 0),
-				d = new Vec3(9, 1, 2);
+		Vec3 a = new Vec3(3, -1, -2), b = new Vec3(-2, 1, -3), c = new Vec3(-1, 5, 0), d = new Vec3(9, 1, 2);
 		Vec3 ab = diff(b, a);
 		Vec3 cd = diff(d, c);
 		$(ab, "AB");
@@ -149,8 +148,7 @@ public class Kapitel1 extends VektorApp {
 			a = rnd.nextDouble();
 			b = rnd.nextDouble();
 			assertTrue("Assoziativgesetz", times(a, times(b, va)).equals(times(a * b, va)));
-			assertTrue("1. Distributivgesetz",
-					times(a, sum(va, vb)).equals(sum(times(a, va), times(a, vb))));
+			assertTrue("1. Distributivgesetz", times(a, sum(va, vb)).equals(sum(times(a, va), times(a, vb))));
 			assertTrue("2. Distributivgesetz", times(a + b, va).equals(sum(times(a, va), times(b, vb))));
 			assertTrue("Neutrales Element", times(1, va).equals(va));
 		}

@@ -51,9 +51,9 @@ public class DigitalUhr extends JPanel {
 		g.setRenderingHint(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
 		g.setFont(font);
 		g.setColor(farbe);
-		g.drawString(uhrwerk == null ? "00 : 00 : 00"
-				: String.format("%02d : %02d : %02d", uhrwerk.stunde(), uhrwerk.minute(),
-						uhrwerk.sekunde()),
+		g.drawString(
+				uhrwerk == null ? "00 : 00 : 00"
+						: String.format("%02d : %02d : %02d", uhrwerk.stunde(), uhrwerk.minute(), uhrwerk.sekunde()),
 				0, getHeight());
 	}
 }

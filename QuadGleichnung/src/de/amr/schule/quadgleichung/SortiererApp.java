@@ -68,8 +68,7 @@ public class SortiererApp {
 		nachAlter.sort(personen);
 		print(personen);
 
-		SortiererDurchAuswahl<Person> nachAlterAbsteigend = new SortiererDurchAuswahl<>(
-				new PersonNachAlterAbsteigend());
+		SortiererDurchAuswahl<Person> nachAlterAbsteigend = new SortiererDurchAuswahl<>(new PersonNachAlterAbsteigend());
 		nachAlterAbsteigend.sort(personen);
 		print(personen);
 

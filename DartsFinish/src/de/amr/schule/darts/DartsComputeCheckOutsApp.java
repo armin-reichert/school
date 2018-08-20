@@ -56,10 +56,8 @@ public class DartsComputeCheckOutsApp {
 		sb.append("<html>\n");
 		sb.append("<head>\n");
 		sb.append("<style>\n");
-		sb.append(
-				" .scorelink { text-align:right; font-family: Arial; font-size: 20pt; color: lightgray; });"
-						+ " .scorelink a { text-decoration: none; }" + " .scorelink a:visited { color: blue; }"
-						+ "\n");
+		sb.append(" .scorelink { text-align:right; font-family: Arial; font-size: 20pt; color: lightgray; });"
+				+ " .scorelink a { text-decoration: none; }" + " .scorelink a:visited { color: blue; }" + "\n");
 		sb.append("</style>\n");
 		sb.append("</head>\n");
 		sb.append("<body>\n");
@@ -116,8 +114,7 @@ public class DartsComputeCheckOutsApp {
 
 		for (int score = upper; score >= lower; score -= 1) {
 			sb.append("<tr>\n");
-			sb.append("<td valign='top'>").append("<a id='" + score + "'>\n").append(score)
-					.append("</a></td>\n");
+			sb.append("<td valign='top'>").append("<a id='" + score + "'>\n").append(score).append("</a></td>\n");
 			sb.append("<td>\n");
 			for (CheckOut finish : CheckOutTable.getCheckOuts(score)) {
 				sb.append(finish).append("&nbsp;&nbsp;\n");

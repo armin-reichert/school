@@ -120,7 +120,7 @@ public class Uhrwerk {
 	 * Setzt einen neuen Sekundenwert. Falls dieser Wert ungültig ist, wird eine Exception ausgelöst.
 	 * 
 	 * @param neueSekunde
-	 *          gibt den neuen Sekundenwert an
+	 *                      gibt den neuen Sekundenwert an
 	 * @return das Uhrwerk
 	 */
 	public Uhrwerk sekunde(int neueSekunde) {

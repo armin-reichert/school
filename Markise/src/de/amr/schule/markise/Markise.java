@@ -172,9 +172,8 @@ public class Markise extends GameEntity {
 		g.translate(tf.getX(), tf.getY() + 80);
 		g.setFont(new Font("Monospaced", Font.BOLD, 16));
 		g.drawString(format("Wetter: %s %s  Geschw: %.1f  Position: %d%%  Zustand: %s",
-				regenSensor.esRegnet() ? "Regen" : "Sonnenschein",
-				windSensor.esIstWindig() ? "Windig" : "Windstill", tf.getVelocityX(), position,
-				automat.stateID()), 0, 0);
+				regenSensor.esRegnet() ? "Regen" : "Sonnenschein", windSensor.esIstWindig() ? "Windig" : "Windstill",
+				tf.getVelocityX(), position, automat.stateID()), 0, 0);
 		g.translate(-tf.getX(), -(tf.getY() + 80));
 	}
 }

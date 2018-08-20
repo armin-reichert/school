@@ -36,4 +36,8 @@ public class WindSensor extends GameEntity {
 	public Stream<Sprite> getSprites() {
 		return Stream.empty();
 	}
+
+	@Override
+	public void init() {
+	}
 }

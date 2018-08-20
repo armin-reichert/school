@@ -62,11 +62,11 @@ public class Vec3 {
 	 * Erzeugt Vektor mit gegebenen Koordinaten.
 	 * 
 	 * @param x
-	 *          x-Koordinate
+	 *            x-Koordinate
 	 * @param y
-	 *          y-Koordinate
+	 *            y-Koordinate
 	 * @param z
-	 *          z-Koordinate
+	 *            z-Koordinate
 	 */
 	public Vec3(double x, double y, double z) {
 		this.x = x;
@@ -78,7 +78,7 @@ public class Vec3 {
 	 * Copy constructor.
 	 * 
 	 * @param v
-	 *          vector to copy
+	 *            vector to copy
 	 */
 	public Vec3(Vec3 v) {
 		this(v.x, v.y, v.z);
@@ -120,7 +120,7 @@ public class Vec3 {
 	 * Addition beliebig vieler Vektoren.
 	 * 
 	 * @param vs
-	 *          Vektoren {@code v1, ..., vN}
+	 *             Vektoren {@code v1, ..., vN}
 	 * @return Summenvektor {@code v1 + ... + vN} oder Nullvektor, falls {@code N = 0}
 	 */
 	public static Vec3 sum(Vec3... vs) {
@@ -140,9 +140,9 @@ public class Vec3 {
 	 * Subtraktion von Vektoren.
 	 * 
 	 * @param u
-	 *          Vektor
+	 *            Vektor
 	 * @param v
-	 *          Vektor
+	 *            Vektor
 	 * @return Differenzvektor {@code u - v}
 	 */
 	public static Vec3 diff(Vec3 u, Vec3 v) {
@@ -153,9 +153,9 @@ public class Vec3 {
 	 * Skalare Multiplikation zweier Vektoren.
 	 * 
 	 * @param s
-	 *          Skalar
+	 *            Skalar
 	 * @param v
-	 *          Vektor
+	 *            Vektor
 	 * @return s-faches von v
 	 */
 	public static Vec3 times(double s, Vec3 v) {
@@ -166,7 +166,7 @@ public class Vec3 {
 	 * Gegenvektor.
 	 * 
 	 * @param v
-	 *          Vektor
+	 *            Vektor
 	 * @return Gegenvektor zu v
 	 */
 	public static Vec3 inv(Vec3 v) {
@@ -177,9 +177,9 @@ public class Vec3 {
 	 * Skalarprodukt zweier Vektoren.
 	 * 
 	 * @param u
-	 *          Vektor
+	 *            Vektor
 	 * @param v
-	 *          Vektor
+	 *            Vektor
 	 * @return Skalarprodukt {@code u * v}
 	 */
 	public static double dot(Vec3 u, Vec3 v) {
@@ -190,9 +190,9 @@ public class Vec3 {
 	 * Winkel zwischen zwei Vektoren.
 	 * 
 	 * @param u
-	 *          Vektor
+	 *            Vektor
 	 * @param v
-	 *          Vektor
+	 *            Vektor
 	 * @return der eingeschlossene Winkel
 	 */
 	public static double angle(Vec3 u, Vec3 v) {
@@ -203,9 +203,9 @@ public class Vec3 {
 	 * Kreuzprodukt zweier Vektoren.
 	 * 
 	 * @param u
-	 *          Vektor
+	 *            Vektor
 	 * @param v
-	 *          Vektor
+	 *            Vektor
 	 * @return Kreuzproduktvektor {@code u x v}
 	 */
 	public static Vec3 cross(Vec3 u, Vec3 v) {
@@ -216,11 +216,11 @@ public class Vec3 {
 	 * Spatprodukt von 3 Vektoren.
 	 * 
 	 * @param u
-	 *          Vektor
+	 *            Vektor
 	 * @param v
-	 *          Vektor
+	 *            Vektor
 	 * @param w
-	 *          Vektor
+	 *            Vektor
 	 * @return Spatprodukt {@code (u x v) * w}
 	 */
 	public static double spat(Vec3 u, Vec3 v, Vec3 w) {
@@ -231,7 +231,7 @@ public class Vec3 {
 	 * Länge eines Vektors.
 	 * 
 	 * @param v
-	 *          Vektor
+	 *            Vektor
 	 * @return Länge des Vektors
 	 */
 	public static double length(Vec3 v) {
@@ -242,7 +242,7 @@ public class Vec3 {
 	 * Quadrat der Länge eines Vektors.
 	 * 
 	 * @param v
-	 *          Vektor
+	 *            Vektor
 	 * @return Quadrat der Länge des Vektors
 	 */
 	public static double lengthSqr(Vec3 v) {
@@ -253,9 +253,9 @@ public class Vec3 {
 	 * Testet Vektoren auf Kollinearität.
 	 * 
 	 * @param u
-	 *          Vektor
+	 *            Vektor
 	 * @param v
-	 *          Vektor
+	 *            Vektor
 	 * @return ob die Vektoren kollinear sind
 	 */
 	public static boolean collinear(Vec3 u, Vec3 v) {
@@ -266,9 +266,9 @@ public class Vec3 {
 	 * Testet Vektoren auf Orthogonalität.
 	 * 
 	 * @param u
-	 *          Vektor
+	 *            Vektor
 	 * @param v
-	 *          Vektor
+	 *            Vektor
 	 * @return ob die Vektoren orthogonal sind
 	 */
 	public static boolean orthogonal(Vec3 u, Vec3 v) {
@@ -280,7 +280,7 @@ public class Vec3 {
 	/**
 	 * 
 	 * @param v
-	 *          zu addierender Vektor
+	 *            zu addierender Vektor
 	 * @return Summe von diesem und dem zu addierenden Vektor
 	 */
 	public Vec3 add(Vec3 v) {
@@ -290,7 +290,7 @@ public class Vec3 {
 	/**
 	 * 
 	 * @param v
-	 *          zu subtrahierender Vektor
+	 *            zu subtrahierender Vektor
 	 * @return Differenz von diesem und dem zu subtrahierenden Vektor
 	 */
 	public Vec3 sub(Vec3 v) {
@@ -307,7 +307,7 @@ public class Vec3 {
 	/**
 	 * 
 	 * @param s
-	 *          Skalarer Faktor
+	 *            Skalarer Faktor
 	 * @return Skalares Vielfaches von diesem Vektor
 	 */
 	public Vec3 times(double s) {
@@ -317,7 +317,7 @@ public class Vec3 {
 	/**
 	 * 
 	 * @param v
-	 *          Vektor, mit dem das Skalarprodukt gebildet werden soll
+	 *            Vektor, mit dem das Skalarprodukt gebildet werden soll
 	 * @return Skalarprodukt von diesem mit dem gegebenen Vektor
 	 */
 	public double dot(Vec3 v) {
@@ -327,7 +327,7 @@ public class Vec3 {
 	/**
 	 * 
 	 * @param v
-	 *          Vektor, mit dem das Kreuzprodukt gebildet werden soll
+	 *            Vektor, mit dem das Kreuzprodukt gebildet werden soll
 	 * @return Kreuzproduktvektor
 	 */
 	public Vec3 cross(Vec3 v) {

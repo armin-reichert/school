@@ -63,4 +63,9 @@ public class Fernbedienung extends GameEntity {
 			.ifPresent(event -> this.event = event);
 		}
 		/*@formatter:on*/
+
+	@Override
+	public void init() {
+
+	}
 }

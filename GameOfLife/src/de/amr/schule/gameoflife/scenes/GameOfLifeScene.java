@@ -68,7 +68,6 @@ public class GameOfLifeScene implements ViewController {
 		world.draw(g);
 		g.setFont(new Font("Monospaced", Font.BOLD, 20));
 		g.setColor(Color.WHITE);
-		g.drawString(String.format("Size: %d", world.getGridSize()), getWidth() - 150,
-				getHeight() - 40);
+		g.drawString(String.format("Size: %d", world.getGridSize()), getWidth() - 150, getHeight() - 40);
 	}
 }

@@ -45,8 +45,8 @@ public class TextUhr extends JPanel {
 		g.setColor(farbe);
 		String text = "0 Stunden 0 Minuten 0 Sekunden";
 		if (uhrwerk != null) {
-			text = String.format("%02d Stunden %02d Minuten %02d Sekunden", uhrwerk.stunde(),
-					uhrwerk.minute(), uhrwerk.sekunde());
+			text = String.format("%02d Stunden %02d Minuten %02d Sekunden", uhrwerk.stunde(), uhrwerk.minute(),
+					uhrwerk.sekunde());
 		}
 		g.drawString(text, 10, 30);
 	}

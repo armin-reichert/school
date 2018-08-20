@@ -20,11 +20,11 @@ public class EbeneParamF implements Ebene {
 	 * Erzeugt eine Ebene in Parameterform mit Aufpunkt a und Richtungsvektoren u und v.
 	 * 
 	 * @param a
-	 *          Aufpunkt der Ebene
+	 *            Aufpunkt der Ebene
 	 * @param u
-	 *          Richtungsvektor
+	 *            Richtungsvektor
 	 * @param v
-	 *          Richtungsvektor
+	 *            Richtungsvektor
 	 */
 	public EbeneParamF(Vec3 a, Vec3 u, Vec3 v) {
 		if (collinear(u, v)) {
@@ -39,11 +39,11 @@ public class EbeneParamF implements Ebene {
 	 * Erzeugt eine Ebene in Parameterform durch die Punkte a, b und c.
 	 * 
 	 * @param a
-	 *          Punkt der Ebene
+	 *            Punkt der Ebene
 	 * @param b
-	 *          Punkt der Ebene
+	 *            Punkt der Ebene
 	 * @param c
-	 *          Punkt der Ebene
+	 *            Punkt der Ebene
 	 */
 	public static EbeneParamF dreiPunkte(Vec3 a, Vec3 b, Vec3 c) {
 		Vec3 u = diff(b, a);

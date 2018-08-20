@@ -21,9 +21,9 @@ public class EbenePNF implements Ebene {
 	 * Erzeugt eine Ebene in Punkt-Normalenform {@code n * (x - a) = c}.
 	 * 
 	 * @param n
-	 *          Normalenvektor
+	 *            Normalenvektor
 	 * @param a
-	 *          Aufpunkt
+	 *            Aufpunkt
 	 */
 	public EbenePNF(Vec3 n, Vec3 a) {
 		this.n = n;

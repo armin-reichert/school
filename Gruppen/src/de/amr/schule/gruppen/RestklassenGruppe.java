@@ -42,8 +42,7 @@ public class RestklassenGruppe {
 					char klammerRechts = plus(a, plus(b, c)); // a + (b + c )
 					char klammerLinks = plus(plus(a, b), c); // (a + b) + c
 					if (klammerRechts != klammerLinks) {
-						out.println(
-								String.format(fmtNeq, zeile, a, b, c, klammerRechts, a, b, c, klammerLinks));
+						out.println(String.format(fmtNeq, zeile, a, b, c, klammerRechts, a, b, c, klammerLinks));
 						out.println("+ ist nicht assoziativ");
 						return;
 					} else {
@@ -94,8 +93,7 @@ public class RestklassenGruppe {
 				char aLinks = plus(a, b);
 				char aRechts = plus(b, a);
 				if (aLinks != aRechts) {
-					out.println(String.format("%2d: (%c + %c) = %c != (%c + %c) = %c", zeile, a, b, aLinks, b,
-							a, aRechts));
+					out.println(String.format("%2d: (%c + %c) = %c != (%c + %c) = %c", zeile, a, b, aLinks, b, a, aRechts));
 					out.println("+ ist nicht kommutativ");
 					return;
 				}

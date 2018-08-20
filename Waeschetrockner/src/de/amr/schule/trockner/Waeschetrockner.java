@@ -41,8 +41,7 @@ public class Waeschetrockner extends GameEntity {
 		hauptAutomat.changeOnInput("StartTaste", "Bereit", "Läuft", () -> türAutomat.is("Zu"));
 
 		// Läuft
-		hauptAutomat.state("Läuft").entry = state -> state
-				.setDuration(Application.PULSE.secToTicks(zeitAutomat.stateID()));
+		hauptAutomat.state("Läuft").entry = state -> state.setDuration(Application.PULSE.secToTicks(zeitAutomat.stateID()));
 		hauptAutomat.changeOnInput("EinAusTaste", "Läuft", "Aus", t -> türAutomat.addInput("TürAuf"));
 		hauptAutomat.changeOnInput("TürAuf", "Läuft", "Aus");
 		hauptAutomat.changeOnTimeout("Läuft", "Aus", t -> Assets.sound("fertig.mp3").play());

@@ -114,8 +114,7 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 		registerActionForKey("G", "toggleGrid", e -> toggleGrid());
 	}
 
-	private void registerActionForKey(String key, String actionName,
-			Consumer<ActionEvent> actionHandler) {
+	private void registerActionForKey(String key, String actionName, Consumer<ActionEvent> actionHandler) {
 		AbstractAction action = new AbstractAction(actionName) {
 
 			@Override
@@ -258,15 +257,14 @@ public class CanvasView extends JPanel implements GraphDrawingViewController {
 		}
 	}
 
-	private void drawPoint(Graphics2D g, double mx, double my, Color color, int size, String text,
-			int offsetX, int offsetY) {
+	private void drawPoint(Graphics2D g, double mx, double my, Color color, int size, String text, int offsetX,
+			int offsetY) {
 		int x = viewX(mx);
 		int y = viewY(my);
 		g.setColor(color);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.fillRect(x - size / 2, y - size / 2, size, size);
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g.setFont(FONT);
 		g.drawString(text, x + offsetX, y + offsetY);
 	}

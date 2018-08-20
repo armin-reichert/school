@@ -72,8 +72,7 @@ public class GameOfLifeWorld extends GameEntity {
 		for (int row = 0; row < gridSize; row += 1) {
 			for (int col = 0; col < gridSize; col += 1) {
 				int neighbors = countNeighbors(row, col);
-				set(next, row, col,
-						isSet(row, col) && (neighbors == 2 || neighbors == 3) || neighbors == 3);
+				set(next, row, col, isSet(row, col) && (neighbors == 2 || neighbors == 3) || neighbors == 3);
 			}
 		}
 		current = next;
@@ -125,5 +124,9 @@ public class GameOfLifeWorld extends GameEntity {
 			}
 		}
 		g.translate(-tf.getX(), -tf.getY());
+	}
+
+	@Override
+	public void init() {
 	}
 }

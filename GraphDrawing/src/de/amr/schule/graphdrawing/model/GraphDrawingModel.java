@@ -10,8 +10,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 public class GraphDrawingModel {
 
 	public static final String DEFAULT_TERM_TEXT = "x^2";
-	public static final Expression DEFAULT_TERM = new ExpressionBuilder(DEFAULT_TERM_TEXT)
-			.variable("x").build();
+	public static final Expression DEFAULT_TERM = new ExpressionBuilder(DEFAULT_TERM_TEXT).variable("x").build();
 
 	private final List<GraphPoint> points = new ArrayList<>();
 	private int xscale;

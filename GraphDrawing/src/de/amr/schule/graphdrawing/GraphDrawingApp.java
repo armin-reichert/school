@@ -45,8 +45,7 @@ public class GraphDrawingApp {
 		// Window
 		JFrame window = new JFrame("Funktionsgraphen zeichnen");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.getContentPane().add(new MainWindowLayout(canvasView, pointsTableView, configView),
-				BorderLayout.CENTER);
+		window.getContentPane().add(new MainWindowLayout(canvasView, pointsTableView, configView), BorderLayout.CENTER);
 		window.getRootPane().setDefaultButton(configView.getButtonOK());
 		window.pack();
 		window.setLocationRelativeTo(null);

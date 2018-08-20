@@ -16,9 +16,9 @@ public class EbeneANF implements Ebene {
 	 * Erzeugt eine Ebene der Form <code>e: n * x = c</code>.
 	 * 
 	 * @param n
-	 *          Normalenvektor
+	 *            Normalenvektor
 	 * @param c
-	 *          Konstante
+	 *            Konstante
 	 */
 	public EbeneANF(Vec3 n, double c) {
 		this.n = n;
