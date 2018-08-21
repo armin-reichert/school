@@ -11,7 +11,7 @@ public class WaeschetrocknerApp extends Application {
 	public WaeschetrocknerApp() {
 		settings.title = "Wäschetrockner Simulation";
 		settings.width = 800;
-		pulse.setFrequency(10);
+		PULSE.setFrequency(10);
 	}
 
 	@Override
