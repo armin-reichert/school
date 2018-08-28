@@ -1,9 +1,8 @@
 package de.amr.schule.markise;
 
-import java.util.stream.Stream;
+import java.awt.Graphics2D;
 
 import de.amr.easy.game.entity.GameEntity;
-import de.amr.easy.game.sprite.Sprite;
 
 public class Motor extends GameEntity {
 
@@ -39,29 +38,22 @@ public class Motor extends GameEntity {
 			markise.setPosition(newPosition);
 		}
 	}
-	
+
 	@Override
 	public int getWidth() {
 		return 0;
 	}
-	
+
 	@Override
 	public int getHeight() {
 		return 0;
 	}
 
 	@Override
-	public Sprite currentSprite() {
-		return null;
-	}
-
-	@Override
-	public Stream<Sprite> getSprites() {
-		return Stream.empty();
-	}
-
-	@Override
 	public void init() {
+	}
 
+	@Override
+	public void draw(Graphics2D g) {
 	}
 }

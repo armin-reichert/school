@@ -4,12 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.util.stream.Stream;
 
 import de.amr.easy.game.Application;
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
-import de.amr.easy.game.sprite.Sprite;
 import de.amr.easy.statemachine.StateMachine;
 
 public class Garagentor extends GameEntity {
@@ -111,20 +109,10 @@ public class Garagentor extends GameEntity {
 	}
 
 	@Override
-	public Sprite currentSprite() {
-		return null;
-	}
-
-	@Override
-	public Stream<Sprite> getSprites() {
-		return Stream.empty();
-	}
-	
-	@Override
 	public int getWidth() {
 		return 800;
 	}
-	
+
 	@Override
 	public int getHeight() {
 		return 600;

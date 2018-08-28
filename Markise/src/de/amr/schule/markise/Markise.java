@@ -6,12 +6,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.util.stream.Stream;
 
 import de.amr.easy.game.Application;
 import de.amr.easy.game.assets.Assets;
 import de.amr.easy.game.entity.GameEntity;
-import de.amr.easy.game.sprite.Sprite;
 import de.amr.easy.statemachine.StateMachine;
 
 /**
@@ -147,25 +145,15 @@ public class Markise extends GameEntity {
 		automat.update();
 		motor.update();
 	}
-	
+
 	@Override
 	public int getWidth() {
 		return 0;
 	}
-	
+
 	@Override
 	public int getHeight() {
 		return 0;
-	}
-
-	@Override
-	public Sprite currentSprite() {
-		return null;
-	}
-
-	@Override
-	public Stream<Sprite> getSprites() {
-		return Stream.empty();
 	}
 
 	@Override

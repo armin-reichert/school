@@ -10,12 +10,12 @@ import java.util.stream.Stream;
 
 import de.amr.easy.game.Application;
 import de.amr.easy.game.assets.Assets;
-import de.amr.easy.game.entity.GameEntity;
+import de.amr.easy.game.entity.GameEntityUsingSprites;
 import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.game.sprite.Sprite;
 import de.amr.easy.statemachine.StateMachine;
 
-public class Waeschetrockner extends GameEntity {
+public class Waeschetrockner extends GameEntityUsingSprites {
 
 	private WaeschetrocknerApp app;
 
@@ -133,5 +133,4 @@ public class Waeschetrockner extends GameEntity {
 	public Stream<Sprite> getSprites() {
 		return Stream.of(s_trockner);
 	}
-
 }

@@ -2,10 +2,8 @@ package de.amr.schule.gameoflife;
 
 import java.awt.Graphics2D;
 import java.util.BitSet;
-import java.util.stream.Stream;
 
 import de.amr.easy.game.entity.GameEntity;
-import de.amr.easy.game.sprite.Sprite;
 
 public class GameOfLifeWorld extends GameEntity {
 
@@ -102,25 +100,15 @@ public class GameOfLifeWorld extends GameEntity {
 			++neighbors;
 		return neighbors;
 	}
-	
+
 	@Override
 	public int getWidth() {
 		return 1024;
 	}
-	
+
 	@Override
 	public int getHeight() {
 		return 1024;
-	}
-
-	@Override
-	public Sprite currentSprite() {
-		return null;
-	}
-
-	@Override
-	public Stream<Sprite> getSprites() {
-		return Stream.empty();
 	}
 
 	@Override

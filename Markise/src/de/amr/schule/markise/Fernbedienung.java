@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import de.amr.easy.game.assets.Assets;
-import de.amr.easy.game.entity.GameEntity;
+import de.amr.easy.game.entity.GameEntityUsingSprites;
 import de.amr.easy.game.sprite.Sprite;
 
-public class Fernbedienung extends GameEntity {
+public class Fernbedienung extends GameEntityUsingSprites {
 
 	private static final Map<String, Rectangle> BUTTONS = new HashMap<>();
 	static {
@@ -43,12 +43,12 @@ public class Fernbedienung extends GameEntity {
 			event = null;
 		}
 	}
-	
+
 	@Override
 	public int getWidth() {
 		return currentSprite().getWidth();
 	}
-	
+
 	@Override
 	public int getHeight() {
 		return currentSprite().getHeight();

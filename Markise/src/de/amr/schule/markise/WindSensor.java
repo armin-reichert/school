@@ -1,11 +1,10 @@
 package de.amr.schule.markise;
 
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.util.stream.Stream;
 
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
-import de.amr.easy.game.sprite.Sprite;
 
 public class WindSensor extends GameEntity {
 
@@ -38,16 +37,10 @@ public class WindSensor extends GameEntity {
 	}
 
 	@Override
-	public Sprite currentSprite() {
-		return null;
-	}
-
-	@Override
-	public Stream<Sprite> getSprites() {
-		return Stream.empty();
-	}
-
-	@Override
 	public void init() {
+	}
+
+	@Override
+	public void draw(Graphics2D g) {
 	}
 }
