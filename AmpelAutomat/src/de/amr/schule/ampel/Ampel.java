@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 
 import de.amr.easy.game.Application;
 import de.amr.easy.game.entity.GameEntity;
+import de.amr.easy.game.entity.Transform;
 import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.statemachine.StateMachine;
 
@@ -20,6 +21,7 @@ import de.amr.easy.statemachine.StateMachine;
 public class Ampel extends GameEntity {
 
 	private final StateMachine<String, String> automat;
+	private final Transform tf = new Transform();
 	private int width;
 	private int height;
 
@@ -41,6 +43,11 @@ public class Ampel extends GameEntity {
 
 		// Für 3 Sekunden auf Rot
 		automat.changeOnTimeout("Gelb", "Rot", t -> t.to().setDuration(3 * 60));
+	}
+	
+	@Override
+	public Transform tf() {
+		return tf;
 	}
 
 	@Override

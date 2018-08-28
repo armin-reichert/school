@@ -13,27 +13,27 @@ public class Motor extends GameEntity {
 	}
 
 	void zurück() {
-		markise.tf.setVelocityX(-2);
+		markise.tf().setVelocityX(-2);
 	}
 
 	void schnellZurück() {
-		markise.tf.setVelocityX(-4);
+		markise.tf().setVelocityX(-4);
 	}
 
 	void vor() {
-		markise.tf.setVelocityX(2);
+		markise.tf().setVelocityX(2);
 	}
 
 	void stop() {
-		markise.tf.setVelocityX(0);
+		markise.tf().setVelocityX(0);
 	}
 
 	@Override
 	public void update() {
-		int newPosition = Math.round(markise.getPosition() + markise.tf.getVelocityX());
+		int newPosition = Math.round(markise.getPosition() + markise.tf().getVelocityX());
 		if (newPosition < 0) {
-			markise.tf.setVelocityX(-markise.getPosition());
-			markise.setPosition(Math.round(markise.getPosition() + markise.tf.getVelocityX()));
+			markise.tf().setVelocityX(-markise.getPosition());
+			markise.setPosition(Math.round(markise.getPosition() + markise.tf().getVelocityX()));
 		} else {
 			markise.setPosition(newPosition);
 		}

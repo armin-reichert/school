@@ -29,7 +29,7 @@ public class MarkiseScene implements ViewController {
 		markise = new Markise(app);
 		remote = new Fernbedienung(app, markise);
 		markise.init();
-		markise.tf.setY(getHeight() - 100);
+		markise.tf().setY(getHeight() - 100);
 	}
 
 	@Override

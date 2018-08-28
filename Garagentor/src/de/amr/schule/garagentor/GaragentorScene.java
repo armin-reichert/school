@@ -26,7 +26,7 @@ public class GaragentorScene implements ViewController {
 	@Override
 	public void init() {
 		tor = new Garagentor(app);
-		tor.tf.setY(getHeight() - 100);
+		tor.tf().setY(getHeight() - 100);
 		tor.init();
 	}
 
