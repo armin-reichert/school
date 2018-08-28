@@ -147,6 +147,16 @@ public class Markise extends GameEntity {
 		automat.update();
 		motor.update();
 	}
+	
+	@Override
+	public int getWidth() {
+		return 0;
+	}
+	
+	@Override
+	public int getHeight() {
+		return 0;
+	}
 
 	@Override
 	public Sprite currentSprite() {

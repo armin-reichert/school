@@ -119,6 +119,16 @@ public class Garagentor extends GameEntity {
 	public Stream<Sprite> getSprites() {
 		return Stream.empty();
 	}
+	
+	@Override
+	public int getWidth() {
+		return 800;
+	}
+	
+	@Override
+	public int getHeight() {
+		return 600;
+	}
 
 	@Override
 	public void draw(Graphics2D g) {

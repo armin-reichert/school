@@ -102,6 +102,16 @@ public class GameOfLifeWorld extends GameEntity {
 			++neighbors;
 		return neighbors;
 	}
+	
+	@Override
+	public int getWidth() {
+		return 1024;
+	}
+	
+	@Override
+	public int getHeight() {
+		return 1024;
+	}
 
 	@Override
 	public Sprite currentSprite() {

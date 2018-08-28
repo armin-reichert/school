@@ -39,6 +39,16 @@ public class Motor extends GameEntity {
 			markise.setPosition(newPosition);
 		}
 	}
+	
+	@Override
+	public int getWidth() {
+		return 0;
+	}
+	
+	@Override
+	public int getHeight() {
+		return 0;
+	}
 
 	@Override
 	public Sprite currentSprite() {

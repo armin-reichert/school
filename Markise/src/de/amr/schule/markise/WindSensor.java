@@ -28,6 +28,16 @@ public class WindSensor extends GameEntity {
 	}
 
 	@Override
+	public int getHeight() {
+		return 0;
+	}
+
+	@Override
+	public int getWidth() {
+		return 0;
+	}
+
+	@Override
 	public Sprite currentSprite() {
 		return null;
 	}
