@@ -2,9 +2,10 @@ package de.amr.schule.ampel;
 
 import java.awt.Graphics2D;
 
-import de.amr.easy.game.view.ViewController;
+import de.amr.easy.game.view.Controller;
+import de.amr.easy.game.view.View;
 
-public class AmpelScene implements ViewController {
+public class AmpelScene implements View, Controller {
 
 	private int width;
 	private int height;

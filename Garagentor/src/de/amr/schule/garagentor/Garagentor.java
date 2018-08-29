@@ -8,10 +8,11 @@ import java.awt.event.KeyEvent;
 import de.amr.easy.game.Application;
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
-import de.amr.easy.game.view.ViewController;
+import de.amr.easy.game.view.Controller;
+import de.amr.easy.game.view.View;
 import de.amr.easy.statemachine.StateMachine;
 
-public class Garagentor extends GameEntity implements ViewController {
+public class Garagentor extends GameEntity implements View,Controller {
 
 	private GaragentorApp app;
 	private StateMachine<String, String> automat;

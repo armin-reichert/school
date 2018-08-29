@@ -2,9 +2,10 @@ package de.amr.schule.markise;
 
 import java.awt.Graphics2D;
 
-import de.amr.easy.game.view.ViewController;
+import de.amr.easy.game.view.Controller;
+import de.amr.easy.game.view.View;
 
-public class MarkiseScene implements ViewController {
+public class MarkiseScene implements View, Controller {
 
 	private MarkiseApp app;
 	private Markise markise;

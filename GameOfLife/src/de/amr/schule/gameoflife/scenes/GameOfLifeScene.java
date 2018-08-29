@@ -8,11 +8,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import de.amr.easy.game.view.ViewController;
+import de.amr.easy.game.view.Controller;
+import de.amr.easy.game.view.View;
 import de.amr.schule.gameoflife.GameOfLifeApp;
 import de.amr.schule.gameoflife.GameOfLifeWorld;
 
-public class GameOfLifeScene implements ViewController {
+public class GameOfLifeScene implements View,Controller {
 
 	private static final int MIN_SIZE = 16;
 	private static final int MAX_SIZE = 512;

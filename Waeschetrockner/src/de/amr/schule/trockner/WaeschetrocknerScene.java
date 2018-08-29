@@ -4,9 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import de.amr.easy.game.view.ViewController;
+import de.amr.easy.game.view.Controller;
+import de.amr.easy.game.view.View;
 
-public class WaeschetrocknerScene implements ViewController {
+public class WaeschetrocknerScene implements View,Controller {
 
 	private WaeschetrocknerApp app;
 	private Waeschetrockner trockner;

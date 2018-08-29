@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 
 import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.game.view.Controller;
-import de.amr.easy.game.view.View;
 
 public class RegenSensor implements Controller {
 
@@ -16,11 +15,7 @@ public class RegenSensor implements Controller {
 
 	@Override
 	public void init() {
-	}
-
-	@Override
-	public View currentView() {
-		return null;
+		regenTropfen = 0;
 	}
 
 	@Override

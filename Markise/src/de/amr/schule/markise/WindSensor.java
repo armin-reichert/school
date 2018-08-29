@@ -4,7 +4,6 @@ import java.awt.event.KeyEvent;
 
 import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.game.view.Controller;
-import de.amr.easy.game.view.View;
 
 public class WindSensor implements Controller {
 
@@ -13,14 +12,10 @@ public class WindSensor implements Controller {
 	public boolean esIstWindig() {
 		return windSpeed > 10;
 	}
-	
+
 	@Override
 	public void init() {
-	}
-	
-	@Override
-	public View currentView() {
-		return null;
+		windSpeed = 0;
 	}
 
 	@Override

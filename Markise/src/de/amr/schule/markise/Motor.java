@@ -1,7 +1,6 @@
 package de.amr.schule.markise;
 
 import de.amr.easy.game.view.Controller;
-import de.amr.easy.game.view.View;
 
 public class Motor implements Controller {
 
@@ -26,14 +25,9 @@ public class Motor implements Controller {
 	void stop() {
 		markise.tf().setVelocityX(0);
 	}
-	
+
 	@Override
 	public void init() {
-	}
-	
-	@Override
-	public View currentView() {
-		return null;
 	}
 
 	@Override

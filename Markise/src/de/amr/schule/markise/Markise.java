@@ -10,7 +10,8 @@ import java.awt.RenderingHints;
 import de.amr.easy.game.Application;
 import de.amr.easy.game.assets.Assets;
 import de.amr.easy.game.entity.GameEntity;
-import de.amr.easy.game.view.ViewController;
+import de.amr.easy.game.view.Controller;
+import de.amr.easy.game.view.View;
 import de.amr.easy.statemachine.StateMachine;
 
 /**
@@ -18,7 +19,7 @@ import de.amr.easy.statemachine.StateMachine;
  * 
  * @author Armin Reichert & Anna u. Peter Schillo
  */
-public class Markise extends GameEntity implements ViewController {
+public class Markise extends GameEntity implements View,Controller {
 
 	private final MarkiseApp app;
 	private final Motor motor;
