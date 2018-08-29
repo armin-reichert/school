@@ -10,6 +10,7 @@ import java.awt.RenderingHints;
 import de.amr.easy.game.Application;
 import de.amr.easy.game.assets.Assets;
 import de.amr.easy.game.entity.GameEntity;
+import de.amr.easy.game.view.ViewController;
 import de.amr.easy.statemachine.StateMachine;
 
 /**
@@ -17,7 +18,7 @@ import de.amr.easy.statemachine.StateMachine;
  * 
  * @author Armin Reichert & Anna u. Peter Schillo
  */
-public class Markise extends GameEntity {
+public class Markise extends GameEntity implements ViewController {
 
 	private final MarkiseApp app;
 	private final Motor motor;
@@ -144,16 +145,6 @@ public class Markise extends GameEntity {
 		windSensor.update();
 		automat.update();
 		motor.update();
-	}
-
-	@Override
-	public int getWidth() {
-		return 0;
-	}
-
-	@Override
-	public int getHeight() {
-		return 0;
 	}
 
 	@Override

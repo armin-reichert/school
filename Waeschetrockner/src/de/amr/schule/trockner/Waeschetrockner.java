@@ -23,11 +23,10 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 	public StateMachine<String, String> türAutomat;
 	public StateMachine<Integer, String> zeitAutomat;
 
-	private Sprite s_trockner;
-
 	public Waeschetrockner(WaeschetrocknerApp app) {
 		this.app = app;
-		s_trockner = new Sprite(Assets.image("trockner.jpg"));
+		addSprite("s_trockner", new Sprite(Assets.image("trockner.jpg")));
+		setCurrentSprite("s_trockner");
 
 		// Steuerung
 
@@ -110,27 +109,5 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 				Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(a -> a.addInput(key));
 			}
 		}
-	}
-
-	// drawing
-
-	@Override
-	public int getWidth() {
-		return currentSprite().getWidth();
-	}
-
-	@Override
-	public int getHeight() {
-		return currentSprite().getHeight();
-	}
-
-	@Override
-	public Sprite currentSprite() {
-		return s_trockner;
-	}
-
-	@Override
-	public Stream<Sprite> getSprites() {
-		return Stream.of(s_trockner);
 	}
 }

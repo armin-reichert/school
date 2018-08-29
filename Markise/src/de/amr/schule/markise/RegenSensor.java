@@ -1,20 +1,26 @@
 package de.amr.schule.markise;
 
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
-import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
+import de.amr.easy.game.view.Controller;
+import de.amr.easy.game.view.View;
 
-public class RegenSensor extends GameEntity {
+public class RegenSensor implements Controller {
 
 	private int regenTropfen;
 
-	public RegenSensor() {
-	}
-
 	public boolean esRegnet() {
 		return regenTropfen > 10;
+	}
+
+	@Override
+	public void init() {
+	}
+
+	@Override
+	public View currentView() {
+		return null;
 	}
 
 	@Override
@@ -24,23 +30,5 @@ public class RegenSensor extends GameEntity {
 		} else if (Keyboard.keyDown(KeyEvent.VK_S)) {
 			regenTropfen -= 1;
 		}
-	}
-
-	@Override
-	public int getHeight() {
-		return 0;
-	}
-
-	@Override
-	public int getWidth() {
-		return 0;
-	}
-
-	@Override
-	public void init() {
-	}
-
-	@Override
-	public void draw(Graphics2D g) {
 	}
 }

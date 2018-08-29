@@ -13,12 +13,10 @@ public class GaragentorScene implements ViewController {
 		this.app = app;
 	}
 
-	@Override
 	public int getWidth() {
 		return app.settings.width;
 	}
 
-	@Override
 	public int getHeight() {
 		return app.settings.height;
 	}

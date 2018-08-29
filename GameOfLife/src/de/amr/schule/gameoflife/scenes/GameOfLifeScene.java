@@ -25,12 +25,10 @@ public class GameOfLifeScene implements ViewController {
 		world = new GameOfLifeWorld(64, getWidth() / 64);
 	}
 
-	@Override
 	public int getWidth() {
 		return app.settings.width;
 	}
 
-	@Override
 	public int getHeight() {
 		return app.settings.height;
 	}

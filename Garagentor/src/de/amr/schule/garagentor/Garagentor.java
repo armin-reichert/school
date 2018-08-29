@@ -8,9 +8,10 @@ import java.awt.event.KeyEvent;
 import de.amr.easy.game.Application;
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
+import de.amr.easy.game.view.ViewController;
 import de.amr.easy.statemachine.StateMachine;
 
-public class Garagentor extends GameEntity {
+public class Garagentor extends GameEntity implements ViewController {
 
 	private GaragentorApp app;
 	private StateMachine<String, String> automat;
@@ -83,6 +84,50 @@ public class Garagentor extends GameEntity {
 		automat.changeOnInput("FBGedrückt", "GestopptBeimSchließen", "Öffnet");
 	}
 
+	public int getWidth() {
+		return 800;
+	}
+
+	public int getHeight() {
+		return 600;
+	}
+
+	@Override
+	public void init() {
+		automat.init();
+	}
+
+	@Override
+	public void update() {
+		if (Keyboard.keyPressedOnce(KeyEvent.VK_SPACE)) {
+			automat.addInput("SchalterGedrückt");
+		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_F)) {
+			automat.addInput("FBGedrückt");
+		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_H)) {
+			if (automat.is("Geschlossen") && !hindernis) {
+				// Hindernis nicht einschalten
+			} else {
+				hindernis = !hindernis;
+			}
+		}
+		automat.update();
+	}
+
+	@Override
+	public void draw(Graphics2D g) {
+		g.translate(tf.getX(), tf.getY());
+		g.setColor(Color.BLUE);
+		int w = position * app.settings.width / 100;
+		g.fillRect(0, 0, w, 20);
+		g.translate(-tf.getX(), -tf.getY());
+	
+		g.translate(tf.getX(), tf.getY() + 40);
+		g.setFont(new Font("Monospaced", Font.BOLD, 20));
+		g.drawString(String.format("Position: %d, Zustand: %s, Hindernis: %s, %s", position, automat.stateID(),
+				hindernis ? "Ja" : "Nein", lichtBrennt ? "Licht brennt" : ""), 0, 0);
+		g.translate(-tf.getX(), -tf.getY());
+	}
+
 	private boolean endPunktErreicht() {
 		return position == 100;
 	}
@@ -102,51 +147,4 @@ public class Garagentor extends GameEntity {
 	private void lichtAus() {
 		lichtBrennt = false;
 	}
-
-	@Override
-	public void init() {
-		automat.init();
-	}
-
-	@Override
-	public int getWidth() {
-		return 800;
-	}
-
-	@Override
-	public int getHeight() {
-		return 600;
-	}
-
-	@Override
-	public void draw(Graphics2D g) {
-		g.translate(tf.getX(), tf.getY());
-		g.setColor(Color.BLUE);
-		int w = position * app.settings.width / 100;
-		g.fillRect(0, 0, w, 20);
-		g.translate(-tf.getX(), -tf.getY());
-
-		g.translate(tf.getX(), tf.getY() + 40);
-		g.setFont(new Font("Monospaced", Font.BOLD, 20));
-		g.drawString(String.format("Position: %d, Zustand: %s, Hindernis: %s, %s", position, automat.stateID(),
-				hindernis ? "Ja" : "Nein", lichtBrennt ? "Licht brennt" : ""), 0, 0);
-		g.translate(-tf.getX(), -tf.getY());
-	}
-
-	@Override
-	public void update() {
-		if (Keyboard.keyPressedOnce(KeyEvent.VK_SPACE)) {
-			automat.addInput("SchalterGedrückt");
-		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_F)) {
-			automat.addInput("FBGedrückt");
-		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_H)) {
-			if (automat.is("Geschlossen") && !hindernis) {
-				// Hindernis nicht einschalten
-			} else {
-				hindernis = !hindernis;
-			}
-		}
-		automat.update();
-	}
-
 }

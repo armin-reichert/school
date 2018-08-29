@@ -5,7 +5,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import de.amr.easy.game.assets.Assets;
 import de.amr.easy.game.entity.GameEntityUsingSprites;
@@ -14,6 +13,7 @@ import de.amr.easy.game.sprite.Sprite;
 public class Fernbedienung extends GameEntityUsingSprites {
 
 	private static final Map<String, Rectangle> BUTTONS = new HashMap<>();
+
 	static {
 		BUTTONS.put("up", new Rectangle(77, 116, 32, 32));
 		BUTTONS.put("stop", new Rectangle(110, 116, 32, 26));
@@ -22,11 +22,9 @@ public class Fernbedienung extends GameEntityUsingSprites {
 
 	private final Markise markise;
 	private String event;
-	private Sprite s_remote;
 
 	public Fernbedienung(MarkiseApp app, Markise markise) {
 		this.markise = markise;
-		s_remote = new Sprite(Assets.image("remotecontrol.jpg"));
 		app.getShell().getCanvas().addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -34,6 +32,10 @@ public class Fernbedienung extends GameEntityUsingSprites {
 				handleClick(e.getX(), e.getY());
 			}
 		});
+		addSprite("s_remote", new Sprite(Assets.image("remotecontrol.jpg")));
+		setCurrentSprite("s_remote");
+		tf.setWidth(currentSprite().getWidth());
+		tf.setHeight(currentSprite().getHeight());
 	}
 
 	@Override
@@ -44,26 +46,6 @@ public class Fernbedienung extends GameEntityUsingSprites {
 		}
 	}
 
-	@Override
-	public int getWidth() {
-		return currentSprite().getWidth();
-	}
-
-	@Override
-	public int getHeight() {
-		return currentSprite().getHeight();
-	}
-
-	@Override
-	public Sprite currentSprite() {
-		return s_remote;
-	}
-
-	@Override
-	public Stream<Sprite> getSprites() {
-		return Stream.of(s_remote);
-	}
-
 	private void handleClick(int x, int y) {
 		/*@formatter:off*/
 		BUTTONS.entrySet().stream()
@@ -71,11 +53,6 @@ public class Fernbedienung extends GameEntityUsingSprites {
 			.map(entry -> entry.getKey())
 			.findFirst()
 			.ifPresent(event -> this.event = event);
-		}
 		/*@formatter:on*/
-
-	@Override
-	public void init() {
-
 	}
 }

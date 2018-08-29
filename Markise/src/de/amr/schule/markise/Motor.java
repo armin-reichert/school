@@ -1,10 +1,9 @@
 package de.amr.schule.markise;
 
-import java.awt.Graphics2D;
+import de.amr.easy.game.view.Controller;
+import de.amr.easy.game.view.View;
 
-import de.amr.easy.game.entity.GameEntity;
-
-public class Motor extends GameEntity {
+public class Motor implements Controller {
 
 	private final Markise markise;
 
@@ -27,6 +26,15 @@ public class Motor extends GameEntity {
 	void stop() {
 		markise.tf().setVelocityX(0);
 	}
+	
+	@Override
+	public void init() {
+	}
+	
+	@Override
+	public View currentView() {
+		return null;
+	}
 
 	@Override
 	public void update() {
@@ -37,23 +45,5 @@ public class Motor extends GameEntity {
 		} else {
 			markise.setPosition(newPosition);
 		}
-	}
-
-	@Override
-	public int getWidth() {
-		return 0;
-	}
-
-	@Override
-	public int getHeight() {
-		return 0;
-	}
-
-	@Override
-	public void init() {
-	}
-
-	@Override
-	public void draw(Graphics2D g) {
 	}
 }

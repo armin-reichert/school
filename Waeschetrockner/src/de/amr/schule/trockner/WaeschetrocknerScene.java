@@ -32,16 +32,6 @@ public class WaeschetrocknerScene implements ViewController {
 		g.setColor(Color.white);
 		g.setFont(new Font("Sans", Font.PLAIN, 30));
 		g.drawString(String.format("Trockner: %s, Tür: %s, Zeit %s", trockner.hauptAutomat.stateID(),
-				trockner.türAutomat.stateID(), trockner.zeitAutomat.stateID()), 100, getHeight() - 50);
-	}
-
-	@Override
-	public int getWidth() {
-		return app.settings.width;
-	}
-
-	@Override
-	public int getHeight() {
-		return app.settings.height;
+				trockner.türAutomat.stateID(), trockner.zeitAutomat.stateID()), 100, app.settings.height - 50);
 	}
 }

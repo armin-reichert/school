@@ -101,17 +101,14 @@ public class GameOfLifeWorld extends GameEntity {
 		return neighbors;
 	}
 
-	@Override
 	public int getWidth() {
 		return 1024;
 	}
 
-	@Override
 	public int getHeight() {
 		return 1024;
 	}
 
-	@Override
 	public void draw(Graphics2D g) {
 		g.translate(tf.getX(), tf.getY());
 		for (int row = 0; row < gridSize; row += 1) {
@@ -122,9 +119,5 @@ public class GameOfLifeWorld extends GameEntity {
 			}
 		}
 		g.translate(-tf.getX(), -tf.getY());
-	}
-
-	@Override
-	public void init() {
 	}
 }
