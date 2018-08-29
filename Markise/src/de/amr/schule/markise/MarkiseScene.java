@@ -28,7 +28,7 @@ public class MarkiseScene implements View, Controller {
 		markise = new Markise(app);
 		remote = new Fernbedienung(app, markise);
 		markise.init();
-		markise.tf().setY(getHeight() - 100);
+		markise.tf.setY(getHeight() - 100);
 	}
 
 	@Override
