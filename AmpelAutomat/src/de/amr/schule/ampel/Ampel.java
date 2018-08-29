@@ -8,8 +8,8 @@ import java.awt.event.KeyEvent;
 
 import de.amr.easy.game.Application;
 import de.amr.easy.game.entity.GameEntity;
-import de.amr.easy.game.entity.Transform;
 import de.amr.easy.game.input.Keyboard;
+import de.amr.easy.game.view.ViewController;
 import de.amr.easy.statemachine.StateMachine;
 
 /**
@@ -18,16 +18,13 @@ import de.amr.easy.statemachine.StateMachine;
  * @author Armin Reichert & Anna Schillo
  *
  */
-public class Ampel extends GameEntity {
+public class Ampel extends GameEntity implements ViewController {
 
 	private final StateMachine<String, String> automat;
-	private final Transform tf = new Transform();
-	private int width;
-	private int height;
 
-	public Ampel(AmpelApp app) {
-		width = 100;
-		height = 3 * width;
+	public Ampel(int width, int height) {
+		tf.setWidth(100);
+		tf.setHeight(3 * width);
 
 		// Definiere die Steuerung durch einen Automaten:
 		automat = new StateMachine<>("Ampel Steuerung", String.class, "Aus");
@@ -44,11 +41,6 @@ public class Ampel extends GameEntity {
 		// Für 3 Sekunden auf Rot
 		automat.changeOnTimeout("Gelb", "Rot", t -> t.to().setDuration(3 * 60));
 	}
-	
-	@Override
-	public Transform tf() {
-		return tf;
-	}
 
 	@Override
 	public void init() {
@@ -62,46 +54,28 @@ public class Ampel extends GameEntity {
 	}
 
 	@Override
-	public int getWidth() {
-		return width;
-	}
-
-	@Override
-	public int getHeight() {
-		return height;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	@Override
 	public void draw(Graphics2D g) {
 		g.translate(tf.getX(), tf.getY());
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(0, 0, width, height);
+		g.fillRect(0, 0, tf.getWidth(), tf.getHeight());
 		int inset = 3;
-		int diameter = width - inset * 2;
+		int diameter = tf.getWidth() - inset * 2;
 		if (automat.is("Rot")) {
 			g.setColor(Color.RED);
 			g.fillOval(inset, inset, diameter, diameter);
 		} else if (automat.is("Gelb")) {
 			g.setColor(Color.YELLOW);
-			g.fillOval(inset, inset + height / 3, diameter, diameter);
+			g.fillOval(inset, inset + tf.getHeight() / 3, diameter, diameter);
 		} else if (automat.is("Grün")) {
 			g.setColor(Color.GREEN);
-			g.fillOval(inset, inset + height * 2 / 3, diameter, diameter);
+			g.fillOval(inset, inset + tf.getHeight() * 2 / 3, diameter, diameter);
 		}
 		g.setStroke(new BasicStroke(inset));
 		g.setColor(Color.BLACK);
 		g.drawOval(inset, inset, diameter, diameter);
-		g.drawOval(inset, inset + height / 3, diameter, diameter);
-		g.drawOval(inset, inset + height * 2 / 3, diameter, diameter);
+		g.drawOval(inset, inset + tf.getHeight() / 3, diameter, diameter);
+		g.drawOval(inset, inset + tf.getHeight() * 2 / 3, diameter, diameter);
 		g.translate(-tf.getX(), -tf.getY());
 	}
 }
