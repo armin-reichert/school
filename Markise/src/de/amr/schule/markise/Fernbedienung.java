@@ -6,7 +6,6 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.amr.easy.game.assets.Assets;
 import de.amr.easy.game.entity.GameEntityUsingSprites;
 import de.amr.easy.game.sprite.Sprite;
 
@@ -32,7 +31,7 @@ public class Fernbedienung extends GameEntityUsingSprites {
 				handleClick(e.getX(), e.getY());
 			}
 		});
-		setSprite("s_remote", new Sprite(Assets.image("remotecontrol.jpg")));
+		setSprite("s_remote", Sprite.ofAssets("remotecontrol.jpg"));
 		setCurrentSprite("s_remote");
 		tf.setWidth(currentSprite().getWidth());
 		tf.setHeight(currentSprite().getHeight());

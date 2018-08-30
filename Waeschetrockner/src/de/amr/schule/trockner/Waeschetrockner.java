@@ -25,7 +25,7 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 
 	public Waeschetrockner(WaeschetrocknerApp app) {
 		this.app = app;
-		setSprite("s_trockner", new Sprite(Assets.image("trockner.jpg")));
+		setSprite("s_trockner", Sprite.ofAssets("trockner.jpg"));
 		setCurrentSprite("s_trockner");
 
 		// Steuerung
