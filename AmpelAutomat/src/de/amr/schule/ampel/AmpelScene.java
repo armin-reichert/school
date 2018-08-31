@@ -29,7 +29,7 @@ public class AmpelScene implements View, Controller {
 
 	@Override
 	public void draw(Graphics2D g) {
-		ampel.center(width, height);
+		ampel.tf.center(width, height);
 		ampel.draw(g);
 	}
 }
