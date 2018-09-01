@@ -29,7 +29,7 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 		sensors.put("Auf15", new Rectangle(38, 205, 84, 22));
 	}
 
-	public StateMachine<String, String> trockner;
+	public StateMachine<String, String> steuerung;
 	public StateMachine<String, String> tür;
 	public StateMachine<Integer, String> zeitwahl;
 
@@ -40,7 +40,7 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 		// Steuerung
 
 		//@formatter:off
-		trockner = StateMachine.define(String.class, String.class, MatchStrategy.BY_EQUALITY)
+		steuerung = StateMachine.define(String.class, String.class, MatchStrategy.BY_EQUALITY)
 			.description("Trockner")
 			.initialState("Aus")
 		
@@ -100,7 +100,7 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 
 	@Override
 	public void init() {
-		Stream.of(trockner, tür, zeitwahl).forEach(automat -> {
+		Stream.of(steuerung, tür, zeitwahl).forEach(automat -> {
 			automat.traceTo(LOGGER, CLOCK::getFrequency);
 			automat.init();
 		});
@@ -132,7 +132,7 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_1)) {
 			dispatch("Auf15");
 		}
-		Stream.of(trockner, tür, zeitwahl).forEach(StateMachine::update);
+		Stream.of(steuerung, tür, zeitwahl).forEach(StateMachine::update);
 	}
 
 	// hot spots
@@ -141,10 +141,10 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 		switch (event) {
 		case "StartTaste":
 		case "EinAusTaste":
-			trockner.enqueue(event);
+			steuerung.enqueue(event);
 			return;
 		case "TürAuf":
-			trockner.enqueue(event);
+			steuerung.enqueue(event);
 			tür.enqueue(event);
 			return;
 		case "TürZu":
