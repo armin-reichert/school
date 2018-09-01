@@ -118,7 +118,6 @@ public class Markise extends GameEntity implements View,Controller {
 
 		// Tracing
 		automat.setLogger(Application.LOGGER);
-		automat.ticksToSec = Application.CLOCK::ticksToSec;
 	}
 
 	public void raiseEvent(String event) {
