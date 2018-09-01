@@ -10,7 +10,7 @@ import de.amr.easy.game.Application;
 import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.game.view.View;
-import de.amr.easy.statemachine.StateMachine;
+import de.amr.statemachine.StateMachine;
 
 /**
  * Die Ampel.
@@ -20,31 +20,34 @@ import de.amr.easy.statemachine.StateMachine;
  */
 public class Ampel extends GameEntity implements View {
 
-	private final StateMachine<String, String> automat;
+	private final StateMachine<String, Object> automat;
 
 	public Ampel(int width, int height) {
 		tf.setWidth(100);
 		tf.setHeight(3 * width);
 
 		// Definiere die Steuerung durch einen Automaten:
-		automat = new StateMachine<>("Ampel Steuerung", String.class, "Aus");
-
-		// Ampel beim Drücken der SPACE-Taste einschalten, für 3 Sekunden auf Rot
-		automat.change("Aus", "Rot", () -> Keyboard.keyPressedOnce(KeyEvent.VK_SPACE), t -> t.to().setDuration(3 * 60));
-
-		// Für 5 Sekunden auf Grün
-		automat.changeOnTimeout("Rot", "Grün", t -> t.to().setDuration(5 * 60));
-
-		// Für 1 Sekunde auf Gelb
-		automat.changeOnTimeout("Grün", "Gelb", t -> t.to().setDuration(1 * 60));
-
-		// Für 3 Sekunden auf Rot
-		automat.changeOnTimeout("Gelb", "Rot", t -> t.to().setDuration(3 * 60));
+		//@formatter:off
+		automat = StateMachine.define(String.class, Object.class)
+		.description("Ampel")
+		.initialState("Aus")
+		.states()
+			.state("Aus")
+			.state("Rot").timeoutAfter(()->3*60)
+			.state("Gelb").timeoutAfter(()->1*60)
+			.state("Grün").timeoutAfter(()->5*60)
+		.transitions()
+			.when("Aus").then("Rot").condition(() -> Keyboard.keyPressedOnce(KeyEvent.VK_SPACE))
+			.when("Rot").then("Grün").onTimeout()
+			.when("Grün").then("Gelb").onTimeout()
+			.when("Gelb").then("Rot").onTimeout()
+		.endStateMachine();
+		//@formatter:off
 	}
 
 	@Override
 	public void init() {
-		automat.setLogger(Application.LOGGER);
+		automat.traceTo(Application.LOGGER, Application.PULSE::getFrequency);
 		automat.init();
 	}
 
@@ -61,13 +64,13 @@ public class Ampel extends GameEntity implements View {
 		g.fillRect(0, 0, tf.getWidth(), tf.getHeight());
 		int inset = 3;
 		int diameter = tf.getWidth() - inset * 2;
-		if (automat.is("Rot")) {
+		if (automat.currentState().equals("Rot")) {
 			g.setColor(Color.RED);
 			g.fillOval(inset, inset, diameter, diameter);
-		} else if (automat.is("Gelb")) {
+		} else if (automat.currentState().equals("Gelb")) {
 			g.setColor(Color.YELLOW);
 			g.fillOval(inset, inset + tf.getHeight() / 3, diameter, diameter);
-		} else if (automat.is("Grün")) {
+		} else if (automat.currentState().equals("Grün")) {
 			g.setColor(Color.GREEN);
 			g.fillOval(inset, inset + tf.getHeight() * 2 / 3, diameter, diameter);
 		}
