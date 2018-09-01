@@ -7,12 +7,12 @@ import java.awt.Graphics2D;
 import de.amr.easy.game.view.Controller;
 import de.amr.easy.game.view.View;
 
-public class WaeschetrocknerScene implements View,Controller {
+public class WaeschetrocknerUI implements View, Controller {
 
 	private WaeschetrocknerApp app;
 	private Waeschetrockner trockner;
 
-	public WaeschetrocknerScene(WaeschetrocknerApp app) {
+	public WaeschetrocknerUI(WaeschetrocknerApp app) {
 		this.app = app;
 	}
 
@@ -32,7 +32,7 @@ public class WaeschetrocknerScene implements View,Controller {
 		trockner.draw(g);
 		g.setColor(Color.white);
 		g.setFont(new Font("Sans", Font.PLAIN, 30));
-		g.drawString(String.format("Trockner: %s, Tür: %s, Zeit %s", trockner.hauptAutomat.stateID(),
-				trockner.türAutomat.stateID(), trockner.zeitAutomat.stateID()), 100, app.settings.height - 50);
+		g.drawString(String.format("Trockner: %s, Tür: %s, Zeit %s", trockner.hauptAutomat.getState(),
+				trockner.türAutomat.getState(), trockner.zeitAutomat.getState()), 100, app.settings.height - 50);
 	}
 }

@@ -16,6 +16,6 @@ public class WaeschetrocknerApp extends Application {
 
 	@Override
 	public void init() {
-		setController(new WaeschetrocknerScene(this));
+		setController(new WaeschetrocknerUI(this));
 	}
 }

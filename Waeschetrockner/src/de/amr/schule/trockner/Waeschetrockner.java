@@ -1,5 +1,8 @@
 package de.amr.schule.trockner;
 
+import static de.amr.easy.game.Application.CLOCK;
+import static de.amr.easy.game.Application.LOGGER;
+
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -8,12 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import de.amr.easy.game.Application;
 import de.amr.easy.game.assets.Assets;
 import de.amr.easy.game.entity.GameEntityUsingSprites;
 import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.game.sprite.Sprite;
-import de.amr.easy.statemachine.StateMachine;
+import de.amr.statemachine.MatchStrategy;
+import de.amr.statemachine.StateMachine;
 
 public class Waeschetrockner extends GameEntityUsingSprites {
 
@@ -30,28 +33,64 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 
 		// Steuerung
 
-		hauptAutomat = new StateMachine<>("Trockner", String.class, "Aus");
+		//@formatter:off
+		hauptAutomat = StateMachine.define(String.class, String.class, MatchStrategy.BY_EQUALITY)
+			.description("Trockner")
+			.initialState("Aus")
+		
+		.states()
+			.state("Aus")
+			.state("Bereit")
+			.state("Läuft").timeoutAfter(() -> CLOCK.sec(zeitAutomat.getState()))
+				
+		.transitions()
+			.when("Aus").then("Bereit").on("EinAusTaste")
+			.when("Aus").then("Läuft").on("StartTaste").condition(() -> türAutomat.getState().equals("Zu"))
+			.stay("Aus").on("StartTaste").act(() -> LOGGER.info("Bitte Tür schließen"))
+			
+			.when("Bereit").then("Aus").on("EinAusTaste")
+			.when("Bereit").then("Läuft").on("StartTaste").condition(() -> türAutomat.getState().equals("Zu"))
+			
+			.when("Läuft").then("Aus").on("EinAusTaste").act(() -> türAutomat.process("TürAuf"))
+			.when("Läuft").then("Aus").on("TürAuf")
+			.when("Läuft").then("Aus").onTimeout().act(() -> Assets.sound("fertig.mp3").play())
+	
+		.endStateMachine();
 
-		// Aus
-		hauptAutomat.changeOnInput("EinAusTaste", "Aus", "Bereit");
+		türAutomat = StateMachine.define(String.class, String.class, MatchStrategy.BY_EQUALITY)
+				.description("Tür")
+				.initialState("Zu")
+				
+		.states()
+			.state("Auf")
+			.state("Zu")
+			
+		.transitions()
+			.when("Zu").then("Auf").on("TürAuf")
+			.stay("Zu").on("TürZu")
+			.when("Auf").then("Zu").on("TürZu")
+			.stay("Auf").on("TürAuf")
+		
+		.endStateMachine();
 
-		// Bereit
-		hauptAutomat.changeOnInput("EinAusTaste", "Bereit", "Aus");
-		hauptAutomat.changeOnInput("StartTaste", "Bereit", "Läuft", () -> türAutomat.is("Zu"));
+		zeitAutomat = StateMachine.define(Integer.class, String.class, MatchStrategy.BY_EQUALITY)
+			.description("Zeitwahl")
+			.initialState(15)
 
-		// Läuft
-		hauptAutomat.state("Läuft").entry = state -> state.setDuration(Application.CLOCK.sec(zeitAutomat.stateID()));
-		hauptAutomat.changeOnInput("EinAusTaste", "Läuft", "Aus", t -> türAutomat.addInput("TürAuf"));
-		hauptAutomat.changeOnInput("TürAuf", "Läuft", "Aus");
-		hauptAutomat.changeOnTimeout("Läuft", "Aus", t -> Assets.sound("fertig.mp3").play());
-
-		türAutomat = new StateMachine<>("Tür", String.class, "Zu");
-		türAutomat.changeOnInput("TürAuf", "Zu", "Auf");
-		türAutomat.changeOnInput("TürZu", "Auf", "Zu");
-
-		zeitAutomat = new StateMachine<>("Zeitwahl", Integer.class, 15);
-		zeitAutomat.changeOnInput("Auf20", 15, 20, () -> hauptAutomat.is("Bereit"));
-		zeitAutomat.changeOnInput("Auf15", 20, 15, () -> hauptAutomat.is("Bereit"));
+		.states()
+			.state(15)
+			.state(20)
+			
+		.transitions()
+			.when(15).then(20).on("Auf20").condition(() -> hauptAutomat.getState().equals("Bereit"))
+			.stay(15).on("Auf15").act(() -> LOGGER.info("Trockner nicht bereit"))
+			.stay(15).on("Auf20").act(() -> LOGGER.info("Trockner nicht bereit"))
+			.when(20).then(15).on("Auf15").condition(() -> hauptAutomat.getState().equals("Bereit"))
+			.stay(20).on("Auf15").act(() -> LOGGER.info("Trockner nicht bereit"))
+			.stay(20).on("Auf20").act(() -> LOGGER.info("Trockner nicht bereit"))
+			
+	  .endStateMachine();
+		//@formatter:on
 	}
 
 	@Override
@@ -64,7 +103,7 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 			}
 		});
 		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(automat -> {
-			automat.setLogger(Application.LOGGER);
+			automat.traceTo(LOGGER, CLOCK::getFrequency);
 		});
 		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(StateMachine::init);
 	}
@@ -72,40 +111,53 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 	@Override
 	public void update() {
 		if (Keyboard.keyPressedOnce(KeyEvent.VK_E)) {
-			hauptAutomat.addInput("EinAusTaste");
+			hauptAutomat.enqueue("EinAusTaste");
 		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_S)) {
-			hauptAutomat.addInput("StartTaste");
+			hauptAutomat.enqueue("StartTaste");
 		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_T)) {
-			hauptAutomat.addInput("TürAuf");
-			türAutomat.addInput("TürAuf");
+			hauptAutomat.enqueue("TürAuf");
+			türAutomat.enqueue("TürAuf");
 		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_Z)) {
-			türAutomat.addInput("TürZu");
+			türAutomat.enqueue("TürZu");
 		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_2)) {
-			zeitAutomat.addInput("Auf20");
+			zeitAutomat.enqueue("Auf20");
 		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_1)) {
-			zeitAutomat.addInput("Auf15");
+			zeitAutomat.enqueue("Auf15");
 		}
 		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(StateMachine::update);
 	}
 
 	// hot spots
 
-	private Map<String, Rectangle> hotSpots = new HashMap<>();
+	private Map<String, Rectangle> sensors = new HashMap<>();
 	{
-		hotSpots.put("StartTaste", new Rectangle(505, 209, 60, 30));
-		hotSpots.put("TürAuf", new Rectangle(679, 201, 74, 33));
-		hotSpots.put("EinAusTaste", new Rectangle(694, 146, 61, 32));
-		hotSpots.put("Auf20", new Rectangle(34, 171, 103, 32));
-		hotSpots.put("Auf15", new Rectangle(38, 205, 84, 22));
+		sensors.put("StartTaste", new Rectangle(505, 209, 60, 30));
+		sensors.put("TürAuf", new Rectangle(679, 201, 74, 33));
+		sensors.put("EinAusTaste", new Rectangle(694, 146, 61, 32));
+		sensors.put("Auf20", new Rectangle(34, 171, 103, 32));
+		sensors.put("Auf15", new Rectangle(38, 205, 84, 22));
+	}
+
+	private void dispatch(String event) {
+		switch (event) {
+		case "StartTaste":
+		case "EinAusTaste":
+			hauptAutomat.enqueue(event);
+			return;
+		case "TürAuf":
+			türAutomat.enqueue(event);
+			return;
+		case "Auf15":
+		case "Auf20":
+			zeitAutomat.enqueue(event);
+			return;
+		}
 	}
 
 	public void handleMouseClick(int x, int y) {
-		// LOG.info(String.format("Click at x=%d y=%d", x, y));
-		for (String key : hotSpots.keySet()) {
-			Rectangle r = hotSpots.get(key);
-			if (r.contains(x, y)) {
-				// LOG.info(key);
-				Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(a -> a.addInput(key));
+		for (String event : sensors.keySet()) {
+			if (sensors.get(event).contains(x, y)) {
+				dispatch(event);
 			}
 		}
 	}
