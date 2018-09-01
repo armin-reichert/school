@@ -64,13 +64,13 @@ public class Ampel extends GameEntity implements View {
 		g.fillRect(0, 0, tf.getWidth(), tf.getHeight());
 		int inset = 3;
 		int diameter = tf.getWidth() - inset * 2;
-		if (automat.currentState().equals("Rot")) {
+		if (automat.getState().equals("Rot")) {
 			g.setColor(Color.RED);
 			g.fillOval(inset, inset, diameter, diameter);
-		} else if (automat.currentState().equals("Gelb")) {
+		} else if (automat.getState().equals("Gelb")) {
 			g.setColor(Color.YELLOW);
 			g.fillOval(inset, inset + tf.getHeight() / 3, diameter, diameter);
-		} else if (automat.currentState().equals("Grün")) {
+		} else if (automat.getState().equals("Grün")) {
 			g.setColor(Color.GREEN);
 			g.fillOval(inset, inset + tf.getHeight() * 2 / 3, diameter, diameter);
 		}
