@@ -20,15 +20,13 @@ import de.amr.statemachine.StateMachine;
  */
 public class Ampel extends GameEntity implements View {
 
-	private final StateMachine<String, Object> automat;
+	private final StateMachine<String, Void> automat;
 
 	public Ampel(int width, int height) {
 		tf.setWidth(100);
 		tf.setHeight(3 * width);
-
-		// Definiere die Steuerung durch einen Automaten:
 		//@formatter:off
-		automat = StateMachine.define(String.class, Object.class)
+		automat = StateMachine.define(String.class, Void.class)
 		.description("Ampel")
 		.initialState("Aus")
 		.states()
