@@ -47,7 +47,7 @@ public class Ampel extends GameEntity implements View {
 
 	@Override
 	public void init() {
-		automat.traceTo(Application.LOGGER, Application.PULSE::getFrequency);
+		automat.traceTo(Application.LOGGER, Application.CLOCK::getFrequency);
 		automat.init();
 	}
 

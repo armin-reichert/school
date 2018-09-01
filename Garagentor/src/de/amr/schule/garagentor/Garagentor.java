@@ -30,7 +30,7 @@ public class Garagentor extends GameEntity implements View,Controller {
 
 		automat.state("Geschlossen").entry = s -> {
 			lichtAn();
-			s.setDuration(Application.PULSE.secToTicks(5));
+			s.setDuration(Application.CLOCK.secToTicks(5));
 		};
 
 		automat.state("Geschlossen").exit = s -> {

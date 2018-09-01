@@ -20,7 +20,7 @@ public class GaragentorApp extends Application {
 		settings.width = 800;
 		settings.height = 600;
 		settings.bgColor = Color.WHITE;
-		PULSE.setFrequency(10);
+		CLOCK.setFrequency(10);
 	}
 
 	@Override
