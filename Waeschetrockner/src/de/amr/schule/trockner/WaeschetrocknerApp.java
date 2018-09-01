@@ -11,11 +11,11 @@ public class WaeschetrocknerApp extends Application {
 	public WaeschetrocknerApp() {
 		settings.title = "Wäschetrockner Simulation";
 		settings.width = 800;
-		CLOCK.setFrequency(10);
+		settings.height = 360;
 	}
 
 	@Override
 	public void init() {
-		setController(new WaeschetrocknerUI(this));
+		setController(new WaeschetrocknerUI(settings.width, settings.height, new Waeschetrockner()));
 	}
 }

@@ -5,8 +5,6 @@ import static de.amr.easy.game.Application.LOGGER;
 
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -14,50 +12,59 @@ import java.util.stream.Stream;
 import de.amr.easy.game.assets.Assets;
 import de.amr.easy.game.entity.GameEntityUsingSprites;
 import de.amr.easy.game.input.Keyboard;
+import de.amr.easy.game.input.Mouse;
 import de.amr.easy.game.sprite.Sprite;
 import de.amr.statemachine.MatchStrategy;
 import de.amr.statemachine.StateMachine;
 
 public class Waeschetrockner extends GameEntityUsingSprites {
 
-	private WaeschetrocknerApp app;
+	private Map<String, Rectangle> sensors = new HashMap<>();
 
-	public StateMachine<String, String> hauptAutomat;
-	public StateMachine<String, String> türAutomat;
-	public StateMachine<Integer, String> zeitAutomat;
+	{
+		sensors.put("StartTaste", new Rectangle(505, 209, 60, 30));
+		sensors.put("TürAuf", new Rectangle(679, 201, 74, 33));
+		sensors.put("EinAusTaste", new Rectangle(694, 146, 61, 32));
+		sensors.put("Auf20", new Rectangle(34, 171, 103, 32));
+		sensors.put("Auf15", new Rectangle(38, 205, 84, 22));
+	}
 
-	public Waeschetrockner(WaeschetrocknerApp app) {
-		this.app = app;
+	public StateMachine<String, String> trockner;
+	public StateMachine<String, String> tür;
+	public StateMachine<Integer, String> zeitwahl;
+
+	public Waeschetrockner() {
 		setSprite("s_trockner", Sprite.ofAssets("trockner.jpg"));
 		setCurrentSprite("s_trockner");
 
 		// Steuerung
 
 		//@formatter:off
-		hauptAutomat = StateMachine.define(String.class, String.class, MatchStrategy.BY_EQUALITY)
+		trockner = StateMachine.define(String.class, String.class, MatchStrategy.BY_EQUALITY)
 			.description("Trockner")
 			.initialState("Aus")
 		
 		.states()
 			.state("Aus")
 			.state("Bereit")
-			.state("Läuft").timeoutAfter(() -> CLOCK.sec(zeitAutomat.getState()))
+			.state("Läuft").timeoutAfter(() -> CLOCK.sec(zeitwahl.getState()))
 				
 		.transitions()
 			.when("Aus").then("Bereit").on("EinAusTaste")
-			.when("Aus").then("Läuft").on("StartTaste").condition(() -> türAutomat.getState().equals("Zu"))
+			.when("Aus").then("Läuft").on("StartTaste").condition(() -> tür.getState().equals("Zu"))
 			.stay("Aus").on("StartTaste").act(() -> LOGGER.info("Bitte Tür schließen"))
+			.stay("Aus").on("TürAuf")
 			
 			.when("Bereit").then("Aus").on("EinAusTaste")
-			.when("Bereit").then("Läuft").on("StartTaste").condition(() -> türAutomat.getState().equals("Zu"))
+			.when("Bereit").then("Läuft").on("StartTaste").condition(() -> tür.getState().equals("Zu"))
 			
-			.when("Läuft").then("Aus").on("EinAusTaste").act(() -> türAutomat.process("TürAuf"))
+			.when("Läuft").then("Aus").on("EinAusTaste").act(() -> tür.process("TürAuf"))
 			.when("Läuft").then("Aus").on("TürAuf")
 			.when("Läuft").then("Aus").onTimeout().act(() -> Assets.sound("fertig.mp3").play())
 	
 		.endStateMachine();
 
-		türAutomat = StateMachine.define(String.class, String.class, MatchStrategy.BY_EQUALITY)
+		tür = StateMachine.define(String.class, String.class, MatchStrategy.BY_EQUALITY)
 				.description("Tür")
 				.initialState("Zu")
 				
@@ -73,7 +80,7 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 		
 		.endStateMachine();
 
-		zeitAutomat = StateMachine.define(Integer.class, String.class, MatchStrategy.BY_EQUALITY)
+		zeitwahl = StateMachine.define(Integer.class, String.class, MatchStrategy.BY_EQUALITY)
 			.description("Zeitwahl")
 			.initialState(15)
 
@@ -82,12 +89,10 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 			.state(20)
 			
 		.transitions()
-			.when(15).then(20).on("Auf20").condition(() -> hauptAutomat.getState().equals("Bereit"))
-			.stay(15).on("Auf15").act(() -> LOGGER.info("Trockner nicht bereit"))
-			.stay(15).on("Auf20").act(() -> LOGGER.info("Trockner nicht bereit"))
-			.when(20).then(15).on("Auf15").condition(() -> hauptAutomat.getState().equals("Bereit"))
-			.stay(20).on("Auf15").act(() -> LOGGER.info("Trockner nicht bereit"))
-			.stay(20).on("Auf20").act(() -> LOGGER.info("Trockner nicht bereit"))
+			.when(15).then(20).on("Auf20")
+			.stay(15).on("Auf15")
+			.when(20).then(15).on("Auf15")
+			.stay(20).on("Auf20")
 			
 	  .endStateMachine();
 		//@formatter:on
@@ -95,63 +100,10 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 
 	@Override
 	public void init() {
-		app.getShell().getCanvas().addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				handleMouseClick(e.getX(), e.getY());
-			}
-		});
-		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(automat -> {
+		Stream.of(trockner, tür, zeitwahl).forEach(automat -> {
 			automat.traceTo(LOGGER, CLOCK::getFrequency);
+			automat.init();
 		});
-		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(StateMachine::init);
-	}
-
-	@Override
-	public void update() {
-		if (Keyboard.keyPressedOnce(KeyEvent.VK_E)) {
-			hauptAutomat.enqueue("EinAusTaste");
-		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_S)) {
-			hauptAutomat.enqueue("StartTaste");
-		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_T)) {
-			hauptAutomat.enqueue("TürAuf");
-			türAutomat.enqueue("TürAuf");
-		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_Z)) {
-			türAutomat.enqueue("TürZu");
-		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_2)) {
-			zeitAutomat.enqueue("Auf20");
-		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_1)) {
-			zeitAutomat.enqueue("Auf15");
-		}
-		Stream.of(hauptAutomat, türAutomat, zeitAutomat).forEach(StateMachine::update);
-	}
-
-	// hot spots
-
-	private Map<String, Rectangle> sensors = new HashMap<>();
-	{
-		sensors.put("StartTaste", new Rectangle(505, 209, 60, 30));
-		sensors.put("TürAuf", new Rectangle(679, 201, 74, 33));
-		sensors.put("EinAusTaste", new Rectangle(694, 146, 61, 32));
-		sensors.put("Auf20", new Rectangle(34, 171, 103, 32));
-		sensors.put("Auf15", new Rectangle(38, 205, 84, 22));
-	}
-
-	private void dispatch(String event) {
-		switch (event) {
-		case "StartTaste":
-		case "EinAusTaste":
-			hauptAutomat.enqueue(event);
-			return;
-		case "TürAuf":
-			türAutomat.enqueue(event);
-			return;
-		case "Auf15":
-		case "Auf20":
-			zeitAutomat.enqueue(event);
-			return;
-		}
 	}
 
 	public void handleMouseClick(int x, int y) {
@@ -159,6 +111,49 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 			if (sensors.get(event).contains(x, y)) {
 				dispatch(event);
 			}
+		}
+	}
+
+	@Override
+	public void update() {
+		if (Mouse.clicked()) {
+			handleMouseClick(Mouse.getX(), Mouse.getY());
+		}
+		if (Keyboard.keyPressedOnce(KeyEvent.VK_E)) {
+			dispatch("EinAusTaste");
+		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_S)) {
+			dispatch("StartTaste");
+		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_T)) {
+			dispatch("TürAuf");
+		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_Z)) {
+			dispatch("TürZu");
+		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_2)) {
+			dispatch("Auf20");
+		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_1)) {
+			dispatch("Auf15");
+		}
+		Stream.of(trockner, tür, zeitwahl).forEach(StateMachine::update);
+	}
+
+	// hot spots
+
+	private void dispatch(String event) {
+		switch (event) {
+		case "StartTaste":
+		case "EinAusTaste":
+			trockner.enqueue(event);
+			return;
+		case "TürAuf":
+			trockner.enqueue(event);
+			tür.enqueue(event);
+			return;
+		case "TürZu":
+			tür.enqueue(event);
+			break;
+		case "Auf15":
+		case "Auf20":
+			zeitwahl.enqueue(event);
+			return;
 		}
 	}
 }

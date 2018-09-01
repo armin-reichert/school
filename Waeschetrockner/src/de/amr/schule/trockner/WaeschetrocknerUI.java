@@ -4,35 +4,46 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
+import de.amr.easy.game.Application;
 import de.amr.easy.game.view.Controller;
 import de.amr.easy.game.view.View;
+import de.amr.statemachine.State;
 
 public class WaeschetrocknerUI implements View, Controller {
 
-	private WaeschetrocknerApp app;
-	private Waeschetrockner trockner;
+	private final int height;
+	private final Waeschetrockner maschine;
 
-	public WaeschetrocknerUI(WaeschetrocknerApp app) {
-		this.app = app;
+	public WaeschetrocknerUI(int width, int height, Waeschetrockner maschine) {
+		this.height = height;
+		this.maschine = maschine;
 	}
 
 	@Override
 	public void init() {
-		trockner = new Waeschetrockner(app);
-		trockner.init();
+		maschine.init();
 	}
 
 	@Override
 	public void update() {
-		trockner.update();
+		maschine.update();
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		trockner.draw(g);
+		maschine.draw(g);
 		g.setColor(Color.white);
 		g.setFont(new Font("Sans", Font.PLAIN, 30));
-		g.drawString(String.format("Trockner: %s, Tür: %s, Zeit %s", trockner.hauptAutomat.getState(),
-				trockner.türAutomat.getState(), trockner.zeitAutomat.getState()), 100, app.settings.height - 50);
+		float remainingTime = maschine.trockner.getRemainingTicks();
+		if (maschine.trockner.getRemainingTicks() != State.ENDLESS) {
+			float sec = remainingTime / Application.CLOCK.getFrequency();
+			String text = String.format("Trockner: %s, Tür: %s, Zeit %s (noch %.1f s)",
+					maschine.trockner.getState(), maschine.tür.getState(), maschine.zeitwahl.getState(), sec);
+			g.drawString(text, 100, height - 40);
+		} else {
+			String text = String.format("Trockner: %s, Tür: %s, Zeit %s", maschine.trockner.getState(),
+					maschine.tür.getState(), maschine.zeitwahl.getState());
+			g.drawString(text, 100, height - 40);
+		}
 	}
 }
