@@ -1,8 +1,9 @@
 package de.amr.schule.mathebiber2012;
 
-import de.amr.easy.statemachine.StateMachine;
+import de.amr.statemachine.Match;
+import de.amr.statemachine.StateMachine;
 
-public class Bebrocarina extends StateMachine<Integer, Character> {
+public class Bebrocarina {
 
 	public static void main(String[] args) {
 		Bebrocarina acceptor = new Bebrocarina();
@@ -12,45 +13,65 @@ public class Bebrocarina extends StateMachine<Integer, Character> {
 		acceptor.prüfeObSpielbar("--+--+--o-+--");
 	}
 
+	private final StateMachine<Integer, Character> scanner;
+
 	public Bebrocarina() {
-		super("Bebrocarina", Integer.class, 1);
+		//@formatter:off
+		scanner = StateMachine.define(Integer.class, Character.class, Match.BY_EQUALITY)
+			.description("Bebrocarina")
+			.initialState(1)
 
-		changeOnInput('o', 1, 1);
-		changeOnInput('+', 1, 2);
-		changeOnInput('-', 1, -1);
+			.states()
+			
+				.state(1)
+				.state(2)
+				.state(3)
+				.state(4)
+				.state(5)
+				.state(6)
+				.state(-1)
+			
+			.transitions()
 
-		changeOnInput('o', 2, 2);
-		changeOnInput('+', 2, 3);
-		changeOnInput('-', 2, 1);
-
-		changeOnInput('o', 3, 3);
-		changeOnInput('+', 3, 4);
-		changeOnInput('-', 3, 2);
-
-		changeOnInput('o', 4, 4);
-		changeOnInput('+', 4, 5);
-		changeOnInput('-', 4, 3);
-
-		changeOnInput('o', 5, 5);
-		changeOnInput('+', 5, 6);
-		changeOnInput('-', 5, 4);
-
-		changeOnInput('o', 6, 6);
-		changeOnInput('+', 6, -1);
-		changeOnInput('-', 6, 5);
-
-		changeOnInput('o', -1, -1);
-		changeOnInput('+', -1, -1);
-		changeOnInput('-', -1, -1);
+				.on('o').stay(1)
+				.on('+').when(1).then(2)
+				.on('-').when(1).then(-1)
+		
+				.on('o').when(2).then(2)
+				.on('+').when(2).then(3)
+				.on('-').when(2).then(1)
+		
+				.on('o').when(3).then(3)
+				.on('+').when(3).then(4)
+				.on('-').when(3).then(2)
+		
+				.on('o').when(4).then(4)
+				.on('+').when(4).then(5)
+				.on('-').when(4).then(3)
+		
+				.on('o').when(5).then(5)
+				.on('+').when(5).then(6)
+				.on('-').when(5).then(4)
+		
+				.on('o').when(6).then(6)
+				.on('+').when(6).then(-1)
+				.on('-').when(6).then(5)
+		
+				.on('o').when(-1).then(-1)
+				.on('+').when(-1).then(-1)
+				.on('-').when(-1).then(-1)
+		
+		.endStateMachine();
+		//@formatter:on
 	}
 
 	void prüfeObSpielbar(String wort) {
-		init();
+		scanner.init();
 		for (int i = 0; i < wort.length(); ++i) {
-			addInput(wort.charAt(i));
-			update();
+			scanner.enqueue(wort.charAt(i));
+			scanner.update();
 		}
-		if (stateID() != -1) {
+		if (scanner.getState() != -1) {
 			System.out.println(wort + ": spielbar");
 			return;
 		}
