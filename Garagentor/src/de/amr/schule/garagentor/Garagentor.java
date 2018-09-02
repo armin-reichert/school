@@ -1,5 +1,14 @@
 package de.amr.schule.garagentor;
 
+import static de.amr.schule.garagentor.Garagentor.TorEreignis.FB_GEDRÜCKT;
+import static de.amr.schule.garagentor.Garagentor.TorEreignis.SCHALTER_GEDRÜCKT;
+import static de.amr.schule.garagentor.Garagentor.TorZustand.GESCHLOSSEN;
+import static de.amr.schule.garagentor.Garagentor.TorZustand.GESTOPPT_BEIM_SCHLIESSEN;
+import static de.amr.schule.garagentor.Garagentor.TorZustand.GESTOPPT_BEIM_ÖFFNEN;
+import static de.amr.schule.garagentor.Garagentor.TorZustand.OFFEN;
+import static de.amr.schule.garagentor.Garagentor.TorZustand.SCHLIESST;
+import static de.amr.schule.garagentor.Garagentor.TorZustand.ÖFFNET;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -10,12 +19,21 @@ import de.amr.easy.game.entity.GameEntity;
 import de.amr.easy.game.input.Keyboard;
 import de.amr.easy.game.view.Controller;
 import de.amr.easy.game.view.View;
-import de.amr.easy.statemachine.StateMachine;
+import de.amr.statemachine.Match;
+import de.amr.statemachine.StateMachine;
 
-public class Garagentor extends GameEntity implements View,Controller {
+public class Garagentor extends GameEntity implements View, Controller {
+
+	public enum TorZustand {
+		GESCHLOSSEN, ÖFFNET, OFFEN, GESTOPPT_BEIM_ÖFFNEN, SCHLIESST, GESTOPPT_BEIM_SCHLIESSEN
+	}
+
+	public enum TorEreignis {
+		SCHALTER_GEDRÜCKT, FB_GEDRÜCKT,
+	}
 
 	private GaragentorApp app;
-	private StateMachine<String, String> automat;
+	private StateMachine<TorZustand, TorEreignis> automat;
 	private int position;
 	private boolean hindernis;
 	private boolean lichtBrennt;
@@ -24,65 +42,52 @@ public class Garagentor extends GameEntity implements View,Controller {
 
 		this.app = app;
 
-		automat = new StateMachine<>("Garagentor Steuerung", String.class, "Geschlossen");
+		//@formatter:off
+		automat = StateMachine.define(TorZustand.class, TorEreignis.class, Match.BY_EQUALITY)
+				.description("Garagentor Steuerung")
+				.initialState(GESCHLOSSEN)
 
-		// Geschlossen
+		.states()
+		
+				.state(GESCHLOSSEN)
+						.timeoutAfter(() -> Application.CLOCK.sec(5))
+						.onEntry(() -> lichtAn())
+						.onExit(() -> lichtAus())
+				
+				.state(ÖFFNET)
+					.onTick(() -> position++)
+		
+				.state(OFFEN)
+				
+				.state(SCHLIESST)
+					.onTick(() -> position--)
+				
+		.transitions()
+		
+				.when(GESCHLOSSEN).then(ÖFFNET).on(SCHALTER_GEDRÜCKT)
+				.when(GESCHLOSSEN).then(ÖFFNET).on(FB_GEDRÜCKT)
+				.stay(GESCHLOSSEN).onTimeout().act(() -> lichtAus())
+				
+				.when(ÖFFNET).then(OFFEN).condition(() -> endPunktErreicht())
+				.when(ÖFFNET).then(GESTOPPT_BEIM_ÖFFNEN).on(SCHALTER_GEDRÜCKT)
+				.when(ÖFFNET).then(GESTOPPT_BEIM_ÖFFNEN).on(FB_GEDRÜCKT)
+				
+				.when(OFFEN).then(SCHLIESST).on(SCHALTER_GEDRÜCKT)
+				.when(OFFEN).then(SCHLIESST).on(FB_GEDRÜCKT)
+				
+				.when(SCHLIESST).then(GESCHLOSSEN).condition(() -> anfangsPunktErreicht())
+				.when(SCHLIESST).then(GESTOPPT_BEIM_SCHLIESSEN).on(SCHALTER_GEDRÜCKT)
+				.when(SCHLIESST).then(GESTOPPT_BEIM_SCHLIESSEN).on(FB_GEDRÜCKT)
+				.when(SCHLIESST).then(ÖFFNET).condition(() -> hindernisErkannt())
+				
+				.when(GESTOPPT_BEIM_ÖFFNEN).then(SCHLIESST).on(SCHALTER_GEDRÜCKT)
+				.when(GESTOPPT_BEIM_ÖFFNEN).then(SCHLIESST).on(FB_GEDRÜCKT)
 
-		automat.state("Geschlossen").entry = s -> {
-			lichtAn();
-			s.setDuration(Application.CLOCK.sec(5));
-		};
+				.when(GESTOPPT_BEIM_SCHLIESSEN).then(ÖFFNET).on(SCHALTER_GEDRÜCKT)
+				.when(GESTOPPT_BEIM_SCHLIESSEN).then(ÖFFNET).on(FB_GEDRÜCKT)
 
-		automat.state("Geschlossen").exit = s -> {
-			lichtAus();
-		};
-
-		automat.changeOnInput("SchalterGedrückt", "Geschlossen", "Öffnet");
-
-		automat.changeOnInput("FBGedrückt", "Geschlossen", "Öffnet");
-
-		automat.changeOnTimeout("Geschlossen", "Geschlossen", t -> lichtAus());
-
-		// Öffnet
-
-		automat.state("Öffnet").update = s -> {
-			position += 1;
-		};
-
-		automat.change("Öffnet", "Offen", () -> endPunktErreicht());
-
-		automat.changeOnInput("FBGedrückt", "Öffnet", "GestopptBeimÖffnen");
-
-		automat.changeOnInput("SchalterGedrückt", "Öffnet", "GestopptBeimÖffnen");
-
-		// Offen
-		automat.changeOnInput("SchalterGedrückt", "Offen", "Schließt");
-
-		automat.changeOnInput("FBGedrückt", "Offen", "Schließt");
-
-		// Schließt
-
-		automat.state("Schließt").update = s -> {
-			position -= 1;
-		};
-
-		automat.change("Schließt", "Geschlossen", () -> anfangsPunktErreicht());
-
-		automat.changeOnInput("FBGedrückt", "Schließt", "GestopptBeimSchließen");
-
-		automat.changeOnInput("SchalterGedrückt", "Schließt", "GestopptBeimSchließen");
-
-		automat.change("Schließt", "Öffnet", () -> hindernisErkannt());
-
-		// GestopptBeimÖffnen
-		automat.changeOnInput("SchalterGedrückt", "GestopptBeimÖffnen", "Schließt");
-
-		automat.changeOnInput("FBGedrückt", "GestopptBeimÖffnen", "Schließt");
-
-		// GestopptBeimSchließen
-		automat.changeOnInput("SchalterGedrückt", "GestopptBeimSchließen", "Öffnet");
-
-		automat.changeOnInput("FBGedrückt", "GestopptBeimSchließen", "Öffnet");
+		.endStateMachine();
+		//@formatter:on
 	}
 
 	public int getWidth() {
@@ -101,11 +106,11 @@ public class Garagentor extends GameEntity implements View,Controller {
 	@Override
 	public void update() {
 		if (Keyboard.keyPressedOnce(KeyEvent.VK_SPACE)) {
-			automat.addInput("SchalterGedrückt");
+			automat.enqueue(SCHALTER_GEDRÜCKT);
 		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_F)) {
-			automat.addInput("FBGedrückt");
+			automat.enqueue(FB_GEDRÜCKT);
 		} else if (Keyboard.keyPressedOnce(KeyEvent.VK_H)) {
-			if (automat.is("Geschlossen") && !hindernis) {
+			if (automat.getState() == GESCHLOSSEN && !hindernis) {
 				// Hindernis nicht einschalten
 			} else {
 				hindernis = !hindernis;
@@ -121,20 +126,20 @@ public class Garagentor extends GameEntity implements View,Controller {
 		int w = position * app.settings.width / 100;
 		g.fillRect(0, 0, w, 20);
 		g.translate(-tf.getX(), -tf.getY());
-	
+
 		g.translate(tf.getX(), tf.getY() + 40);
 		g.setFont(new Font("Monospaced", Font.BOLD, 20));
-		g.drawString(String.format("Position: %d, Zustand: %s, Hindernis: %s, %s", position, automat.stateID(),
+		g.drawString(String.format("Position: %d, Zustand: %s, Hindernis: %s, %s", position, automat.getState(),
 				hindernis ? "Ja" : "Nein", lichtBrennt ? "Licht brennt" : ""), 0, 0);
 		g.translate(-tf.getX(), -tf.getY());
 	}
 
 	private boolean endPunktErreicht() {
-		return position == 100;
+		return position >= 100;
 	}
 
 	private boolean anfangsPunktErreicht() {
-		return position == 0;
+		return position <= 0;
 	}
 
 	private boolean hindernisErkannt() {
