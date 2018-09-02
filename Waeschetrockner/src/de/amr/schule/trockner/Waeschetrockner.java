@@ -57,6 +57,9 @@ public class Waeschetrockner extends GameEntityUsingSprites {
 			
 			.when("Bereit").then("Aus").on("EinAusTaste")
 			.when("Bereit").then("Läuft").on("StartTaste").condition(() -> tür.getState().equals("Zu"))
+			.when("Bereit").then("Aus").on("TürAuf")
+			.stay("Bereit").on("StartTaste").condition(() -> tür.getState().equals("Auf"))
+				.act(() -> LOGGER.info("Bitte Tür schließen"))
 			
 			.when("Läuft").then("Aus").on("EinAusTaste").act(() -> tür.process("TürAuf"))
 			.when("Läuft").then("Aus").on("TürAuf")
