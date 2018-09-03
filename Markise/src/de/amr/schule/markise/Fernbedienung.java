@@ -32,9 +32,9 @@ public class Fernbedienung extends GameEntityUsingSprites {
 			}
 		});
 		setSprite("s_remote", Sprite.ofAssets("remotecontrol.jpg"));
-		setCurrentSprite("s_remote");
-		tf.setWidth(currentSprite().getWidth());
-		tf.setHeight(currentSprite().getHeight());
+		setSelectedSprite("s_remote");
+		tf.setWidth(getSelectedSprite().getWidth());
+		tf.setHeight(getSelectedSprite().getHeight());
 	}
 
 	@Override
