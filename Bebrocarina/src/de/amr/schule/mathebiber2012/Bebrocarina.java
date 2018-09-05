@@ -33,33 +33,33 @@ public class Bebrocarina {
 			
 			.transitions()
 
-				.on('o').stay(1)
-				.on('+').when(1).then(2)
-				.on('-').when(1).then(-1)
+				.stay(1).on('o')
+				.when(1).then(2).on('+')
+				.when(1).then(-1).on('-')
 		
-				.on('o').when(2).then(2)
-				.on('+').when(2).then(3)
-				.on('-').when(2).then(1)
+				.when(2).then(2).on('o')
+				.when(2).then(3).on('+')
+				.when(2).then(1).on('-')
 		
-				.on('o').when(3).then(3)
-				.on('+').when(3).then(4)
-				.on('-').when(3).then(2)
+				.when(3).then(3).on('o')
+				.when(3).then(4).on('+')
+				.when(3).then(2).on('-')
 		
-				.on('o').when(4).then(4)
-				.on('+').when(4).then(5)
-				.on('-').when(4).then(3)
+				.when(4).then(4).on('o')
+				.when(4).then(5).on('+')
+				.when(4).then(3).on('-')
 		
-				.on('o').when(5).then(5)
-				.on('+').when(5).then(6)
-				.on('-').when(5).then(4)
+				.when(5).then(5).on('o')
+				.when(5).then(6).on('+')
+				.when(5).then(4).on('-')
 		
-				.on('o').when(6).then(6)
-				.on('+').when(6).then(-1)
-				.on('-').when(6).then(5)
+				.when(6).then(6).on('o')
+				.when(6).then(-1).on('+')
+				.when(6).then(5).on('-')
 		
-				.on('o').when(-1).then(-1)
-				.on('+').when(-1).then(-1)
-				.on('-').when(-1).then(-1)
+				.stay(-1).on('o')
+				.stay(-1).on('+')
+				.stay(-1).on('-')
 		
 		.endStateMachine();
 		//@formatter:on
