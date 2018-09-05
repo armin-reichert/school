@@ -31,7 +31,7 @@ public class GameOfLifeApp extends Application {
 		settings.width = 1024;
 		settings.height = 1024;
 		settings.bgColor = Color.DARK_GRAY;
-		CLOCK.setFrequency(20);
+		clock.setFrequency(20);
 	}
 
 	@Override
