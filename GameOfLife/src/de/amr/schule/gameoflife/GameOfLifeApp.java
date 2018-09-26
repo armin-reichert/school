@@ -20,7 +20,7 @@ import de.amr.schule.gameoflife.scenes.RandomFillScene;
 public class GameOfLifeApp extends Application {
 
 	public static void main(String[] args) {
-		launch(new GameOfLifeApp());
+		launch(new GameOfLifeApp(), args);
 	}
 
 	private int current;
