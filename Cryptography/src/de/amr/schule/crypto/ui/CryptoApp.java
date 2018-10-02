@@ -2,7 +2,6 @@ package de.amr.schule.crypto.ui;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
@@ -18,12 +17,9 @@ public class CryptoApp {
 	}
 
 	public CryptoApp() {
-		JFrame window = new JFrame();
-		window.setTitle("Peter's Crypto App");
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.add(new CryptoPanel());
+		CryptoWindow window = new CryptoWindow();
 		window.pack();
+		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 	}
-
 }

@@ -1,17 +1,17 @@
 package de.amr.schule.crypto.ui;
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 
+import de.amr.schule.crypto.alg.Caesar;
 import de.amr.schule.crypto.alg.Gartenzaun;
+import de.amr.schule.crypto.alg.Kamasutra;
 import de.amr.schule.crypto.api.Permutation;
 import net.miginfocom.swing.MigLayout;
 
@@ -22,12 +22,28 @@ public class CryptoPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String text = textAreaOriginalText.getText();
-			int numRows = (Integer) spinnerNumRows.getValue();
-			Gartenzaun gartenzaun = new Gartenzaun(numRows);
-			Permutation perm = gartenzaun.permutation(text.length());
-			System.out.println(perm);
-			String code = perm.apply(text);
-			textAreaEncryptedText.setText(code);
+			String chiffre = "";
+			switch (algorithm) {
+			case GARTENZAUN:
+				Gartenzaun gartenzaun = new Gartenzaun(gartenzaunZeilen);
+				Permutation perm = gartenzaun.permutation(text.length());
+				System.out.println(perm);
+				chiffre = perm.apply(text);
+				break;
+			case KAMASUTRA:
+				if (kamasutra == null) {
+					kamasutra = new Kamasutra();
+				}
+				chiffre = kamasutra.encrypt(text);
+				break;
+			case CAESAR:
+				Caesar caesar = new Caesar();
+				chiffre = caesar.encrypt(text);
+				break;
+			default:
+				throw new IllegalArgumentException();
+			}
+			textAreaEncryptedText.setText(chiffre);
 		}
 	};
 
@@ -35,12 +51,28 @@ public class CryptoPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String code = textAreaEncryptedText.getText();
-			int numRows = (Integer) spinnerNumRows.getValue();
-			Gartenzaun gartenzaun = new Gartenzaun(numRows);
-			Permutation perm = gartenzaun.permutation(code.length()).inv();
-			System.out.println(perm);
-			String text = perm.apply(code);
+			String chiffre = textAreaEncryptedText.getText();
+			String text = "";
+			switch (algorithm) {
+			case GARTENZAUN:
+				Gartenzaun gartenzaun = new Gartenzaun(gartenzaunZeilen);
+				Permutation perm = gartenzaun.permutation(chiffre.length()).inv();
+				System.out.println(perm);
+				text = perm.apply(chiffre);
+				break;
+			case KAMASUTRA:
+				if (kamasutra == null) {
+					kamasutra = new Kamasutra();
+				}
+				text = kamasutra.decrypt(chiffre);
+				break;
+			case CAESAR:
+				Caesar caesar = new Caesar();
+				text = caesar.decrypt(chiffre);
+				break;
+			default:
+				throw new IllegalArgumentException();
+			}
 			textAreaOriginalText.setText(text);
 		}
 	};
@@ -50,30 +82,40 @@ public class CryptoPanel extends JPanel {
 	private JTextArea textAreaEncryptedText;
 	private JPanel panel;
 	private JButton btnDecrypt;
-	private JSpinner spinnerNumRows;
-	private JLabel lblAnzahlZeilen;
+
+	private Algorithm algorithm;
+	private Kamasutra kamasutra;
+	private int gartenzaunZeilen = 2;
+
+	public int getGartenzaunZeilen() {
+		return gartenzaunZeilen;
+	}
+
+	public void setGartenzaunZeilen(int gartenzaunZeilen) {
+		this.gartenzaunZeilen = gartenzaunZeilen;
+	}
+
+	public void setAlgorithm(Algorithm algorithm) {
+		this.algorithm = algorithm;
+	}
+
+	public Algorithm getAlgorithm() {
+		return algorithm;
+	}
 
 	public CryptoPanel() {
-		setLayout(new MigLayout("", "[200px:n,grow][grow][200px:n,grow]", "[500:500,grow]"));
+		setLayout(new MigLayout("", "[200px:n,grow][grow]", "[grow,top][][]"));
 
 		textAreaOriginalText = new JTextArea();
 		textAreaOriginalText.setLineWrap(true);
-		textAreaOriginalText.setRows(40);
+		textAreaOriginalText.setRows(20);
 		textAreaOriginalText.setColumns(60);
 		textAreaOriginalText.setText("NAHT IHR EUCH WIEDER SCHWANKENDE GESTALTEN");
-		add(textAreaOriginalText, "cell 0 0,growy");
+		add(textAreaOriginalText, "cell 0 0");
 
 		panel = new JPanel();
-		add(panel, "cell 1 0,alignx center,aligny center");
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-		lblAnzahlZeilen = new JLabel("Anzahl Zeilen");
-		panel.add(lblAnzahlZeilen);
-
-		spinnerNumRows = new JSpinner();
-		spinnerNumRows.setToolTipText("Anzahl Zeilen");
-		panel.add(spinnerNumRows);
-		spinnerNumRows.setValue(Integer.valueOf(2));
+		add(panel, "cell 0 1,alignx center");
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		btnEncrypt = new JButton("Verschlüsseln");
 		panel.add(btnEncrypt);
@@ -85,9 +127,13 @@ public class CryptoPanel extends JPanel {
 
 		textAreaEncryptedText = new JTextArea();
 		textAreaEncryptedText.setLineWrap(true);
-		textAreaEncryptedText.setRows(40);
+		textAreaEncryptedText.setRows(20);
 		textAreaEncryptedText.setColumns(60);
-		add(textAreaEncryptedText, "cell 2 0,growy");
+		add(textAreaEncryptedText, "cell 0 2");
+
+		// initialize
+		algorithm = Algorithm.GARTENZAUN;
+
 	}
 
 	public JTextArea getTextAreaOriginalText() {
