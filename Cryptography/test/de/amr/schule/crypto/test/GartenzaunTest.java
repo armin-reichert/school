@@ -9,14 +9,16 @@ public class GartenzaunTest {
 
 	@Test
 	public void test() {
-		System.out.println("Gartenzaun");
-		Gartenzaun gartenzaun = new Gartenzaun(3);
+		int numRows = 3;
+		Gartenzaun gartenzaun = new Gartenzaun(numRows);
 		String text = "PETERCHEN RAFFT MAL WIDA NIX";
-		System.out.println(text);
 		String chiffre = gartenzaun.encrypt(text);
-		System.out.println(chiffre);
 		String decrypted = gartenzaun.decrypt(chiffre);
-		System.out.println(decrypted);
 		Assert.assertEquals(text, decrypted);
+
+		System.out.println(String.format("Gartenzaun, %d rows", numRows));
+		System.out.println(text);
+		System.out.println(chiffre);
+		System.out.println(decrypted);
 	}
 }
