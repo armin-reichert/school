@@ -7,7 +7,7 @@ import de.amr.schule.crypto.api.MonoSubstitution;
 public class Kamasutra implements MonoSubstitution {
 
 	public static char[][] randomSubstitutions() {
-		char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ .".toCharArray();
+		char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .".toCharArray();
 		char[][] result = new char[alphabet.length / 2][2];
 		shuffle(alphabet);
 		int j = 0;

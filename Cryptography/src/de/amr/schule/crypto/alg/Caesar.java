@@ -9,7 +9,7 @@ public class Caesar implements MonoSubstitution {
 	private char[] alphabetLeft3;
 
 	public Caesar() {
-		this("ABCDEFGHIJKLMNOPQRSTUVWXYZ .");
+		this("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .");
 	}
 
 	public Caesar(String alphabetString) {
