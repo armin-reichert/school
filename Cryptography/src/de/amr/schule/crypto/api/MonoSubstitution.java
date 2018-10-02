@@ -13,7 +13,7 @@ public interface MonoSubstitution extends Crypto {
 		return new String(result);
 	}
 
-	default int find(char c, char[] array) {
+	default int index(char c, char[] array) {
 		for (int i = 0; i < array.length; ++i) {
 			if (array[i] == c) {
 				return i;

@@ -42,7 +42,7 @@ public class Kamasutra implements MonoSubstitution {
 		return substitutions;
 	}
 
-	private char replaceChar(char c) {
+	private char replace(char c) {
 		for (int i = 0; i < substitutions.length; ++i) {
 			if (c == substitutions[i][0]) {
 				return substitutions[i][1];
@@ -56,7 +56,7 @@ public class Kamasutra implements MonoSubstitution {
 
 	@Override
 	public String encrypt(String text) {
-		return replace(text, this::replaceChar);
+		return replace(text, this::replace);
 	}
 
 	@Override
