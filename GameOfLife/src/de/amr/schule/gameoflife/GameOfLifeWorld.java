@@ -3,9 +3,9 @@ package de.amr.schule.gameoflife;
 import java.awt.Graphics2D;
 import java.util.BitSet;
 
-import de.amr.easy.game.entity.AbstractGameEntity;
+import de.amr.easy.game.entity.Entity;
 
-public class GameOfLifeWorld extends AbstractGameEntity {
+public class GameOfLifeWorld extends Entity {
 
 	private BitSet grid1;
 	private BitSet grid2;
