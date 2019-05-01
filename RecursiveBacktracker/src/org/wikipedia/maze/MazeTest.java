@@ -9,7 +9,8 @@ public class MazeTest {
 		long totalTime = 0;
 		for (int i = 0; i < numRuns; ++i) {
 			long time = System.nanoTime();
-			Grid maze = RandomizedDFS.maze(numCols, numRows, 0, 0, false);
+			Grid maze = MazeGenerators.maze(numCols, numRows, 0, 0,
+					MazeGenerators.Algorithm.RANDOM_DFS_NONRECURSIVE);
 			time = System.nanoTime() - time;
 			totalTime += time;
 			if (maze.numEdges() != maze.numCols * maze.numRows - 1) {
