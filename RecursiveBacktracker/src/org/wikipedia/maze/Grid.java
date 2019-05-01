@@ -58,30 +58,32 @@ public class Grid {
 		return edges.get(bit(v, dir));
 	}
 
-	/** Returns the neighbor of vertex {@code v} towards direction {@code dir} or {@link #NO_VERTEX}. */
+	/**
+	 * Returns the neighbor of vertex {@code v} towards direction {@code dir} or {@link #NO_VERTEX}.
+	 */
 	public int neighbor(int v, Direction dir) {
 		int col = col(v) + dir.x, row = row(v) + dir.y;
 		return col >= 0 && col < numCols && row >= 0 && row < numRows ? vertex(col, row) : NO_VERTEX;
 	}
 
-	/** Returns a textual representation of this grid. */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (int row = 0; row < numRows; ++row) {
-			for (int col = 0; col < numCols; ++col) {
-				sb.append(String.format("[%2d,%2d]", row, col));
-				sb.append(col < numCols - 1 && hasEdge(vertex(col, row), Direction.EAST) ? "--" : "  ");
+		sb.append(String.format("Grid: %d columns, %d rows, %d edges\n", numCols, numRows, numEdges()));
+		for (int row = 0; row < numRows; row++) {
+			for (int col = 0; col < numCols; col++) {
+				sb.append(!hasEdge(vertex(col, row), Direction.NORTH) ? "+---" : "+   ");
 			}
-			if (row < numRows - 1) {
-				sb.append("\n");
-				for (int col = 0; col < numCols; ++col) {
-					sb.append(hasEdge(vertex(col, row), Direction.SOUTH) ? "   |     " : "         ");
-				}
-				sb.append("\n");
+			sb.append("+\n");
+			for (int col = 0; col < numCols; col++) {
+				sb.append(!hasEdge(vertex(col, row), Direction.WEST) ? "|   " : "    ");
 			}
+			sb.append("|\n");
 		}
-		sb.append(String.format("\n\n[%d cols, %d rows, %d edges]\n", numCols, numRows, numEdges()));
+		for (int col = 0; col < numRows; col++) {
+			sb.append("+---");
+		}
+		sb.append("+\n");
 		return sb.toString();
 	}
 }
