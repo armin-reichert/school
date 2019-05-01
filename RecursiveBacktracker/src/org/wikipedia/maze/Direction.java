@@ -1,11 +1,11 @@
-package de.amr.maze.simple;
+package org.wikipedia.maze;
 
 public enum Direction {
 
 	NORTH(0, -1), EAST(1, 0), SOUTH(0, 1), WEST(-1, 0);
 
-	public static Direction opposite(Direction d) {
-		return Direction.values()[(d.ordinal() + 2) % 4];
+	public Direction opposite() {
+		return Direction.values()[(ordinal() + 2) % 4];
 	}
 
 	public final int x;

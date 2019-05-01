@@ -1,4 +1,4 @@
-package de.amr.maze.simple;
+package org.wikipedia.maze;
 
 import java.util.ArrayDeque;
 import java.util.BitSet;
@@ -13,26 +13,8 @@ import java.util.Random;
 public class RandomizedDFS {
 
 	public static void main(String[] args) {
-		// Using recursive procedure:
-		{
-			// Grid maze = maze(10, 10, 0, 0, true);
-			// System.out.println(maze);
-		}
-		// Using non-recursive procedure:
-		int numCols = 1000, numRows = 1000;
-		int numRuns = 40;
-		long totalTime = 0;
-		for (int i = 0; i < numRuns; ++i) {
-			long time = System.nanoTime();
-			Grid maze = maze(numCols, numRows, 0, 0, false);
-			time = System.nanoTime() - time;
-			totalTime += time;
-			if (maze.numEdges() != maze.numCols * maze.numRows - 1) {
-				throw new IllegalStateException();
-			}
-		}
-		System.out.println(String.format("%d runs, %,d cells each. Average time: %.2f millis", numRuns,
-				numCols * numRows, (float) totalTime / numRuns / 1_000_000L));
+		System.out.println(maze(10, 10, 0, 0, true));
+		System.out.println(maze(10, 10, 0, 0, false));
 	}
 
 	/** Returns a maze of the given size starting generation at the given grid position. */
