@@ -16,7 +16,7 @@ import java.util.Random;
 public class MazeGenerators {
 
 	public enum Algorithm {
-		RANDOM_DFS_RECURSIVE, RANDOM_DFS_NONRECURSIVE, RANDOM_BFS, RECURSIVE_DIVISION
+		RANDOM_DFS_RECURSIVE, RANDOM_DFS_NONRECURSIVE, RANDOM_BFS, RECURSIVE_DIVISION, ALDOUS_BRODER
 	}
 
 	public static void main(String[] args) {
@@ -42,6 +42,9 @@ public class MazeGenerators {
 			break;
 		case RECURSIVE_DIVISION:
 			recursiveDivision(grid);
+			break;
+		case ALDOUS_BRODER:
+			aldousBroder(grid, startVertex, visited);
 			break;
 		default:
 			break;
@@ -142,6 +145,21 @@ public class MazeGenerators {
 			}
 			divide(grid, rnd, x0, y0, x - x0, h);
 			divide(grid, rnd, x, y0, w - (x - x0), h);
+		}
+	}
+
+	// Aldous/Broder algorithm
+
+	private static void aldousBroder(Grid grid, int v, BitSet visited) {
+		visited.set(v);
+		while (grid.numEdges() < grid.numCols * grid.numRows - 1) {
+			Direction dir = Direction.values()[new Random().nextInt(4)];
+			int neighbor = grid.neighbor(v, dir);
+			if (neighbor != Grid.NO_VERTEX && !visited.get(neighbor)) {
+				grid.addEdge(v, dir);
+				visited.set(neighbor);
+			}
+			v = neighbor;
 		}
 	}
 
