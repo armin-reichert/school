@@ -80,7 +80,7 @@ public class Grid {
 			}
 			sb.append("|\n");
 		}
-		for (int col = 0; col < numRows; col++) {
+		for (int col = 0; col < numCols; col++) {
 			sb.append("+---");
 		}
 		sb.append("+\n");
