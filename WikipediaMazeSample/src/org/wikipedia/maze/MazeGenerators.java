@@ -152,7 +152,7 @@ public class MazeGenerators {
 
 	private static void aldousBroder(Grid grid, int v, BitSet visited) {
 		visited.set(v);
-		while (grid.numEdges() < grid.numCols * grid.numRows - 1) {
+		while (visited.cardinality() < grid.numCols * grid.numRows) {
 			Direction dir = Direction.values()[new Random().nextInt(4)];
 			int neighbor = grid.neighbor(v, dir);
 			if (neighbor != Grid.NO_VERTEX && !visited.get(neighbor)) {
