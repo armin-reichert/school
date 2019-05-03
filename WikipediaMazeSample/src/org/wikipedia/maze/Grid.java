@@ -52,6 +52,12 @@ public class Grid {
 		edges.set(bit(v, dir));
 		edges.set(bit(neighbor(v, dir), dir.opposite()));
 	}
+	
+	/** Removes the (undirected) edge from vertex {@code v} towards direction {@code dir}. */
+	public void removeEdge(int v, Direction dir) {
+		edges.clear(bit(v, dir));
+		edges.clear(bit(neighbor(v, dir), dir.opposite()));
+	}
 
 	/** Tells if the edge from vertex {@code v} towards direction {@code dir} exists. */
 	public boolean hasEdge(int v, Direction dir) {
