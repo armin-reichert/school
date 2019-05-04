@@ -8,7 +8,9 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Random;
+import java.util.function.IntConsumer;
 
 /**
  * Maze generators.
@@ -17,10 +19,11 @@ import java.util.Random;
  */
 public class MazeGenerators {
 
-	public enum Algorithm {
+	enum Algorithm {
 		RANDOM_DFS_RECURSIVE,
 		RANDOM_DFS_NONRECURSIVE,
 		RANDOM_BFS,
+		PRIM,
 		RECURSIVE_DIVISION,
 		ALDOUS_BRODER,
 		WILSON,
@@ -34,7 +37,7 @@ public class MazeGenerators {
 	}
 
 	/** Returns a maze of the given size starting generation at the given grid position. */
-	public static Grid maze(int numCols, int numRows, int startCol, int startRow, Algorithm algorithm) {
+	static Grid maze(int numCols, int numRows, int startCol, int startRow, Algorithm algorithm) {
 		Grid grid = new Grid(numCols, numRows);
 		int startVertex = grid.vertex(startCol, startRow);
 		BitSet visited = new BitSet(numCols * numRows);
@@ -47,6 +50,9 @@ public class MazeGenerators {
 			break;
 		case RANDOM_DFS_RECURSIVE:
 			randomDFSRecursive(grid, startVertex, visited);
+			break;
+		case PRIM:
+			prim(grid, startVertex, visited);
 			break;
 		case RECURSIVE_DIVISION:
 			recursiveDivision(grid);
@@ -68,7 +74,7 @@ public class MazeGenerators {
 
 	// Randomized Depth-First Search (recursive)
 
-	private static void randomDFSRecursive(Grid grid, int v, BitSet visited) {
+	static void randomDFSRecursive(Grid grid, int v, BitSet visited) {
 		visited.set(v);
 		for (Direction dir = unvisitedDir(grid, v, visited); dir != null; dir = unvisitedDir(grid, v, visited)) {
 			grid.addEdge(v, dir);
@@ -78,7 +84,7 @@ public class MazeGenerators {
 
 	// Randomized Depth-First Search (non-recursive)
 
-	private static void randomDFSNonrecursive(Grid grid, int v, BitSet visited) {
+	static void randomDFSNonrecursive(Grid grid, int v, BitSet visited) {
 		Deque<Integer> stack = new ArrayDeque<>();
 		visited.set(v);
 		stack.push(v);
@@ -99,7 +105,7 @@ public class MazeGenerators {
 
 	// Randomized Breadth-First Search
 
-	private static void randomBFS(Grid grid, int v, BitSet visited) {
+	static void randomBFS(Grid grid, int v, BitSet visited) {
 		List<Integer> frontier = new ArrayList<>();
 		visited.set(v);
 		frontier.add(v);
@@ -115,9 +121,46 @@ public class MazeGenerators {
 		}
 	}
 
+	// Prim's MST algorithm
+
+	static class WeightedEdge {
+
+		int v;
+		Direction dir;
+		int weight;
+
+		public WeightedEdge(int v, Direction dir, int weight) {
+			this.v = v;
+			this.dir = dir;
+			this.weight = weight;
+		}
+	}
+
+	static void prim(Grid grid, int v, BitSet visited) {
+		PriorityQueue<WeightedEdge> pq = new PriorityQueue<>((e1, e2) -> Integer.compare(e1.weight, e2.weight));
+		IntConsumer fnAddToMaze = vertex -> {
+			visited.set(vertex);
+			for (Direction dir : Direction.values()) {
+				int neighbor = grid.neighbor(vertex, dir);
+				if (neighbor != Grid.NO_VERTEX && !visited.get(neighbor)) {
+					pq.add(new WeightedEdge(vertex, dir, new Random().nextInt(Integer.MAX_VALUE)));
+				}
+			}
+		};
+		fnAddToMaze.accept(v);
+		while (!pq.isEmpty()) {
+			WeightedEdge edge = pq.poll();
+			int neighbor = grid.neighbor(edge.v, edge.dir);
+			if (!visited.get(neighbor)) {
+				grid.addEdge(edge.v, edge.dir);
+				fnAddToMaze.accept(neighbor);
+			}
+		}
+	}
+
 	// Recursive division
 
-	public static void recursiveDivision(Grid grid) {
+	static void recursiveDivision(Grid grid) {
 		for (int row = 0; row < grid.numRows; ++row) {
 			for (int col = 0; col < grid.numCols; ++col) {
 				int vertex = grid.vertex(col, row);
@@ -132,7 +175,7 @@ public class MazeGenerators {
 		divide(grid, new Random(), 0, 0, grid.numCols, grid.numRows);
 	}
 
-	private static void divide(Grid grid, Random rnd, int x0, int y0, int w, int h) {
+	static void divide(Grid grid, Random rnd, int x0, int y0, int w, int h) {
 		if (w <= 1 && h <= 1) {
 			return;
 		}
@@ -164,7 +207,7 @@ public class MazeGenerators {
 
 	// Aldous/Broder algorithm
 
-	private static void aldousBroder(Grid grid, int v, BitSet visited) {
+	static void aldousBroder(Grid grid, int v, BitSet visited) {
 		visited.set(v);
 		while (visited.cardinality() < grid.numCols * grid.numRows) {
 			Direction dir = Direction.values()[new Random().nextInt(4)];
@@ -179,7 +222,7 @@ public class MazeGenerators {
 
 	// Wilson's algorithm
 
-	private static void wilson(Grid grid) {
+	static void wilson(Grid grid) {
 		int numVertices = grid.numCols * grid.numRows;
 		BitSet tree = new BitSet(numVertices);
 		tree.set(new Random().nextInt(numVertices));
@@ -189,8 +232,7 @@ public class MazeGenerators {
 		}
 	}
 
-	private static void loopErasedRandomWalk(Grid grid, int start, Map<Integer, Direction> lastWalkDir,
-			BitSet tree) {
+	static void loopErasedRandomWalk(Grid grid, int start, Map<Integer, Direction> lastWalkDir, BitSet tree) {
 		// do random walk until a tree vertex is reached
 		int v = start;
 		while (!tree.get(v)) {
@@ -216,7 +258,7 @@ public class MazeGenerators {
 
 	// Binary tree algorithm
 
-	private static void binaryTree(Grid grid) {
+	static void binaryTree(Grid grid) {
 		Direction[] dirs = { Direction.EAST, Direction.SOUTH };
 		for (int v = 0; v < grid.numCols * grid.numRows; ++v) {
 			int choice = new Random().nextInt(2);
@@ -234,7 +276,7 @@ public class MazeGenerators {
 	}
 
 	/** Returns directions to unvisited neighbors of {@code v} in random order. */
-	private static List<Direction> unvisitedDirections(Grid grid, int v, BitSet visited) {
+	static List<Direction> unvisitedDirections(Grid grid, int v, BitSet visited) {
 		List<Direction> candidates = new ArrayList<>(4);
 		for (Direction dir : Direction.values()) {
 			int neighbor = grid.neighbor(v, dir);
@@ -247,7 +289,7 @@ public class MazeGenerators {
 	}
 
 	/** Returns direction to some unvisited neighbor or {@code null} if no such neighbor exists. */
-	private static Direction unvisitedDir(Grid grid, int v, BitSet visited) {
+	static Direction unvisitedDir(Grid grid, int v, BitSet visited) {
 		List<Direction> unvisitedDirections = unvisitedDirections(grid, v, visited);
 		return unvisitedDirections.isEmpty() ? null : unvisitedDirections.get(0);
 	}
