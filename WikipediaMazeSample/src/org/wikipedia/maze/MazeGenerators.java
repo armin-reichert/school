@@ -18,7 +18,13 @@ import java.util.Random;
 public class MazeGenerators {
 
 	public enum Algorithm {
-		RANDOM_DFS_RECURSIVE, RANDOM_DFS_NONRECURSIVE, RANDOM_BFS, RECURSIVE_DIVISION, ALDOUS_BRODER, WILSON
+		RANDOM_DFS_RECURSIVE,
+		RANDOM_DFS_NONRECURSIVE,
+		RANDOM_BFS,
+		RECURSIVE_DIVISION,
+		ALDOUS_BRODER,
+		WILSON,
+		BINARY_TREE
 	}
 
 	public static void main(String[] args) {
@@ -50,6 +56,9 @@ public class MazeGenerators {
 			break;
 		case WILSON:
 			wilson(grid);
+			break;
+		case BINARY_TREE:
+			binaryTree(grid);
 			break;
 		default:
 			break;
@@ -170,7 +179,7 @@ public class MazeGenerators {
 
 	// Wilson's algorithm
 
-	public static void wilson(Grid grid) {
+	private static void wilson(Grid grid) {
 		int numVertices = grid.numCols * grid.numRows;
 		BitSet tree = new BitSet(numVertices);
 		tree.set(new Random().nextInt(numVertices));
@@ -201,6 +210,25 @@ public class MazeGenerators {
 				tree.set(v);
 				grid.addEdge(v, dir);
 				v = neighbor;
+			}
+		}
+	}
+
+	// Binary tree algorithm
+
+	private static void binaryTree(Grid grid) {
+		Direction[] dirs = { Direction.EAST, Direction.SOUTH };
+		for (int v = 0; v < grid.numCols * grid.numRows; ++v) {
+			int choice = new Random().nextInt(2);
+			int neighbor = grid.neighbor(v, dirs[choice]);
+			if (neighbor != Grid.NO_VERTEX) {
+				grid.addEdge(v, dirs[choice]);
+			}
+			else {
+				neighbor = grid.neighbor(v, dirs[1 - choice]);
+				if (neighbor != Grid.NO_VERTEX) {
+					grid.addEdge(v, dirs[1 - choice]);
+				}
 			}
 		}
 	}
