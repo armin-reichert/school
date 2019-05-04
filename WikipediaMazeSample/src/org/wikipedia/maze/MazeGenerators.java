@@ -171,10 +171,11 @@ public class MazeGenerators {
 	// Wilson's algorithm
 
 	public static void wilson(Grid grid) {
+		int numVertices = grid.numCols * grid.numRows;
+		BitSet tree = new BitSet(numVertices);
+		tree.set(new Random().nextInt(numVertices));
 		Map<Integer, Direction> lastWalkDir = new HashMap<>();
-		BitSet tree = new BitSet();
-		tree.set(0);
-		for (int v = 0; v < grid.numCols * grid.numRows; ++v) {
+		for (int v = 0; v < numVertices; ++v) {
 			loopErasedRandomWalk(grid, v, lastWalkDir, tree);
 		}
 	}
