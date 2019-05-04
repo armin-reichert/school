@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -16,7 +18,7 @@ import java.util.Random;
 public class MazeGenerators {
 
 	public enum Algorithm {
-		RANDOM_DFS_RECURSIVE, RANDOM_DFS_NONRECURSIVE, RANDOM_BFS, RECURSIVE_DIVISION, ALDOUS_BRODER
+		RANDOM_DFS_RECURSIVE, RANDOM_DFS_NONRECURSIVE, RANDOM_BFS, RECURSIVE_DIVISION, ALDOUS_BRODER, WILSON
 	}
 
 	public static void main(String[] args) {
@@ -45,6 +47,9 @@ public class MazeGenerators {
 			break;
 		case ALDOUS_BRODER:
 			aldousBroder(grid, startVertex, visited);
+			break;
+		case WILSON:
+			wilson(grid);
 			break;
 		default:
 			break;
@@ -160,6 +165,42 @@ public class MazeGenerators {
 				visited.set(neighbor);
 			}
 			v = neighbor;
+		}
+	}
+
+	// Wilson's algorithm
+
+	public static void wilson(Grid grid) {
+		Map<Integer, Direction> lastWalkDir = new HashMap<>();
+		BitSet tree = new BitSet();
+		tree.set(0);
+		for (int v = 0; v < grid.numCols * grid.numRows; ++v) {
+			loopErasedRandomWalk(grid, v, lastWalkDir, tree);
+		}
+	}
+
+	private static void loopErasedRandomWalk(Grid grid, int start, Map<Integer, Direction> lastWalkDir,
+			BitSet tree) {
+		// do random walk until a tree vertex is reached
+		int v = start;
+		while (!tree.get(v)) {
+			Direction dir = Direction.values()[new Random().nextInt(4)];
+			int neighbor = grid.neighbor(v, dir);
+			if (neighbor != Grid.NO_VERTEX) {
+				lastWalkDir.put(v, dir);
+				v = neighbor;
+			}
+		}
+		// add the (loop-erased) random walk to the tree
+		v = start;
+		while (!tree.get(v)) {
+			Direction dir = lastWalkDir.get(v);
+			int neighbor = grid.neighbor(v, dir);
+			if (neighbor != Grid.NO_VERTEX) {
+				tree.set(v);
+				grid.addEdge(v, dir);
+				v = neighbor;
+			}
 		}
 	}
 
