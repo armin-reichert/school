@@ -27,6 +27,7 @@ public class MazeGenerators {
 		RECURSIVE_DIVISION,
 		ALDOUS_BRODER,
 		WILSON,
+		SIDEWINDER,
 		BINARY_TREE
 	}
 
@@ -63,6 +64,9 @@ public class MazeGenerators {
 		case WILSON:
 			wilson(grid);
 			break;
+		case SIDEWINDER:
+			sidewinder(grid);
+			break;
 		case BINARY_TREE:
 			binaryTree(grid);
 			break;
@@ -76,7 +80,8 @@ public class MazeGenerators {
 
 	static void randomDFSRecursive(Grid grid, int v, BitSet visited) {
 		visited.set(v);
-		for (Direction dir = unvisitedDir(grid, v, visited); dir != null; dir = unvisitedDir(grid, v, visited)) {
+		for (Direction dir = unvisitedDir(grid, v, visited); dir != null; dir = unvisitedDir(grid, v,
+				visited)) {
 			grid.addEdge(v, dir);
 			randomDFSRecursive(grid, grid.neighbor(v, dir), visited);
 		}
@@ -137,7 +142,8 @@ public class MazeGenerators {
 	}
 
 	static void prim(Grid grid, int v, BitSet visited) {
-		PriorityQueue<WeightedEdge> pq = new PriorityQueue<>((e1, e2) -> Integer.compare(e1.weight, e2.weight));
+		PriorityQueue<WeightedEdge> pq = new PriorityQueue<>(
+				(e1, e2) -> Integer.compare(e1.weight, e2.weight));
 		IntConsumer fnAddToMaze = vertex -> {
 			visited.set(vertex);
 			for (Direction dir : Direction.values()) {
@@ -232,7 +238,8 @@ public class MazeGenerators {
 		}
 	}
 
-	static void loopErasedRandomWalk(Grid grid, int start, Map<Integer, Direction> lastWalkDir, BitSet tree) {
+	static void loopErasedRandomWalk(Grid grid, int start, Map<Integer, Direction> lastWalkDir,
+			BitSet tree) {
 		// do random walk until a tree vertex is reached
 		int v = start;
 		while (!tree.get(v)) {
@@ -252,6 +259,25 @@ public class MazeGenerators {
 				tree.set(v);
 				grid.addEdge(v, dir);
 				v = neighbor;
+			}
+		}
+	}
+
+	// Sidewinder algorithm
+
+	static void sidewinder(Grid grid) {
+		Random rnd = new Random();
+		for (int row = 0; row < grid.numRows; ++row) {
+			int currentCol = 0;
+			for (int col = 0; col < grid.numCols; ++col) {
+				if (row > 0 && (col == grid.numCols - 1 || rnd.nextBoolean())) {
+					int passageCol = currentCol + rnd.nextInt(col - currentCol + 1);
+					grid.addEdge(grid.vertex(passageCol, row - 1), Direction.SOUTH);
+					currentCol = col + 1;
+				}
+				else if (col + 1 < grid.numCols) {
+					grid.addEdge(grid.vertex(col, row), Direction.EAST);
+				}
 			}
 		}
 	}
