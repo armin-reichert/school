@@ -267,15 +267,18 @@ public class MazeGenerators {
 
 	static void sidewinder(Grid grid) {
 		Random rnd = new Random();
-		for (int row = 0; row < grid.numRows; ++row) {
-			int currentCol = 0;
+		for (int col = 0; col < grid.numCols - 1; ++col) {
+			grid.addEdge(grid.vertex(col, 0), Direction.EAST);
+		}
+		for (int row = 1; row < grid.numRows; ++row) {
+			int horizPassageStart = 0;
 			for (int col = 0; col < grid.numCols; ++col) {
-				if (row > 0 && (col == grid.numCols - 1 || rnd.nextBoolean())) {
-					int passageCol = currentCol + rnd.nextInt(col - currentCol + 1);
-					grid.addEdge(grid.vertex(passageCol, row - 1), Direction.SOUTH);
-					currentCol = col + 1;
+				if (col == grid.numCols - 1 || rnd.nextBoolean()) {
+					int x = horizPassageStart + rnd.nextInt(col - horizPassageStart + 1);
+					grid.addEdge(grid.vertex(x, row), Direction.NORTH);
+					horizPassageStart = col + 1;
 				}
-				else if (col + 1 < grid.numCols) {
+				else {
 					grid.addEdge(grid.vertex(col, row), Direction.EAST);
 				}
 			}
