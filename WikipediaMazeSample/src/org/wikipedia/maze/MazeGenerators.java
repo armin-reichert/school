@@ -80,8 +80,7 @@ public class MazeGenerators {
 
 	static void randomDFSRecursive(Grid grid, int v, BitSet visited) {
 		visited.set(v);
-		for (Direction dir = unvisitedDir(grid, v, visited); dir != null; dir = unvisitedDir(grid, v,
-				visited)) {
+		for (Direction dir = unvisitedDir(grid, v, visited); dir != null; dir = unvisitedDir(grid, v, visited)) {
 			grid.addEdge(v, dir);
 			randomDFSRecursive(grid, grid.neighbor(v, dir), visited);
 		}
@@ -142,24 +141,20 @@ public class MazeGenerators {
 	}
 
 	static void prim(Grid grid, int v, BitSet visited) {
-		PriorityQueue<WeightedEdge> pq = new PriorityQueue<>(
-				(e1, e2) -> Integer.compare(e1.weight, e2.weight));
-		IntConsumer fnAddToMaze = vertex -> {
+		PriorityQueue<WeightedEdge> pq = new PriorityQueue<>((e1, e2) -> Integer.compare(e1.weight, e2.weight));
+		IntConsumer fnExpand = vertex -> {
 			visited.set(vertex);
-			for (Direction dir : Direction.values()) {
-				int neighbor = grid.neighbor(vertex, dir);
-				if (neighbor != Grid.NO_VERTEX && !visited.get(neighbor)) {
-					pq.add(new WeightedEdge(vertex, dir, new Random().nextInt(Integer.MAX_VALUE)));
-				}
+			for (Direction dir : unvisitedDirections(grid, vertex, visited)) {
+				pq.add(new WeightedEdge(vertex, dir, new Random().nextInt(Integer.MAX_VALUE)));
 			}
 		};
-		fnAddToMaze.accept(v);
+		fnExpand.accept(v);
 		while (!pq.isEmpty()) {
 			WeightedEdge edge = pq.poll();
 			int neighbor = grid.neighbor(edge.v, edge.dir);
 			if (!visited.get(neighbor)) {
 				grid.addEdge(edge.v, edge.dir);
-				fnAddToMaze.accept(neighbor);
+				fnExpand.accept(neighbor);
 			}
 		}
 	}
@@ -238,8 +233,7 @@ public class MazeGenerators {
 		}
 	}
 
-	static void loopErasedRandomWalk(Grid grid, int start, Map<Integer, Direction> lastWalkDir,
-			BitSet tree) {
+	static void loopErasedRandomWalk(Grid grid, int start, Map<Integer, Direction> lastWalkDir, BitSet tree) {
 		// do random walk until a tree vertex is reached
 		int v = start;
 		while (!tree.get(v)) {
