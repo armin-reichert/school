@@ -142,10 +142,11 @@ public class MazeGenerators {
 
 	static void prim(Grid grid, int v, BitSet visited) {
 		PriorityQueue<WeightedEdge> pq = new PriorityQueue<>((e1, e2) -> Integer.compare(e1.weight, e2.weight));
+		Random rnd = new Random();
 		IntConsumer fnExpand = vertex -> {
 			visited.set(vertex);
 			for (Direction dir : unvisitedDirections(grid, vertex, visited)) {
-				pq.add(new WeightedEdge(vertex, dir, new Random().nextInt(Integer.MAX_VALUE)));
+				pq.add(new WeightedEdge(vertex, dir, rnd.nextInt(Integer.MAX_VALUE)));
 			}
 		};
 		fnExpand.accept(v);
@@ -211,7 +212,7 @@ public class MazeGenerators {
 	static void aldousBroder(Grid grid, int v, BitSet visited) {
 		visited.set(v);
 		while (visited.cardinality() < grid.numCols * grid.numRows) {
-			Direction dir = Direction.values()[new Random().nextInt(4)];
+			Direction dir = Direction.random();
 			int neighbor = grid.neighbor(v, dir);
 			if (neighbor != Grid.NO_VERTEX && !visited.get(neighbor)) {
 				grid.addEdge(v, dir);
@@ -237,7 +238,7 @@ public class MazeGenerators {
 		// do random walk until a tree vertex is reached
 		int v = start;
 		while (!tree.get(v)) {
-			Direction dir = Direction.values()[new Random().nextInt(4)];
+			Direction dir = Direction.random();
 			int neighbor = grid.neighbor(v, dir);
 			if (neighbor != Grid.NO_VERTEX) {
 				lastWalkDir.put(v, dir);
@@ -283,8 +284,9 @@ public class MazeGenerators {
 
 	static void binaryTree(Grid grid) {
 		Direction[] dirs = { Direction.EAST, Direction.SOUTH };
+		Random rnd = new Random();
 		for (int v = 0; v < grid.numCols * grid.numRows; ++v) {
-			int choice = new Random().nextInt(2);
+			int choice = rnd.nextInt(2);
 			int neighbor = grid.neighbor(v, dirs[choice]);
 			if (neighbor != Grid.NO_VERTEX) {
 				grid.addEdge(v, dirs[choice]);

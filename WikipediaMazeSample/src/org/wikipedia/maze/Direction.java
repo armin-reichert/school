@@ -1,11 +1,17 @@
 package org.wikipedia.maze;
 
+import java.util.Random;
+
 public enum Direction {
 
 	NORTH(0, -1), EAST(1, 0), SOUTH(0, 1), WEST(-1, 0);
 
 	public Direction opposite() {
 		return values()[(ordinal() + 2) % 4];
+	}
+
+	public static Direction random() {
+		return values()[new Random().nextInt(4)];
 	}
 
 	public final int x;
