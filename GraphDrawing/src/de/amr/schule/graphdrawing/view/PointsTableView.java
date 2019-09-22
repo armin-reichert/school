@@ -17,6 +17,7 @@ public class PointsTableView extends JPanel implements GraphDrawingViewControlle
 
 	private final GraphDrawingModel model;
 	private final PointsTableModel tableModel;
+	@SuppressWarnings("unused")
 	private GraphDrawingController controller;
 
 	private class PointsTableModel extends AbstractTableModel {

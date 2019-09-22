@@ -12,6 +12,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class UhrController extends JPanel {
 
+	@SuppressWarnings("unused")
 	private Uhrwerk uhrwerk;
 
 	private JSlider minSchieber = new JSlider();

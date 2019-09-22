@@ -84,6 +84,7 @@ public class SieveOfEratosthenes {
 		return primesCnt;
 	}
 
+	@SuppressWarnings("unused")
 	private void save(File file) {
 		try {
 			PrintStream ps = new PrintStream(file);

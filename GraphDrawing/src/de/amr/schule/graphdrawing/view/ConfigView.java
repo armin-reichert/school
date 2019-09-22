@@ -23,6 +23,7 @@ public class ConfigView extends JPanel implements GraphDrawingViewController {
 
 	private static final Font TEXT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 16);
 
+	@SuppressWarnings("unused")
 	private final GraphDrawingModel model;
 	private GraphDrawingController controller;
 	private final CanvasView canvasView;
@@ -100,11 +101,13 @@ public class ConfigView extends JPanel implements GraphDrawingViewController {
 	}
 
 	private void xscaleChanged(ChangeEvent e) {
-		controller.changeXScale(sliderXScale.getValue(), canvasView.getWidth(), canvasView.getOriginX());
+		controller.changeXScale(sliderXScale.getValue(), canvasView.getWidth(),
+				canvasView.getOriginX());
 	}
 
 	private void yscaleChanged(ChangeEvent e) {
-		controller.changeYScale(sliderYScale.getValue(), canvasView.getWidth(), canvasView.getOriginX());
+		controller.changeYScale(sliderYScale.getValue(), canvasView.getWidth(),
+				canvasView.getOriginX());
 	}
 
 	private void okPressed(ActionEvent e) {
@@ -120,7 +123,8 @@ public class ConfigView extends JPanel implements GraphDrawingViewController {
 			errors.add("Ungültige Schrittweite (keine Dezimalzahl): " + fieldStep.getText());
 		}
 		if (!errors.isEmpty()) {
-			JOptionPane.showMessageDialog(null, String.join("\n", errors), "Eingabedaten prüfen!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, String.join("\n", errors), "Eingabedaten prüfen!",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

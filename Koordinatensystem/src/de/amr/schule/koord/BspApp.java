@@ -19,9 +19,12 @@ public class BspApp {
 
 	private static abstract class AnimatedFunction {
 
+		@SuppressWarnings("unused")
 		private String id;
 		private Timer timer;
+		@SuppressWarnings("unused")
 		private CoordSystem coord;
+		@SuppressWarnings("unused")
 		private FunctionPlotView view;
 
 		public AnimatedFunction(String id, CoordSystem coord, FunctionPlotView view) {
@@ -74,7 +77,8 @@ public class BspApp {
 			if (x > xmax) {
 				x = xmax;
 				dx = -dx;
-			} else if (x < xmin) {
+			}
+			else if (x < xmin) {
 				x = xmin;
 				dx = -dx;
 			}
