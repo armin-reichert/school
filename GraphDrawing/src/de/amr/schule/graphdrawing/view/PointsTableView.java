@@ -46,8 +46,9 @@ public class PointsTableView extends JPanel implements GraphDrawingViewControlle
 				return model.getPoints().get(rowIndex).x;
 			case 2:
 				return model.getPoints().get(rowIndex).fx;
+			default:
+				return "";
 			}
-			return "";
 		}
 	}
 
