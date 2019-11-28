@@ -20,7 +20,7 @@ public class IntegralAlgorithmen {
 		double h = (b - a) / n;
 		double left = a, right = left + h;
 		for (int i = 0; i <= (n - 1); i += 1) {
-			sum += (h / 6) * (f.apply(left) + 4 * f.apply(IntegralAlgorithmen.middle(left, right)) + f.apply(right));
+			sum += (h / 6) * (f.apply(left) + 4 * f.apply(middle(left, right)) + f.apply(right));
 			left = right;
 			right = left + h;
 		}
@@ -48,5 +48,4 @@ public class IntegralAlgorithmen {
 	static double middle(double left, double right) {
 		return (left + right) / 2;
 	}
-
 }
