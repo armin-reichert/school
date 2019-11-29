@@ -6,7 +6,8 @@ import static java.lang.Math.sqrt;
 
 import java.util.function.Function;
 
-import de.amr.schule.integral.alg.IntegralAlgorithmen;
+import de.amr.schule.integral.alg.IntegralAlgorithms;
+import de.amr.schule.integral.alg.IntegralAlgorithms.Algorithm;
 
 public class IntegralApp {
 
@@ -15,6 +16,7 @@ public class IntegralApp {
 	}
 
 	void run() {
+		IntegralAlgorithms.ALGORITHM = Algorithm.TRAPEZ;
 		integrate("1", x -> 1.0, 0.0, 1.0, 1);
 		integrate("x", x -> x, 0.0, 1.0, 0.5);
 		integrate("x*x", x -> x * x, 0.0, 1.0, 1.0 / 3.0);
@@ -26,7 +28,7 @@ public class IntegralApp {
 	double integrate(String funText, Function<Double, Double> f, double a, double b, double expected) {
 		System.out.println(String.format("integral %s [%.2g, %.2g]", funText, a, b));
 		double time = System.nanoTime();
-		double result = IntegralAlgorithmen.integrate(f, a, b);
+		double result = IntegralAlgorithms.integrate(f, a, b);
 		time = (System.nanoTime() - time) / 1_000_000_000L;
 		double diff = Math.abs(result - expected);
 		String fmtResult = "\tresult:   %16.16g\n\texpected: %16.16g\n\tdiff:     %16.16g\n\tseconds:  %.1g\n";

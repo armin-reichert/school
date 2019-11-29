@@ -2,22 +2,25 @@ package de.amr.schule.integral.alg;
 
 import java.util.function.Function;
 
-public class IntegralAlgorithmen {
+public class IntegralAlgorithms {
 
-	static final int N = 1 << 20;
+	public static Algorithm ALGORITHM = Algorithm.TRAPEZ;
+	public static final int N = 1 << 20;
 
-	public enum Algorithmus {
-		RECTANGLES, SIMPSON
+	public enum Algorithm {
+		RECTANGLES, TRAPEZ, SIMPSON
 	}
 
 	public static double integrate(Function<Double, Double> f, double a, double b) {
-		return integrate(Algorithmus.SIMPSON, f, a, b, N);
+		return integrate(ALGORITHM, f, a, b, N);
 	}
 
-	public static double integrate(Algorithmus algorithmus, Function<Double, Double> f, double a, double b, int n) {
+	public static double integrate(Algorithm algorithmus, Function<Double, Double> f, double a, double b, int n) {
 		switch (algorithmus) {
 		case RECTANGLES:
-			return rectangles(f, a, b, n);
+			return rectangle(f, a, b, n);
+		case TRAPEZ:
+			return trapez(f, a, b, n);
 		case SIMPSON:
 			return simpson_faster(f, a, b, n);
 		default:
@@ -25,11 +28,22 @@ public class IntegralAlgorithmen {
 		}
 	}
 
-	static double rectangles(Function<Double, Double> f, double a, double b, int n) {
+	static double rectangle(Function<Double, Double> f, double a, double b, int n) {
 		double sum = 0.0;
 		double h = (b - a) / n;
 		double x_i = a;
 		for (int i = 0; i <= (n - 1); i += 1) {
+			sum += h * f.apply(x_i);
+			x_i += h;
+		}
+		return sum;
+	}
+
+	static double trapez(Function<Double, Double> f, double a, double b, int n) {
+		double h = (b - a) / n;
+		double sum = h * f.apply(a) / 2.0 + h * f.apply(b) / 2.0;
+		double x_i = a;
+		for (int i = 1; i <= (n - 1); i += 1) {
 			sum += h * f.apply(x_i);
 			x_i += h;
 		}
