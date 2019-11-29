@@ -1,64 +1,39 @@
 package de.amr.schule.integral;
 
+import static java.lang.Math.log;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+
 import java.util.function.Function;
+
+import de.amr.schule.integral.alg.IntegralAlgorithmen;
 
 public class IntegralApp {
 
-	String fmt = "%-10s: %18.18g, expected=%18.18g, diff=%18.18g, seconds=%.2g";
-	double time;
-
-	Function<Double, Double> circle = x -> 4 * Math.sqrt(1 - x * x);
-	Function<Double, Double> const1 = x -> 1.0;
-	Function<Double, Double> linear = x -> x;
-	Function<Double, Double> quadrat = x -> x * x;
-	Function<Double, Double> sinus = x -> Math.sin(x);
-	Function<Double, Double> exp = x -> Math.exp(x);
-	Function<Double, Double> wand = x -> (0 <= x && x <= 3) ? x * x : Math.sqrt(x);
-	Function<Double, Double> ln = x -> Math.log(x);
-
 	public static void main(String[] args) {
-		new IntegralApp().execute();
+		new IntegralApp().run();
 	}
 
-	void execute() {
-		Function<Double, Double> f = ln;
-		double a = 1.0;
-		double b = 2.0;
-		double expected = 2 * ln.apply(2.0) - 1;
-		double area;
-
-		int n = pow2(20);
-		System.out.println("n: " + String.format("%,d", n));
-
-		startClock();
-		area = IntegralAlgorithmen.untere_rechtecksumme(f, a, b, n);
-		stopClock();
-		print("Untersumme", expected, area, time);
-
-		startClock();
-		area = IntegralAlgorithmen.simpson(f, a, b, n);
-		stopClock();
-		print("Simpson", expected, area, time);
-
-		startClock();
-		area = IntegralAlgorithmen.simpson2(f, a, b, n);
-		stopClock();
-		print("Simpson2", expected, area, time);
+	void run() {
+		integrate("1", x -> 1.0, 0.0, 1.0, 1);
+		integrate("x", x -> x, 0.0, 1.0, 0.5);
+		integrate("x*x", x -> x * x, 0.0, 1.0, 1.0 / 3.0);
+		integrate("4*sqrt(1-x*x)", x -> 4 * sqrt(1 - x * x), 0.0, 1.0, Math.PI);
+		integrate("sin(x)", x -> sin(x), 0.0, Math.PI, 2);
+		integrate("ln(x)", x -> log(x), 1.0, 2.0, 2 * log(2) - 1);
 	}
 
-	void startClock() {
+	double integrate(String funText, Function<Double, Double> fun, double a, double b, double expected) {
 		time = System.nanoTime();
-	}
-
-	void stopClock() {
+		double result = IntegralAlgorithmen.integrate(fun, a, b);
 		time = (System.nanoTime() - time) / 1_000_000_000L;
+		double diff = Math.abs(result - expected);
+		System.out.println(String.format("integral %s [%.2g, %.2g]", funText, a, b));
+		String fmtResult = "\tresult:   %16.16g\n\texpected: %16.16g\n\tdiff:     %16.16g\n\tseconds:  %.1g\n";
+		System.out.println(String.format(fmtResult, result, expected, diff, time));
+		return result;
 	}
 
-	void print(String name, double expected, double value, double time) {
-		System.out.println(String.format(fmt, name, value, expected, Math.abs(value - expected), time));
-	}
+	private double time;
 
-	int pow2(int n) {
-		return 1 << n;
-	}
 }

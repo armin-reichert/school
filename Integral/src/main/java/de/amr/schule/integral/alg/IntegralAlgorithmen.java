@@ -1,10 +1,31 @@
-package de.amr.schule.integral;
+package de.amr.schule.integral.alg;
 
 import java.util.function.Function;
 
 public class IntegralAlgorithmen {
 
-	static double untere_rechtecksumme(Function<Double, Double> f, double a, double b, int n) {
+	static final int N = 1 << 20;
+
+	public enum Algorithmus {
+		RECTANGLES, SIMPSON
+	}
+
+	public static double integrate(Function<Double, Double> f, double a, double b) {
+		return integrate(Algorithmus.SIMPSON, f, a, b, N);
+	}
+
+	public static double integrate(Algorithmus algorithmus, Function<Double, Double> f, double a, double b, int n) {
+		switch (algorithmus) {
+		case RECTANGLES:
+			return rectangles(f, a, b, n);
+		case SIMPSON:
+			return simpson_faster(f, a, b, n);
+		default:
+			throw new IllegalArgumentException("Unbekannter Algorithmus: " + algorithmus);
+		}
+	}
+
+	static double rectangles(Function<Double, Double> f, double a, double b, int n) {
 		double sum = 0.0;
 		double h = (b - a) / n;
 		double x_i = a;
@@ -27,7 +48,7 @@ public class IntegralAlgorithmen {
 		return sum;
 	}
 
-	static double simpson2(Function<Double, Double> f, double a, double b, int n) {
+	static double simpson_faster(Function<Double, Double> f, double a, double b, int n) {
 		double h = (b - a) / n;
 		double s = 0.0;
 		double x_k;
