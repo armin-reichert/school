@@ -23,17 +23,14 @@ public class IntegralApp {
 		integrate("ln(x)", x -> log(x), 1.0, 2.0, 2 * log(2) - 1);
 	}
 
-	double integrate(String funText, Function<Double, Double> fun, double a, double b, double expected) {
-		time = System.nanoTime();
-		double result = IntegralAlgorithmen.integrate(fun, a, b);
+	double integrate(String funText, Function<Double, Double> f, double a, double b, double expected) {
+		System.out.println(String.format("integral %s [%.2g, %.2g]", funText, a, b));
+		double time = System.nanoTime();
+		double result = IntegralAlgorithmen.integrate(f, a, b);
 		time = (System.nanoTime() - time) / 1_000_000_000L;
 		double diff = Math.abs(result - expected);
-		System.out.println(String.format("integral %s [%.2g, %.2g]", funText, a, b));
 		String fmtResult = "\tresult:   %16.16g\n\texpected: %16.16g\n\tdiff:     %16.16g\n\tseconds:  %.1g\n";
 		System.out.println(String.format(fmtResult, result, expected, diff, time));
 		return result;
 	}
-
-	private double time;
-
 }
