@@ -16,7 +16,7 @@ public class IntegralApp {
 	}
 
 	void run() {
-		IntegralAlgorithms.ALGORITHM = Algorithm.TRAPEZ;
+		IntegralAlgorithms.ALGORITHM = Algorithm.SIMPSON;
 		integrate("1", x -> 1.0, 0.0, 1.0, 1);
 		integrate("x", x -> x, 0.0, 1.0, 0.5);
 		integrate("x*x", x -> x * x, 0.0, 1.0, 1.0 / 3.0);
@@ -26,7 +26,8 @@ public class IntegralApp {
 	}
 
 	double integrate(String funText, Function<Double, Double> f, double a, double b, double expected) {
-		System.out.println(String.format("integral %s [%.2g, %.2g]", funText, a, b));
+		System.out
+				.println(String.format("integral(%s) %s [%.2g, %.2g]", IntegralAlgorithms.ALGORITHM, funText, a, b));
 		double time = System.nanoTime();
 		double result = IntegralAlgorithms.integrate(f, a, b);
 		time = (System.nanoTime() - time) / 1_000_000_000L;
