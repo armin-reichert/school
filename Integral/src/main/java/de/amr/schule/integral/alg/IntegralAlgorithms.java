@@ -8,7 +8,7 @@ public class IntegralAlgorithms {
 	public static final int N = 1 << 20;
 
 	public enum Algorithm {
-		RECTANGLES, TRAPEZ, SIMPSON
+		RECTANGLE, TRAPEZ, SIMPSON
 	}
 
 	public static double integrate(Function<Double, Double> f, double a, double b) {
@@ -17,7 +17,7 @@ public class IntegralAlgorithms {
 
 	public static double integrate(Algorithm algorithmus, Function<Double, Double> f, double a, double b, int n) {
 		switch (algorithmus) {
-		case RECTANGLES:
+		case RECTANGLE:
 			return rectangle(f, a, b, n);
 		case TRAPEZ:
 			return trapez(f, a, b, n);
@@ -33,21 +33,22 @@ public class IntegralAlgorithms {
 		double h = (b - a) / n;
 		double x_i = a;
 		for (int i = 0; i <= (n - 1); i += 1) {
-			sum += h * f.apply(x_i);
+			sum += f.apply(x_i);
 			x_i += h;
 		}
-		return sum;
+		return h * sum;
 	}
 
 	static double trapez(Function<Double, Double> f, double a, double b, int n) {
+		double sum = 0.0;
 		double h = (b - a) / n;
-		double sum = h * f.apply(a) / 2.0 + h * f.apply(b) / 2.0;
+		sum += (f.apply(a) + f.apply(b)) / 2.0;
 		double x_i = a;
 		for (int i = 1; i <= (n - 1); i += 1) {
-			sum += h * f.apply(x_i);
+			sum += f.apply(x_i);
 			x_i += h;
 		}
-		return sum;
+		return h * sum;
 	}
 
 	static double simpson(Function<Double, Double> f, double a, double b, int n) {
@@ -55,11 +56,11 @@ public class IntegralAlgorithms {
 		double h = (b - a) / n;
 		double left = a, right = left + h;
 		for (int i = 0; i <= (n - 1); i += 1) {
-			sum += (h / 6) * (f.apply(left) + 4 * f.apply(middle(left, right)) + f.apply(right));
+			sum += (f.apply(left) + 4 * f.apply(middle(left, right)) + f.apply(right));
 			left = right;
 			right = left + h;
 		}
-		return sum;
+		return h * sum / 6.0;
 	}
 
 	static double simpson_faster(Function<Double, Double> f, double a, double b, int n) {

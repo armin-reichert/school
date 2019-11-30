@@ -1,5 +1,6 @@
 package de.amr.schule.integral;
 
+import static java.lang.Math.exp;
 import static java.lang.Math.log;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
@@ -22,6 +23,7 @@ public class IntegralApp {
 		integrate("x*x", x -> x * x, 0.0, 1.0, 1.0 / 3.0);
 		integrate("4*sqrt(1-x*x)", x -> 4 * sqrt(1 - x * x), 0.0, 1.0, Math.PI);
 		integrate("sin(x)", x -> sin(x), 0.0, Math.PI, 2);
+		integrate("exp(x) + 1", x -> exp(x) + 1, 0.0, 1.0, exp(1));
 		integrate("ln(x)", x -> log(x), 1.0, 2.0, 2 * log(2) - 1);
 	}
 
@@ -32,7 +34,7 @@ public class IntegralApp {
 		double result = IntegralAlgorithms.integrate(f, a, b);
 		time = (System.nanoTime() - time) / 1_000_000_000L;
 		double diff = Math.abs(result - expected);
-		String fmtResult = "\tresult:   %16.16g\n\texpected: %16.16g\n\tdiff:     %16.16g\n\tseconds:  %.1g\n";
+		String fmtResult = "\tresult:   %16.16g\n\texpected: %16.16g\n\tdiff:     %16.16g\n\tseconds:  %g\n";
 		System.out.println(String.format(fmtResult, result, expected, diff, time));
 		return result;
 	}
