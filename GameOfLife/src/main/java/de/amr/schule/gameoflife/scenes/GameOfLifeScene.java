@@ -8,12 +8,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 
-import de.amr.easy.game.view.Controller;
 import de.amr.easy.game.view.View;
 import de.amr.schule.gameoflife.GameOfLifeApp;
 import de.amr.schule.gameoflife.GameOfLifeWorld;
 
-public class GameOfLifeScene implements View,Controller {
+public class GameOfLifeScene implements View {
 
 	private static final int MIN_SIZE = 16;
 	private static final int MAX_SIZE = 512;
@@ -54,7 +53,8 @@ public class GameOfLifeScene implements View,Controller {
 			world.setGridSize(2 * world.getGridSize());
 			world.setCellSize(getWidth() / world.getGridSize());
 			reset();
-		} else if (keyPressedOnce(VK_MINUS) && world.getGridSize() / 2 >= MIN_SIZE) {
+		}
+		else if (keyPressedOnce(VK_MINUS) && world.getGridSize() / 2 >= MIN_SIZE) {
 			world.setGridSize(world.getGridSize() / 2);
 			world.setCellSize(getWidth() / world.getGridSize());
 			reset();
