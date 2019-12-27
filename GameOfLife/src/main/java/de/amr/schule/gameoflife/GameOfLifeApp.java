@@ -7,6 +7,7 @@ import static java.awt.event.KeyEvent.VK_RIGHT;
 import java.awt.Color;
 
 import de.amr.easy.game.Application;
+import de.amr.easy.game.controller.Lifecycle;
 import de.amr.easy.game.view.View;
 import de.amr.schule.gameoflife.scenes.DiamondScene;
 import de.amr.schule.gameoflife.scenes.FiguresScene;
@@ -40,7 +41,7 @@ public class GameOfLifeApp extends Application {
 		scenes[0] = new FiguresScene(this);
 		scenes[1] = new DiamondScene(this);
 		scenes[2] = new RandomFillScene(this);
-		setController(scenes[0]);
+		setController((Lifecycle) scenes[0]);
 	}
 
 	public void handleNavigationKeys() {
@@ -54,11 +55,11 @@ public class GameOfLifeApp extends Application {
 
 	public void nextScene() {
 		current = current == scenes.length - 1 ? 0 : current + 1;
-		setController(scenes[current]);
+		setController((Lifecycle) scenes[current]);
 	}
 
 	public void prevScene() {
 		current = current == 0 ? scenes.length - 1 : current - 1;
-		setController(scenes[current]);
+		setController((Lifecycle) scenes[current]);
 	}
 }

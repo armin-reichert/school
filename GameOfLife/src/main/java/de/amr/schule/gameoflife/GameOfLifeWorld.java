@@ -3,9 +3,10 @@ package de.amr.schule.gameoflife;
 import java.awt.Graphics2D;
 import java.util.BitSet;
 
+import de.amr.easy.game.controller.Lifecycle;
 import de.amr.easy.game.entity.Entity;
 
-public class GameOfLifeWorld extends Entity {
+public class GameOfLifeWorld extends Entity implements Lifecycle {
 
 	private BitSet grid1;
 	private BitSet grid2;
@@ -62,6 +63,10 @@ public class GameOfLifeWorld extends Entity {
 
 	private void set(BitSet bs, int row, int col, boolean bit) {
 		bs.set(row * gridSize + col, bit);
+	}
+
+	@Override
+	public void init() {
 	}
 
 	@Override
