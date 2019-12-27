@@ -109,6 +109,7 @@ public class GameOfLifeWorld extends Entity {
 		return 1024;
 	}
 
+	@Override
 	public void draw(Graphics2D g) {
 		g.translate(tf.getX(), tf.getY());
 		for (int row = 0; row < gridSize; row += 1) {
