@@ -6,7 +6,7 @@ import static java.awt.event.KeyEvent.VK_RIGHT;
 
 import java.awt.Color;
 
-import de.amr.easy.game.Application;
+import de.amr.easy.game.GenericApplication;
 import de.amr.easy.game.controller.Lifecycle;
 import de.amr.easy.game.view.View;
 import de.amr.schule.gameoflife.scenes.DiamondScene;
@@ -18,7 +18,7 @@ import de.amr.schule.gameoflife.scenes.RandomFillScene;
  * 
  * @author Armin Reichert & Anna Schillo
  */
-public class GameOfLifeApp extends Application {
+public class GameOfLifeApp extends GenericApplication {
 
 	public static void main(String[] args) {
 		launch(new GameOfLifeApp(), args);
@@ -47,8 +47,7 @@ public class GameOfLifeApp extends Application {
 	public void handleNavigationKeys() {
 		if (keyPressedOnce(VK_RIGHT)) {
 			nextScene();
-		}
-		else if (keyPressedOnce(VK_LEFT)) {
+		} else if (keyPressedOnce(VK_LEFT)) {
 			prevScene();
 		}
 	}
