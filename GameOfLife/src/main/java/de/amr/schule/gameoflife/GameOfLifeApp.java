@@ -28,15 +28,15 @@ public class GameOfLifeApp extends GenericApplication {
 	private View[] scenes;
 
 	public GameOfLifeApp() {
-		settings.title = "Game of Life";
-		settings.width = 1024;
-		settings.height = 1024;
-		settings.bgColor = Color.DARK_GRAY;
+		settings().title = "Game of Life";
+		settings().width = 1024;
+		settings().height = 1024;
+		settings().bgColor = Color.DARK_GRAY;
 	}
 
 	@Override
 	public void init() {
-		clock.setFrequency(20);
+		clock().setFrequency(20);
 		scenes = new View[3];
 		scenes[0] = new FiguresScene(this);
 		scenes[1] = new DiamondScene(this);
