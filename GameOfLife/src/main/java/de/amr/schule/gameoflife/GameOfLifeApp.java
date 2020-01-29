@@ -7,6 +7,7 @@ import static java.awt.event.KeyEvent.VK_RIGHT;
 import java.awt.Color;
 
 import de.amr.easy.game.Application;
+import de.amr.easy.game.config.AppSettings;
 import de.amr.easy.game.controller.Lifecycle;
 import de.amr.easy.game.view.View;
 import de.amr.schule.gameoflife.scenes.DiamondScene;
@@ -21,17 +22,18 @@ import de.amr.schule.gameoflife.scenes.RandomFillScene;
 public class GameOfLifeApp extends Application {
 
 	public static void main(String[] args) {
-		launch(new GameOfLifeApp(), args);
+		launch(GameOfLifeApp.class, args);
 	}
 
 	private int current;
 	private View[] scenes;
 
-	public GameOfLifeApp() {
-		settings().title = "Game of Life";
-		settings().width = 1024;
-		settings().height = 1024;
-		settings().bgColor = Color.DARK_GRAY;
+	@Override
+	protected void configure(AppSettings settings) {
+		settings.title = "Game of Life";
+		settings.width = 1024;
+		settings.height = 1024;
+		settings.bgColor = Color.DARK_GRAY;
 	}
 
 	@Override
@@ -47,7 +49,8 @@ public class GameOfLifeApp extends Application {
 	public void handleNavigationKeys() {
 		if (keyPressedOnce(VK_RIGHT)) {
 			nextScene();
-		} else if (keyPressedOnce(VK_LEFT)) {
+		}
+		else if (keyPressedOnce(VK_LEFT)) {
 			prevScene();
 		}
 	}
