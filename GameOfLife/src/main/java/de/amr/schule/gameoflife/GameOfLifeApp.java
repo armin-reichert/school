@@ -38,7 +38,7 @@ public class GameOfLifeApp extends Application {
 
 	@Override
 	public void init() {
-		clock().setFrequency(20);
+		clock().setTargetFramerate(20);
 		scenes = new View[3];
 		scenes[0] = new FiguresScene(this);
 		scenes[1] = new DiamondScene(this);
