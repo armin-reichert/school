@@ -4,9 +4,9 @@ import java.awt.Graphics2D;
 import java.util.BitSet;
 
 import de.amr.easy.game.controller.Lifecycle;
-import de.amr.easy.game.entity.Entity;
+import de.amr.easy.game.view.View;
 
-public class GameOfLifeWorld extends Entity implements Lifecycle {
+public class GameOfLifeWorld implements Lifecycle, View {
 
 	private BitSet grid1;
 	private BitSet grid2;
@@ -116,7 +116,6 @@ public class GameOfLifeWorld extends Entity implements Lifecycle {
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.translate(tf.getX(), tf.getY());
 		for (int row = 0; row < gridSize; row += 1) {
 			for (int col = 0; col < gridSize; col += 1) {
 				if (isSet(row, col)) {
@@ -124,6 +123,5 @@ public class GameOfLifeWorld extends Entity implements Lifecycle {
 				}
 			}
 		}
-		g.translate(-tf.getX(), -tf.getY());
 	}
 }

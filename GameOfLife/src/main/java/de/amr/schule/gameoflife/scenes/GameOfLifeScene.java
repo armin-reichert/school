@@ -9,11 +9,11 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 import de.amr.easy.game.controller.Lifecycle;
-import de.amr.easy.game.entity.Entity;
+import de.amr.easy.game.view.View;
 import de.amr.schule.gameoflife.GameOfLifeApp;
 import de.amr.schule.gameoflife.GameOfLifeWorld;
 
-public class GameOfLifeScene extends Entity implements Lifecycle {
+public class GameOfLifeScene implements Lifecycle, View {
 
 	private static final int MIN_SIZE = 16;
 	private static final int MAX_SIZE = 512;
