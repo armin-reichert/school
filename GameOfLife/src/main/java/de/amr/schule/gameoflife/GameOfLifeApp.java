@@ -8,10 +8,9 @@ import java.awt.Color;
 
 import de.amr.easy.game.Application;
 import de.amr.easy.game.config.AppSettings;
-import de.amr.easy.game.controller.Lifecycle;
-import de.amr.easy.game.view.View;
 import de.amr.schule.gameoflife.scenes.DiamondScene;
 import de.amr.schule.gameoflife.scenes.FiguresScene;
+import de.amr.schule.gameoflife.scenes.GameOfLifeScene;
 import de.amr.schule.gameoflife.scenes.RandomFillScene;
 
 /**
@@ -26,42 +25,38 @@ public class GameOfLifeApp extends Application {
 	}
 
 	private int current;
-	private View[] scenes;
+	private GameOfLifeScene[] scenes;
 
 	@Override
 	protected void configure(AppSettings settings) {
 		settings.title = "Game of Life";
-		settings.width = 1024;
-		settings.height = 1024;
+		settings.width = 1000;
+		settings.height = 700;
 		settings.bgColor = Color.DARK_GRAY;
 	}
 
 	@Override
 	public void init() {
 		clock().setTargetFramerate(20);
-		scenes = new View[3];
-		scenes[0] = new FiguresScene(this);
-		scenes[1] = new DiamondScene(this);
-		scenes[2] = new RandomFillScene(this);
-		setController((Lifecycle) scenes[0]);
+		scenes = new GameOfLifeScene[] { new FiguresScene(this), new DiamondScene(this), new RandomFillScene(this) };
+		setController(scenes[0]);
 	}
 
 	public void handleNavigationKeys() {
 		if (keyPressedOnce(VK_RIGHT)) {
 			nextScene();
-		}
-		else if (keyPressedOnce(VK_LEFT)) {
+		} else if (keyPressedOnce(VK_LEFT)) {
 			prevScene();
 		}
 	}
 
 	public void nextScene() {
 		current = current == scenes.length - 1 ? 0 : current + 1;
-		setController((Lifecycle) scenes[current]);
+		setController(scenes[current]);
 	}
 
 	public void prevScene() {
 		current = current == 0 ? scenes.length - 1 : current - 1;
-		setController((Lifecycle) scenes[current]);
+		setController(scenes[current]);
 	}
 }

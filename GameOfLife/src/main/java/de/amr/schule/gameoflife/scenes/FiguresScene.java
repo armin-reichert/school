@@ -40,20 +40,25 @@ public class FiguresScene extends GameOfLifeScene {
 	}
 
 	@Override
-	protected void reset() {
-		selectFigure(figureIndex);
-	}
-
-	@Override
 	public void update() {
-		handleSelectFigureKey();
-		super.update();
-	}
-
-	private void handleSelectFigureKey() {
 		if (keyPressedOnce(VK_SPACE)) {
 			selectFigure(figureIndex == FIGURES.size() - 1 ? 0 : figureIndex + 1);
 		}
+		super.update();
+	}
+
+	@Override
+	public void draw(Graphics2D g) {
+		super.draw(g);
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Monospaced", Font.BOLD, 20));
+		g.drawString(FIGURE_NAMES[figureIndex], 20, getHeight() - 40);
+		g.drawString("Press SPACE for next type of automaton", 20, 20);
+	}
+
+	@Override
+	protected void reset() {
+		selectFigure(figureIndex);
 	}
 
 	private void selectFigure(int index) {
@@ -79,13 +84,5 @@ public class FiguresScene extends GameOfLifeScene {
 				}
 			}
 		}
-	}
-
-	@Override
-	public void draw(Graphics2D g) {
-		super.draw(g);
-		g.setColor(Color.WHITE);
-		g.setFont(new Font("Monospaced", Font.BOLD, 20));
-		g.drawString(FIGURE_NAMES[figureIndex], 20, getHeight() - 40);
 	}
 }
