@@ -37,7 +37,7 @@ public class GameOfLifeApp extends Application {
 
 	@Override
 	public void init() {
-		clock().setTargetFramerate(20);
+		clock().setTargetFrameRate(20);
 		scenes = new GameOfLifeScene[] { new FiguresScene(this), new DiamondScene(this), new RandomFillScene(this) };
 		setController(scenes[0]);
 	}
