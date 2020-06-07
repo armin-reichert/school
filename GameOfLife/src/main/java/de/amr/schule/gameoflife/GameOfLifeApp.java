@@ -4,8 +4,6 @@ import static de.amr.easy.game.input.Keyboard.keyPressedOnce;
 import static java.awt.event.KeyEvent.VK_LEFT;
 import static java.awt.event.KeyEvent.VK_RIGHT;
 
-import java.awt.Color;
-
 import de.amr.easy.game.Application;
 import de.amr.easy.game.config.AppSettings;
 import de.amr.schule.gameoflife.scenes.DiamondScene;
@@ -32,7 +30,6 @@ public class GameOfLifeApp extends Application {
 		settings.title = "Game of Life";
 		settings.width = 1000;
 		settings.height = 700;
-		settings.bgColor = Color.DARK_GRAY;
 	}
 
 	@Override
