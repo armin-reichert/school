@@ -11,7 +11,7 @@ import java.util.Calendar;
 import javax.swing.Timer;
 
 import de.amr.easy.game.assets.Assets;
-import de.amr.easy.game.assets.Sound;
+import de.amr.easy.game.assets.SoundClip;
 
 /**
  * Modell einer Uhr mit Tick-Funktion.
@@ -140,7 +140,7 @@ public class Uhrwerk {
 
 	public void spieleStundenGong() {
 		if (soundAn) {
-			Sound gong = Assets.sound("stunde.mp3");
+			SoundClip gong = Assets.sound("stunde.mp3");
 			gong.play();
 		}
 	}
