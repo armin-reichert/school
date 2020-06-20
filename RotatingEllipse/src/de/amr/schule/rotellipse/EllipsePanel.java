@@ -3,7 +3,7 @@ package de.amr.schule.rotellipse;
 import static java.awt.RenderingHints.KEY_ANTIALIASING;
 import static java.awt.RenderingHints.VALUE_ANTIALIAS_ON;
 import static java.lang.Math.toRadians;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 import java.awt.Color;
 import java.awt.Dimension;

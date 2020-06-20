@@ -1,6 +1,6 @@
 package de.amr.schule.koord;
 
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 import java.awt.EventQueue;
 import java.util.function.Function;
