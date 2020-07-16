@@ -7,6 +7,7 @@ import static de.amr.schule.bernoulli.Functions.b_leq;
 import static de.amr.schule.bernoulli.Functions.b_less;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,10 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import net.miginfocom.swing.MigLayout;
-import java.awt.Color;
 
 public class Bernoulli extends JFrame {
 
@@ -48,11 +47,6 @@ public class Bernoulli extends JFrame {
 			e.printStackTrace();
 		}
 		SwingUtilities.invokeLater(() -> {
-			try {
-				UIManager.setLookAndFeel(NimbusLookAndFeel.class.getName());
-			} catch (Exception x) {
-				x.printStackTrace();
-			}
 			Bernoulli b = new Bernoulli();
 			b.pack();
 			b.setLocation(200, 200);
