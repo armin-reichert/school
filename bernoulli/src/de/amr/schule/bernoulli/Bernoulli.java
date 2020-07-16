@@ -11,6 +11,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -26,8 +32,13 @@ import net.miginfocom.swing.MigLayout;
 
 public class Bernoulli extends JFrame {
 
+	static final NumberFormat FMT_RESULT = new DecimalFormat("0.##################",
+			new DecimalFormatSymbols(Locale.GERMAN));
+	static final NumberFormat FMT_P = new DecimalFormat("0.###", new DecimalFormatSymbols(Locale.GERMAN));
+
 	private int n, k;
-	private double p;
+	private double p, prob;
+	private String relation;
 
 	private JTextField field_n;
 	private JTextField field_p;
@@ -48,6 +59,12 @@ public class Bernoulli extends JFrame {
 		}
 		SwingUtilities.invokeLater(() -> {
 			Bernoulli b = new Bernoulli();
+			b.n = 10;
+			b.k = 1;
+			b.p = 0.5;
+			b.relation = "=";
+			b.updateViewState();
+			b.comboRelation.setSelectedItem(b.relation);
 			b.pack();
 			b.setLocation(200, 200);
 			b.setVisible(true);
@@ -55,10 +72,6 @@ public class Bernoulli extends JFrame {
 	}
 
 	public Bernoulli() {
-		n = 10;
-		k = 1;
-		p = 0.5;
-
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Bernoulliketten");
 
@@ -91,7 +104,7 @@ public class Bernoulli extends JFrame {
 		field_n.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				onCompute(e);
+				onComputeAction();
 			}
 		});
 		field_n.setFont(new Font("Monospaced", Font.BOLD, 16));
@@ -102,7 +115,7 @@ public class Bernoulli extends JFrame {
 		field_p.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				onCompute(e);
+				onComputeAction();
 			}
 		});
 		field_p.setFont(new Font("Monospaced", Font.BOLD, 16));
@@ -110,10 +123,12 @@ public class Bernoulli extends JFrame {
 		field_p.setColumns(10);
 
 		comboRelation = new JComboBox<>();
-		comboRelation.addActionListener(new ActionListener() {
+		comboRelation.addItemListener(new ItemListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				onCompute(e);
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					onComputeAction();
+				}
 			}
 		});
 		comboRelation.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -124,7 +139,7 @@ public class Bernoulli extends JFrame {
 		field_k.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				onCompute(e);
+				onComputeAction();
 			}
 		});
 		field_k.setFont(new Font("Monospaced", Font.BOLD, 16));
@@ -135,7 +150,7 @@ public class Bernoulli extends JFrame {
 		btnCompute.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				onCompute(e);
+				onComputeAction();
 			}
 		});
 
@@ -145,28 +160,31 @@ public class Bernoulli extends JFrame {
 		panel.add(fieldResult, "cell 4 2");
 		fieldResult.setColumns(20);
 		panel.add(btnCompute, "cell 5 2");
-
-		field_k.setText(String.valueOf(k));
-		field_n.setText(String.valueOf(n));
-		field_p.setText(String.valueOf(p));
-		onCompute(null);
 	}
 
-	private void onCompute(ActionEvent e) {
-		updateResultLabel();
+	private void onComputeAction() {
 		try {
-			double result = computeProbability((String) comboRelation.getSelectedItem());
-			fieldResult.setText(String.format("%20.10E", result));
+			computeProbability();
 		} catch (Exception x) {
 			System.err.println(x.getMessage());
 		}
 	}
 
-	private void updateResultLabel() {
+	private void updateViewState() {
+		field_k.setText(String.valueOf(k));
+		field_n.setText(String.valueOf(n));
+		field_p.setText(FMT_P.format(p));
+		fieldResult.setText(FMT_RESULT.format(prob));
 		lblResult.setText(String.format("P(X %s %s)", comboRelation.getSelectedItem(), field_k.getText()));
 	}
 
-	protected double computeProbability(String relation) {
+	protected void computeProbability() {
+		parseInput();
+		compute();
+		updateViewState();
+	}
+
+	private void parseInput() {
 		String input = null;
 		try {
 			input = field_n.getText().trim();
@@ -176,7 +194,7 @@ public class Bernoulli extends JFrame {
 		}
 		try {
 			input = field_p.getText().trim();
-			p = Double.valueOf(input);
+			p = FMT_P.parse(input).doubleValue();
 		} catch (Exception x) {
 			throw new IllegalArgumentException(String.format("Eingabe für p ('%s') ist keine Zahl", input));
 		}
@@ -186,19 +204,28 @@ public class Bernoulli extends JFrame {
 		} catch (Exception x) {
 			throw new IllegalArgumentException(String.format("Eingabe für k ('%s') ist keine Zahl", input));
 		}
+		relation = (String) comboRelation.getSelectedItem();
+	}
+
+	public void compute() {
 		switch (relation) {
 		case "<":
-			return b_less(n, p, k);
+			prob = b_less(n, p, k);
+			break;
 		case "<=":
-			return b_leq(n, p, k);
+			prob = b_leq(n, p, k);
+			break;
 		case "=":
-			return b(n, p, k);
+			prob = b(n, p, k);
+			break;
 		case ">":
-			return b_greater(n, p, k);
+			prob = b_greater(n, p, k);
+			break;
 		case ">=":
-			return b_geq(n, p, k);
+			prob = b_geq(n, p, k);
+			break;
 		default:
-			return -1;
+			break;
 		}
 	}
 }
