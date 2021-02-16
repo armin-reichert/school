@@ -65,8 +65,8 @@ public class Solver {
 			System.out.println(board);
 		} else {
 			int cell = emptyCell.getAsInt();
-			int[] numbers = board.validNumbers(cell).toArray();
-			for (int n : numbers) {
+			int[] validNumbers = board.validNumbers(cell).toArray();
+			for (int n : validNumbers) {
 				board.set(cell, n);
 				solve(board);
 				board.set(cell, 0);
