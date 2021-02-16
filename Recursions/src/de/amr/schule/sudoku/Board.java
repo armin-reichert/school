@@ -22,9 +22,6 @@ public class Board {
 
 	public byte[] cells = new byte[81];
 
-	public Board() {
-	}
-
 	public Board(byte[] values) {
 		if (values.length != 81) {
 			throw new IllegalArgumentException("Board must have 81 entries but has " + values.length);
@@ -38,10 +35,6 @@ public class Board {
 
 	public byte value(int pos) {
 		return cells[pos];
-	}
-
-	public void set(int x, int y, int value) {
-		cells[index(x, y)] = (byte) value;
 	}
 
 	public byte value(int x, int y) {
