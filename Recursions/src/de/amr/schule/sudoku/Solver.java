@@ -52,7 +52,6 @@ public class Solver {
 		System.out.println("Problem:");
 		System.out.println(board);
 		long time = System.nanoTime();
-		System.out.println("Solution:");
 		new Solver().solve(board);
 		time = System.nanoTime() - time;
 		System.out.println(String.format("Recursive calls: %d, time: %d millis\n", calls, time / 1000_000L));
@@ -62,6 +61,7 @@ public class Solver {
 		++calls;
 		OptionalInt emptyCell = board.emptyCell();
 		if (!emptyCell.isPresent()) {
+			System.out.println("Solution:");
 			System.out.println(board);
 		} else {
 			int cell = emptyCell.getAsInt();
