@@ -7,7 +7,7 @@ public class Solver {
 	/**
 	 * https://sudoku.soeinding.de/sudokuAusdrucken.php
 	 */
-	static int[] SAMPLE = {
+	static int[] SAMPLE_1 = {
 		//@formatter:off
 		0,0,0,	0,0,4,	8,2,0,
 		0,5,0,	8,0,0,	0,0,1,
@@ -22,15 +22,39 @@ public class Solver {
 		0,3,0,	0,0,0,	0,9,0,
 		//@formatter:on
 	};
+	static int[] SAMPLE_2 = {
+		//@formatter:off
+		0,0,0,	8,0,0,	3,0,0,
+		4,0,0,	0,0,0,	0,0,5,
+		0,0,0,	0,0,0,	2,0,7,
+		
+		0,0,8,	0,0,5,	0,6,0,
+		0,0,0,	1,6,0,	0,0,0,
+		6,5,0,	0,0,2,	0,0,9,
+
+		0,0,0,	0,3,0,	0,0,0,
+		0,0,9,	5,0,4,	0,1,0,
+		0,6,1,	0,0,0,	0,0,0,
+		//@formatter:on
+	};
 
 	static long calls;
 
 	public static void main(String[] args) {
-		Solver solver = new Solver();
-		Board board = new Board(SAMPLE);
+		solve(SAMPLE_1);
+		solve(SAMPLE_2);
+	}
+
+	public static void solve(int[] sample) {
+		Board board = new Board(sample);
+		System.out.println("Problem:\n");
 		System.out.println(board);
-		solver.solve(board);
-		System.out.println("Recursive calls: " + calls);
+		long time = System.nanoTime();
+		System.out.println("Solution:\n");
+		new Solver().solve(board);
+		time = System.nanoTime() - time;
+		System.out.println(String.format("Recursive calls: %d, time: %d millis", calls, time / 1000_000L));
+		System.out.println();
 	}
 
 	public void solve(Board board) {
