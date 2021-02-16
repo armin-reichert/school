@@ -29,14 +29,14 @@ public class Board {
 		if (values.length != 81) {
 			throw new IllegalArgumentException("Board must have 81 entries but has " + values.length);
 		}
-		System.arraycopy(values, 0, cells, 0, 81);
+		System.arraycopy(values, 0, cells, 0, cells.length);
 	}
 
 	public void set(int pos, int value) {
 		cells[pos] = (byte) value;
 	}
 
-	public byte get(int pos) {
+	public byte value(int pos) {
 		return cells[pos];
 	}
 
@@ -87,7 +87,7 @@ public class Board {
 			validNumbers.clear(value(i, row));
 			validNumbers.clear(value(col, i));
 		}
-		cells().filter(cell -> HOUSE[cell] == HOUSE[emptyCell]).forEach(cell -> validNumbers.clear(get(cell)));
+		cells().filter(cell -> HOUSE[cell] == HOUSE[emptyCell]).forEach(cell -> validNumbers.clear(value(cell)));
 		return validNumbers.stream();
 	}
 }
