@@ -75,19 +75,23 @@ public class Board {
 		return IntStream.rangeClosed(0, 80);
 	}
 
+	public IntStream house(int cell) {
+		return cells().filter(c -> HOUSE[c] == HOUSE[cell]);
+	}
+
 	public OptionalInt emptyCell() {
-		return cells().filter(i -> cells[i] == 0).findFirst();
+		return cells().filter(c -> cells[c] == 0).findFirst();
 	}
 
 	public IntStream validNumbers(int emptyCell) {
+		int col = emptyCell % 9, row = emptyCell / 9;
 		BitSet validNumbers = new BitSet(10);
 		validNumbers.set(1, 10);
-		int col = emptyCell % 9, row = emptyCell / 9;
 		for (int i = 0; i < 9; ++i) {
 			validNumbers.clear(value(i, row));
 			validNumbers.clear(value(col, i));
 		}
-		cells().filter(cell -> HOUSE[cell] == HOUSE[emptyCell]).forEach(cell -> validNumbers.clear(value(cell)));
+		house(emptyCell).forEach(cell -> validNumbers.clear(value(cell)));
 		return validNumbers.stream();
 	}
 }
