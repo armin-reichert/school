@@ -7,7 +7,7 @@ public class Solver {
 	/**
 	 * https://sudoku.soeinding.de/sudokuAusdrucken.php
 	 */
-	static int[] SAMPLE_1 = {
+	static byte[] SAMPLE_1 = {
 		//@formatter:off
 		0,0,0,	0,0,4,	8,2,0,
 		0,5,0,	8,0,0,	0,0,1,
@@ -22,7 +22,7 @@ public class Solver {
 		0,3,0,	0,0,0,	0,9,0,
 		//@formatter:on
 	};
-	static int[] SAMPLE_2 = {
+	static byte[] SAMPLE_2 = {
 		//@formatter:off
 		0,0,0,	8,0,0,	3,0,0,
 		4,0,0,	0,0,0,	0,0,5,
@@ -45,17 +45,16 @@ public class Solver {
 		solve(SAMPLE_2);
 	}
 
-	public static void solve(int[] sample) {
+	public static void solve(byte[] sample) {
 		calls = 0;
 		Board board = new Board(sample);
-		System.out.println("Problem:\n");
+		System.out.println("Problem:");
 		System.out.println(board);
 		long time = System.nanoTime();
-		System.out.println("Solution:\n");
+		System.out.println("Solution:");
 		new Solver().solve(board);
 		time = System.nanoTime() - time;
-		System.out.println(String.format("Recursive calls: %d, time: %d millis", calls, time / 1000_000L));
-		System.out.println();
+		System.out.println(String.format("Recursive calls: %d, time: %d millis\n", calls, time / 1000_000L));
 	}
 
 	public void solve(Board board) {
@@ -66,9 +65,9 @@ public class Solver {
 		} else {
 			int cell = emptyCell.getAsInt();
 			board.validNumbers(cell).forEach(number -> {
-				board.set(cell, number);
+				board.set(cell, (byte) number);
 				solve(board);
-				board.set(cell, 0);
+				board.set(cell, (byte) 0);
 			});
 		}
 	}

@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 public class Board {
 
 	//@formatter:off
-	static int[] HOUSE = {
+	static byte[] HOUSE = {
 		0,0,0,	1,1,1,	2,2,2,
 		0,0,0,	1,1,1,	2,2,2,
 		0,0,0,	1,1,1,	2,2,2,
@@ -20,31 +20,31 @@ public class Board {
 	};
 	//@formatter:on
 
-	public int[] cells = new int[81];
+	public byte[] cells = new byte[81];
 
 	public Board() {
 	}
 
-	public Board(int[] values) {
+	public Board(byte[] values) {
 		if (values.length != 81) {
 			throw new IllegalArgumentException("Board must have 81 entries but has " + values.length);
 		}
 		System.arraycopy(values, 0, cells, 0, 81);
 	}
 
-	public void set(int pos, int value) {
+	public void set(int pos, byte value) {
 		cells[pos] = value;
 	}
 
-	public int get(int pos) {
+	public byte get(int pos) {
 		return cells[pos];
 	}
 
-	public void set(int x, int y, int value) {
+	public void set(int x, int y, byte value) {
 		cells[index(x, y)] = value;
 	}
 
-	public int value(int x, int y) {
+	public byte value(int x, int y) {
 		return cells[index(x, y)];
 	}
 
