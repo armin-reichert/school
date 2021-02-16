@@ -41,6 +41,7 @@ public class Solver {
 	static long calls;
 
 	public static void main(String[] args) {
+//		solve(new byte[81]);
 		solve(SAMPLE_1);
 		solve(SAMPLE_2);
 	}
