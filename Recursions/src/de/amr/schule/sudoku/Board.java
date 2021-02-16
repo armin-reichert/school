@@ -32,16 +32,16 @@ public class Board {
 		System.arraycopy(values, 0, cells, 0, 81);
 	}
 
-	public void set(int pos, byte value) {
-		cells[pos] = value;
+	public void set(int pos, int value) {
+		cells[pos] = (byte) value;
 	}
 
 	public byte get(int pos) {
 		return cells[pos];
 	}
 
-	public void set(int x, int y, byte value) {
-		cells[index(x, y)] = value;
+	public void set(int x, int y, int value) {
+		cells[index(x, y)] = (byte) value;
 	}
 
 	public byte value(int x, int y) {

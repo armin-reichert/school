@@ -64,11 +64,12 @@ public class Solver {
 			System.out.println(board);
 		} else {
 			int cell = emptyCell.getAsInt();
-			board.validNumbers(cell).forEach(number -> {
-				board.set(cell, (byte) number);
+			int[] numbers = board.validNumbers(cell).toArray();
+			for (int n : numbers) {
+				board.set(cell, n);
 				solve(board);
-				board.set(cell, (byte) 0);
-			});
+				board.set(cell, 0);
+			}
 		}
 	}
 }
