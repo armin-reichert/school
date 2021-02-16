@@ -46,6 +46,7 @@ public class Solver {
 	}
 
 	public static void solve(int[] sample) {
+		calls = 0;
 		Board board = new Board(sample);
 		System.out.println("Problem:\n");
 		System.out.println(board);
