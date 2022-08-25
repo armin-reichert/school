@@ -1,0 +1,3 @@
+# school
+
+For the kids.
