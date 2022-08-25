@@ -34,6 +34,7 @@ public class Vertex implements Comparable<Vertex> {
 
 	public final int index;
 	public final String city;
+
 	public Vertex parent;
 	public double dist;
 

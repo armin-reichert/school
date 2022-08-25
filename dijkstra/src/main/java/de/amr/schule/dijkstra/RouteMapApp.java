@@ -34,9 +34,10 @@ public class RouteMapApp {
 	private static final Graph MAP_SAARLAND = createSaarlandMap();
 
 	public static void main(String[] args) {
-		System.out.println(RouteMap.computeRoute(MAP_SAARLAND, "Losheim", "Saarbrücken"));
-		System.out.println(RouteMap.computeRoute(MAP_SAARLAND, "Losheim", "Saarlouis"));
-		System.out.println(RouteMap.computeRoute(MAP_SAARLAND, "Saarlouis", "Wadern"));
+		var rm = new RouteMap();
+		System.out.println(rm.computeRoute(MAP_SAARLAND, "Losheim", "Saarbrücken"));
+		System.out.println(rm.computeRoute(MAP_SAARLAND, "Losheim", "Saarlouis"));
+		System.out.println(rm.computeRoute(MAP_SAARLAND, "Saarlouis", "Wadern"));
 	}
 
 	private static Graph createSaarlandMap() {

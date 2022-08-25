@@ -37,22 +37,28 @@ import org.apache.logging.log4j.Logger;
  */
 public class RouteMap {
 
-	private RouteMap() {
-	}
-
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
-	public static List<String> computeRoute(Graph map, String startCity, String goalCity) {
+	private Vertex startVertex;
+
+	public void setStart(Graph map, Vertex startVertex) {
+		if (startVertex != this.startVertex) {
+			this.startVertex = startVertex;
+			computeShortestPaths(map, startVertex);
+		}
+	}
+
+	public List<String> computeRoute(Graph map, String startCity, String goalCity) {
 		var start = map.findVertex(startCity);
 		var goal = map.findVertex(goalCity);
 		if (start.isPresent() && goal.isPresent()) {
-			computeShortestPaths(map, start.get());
+			setStart(map, start.get());
 			return buildRoute(start.get(), goal.get());
 		}
 		return List.of();
 	}
 
-	private static List<String> buildRoute(Vertex start, Vertex goal) {
+	private List<String> buildRoute(Vertex start, Vertex goal) {
 		var route = new ArrayList<String>();
 		var current = goal;
 		while (current != null) {
@@ -63,40 +69,37 @@ public class RouteMap {
 	}
 
 	private static void computeShortestPaths(Graph g, Vertex start) {
-		LOGGER.info("Compute all paths from %s".formatted(start.city));
+		LOGGER.info(() -> "Compute all paths from %s".formatted(start.city));
 
-		PriorityQueue<Vertex> q = new PriorityQueue<>();
-		boolean[] visited = new boolean[g.maxSize()];
+		var q = new PriorityQueue<Vertex>();
+		var visited = new boolean[g.maxSize()];
 
 		g.vertices().forEach(v -> {
 			v.parent = null;
-			if (v.equals(start)) {
-				v.dist = 0;
-				visited[v.index] = true;
-				q.add(v);
-				LOGGER.trace("%s visited".formatted(v.city));
-			} else {
-				v.dist = Double.MAX_VALUE;
-			}
+			v.dist = Double.MAX_VALUE;
 		});
+
+		start.dist = 0.0;
+		visited[start.index] = true;
+		q.add(start);
+		LOGGER.trace("%s visited".formatted(start.city));
 
 		while (!q.isEmpty()) {
 			var u = q.poll();
-			for (var e : u.adjEdges) {
-				var v = g.vertex(e.v).get();
-				var tentativeDist = u.dist + e.weight;
+			for (var edge : u.adjEdges) {
+				var v = g.vertex(edge.v).get();
+				var tentativeDist = u.dist + edge.weight;
 				if (tentativeDist < v.dist) {
 					v.dist = tentativeDist;
 					v.parent = u;
-					visited[v.index] = true;
-					if (visited[v.index]) {
-						// "decrease key"
+					if (visited[v.index]) { // "decrease key"
 						q.remove(v);
 						q.add(v);
 					} else {
+						visited[v.index] = true;
 						q.add(v);
 					}
-					LOGGER.trace("%s visited".formatted(v));
+					LOGGER.trace(() -> "%s visited".formatted(v));
 				}
 			}
 		}
