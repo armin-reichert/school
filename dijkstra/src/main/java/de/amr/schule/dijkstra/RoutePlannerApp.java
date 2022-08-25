@@ -24,7 +24,7 @@ SOFTWARE.
 
 package de.amr.schule.dijkstra;
 
-public class RouteMapApp {
+public class RoutePlannerApp {
 
 	private static final Graph MAP_SAARLAND = createSaarlandMap();
 	private static final RoutePlanner PLANNER = new RoutePlanner();
