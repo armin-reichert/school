@@ -86,20 +86,21 @@ public class RoutePlanner {
 		while (!q.isEmpty()) {
 			var u = q.poll();
 			for (var edge : u.adjEdges) {
-				var v = g.vertex(edge.v).get();
-				var tentativeDist = u.dist + edge.weight;
-				if (tentativeDist < v.dist) {
-					v.dist = tentativeDist;
-					v.parent = u;
-					if (v.visited) { // "decrease key"
-						q.remove(v);
-						q.add(v);
-					} else {
-						v.visited = true;
-						q.add(v);
+				g.vertex(edge.to()).ifPresent(v -> {
+					var altDist = u.dist + edge.cost();
+					if (altDist < v.dist) {
+						v.dist = altDist;
+						v.parent = u;
+						if (v.visited) { // "decrease key"
+							q.remove(v);
+							q.add(v);
+						} else {
+							v.visited = true;
+							q.add(v);
+						}
+						LOGGER.trace(() -> "%s visited".formatted(v));
 					}
-					LOGGER.trace(() -> "%s visited".formatted(v));
-				}
+				});
 			}
 		}
 	}

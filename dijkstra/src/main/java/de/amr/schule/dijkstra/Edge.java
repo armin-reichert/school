@@ -24,39 +24,5 @@ SOFTWARE.
 
 package de.amr.schule.dijkstra;
 
-import java.util.Objects;
-
-public class Edge {
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(u, v);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Edge other = (Edge) obj;
-		return u == other.u && v == other.v;
-	}
-
-	public final int u;
-	public final int v;
-	public final double weight;
-
-	public Edge(int u, int v, double weight) {
-		this.u = u;
-		this.v = v;
-		this.weight = weight;
-	}
-
-	@Override
-	public String toString() {
-		return "Edge [u=" + u + ", v=" + v + ", weight=" + weight + "]";
-	}
+public record Edge(int from, int to, double cost) {
 }

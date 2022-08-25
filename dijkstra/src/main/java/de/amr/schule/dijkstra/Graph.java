@@ -80,9 +80,9 @@ public class Graph {
 		if (printEdges) {
 			vertices().forEach(v -> {
 				v.adjEdges.forEach(edge -> {
-					var from = vertices[edge.u];
-					var to = vertices[edge.v];
-					out.println("Edge[%s <-> %s %.1f km]".formatted(from.city, to.city, edge.weight));
+					var from = vertices[edge.from()];
+					var to = vertices[edge.to()];
+					out.println("Edge[%s <-> %s %.1f km]".formatted(from.city, to.city, edge.cost()));
 				});
 			});
 		}
