@@ -43,7 +43,7 @@ public class RoutePlanner {
 	public void setStart(Graph map, Vertex startVertex) {
 		if (startVertex != this.startVertex) {
 			this.startVertex = startVertex;
-			computeShortestPaths(map, startVertex);
+			dijkstraAlgorithm(map, startVertex);
 		}
 	}
 
@@ -67,9 +67,7 @@ public class RoutePlanner {
 		return route;
 	}
 
-	private static void computeShortestPaths(Graph g, Vertex start) {
-		LOGGER.info(() -> "Compute all paths from %s".formatted(start.city));
-
+	private static void dijkstraAlgorithm(Graph g, Vertex start) {
 		var q = new PriorityQueue<Vertex>();
 
 		g.vertices().forEach(v -> {
@@ -78,10 +76,12 @@ public class RoutePlanner {
 			v.visited = false;
 		});
 
+		LOGGER.info(() -> "Compute all paths from %s".formatted(start));
+
 		start.dist = 0.0;
 		start.visited = true;
 		q.add(start);
-		LOGGER.trace("%s visited".formatted(start.city));
+		LOGGER.trace(() -> "%s visited".formatted(start));
 
 		while (!q.isEmpty()) {
 			var u = q.poll();
