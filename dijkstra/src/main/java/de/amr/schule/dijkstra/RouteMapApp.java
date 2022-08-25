@@ -24,20 +24,21 @@ SOFTWARE.
 
 package de.amr.schule.dijkstra;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class RouteMapApp {
 
-	private static final Logger LOGGER = LogManager.getFormatterLogger();
-
 	private static final Graph MAP_SAARLAND = createSaarlandMap();
+	private static final RoutePlanner PLANNER = new RoutePlanner();
 
 	public static void main(String[] args) {
-		var rm = new RouteMap();
-		System.out.println(rm.computeRoute(MAP_SAARLAND, "Losheim", "Saarbrücken"));
-		System.out.println(rm.computeRoute(MAP_SAARLAND, "Losheim", "Saarlouis"));
-		System.out.println(rm.computeRoute(MAP_SAARLAND, "Saarlouis", "Wadern"));
+		route("Losheim", "Saarbrücken");
+		route("Losheim", "Saarlouis");
+		route("Saarlouis", "Wadern");
+		route("Losheim", "Losheim");
+	}
+
+	private static void route(String fromCity, String toCity) {
+		var route = PLANNER.computeRoute(MAP_SAARLAND, fromCity, toCity);
+		System.out.println("Route von %s nach %s: %s".formatted(fromCity, toCity, route));
 	}
 
 	private static Graph createSaarlandMap() {

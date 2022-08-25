@@ -35,7 +35,7 @@ import org.apache.logging.log4j.Logger;
  * @author Armin Reichert
  *
  */
-public class RouteMap {
+public class RoutePlanner {
 
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
@@ -72,15 +72,15 @@ public class RouteMap {
 		LOGGER.info(() -> "Compute all paths from %s".formatted(start.city));
 
 		var q = new PriorityQueue<Vertex>();
-		var visited = new boolean[g.maxSize()];
 
 		g.vertices().forEach(v -> {
 			v.parent = null;
 			v.dist = Double.MAX_VALUE;
+			v.visited = false;
 		});
 
 		start.dist = 0.0;
-		visited[start.index] = true;
+		start.visited = true;
 		q.add(start);
 		LOGGER.trace("%s visited".formatted(start.city));
 
@@ -92,11 +92,11 @@ public class RouteMap {
 				if (tentativeDist < v.dist) {
 					v.dist = tentativeDist;
 					v.parent = u;
-					if (visited[v.index]) { // "decrease key"
+					if (v.visited) { // "decrease key"
 						q.remove(v);
 						q.add(v);
 					} else {
-						visited[v.index] = true;
+						v.visited = true;
 						q.add(v);
 					}
 					LOGGER.trace(() -> "%s visited".formatted(v));

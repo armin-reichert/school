@@ -37,12 +37,14 @@ public class Vertex implements Comparable<Vertex> {
 
 	public Vertex parent;
 	public double dist;
+	public boolean visited;
 
 	public Vertex(int index, String city) {
 		this.index = index;
 		this.city = city;
 		this.parent = null;
 		this.dist = Double.MAX_VALUE;
+		this.visited = false;
 	}
 
 	@Override
