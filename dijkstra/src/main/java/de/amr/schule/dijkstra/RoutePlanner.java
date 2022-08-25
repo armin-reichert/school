@@ -33,7 +33,6 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * @author Armin Reichert
- *
  */
 public class RoutePlanner {
 

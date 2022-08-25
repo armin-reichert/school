@@ -24,24 +24,39 @@ SOFTWARE.
 
 package de.amr.schule.dijkstra;
 
-public class RoutePlannerApp {
+/**
+ * @author Armin Reichert
+ *
+ */
+public class SaarlandMap extends Graph {
 
-	private static final Graph MAP_SAARLAND = new SaarlandMap();
-	private static final RoutePlanner PLANNER = new RoutePlanner();
+	public SaarlandMap() {
+		super(20);
 
-	public static void main(String[] args) {
-		MAP_SAARLAND.print(System.out, true);
-		route("Losheim", "Saarbrücken");
-		route("Losheim", "Saarlouis");
-		route("Saarlouis", "Wadern");
-		route("Losheim", "Losheim");
-		route("Schmelz", "Homburg");
-		route("Saarlouis", "Homburg");
-		route("Wadern", "Saarbrücken");
-	}
+		createVertex(0, "Losheim");
+		createVertex(1, "Merzig");
+		createVertex(2, "Saarlouis");
+		createVertex(3, "Saarbrücken");
+		createVertex(4, "Wadern");
+		createVertex(5, "St. Wendel");
+		createVertex(6, "Neunkirchen");
+		createVertex(7, "Eppelborn");
+		createVertex(8, "Homburg");
+		createVertex(9, "Schmelz");
+		createVertex(10, "St. Ingbert");
 
-	private static void route(String fromCity, String toCity) {
-		var route = PLANNER.computeRoute(MAP_SAARLAND, fromCity, toCity);
-		System.out.println("Route von %s nach %s: %s".formatted(fromCity, toCity, route));
+		addUndirectedEdge(0, 1, 12.5);
+		addUndirectedEdge(0, 4, 15.0);
+		addUndirectedEdge(0, 9, 11.0);
+		addUndirectedEdge(1, 2, 22.0);
+		addUndirectedEdge(2, 3, 25.0);
+		addUndirectedEdge(3, 7, 20.0);
+		addUndirectedEdge(3, 10, 15.0);
+		addUndirectedEdge(4, 5, 30.0);
+		addUndirectedEdge(5, 8, 30.0);
+		addUndirectedEdge(6, 7, 25.0);
+		addUndirectedEdge(6, 8, 20.0);
+		addUndirectedEdge(6, 10, 15.0);
+		addUndirectedEdge(7, 9, 15.0);
 	}
 }
