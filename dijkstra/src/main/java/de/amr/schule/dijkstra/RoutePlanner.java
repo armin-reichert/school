@@ -87,9 +87,9 @@ public class RoutePlanner {
 			var u = q.poll();
 			for (var edge : u.adjEdges) {
 				g.vertex(edge.to()).ifPresent(v -> {
-					var altDist = u.cost + edge.cost();
-					if (altDist < v.cost) {
-						v.cost = altDist;
+					var altCost = u.cost + edge.cost();
+					if (altCost < v.cost) {
+						v.cost = altCost;
 						v.parent = u;
 						if (v.visited) { // "decrease key"
 							q.remove(v);
