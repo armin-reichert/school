@@ -24,8 +24,8 @@ SOFTWARE.
 
 package de.amr.schule.dijkstra;
 
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -61,11 +61,9 @@ public class RoutePlanner {
 	}
 
 	private List<String> buildRoute(Vertex goal) {
-		var route = new ArrayList<String>();
-		var current = goal;
-		while (current != null) {
-			route.add(0, current.city + " " + current.cost + " km");
-			current = current.parent;
+		var route = new LinkedList<String>();
+		for (Vertex v = goal; v != null; v = v.parent) {
+			route.addFirst(v.city + " " + v.cost + " km");
 		}
 		return route;
 	}
