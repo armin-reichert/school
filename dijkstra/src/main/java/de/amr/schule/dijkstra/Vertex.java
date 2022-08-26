@@ -36,22 +36,22 @@ public class Vertex implements Comparable<Vertex> {
 	public final String city;
 
 	public Vertex parent;
-	public double dist;
+	public double cost;
 	public boolean visited;
 
 	public Vertex(int index, String city) {
 		this.index = index;
 		this.city = city;
 		this.parent = null;
-		this.dist = Double.MAX_VALUE;
+		this.cost = Double.MAX_VALUE;
 		this.visited = false;
 	}
 
 	@Override
 	public int compareTo(Vertex other) {
-		if (dist < other.dist)
+		if (cost < other.cost)
 			return -1;
-		if (dist > other.dist)
+		if (cost > other.cost)
 			return 1;
 		return 0;
 	}
@@ -59,8 +59,8 @@ public class Vertex implements Comparable<Vertex> {
 	@Override
 	public String toString() {
 		var parentText = parent != null ? parent.city : "none";
-		var distText = dist == Double.MAX_VALUE ? "unknown" : "%.1f".formatted(dist);
-		return "Vertex[%d, city=%s, parent=%s, dist=%s]".formatted(index, city, parentText, distText);
+		var costText = cost == Double.MAX_VALUE ? "unknown" : "%.1f".formatted(cost);
+		return "Vertex[%2d %s, parent=%s, dist=%s, visited=%s]".formatted(index, city, parentText, costText, visited);
 	}
 
 	@Override

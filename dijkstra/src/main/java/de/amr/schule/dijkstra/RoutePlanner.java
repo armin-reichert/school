@@ -61,7 +61,7 @@ public class RoutePlanner {
 		var route = new ArrayList<String>();
 		var current = goal;
 		while (current != null) {
-			route.add(0, current.city + " " + current.dist + " km");
+			route.add(0, current.city + " " + current.cost + " km");
 			current = current.parent;
 		}
 		return route;
@@ -72,13 +72,13 @@ public class RoutePlanner {
 
 		g.vertices().forEach(v -> {
 			v.parent = null;
-			v.dist = Double.MAX_VALUE;
+			v.cost = Double.MAX_VALUE;
 			v.visited = false;
 		});
 
 		LOGGER.info(() -> "Compute all paths from %s".formatted(start));
 
-		start.dist = 0.0;
+		start.cost = 0.0;
 		start.visited = true;
 		q.add(start);
 		LOGGER.trace(() -> "%s visited".formatted(start));
@@ -87,9 +87,9 @@ public class RoutePlanner {
 			var u = q.poll();
 			for (var edge : u.adjEdges) {
 				g.vertex(edge.to()).ifPresent(v -> {
-					var altDist = u.dist + edge.cost();
-					if (altDist < v.dist) {
-						v.dist = altDist;
+					var altDist = u.cost + edge.cost();
+					if (altDist < v.cost) {
+						v.cost = altDist;
 						v.parent = u;
 						if (v.visited) { // "decrease key"
 							q.remove(v);
