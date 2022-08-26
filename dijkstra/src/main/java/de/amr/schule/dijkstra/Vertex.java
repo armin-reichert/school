@@ -28,20 +28,22 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * @author Armin Reichert
+ */
 public class Vertex {
 
 	public final Set<Edge> adjEdges = new LinkedHashSet<>();
 
 	public final int index;
-	public final String city;
-
+	public final String key;
 	public Vertex parent;
 	public double cost;
 	public boolean visited;
 
-	public Vertex(int index, String city) {
+	public Vertex(int index, String key) {
 		this.index = index;
-		this.city = city;
+		this.key = key;
 		this.parent = null;
 		this.cost = Double.MAX_VALUE;
 		this.visited = false;
@@ -49,9 +51,9 @@ public class Vertex {
 
 	@Override
 	public String toString() {
-		var parentText = parent != null ? parent.city : "none";
+		var parentText = parent != null ? parent.key : "none";
 		var costText = cost == Double.MAX_VALUE ? "unknown" : "%.1f".formatted(cost);
-		return "Vertex[%2d %s, parent=%s, dist=%s, visited=%s]".formatted(index, city, parentText, costText, visited);
+		return "Vertex[%2d %s, parent=%s, dist=%s, visited=%s]".formatted(index, key, parentText, costText, visited);
 	}
 
 	@Override

@@ -63,7 +63,7 @@ public class RoutePlanner {
 	private List<String> buildRoute(Vertex goal) {
 		var route = new LinkedList<String>();
 		for (Vertex v = goal; v != null; v = v.parent) {
-			route.addFirst(v.city + " " + v.cost + " km");
+			route.addFirst(v.key + " " + v.cost + " km");
 		}
 		return route;
 	}

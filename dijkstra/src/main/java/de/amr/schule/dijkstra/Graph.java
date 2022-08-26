@@ -82,7 +82,7 @@ public class Graph {
 				v.adjEdges.forEach(edge -> {
 					var from = vertices[edge.from()];
 					var to = vertices[edge.to()];
-					out.println("Edge[%s -> %s %.1f km]".formatted(from.city, to.city, edge.cost()));
+					out.println("Edge[%s -> %s %.1f km]".formatted(from.key, to.key, edge.cost()));
 				});
 			});
 		}
