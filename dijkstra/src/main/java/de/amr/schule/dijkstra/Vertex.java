@@ -28,7 +28,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Vertex implements Comparable<Vertex> {
+public class Vertex {
 
 	public final Set<Edge> adjEdges = new LinkedHashSet<>();
 
@@ -45,15 +45,6 @@ public class Vertex implements Comparable<Vertex> {
 		this.parent = null;
 		this.cost = Double.MAX_VALUE;
 		this.visited = false;
-	}
-
-	@Override
-	public int compareTo(Vertex other) {
-		if (cost < other.cost)
-			return -1;
-		if (cost > other.cost)
-			return 1;
-		return 0;
 	}
 
 	@Override

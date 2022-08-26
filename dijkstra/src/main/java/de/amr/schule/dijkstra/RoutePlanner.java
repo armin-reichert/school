@@ -25,6 +25,7 @@ SOFTWARE.
 package de.amr.schule.dijkstra;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -38,12 +39,14 @@ public class RoutePlanner {
 
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
+	private static final Comparator<Vertex> COMPARE_BY_COST = (v1, v2) -> Double.compare(v1.cost, v2.cost);
+
 	private Vertex startVertex;
 
 	public void setStart(Graph map, Vertex startVertex) {
 		if (startVertex != this.startVertex) {
 			this.startVertex = startVertex;
-			dijkstraAlgorithm(map, startVertex);
+			dijkstraAlgorithm(map, COMPARE_BY_COST, startVertex);
 		}
 	}
 
@@ -52,12 +55,12 @@ public class RoutePlanner {
 		var goal = map.findVertex(goalCity);
 		if (start.isPresent() && goal.isPresent()) {
 			setStart(map, start.get());
-			return buildRoute(start.get(), goal.get());
+			return buildRoute(goal.get());
 		}
 		return List.of();
 	}
 
-	private List<String> buildRoute(Vertex start, Vertex goal) {
+	private List<String> buildRoute(Vertex goal) {
 		var route = new ArrayList<String>();
 		var current = goal;
 		while (current != null) {
@@ -67,8 +70,8 @@ public class RoutePlanner {
 		return route;
 	}
 
-	private static void dijkstraAlgorithm(Graph g, Vertex start) {
-		var q = new PriorityQueue<Vertex>();
+	private static void dijkstraAlgorithm(Graph g, Comparator<Vertex> vertexComparator, Vertex start) {
+		var q = new PriorityQueue<Vertex>(vertexComparator);
 
 		g.vertices().forEach(v -> {
 			v.parent = null;
@@ -84,7 +87,7 @@ public class RoutePlanner {
 		LOGGER.trace(() -> "%s visited".formatted(start));
 
 		while (!q.isEmpty()) {
-			var u = q.poll();
+			var u = q.poll(); // min cost vertex in queue
 			for (var edge : u.adjEdges) {
 				g.vertex(edge.to()).ifPresent(v -> {
 					var altCost = u.cost + edge.cost();
