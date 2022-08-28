@@ -74,11 +74,11 @@ public class RoutePlanner {
 			if (!u.visited) {
 				u.visited = true;
 				LOGGER.trace(() -> "%s visited".formatted(u));
-				for (var edge : u.adjEdges) {
+				for (var edge : u.outgoingEdges) {
 					g.vertex(edge.to()).ifPresent(v -> {
-						var altCost = u.cost + edge.cost();
-						if (altCost < v.cost) {
-							v.cost = altCost;
+						var alternativeCost = u.cost + edge.cost();
+						if (alternativeCost < v.cost) {
+							v.cost = alternativeCost;
 							v.parent = u;
 							q.add(v);
 						}

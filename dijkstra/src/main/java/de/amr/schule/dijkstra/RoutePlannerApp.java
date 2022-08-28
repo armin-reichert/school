@@ -42,6 +42,6 @@ public class RoutePlannerApp {
 
 	private static void route(String fromCity, String toCity) {
 		var route = PLANNER.computeRoute(MAP_SAARLAND, fromCity, toCity);
-		System.out.println("Route von %s nach %s: %s".formatted(fromCity, toCity, route));
+		System.out.println("Von %s nach %s: %s".formatted(fromCity, toCity, route));
 	}
 }

@@ -33,7 +33,7 @@ import java.util.Set;
  */
 public class Vertex {
 
-	public final Set<Edge> adjEdges = new LinkedHashSet<>();
+	public final Set<Edge> outgoingEdges = new LinkedHashSet<>();
 
 	public final int index;
 	public final String key;
@@ -53,7 +53,8 @@ public class Vertex {
 	public String toString() {
 		var parentText = parent != null ? parent.key : "none";
 		var costText = cost == Double.MAX_VALUE ? "unknown" : "%.1f".formatted(cost);
-		return "Vertex[%2d %s, parent=%s, dist=%s, visited=%s]".formatted(index, key, parentText, costText, visited);
+		return "Vertex[index=%2d, key=%s, parent=%s, dist=%s, visited=%s]".formatted(index, key, parentText, costText,
+				visited);
 	}
 
 	@Override

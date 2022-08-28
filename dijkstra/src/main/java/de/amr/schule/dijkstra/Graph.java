@@ -57,8 +57,8 @@ public class Graph {
 		return Stream.of(vertices).filter(Objects::nonNull);
 	}
 
-	public Stream<Edge> adjEdges(Vertex vertex) {
-		return vertex.adjEdges.stream();
+	public Stream<Edge> outgoingEdges(Vertex vertex) {
+		return vertex.outgoingEdges.stream();
 	}
 
 	public void createVertex(int index, String key) {
@@ -72,14 +72,14 @@ public class Graph {
 	}
 
 	public void addDirectedEdge(int source, int target, double distance) {
-		vertices[source].adjEdges.add(new Edge(source, target, distance));
+		vertices[source].outgoingEdges.add(new Edge(source, target, distance));
 	}
 
 	public void print(PrintStream out, boolean printEdges) {
 		vertices().forEach(v -> out.println("%s".formatted(v)));
 		if (printEdges) {
 			vertices().forEach(v -> {
-				v.adjEdges.forEach(edge -> {
+				v.outgoingEdges.forEach(edge -> {
 					var from = vertices[edge.from()];
 					var to = vertices[edge.to()];
 					out.println("Edge[%s -> %s %.1f km]".formatted(from.key, to.key, edge.cost()));
