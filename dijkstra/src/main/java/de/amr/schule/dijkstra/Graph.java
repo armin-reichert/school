@@ -76,7 +76,7 @@ public class Graph {
 	}
 
 	public void print(PrintStream out, boolean printEdges) {
-		vertices().forEach(v -> out.println("%s".formatted(v)));
+		vertices().forEach(out::println);
 		if (printEdges) {
 			vertices().forEach(v -> {
 				v.outgoingEdges.forEach(edge -> {
