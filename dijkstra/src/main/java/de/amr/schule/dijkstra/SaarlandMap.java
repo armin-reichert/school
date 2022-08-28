@@ -33,17 +33,17 @@ public class SaarlandMap extends Graph {
 	public SaarlandMap() {
 		super(20);
 
-		createVertex(0, "Losheim");
-		createVertex(1, "Merzig");
-		createVertex(2, "Saarlouis");
-		createVertex(3, "Saarbrücken");
-		createVertex(4, "Wadern");
-		createVertex(5, "St. Wendel");
-		createVertex(6, "Neunkirchen");
-		createVertex(7, "Eppelborn");
-		createVertex(8, "Homburg");
-		createVertex(9, "Schmelz");
-		createVertex(10, "St. Ingbert");
+		addVertex("Losheim");
+		addVertex("Merzig");
+		addVertex("Saarlouis");
+		addVertex("Saarbrücken");
+		addVertex("Wadern");
+		addVertex("St. Wendel");
+		addVertex("Neunkirchen");
+		addVertex("Eppelborn");
+		addVertex("Homburg");
+		addVertex("Schmelz");
+		addVertex("St. Ingbert");
 
 		addUndirectedEdge(0, 1, 12.5);
 		addUndirectedEdge(0, 4, 15.0);

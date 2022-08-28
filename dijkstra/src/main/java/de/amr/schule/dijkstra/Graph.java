@@ -25,27 +25,24 @@ SOFTWARE.
 package de.amr.schule.dijkstra;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Graph {
 
-	private Vertex[] vertices;
-	private Map<String, Integer> vertexIndexByKey = new HashMap<>();
+	private final List<Vertex> vertices;
+	private final Map<String, Integer> vertexIndexByKey = new HashMap<>();
 
-	public Graph(int maxSize) {
-		vertices = new Vertex[maxSize];
-	}
-
-	public int maxSize() {
-		return vertices.length;
+	public Graph(int initialCapacity) {
+		vertices = new ArrayList<>(initialCapacity);
 	}
 
 	public Optional<Vertex> vertex(int index) {
-		return Optional.ofNullable(vertices[index]);
+		return Optional.ofNullable(vertices.get(index));
 	}
 
 	public Optional<Vertex> findVertex(String key) {
@@ -54,16 +51,17 @@ public class Graph {
 	}
 
 	public Stream<Vertex> vertices() {
-		return Stream.of(vertices).filter(Objects::nonNull);
+		return vertices.stream();
 	}
 
 	public Stream<Edge> outgoingEdges(Vertex vertex) {
 		return vertex.outgoingEdges.stream();
 	}
 
-	public void createVertex(int index, String key) {
-		vertices[index] = new Vertex(index, key);
-		vertexIndexByKey.put(key, index);
+	public void addVertex(String key) {
+		var vertex = new Vertex(vertices.size(), key);
+		vertices.add(vertex);
+		vertexIndexByKey.put(key, vertex.index);
 	}
 
 	public void addUndirectedEdge(int either, int other, double distance) {
@@ -72,7 +70,7 @@ public class Graph {
 	}
 
 	public void addDirectedEdge(int source, int target, double distance) {
-		vertices[source].outgoingEdges.add(new Edge(source, target, distance));
+		vertices.get(source).outgoingEdges.add(new Edge(source, target, distance));
 	}
 
 	public void print(PrintStream out, boolean printEdges) {
@@ -80,8 +78,8 @@ public class Graph {
 		if (printEdges) {
 			vertices().forEach(v -> {
 				v.outgoingEdges.forEach(edge -> {
-					var from = vertices[edge.from()];
-					var to = vertices[edge.to()];
+					var from = vertices.get(edge.from());
+					var to = vertices.get(edge.to());
 					out.println("Edge[%s -> %s %.1f km]".formatted(from.key, to.key, edge.cost()));
 				});
 			});
