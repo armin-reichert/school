@@ -31,17 +31,12 @@ public class RoutePlannerApp {
 
 	public static void main(String[] args) {
 		MAP_SAARLAND.print(System.out, true);
-		route("Losheim", "Losheim");
-		route("Losheim", "Saarbrücken");
-		route("Losheim", "Saarlouis");
-		route("Losheim", "Homburg");
-		route("Saarlouis", "Wadern");
-		route("Saarlouis", "Homburg");
-		route("Wadern", "Saarbrücken");
-	}
 
-	private static void route(String fromCity, String toCity) {
-		var route = PLANNER.computeRoute(MAP_SAARLAND, fromCity, toCity);
-		System.out.println("Von %s nach %s: %s".formatted(fromCity, toCity, route));
+		MAP_SAARLAND.vertices().forEach(from -> {
+			MAP_SAARLAND.vertices().forEach(to -> {
+				var route = PLANNER.computeRoute(MAP_SAARLAND, from, to);
+				System.out.println("Von %s nach %s: %s".formatted(from.key, to.key, route));
+			});
+		});
 	}
 }

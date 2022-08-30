@@ -52,6 +52,11 @@ public class RoutePlanner {
 		return List.of();
 	}
 
+	public List<String> computeRoute(Graph map, Vertex start, Vertex goal) {
+		setStartVertex(map, start);
+		return buildRoute(goal);
+	}
+
 	private void setStartVertex(Graph map, Vertex startVertex) {
 		if (startVertex != this.startVertex) {
 			this.startVertex = startVertex;
