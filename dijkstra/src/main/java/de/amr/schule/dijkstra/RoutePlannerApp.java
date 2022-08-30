@@ -31,12 +31,7 @@ public class RoutePlannerApp {
 
 	public static void main(String[] args) {
 		MAP_SAARLAND.print(System.out, true);
-
-		MAP_SAARLAND.vertices().forEach(from -> {
-			MAP_SAARLAND.vertices().forEach(to -> {
-				var route = PLANNER.computeRoute(MAP_SAARLAND, from, to);
-				System.out.println("Von %s nach %s: %s".formatted(from.key, to.key, route));
-			});
-		});
+		MAP_SAARLAND.vertices().forEach(from -> MAP_SAARLAND.vertices().forEach(to -> System.out
+				.println("Von %s nach %s: %s".formatted(from.key, to.key, PLANNER.computeRoute(MAP_SAARLAND, from, to)))));
 	}
 }
