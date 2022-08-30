@@ -30,8 +30,9 @@ public class RoutePlannerApp {
 	private static final RoutePlanner PLANNER = new RoutePlanner();
 
 	public static void main(String[] args) {
-		MAP_SAARLAND.print(System.out, true);
-		MAP_SAARLAND.vertices().forEach(from -> MAP_SAARLAND.vertices().forEach(to -> System.out
-				.println("Von %s nach %s: %s".formatted(from.key, to.key, PLANNER.computeRoute(MAP_SAARLAND, from, to)))));
+		var ps = System.out;
+		MAP_SAARLAND.print(ps, true);
+		MAP_SAARLAND.vertices().forEach(from -> MAP_SAARLAND.vertices().forEach(to -> //
+		ps.println("Von %s nach %s: %s".formatted(from.key, to.key, PLANNER.computeRoute(MAP_SAARLAND, from, to)))));
 	}
 }
