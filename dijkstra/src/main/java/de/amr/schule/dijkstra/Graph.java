@@ -58,19 +58,32 @@ public class Graph {
 		return vertex.outgoingEdges.stream();
 	}
 
-	public void addVertex(String key) {
+	public Vertex addVertex(String key) {
 		var vertex = new Vertex(vertices.size(), key);
 		vertices.add(vertex);
 		vertexIndexByKey.put(key, vertex.index);
+		return vertex;
 	}
 
-	public void addUndirectedEdge(int either, int other, double distance) {
-		addDirectedEdge(either, other, distance);
-		addDirectedEdge(other, either, distance);
+	public void twoWay(Vertex either, Vertex other, double cost) {
+		oneWay(either, other, cost);
+		oneWay(other, either, cost);
 	}
 
-	public void addDirectedEdge(int source, int target, double distance) {
-		vertices.get(source).outgoingEdges.add(new Edge(source, target, distance));
+	public void oneWay(Vertex source, Vertex target, double cost) {
+		source.outgoingEdges.add(new Edge(source.index, target.index, cost));
+	}
+
+	public void twoWay(String eitherKey, String otherKey, double cost) {
+		var either = findVertex(eitherKey);
+		if (either.isEmpty()) {
+			throw new IllegalArgumentException("No vertex with key " + eitherKey);
+		}
+		var other = findVertex(otherKey);
+		if (other.isEmpty()) {
+			throw new IllegalArgumentException("No vertex with key " + otherKey);
+		}
+		twoWay(either.get(), other.get(), cost);
 	}
 
 	public void print(PrintStream out, boolean printEdges) {

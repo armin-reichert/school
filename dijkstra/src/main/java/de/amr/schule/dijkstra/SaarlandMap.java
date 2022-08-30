@@ -33,30 +33,31 @@ public class SaarlandMap extends Graph {
 	public SaarlandMap() {
 		super(20);
 
-		addVertex("Losheim");
-		addVertex("Merzig");
-		addVertex("Saarlouis");
-		addVertex("Saarbrücken");
-		addVertex("Wadern");
-		addVertex("St. Wendel");
-		addVertex("Neunkirchen");
-		addVertex("Eppelborn");
-		addVertex("Homburg");
-		addVertex("Schmelz");
-		addVertex("St. Ingbert");
+		var los = addVertex("Losheim");
+		var mzg = addVertex("Merzig");
+		var slz = addVertex("Schmelz");
+		var sls = addVertex("Saarlouis");
+		var sb = addVertex("Saarbrücken");
+		var wad = addVertex("Wadern");
+		var wnd = addVertex("St. Wendel");
+		var nk = addVertex("Neunkirchen");
+		var epp = addVertex("Eppelborn");
+		var hom = addVertex("Homburg");
+		var igb = addVertex("St. Ingbert");
 
-		addUndirectedEdge(0, 1, 12.5);
-		addUndirectedEdge(0, 4, 15.0);
-		addUndirectedEdge(0, 9, 11.0);
-		addUndirectedEdge(1, 2, 22.0);
-		addUndirectedEdge(2, 3, 25.0);
-		addUndirectedEdge(3, 7, 20.0);
-		addUndirectedEdge(3, 10, 15.0);
-		addUndirectedEdge(4, 5, 30.0);
-		addUndirectedEdge(5, 8, 30.0);
-		addUndirectedEdge(6, 7, 25.0);
-		addUndirectedEdge(6, 8, 20.0);
-		addUndirectedEdge(6, 10, 15.0);
-		addUndirectedEdge(7, 9, 15.0);
+		twoWay(los, mzg, 13.2);
+		twoWay(los, wad, 15.0);
+		twoWay(los, slz, 17.0);
+		twoWay(mzg, sls, 23.0);
+		twoWay(slz, epp, 13.0);
+		twoWay(sls, slz, 25.0);
+		twoWay(sls, sb, 25.0);
+		twoWay(epp, nk, 27.0);
+		twoWay(epp, sb, 31.0);
+		twoWay(sb, igb, 11.0);
+		twoWay(igb, hom, 22.0);
+		twoWay(wnd, nk, 19.0);
+		twoWay(wnd, hom, 29.0);
+		twoWay(nk, hom, 19.0);
 	}
 }
