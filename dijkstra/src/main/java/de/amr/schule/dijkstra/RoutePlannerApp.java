@@ -31,11 +31,11 @@ public class RoutePlannerApp {
 
 	public static void main(String[] args) {
 		MAP_SAARLAND.print(System.out, true);
+		route("Losheim", "Losheim");
 		route("Losheim", "Saarbrücken");
 		route("Losheim", "Saarlouis");
+		route("Losheim", "Homburg");
 		route("Saarlouis", "Wadern");
-		route("Losheim", "Losheim");
-		route("Schmelz", "Homburg");
 		route("Saarlouis", "Homburg");
 		route("Wadern", "Saarbrücken");
 	}

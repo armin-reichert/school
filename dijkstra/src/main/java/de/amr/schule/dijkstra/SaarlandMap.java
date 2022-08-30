@@ -34,11 +34,12 @@ public class SaarlandMap extends Graph {
 		super(20);
 
 		var los = addVertex("Losheim");
+		var wad = addVertex("Wadern");
 		var mzg = addVertex("Merzig");
 		var slz = addVertex("Schmelz");
+		var heu = addVertex("Heusweiler");
 		var sls = addVertex("Saarlouis");
 		var sb = addVertex("Saarbrücken");
-		var wad = addVertex("Wadern");
 		var wnd = addVertex("St. Wendel");
 		var nk = addVertex("Neunkirchen");
 		var epp = addVertex("Eppelborn");
@@ -49,11 +50,16 @@ public class SaarlandMap extends Graph {
 		twoWay(los, wad, 15.0);
 		twoWay(los, slz, 17.0);
 		twoWay(mzg, sls, 23.0);
+		twoWay(slz, wad, 18.0);
 		twoWay(slz, epp, 13.0);
+		twoWay(slz, heu, 17.5);
 		twoWay(sls, slz, 25.0);
 		twoWay(sls, sb, 25.0);
-		twoWay(epp, nk, 27.0);
+		twoWay(epp, nk, 21.5);
 		twoWay(epp, sb, 31.0);
+		twoWay(epp, heu, 10.0);
+		twoWay(heu, sb, 14.5);
+		twoWay(heu, nk, 24.0);
 		twoWay(sb, igb, 11.0);
 		twoWay(igb, hom, 22.0);
 		twoWay(wnd, nk, 19.0);
