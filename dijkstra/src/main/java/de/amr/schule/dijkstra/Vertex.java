@@ -25,22 +25,21 @@ SOFTWARE.
 package de.amr.schule.dijkstra;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * @author Armin Reichert
  */
 public class Vertex {
-
 	public final Set<Edge> outgoingEdges = new LinkedHashSet<>();
-
 	public final String key;
 	public Vertex parent;
 	public double cost;
 	public boolean visited;
 
 	public Vertex(String key) {
-		this.key = key;
+		this.key = Objects.requireNonNull(key);
 		this.parent = null;
 		this.cost = Double.MAX_VALUE;
 		this.visited = false;
@@ -49,7 +48,8 @@ public class Vertex {
 	@Override
 	public String toString() {
 		var parentText = parent != null ? parent.key : "none";
-		var costText = cost == Double.MAX_VALUE ? "unknown" : "%.1f".formatted(cost);
-		return "Vertex[key=%s, parent=%s, dist=%s, visited=%s]".formatted(key, parentText, costText, visited);
+		var costText = cost == Double.MAX_VALUE ? "indefinite" : "%.1f".formatted(cost);
+		var visitedText = visited ? "visited" : "unvisited";
+		return "Vertex[key=%s, parent=%s, cost=%s, %s]".formatted(key, parentText, costText, visitedText);
 	}
 }

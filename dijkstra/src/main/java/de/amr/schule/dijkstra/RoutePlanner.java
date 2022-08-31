@@ -70,7 +70,7 @@ public class RoutePlanner {
 			v.cost = Double.POSITIVE_INFINITY;
 			v.visited = false;
 		});
-		LOGGER.info(() -> "Compute all paths from %s".formatted(start));
+		LOGGER.info(() -> "Compute all paths starting at %s".formatted(start.key));
 		var q = new PriorityQueue<Vertex>((v1, v2) -> Double.compare(v1.cost, v2.cost));
 		start.cost = 0.0;
 		q.add(start);

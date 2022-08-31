@@ -26,13 +26,12 @@ package de.amr.schule.dijkstra;
 
 public class RoutePlannerApp {
 
-	private static final Graph MAP_SAARLAND = new SaarlandMap();
-	private static final RoutePlanner PLANNER = new RoutePlanner();
-
 	public static void main(String[] args) {
-		var ps = System.out;
-		MAP_SAARLAND.print(ps, true);
-		MAP_SAARLAND.vertices().forEach(from -> MAP_SAARLAND.vertices().forEach(to -> //
-		ps.println("Von %s nach %s: %s".formatted(from.key, to.key, PLANNER.computeRoute(MAP_SAARLAND, from, to)))));
+		var map = new SaarlandMap();
+		var routePlanner = new RoutePlanner();
+		var out = System.out;
+		map.print(out, true);
+		map.vertices().forEach(start -> map.vertices().forEach(goal -> //
+		out.println("%s nach %s: %s".formatted(start.key, goal.key, routePlanner.computeRoute(map, start, goal)))));
 	}
 }

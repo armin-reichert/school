@@ -53,11 +53,13 @@ public class SaarlandMap extends Graph {
 		twoWay(slz, heu, 17.5);
 		twoWay(sls, slz, 25.0);
 		twoWay(sls, sb, 25.0);
+		twoWay(epp, sls, 24.0);
 		twoWay(epp, nk, 21.5);
 		twoWay(epp, sb, 31.0);
 		twoWay(epp, heu, 10.0);
 		twoWay(heu, sb, 14.5);
 		twoWay(heu, nk, 24.0);
+		twoWay(heu, hom, 37.5);
 		twoWay(sb, igb, 11.0);
 		twoWay(igb, hom, 22.0);
 		twoWay(wnd, nk, 19.0);
