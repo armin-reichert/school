@@ -24,14 +24,23 @@ SOFTWARE.
 
 package de.amr.schule.dijkstra;
 
+import java.io.PrintStream;
+
+import de.amr.schule.dijkstra.graph.Graph;
+
 public class RoutePlannerApp {
 
 	public static void main(String[] args) {
 		var map = new SaarlandMap();
+		map.print(System.out, true);
+		printAllPaths(map, System.out);
+	}
+
+	private static void printAllPaths(Graph map, PrintStream out) {
 		var routePlanner = new RoutePlanner();
-		var out = System.out;
-		map.print(out, true);
-		map.vertices().forEach(start -> map.vertices().forEach(goal -> //
-		out.println("%s nach %s: %s".formatted(start.key, goal.key, routePlanner.computeRoute(map, start, goal)))));
+		map.vertices().forEach(//
+				start -> map.vertices().forEach(//
+						goal -> out.println(
+								"%s nach %s: %s".formatted(start.key, goal.key, routePlanner.computeRoute(map, start, goal)))));
 	}
 }
