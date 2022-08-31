@@ -35,18 +35,18 @@ public class SaarlandMap extends Graph {
 
 	public SaarlandMap() {
 
-		var los = vertex(new City("Losheim am See"));
-		var wad = vertex(new City("Wadern"));
-		var mzg = vertex(new City("Merzig"));
-		var slz = vertex(new City("Schmelz"));
-		var heu = vertex(new City("Heusweiler"));
-		var sls = vertex(new City("Saarlouis"));
-		var sb = vertex(new City("Saarbrücken"));
-		var wnd = vertex(new City("St. Wendel"));
-		var nk = vertex(new City("Neunkirchen"));
-		var epp = vertex(new City("Eppelborn"));
-		var hom = vertex(new City("Homburg"));
-		var igb = vertex(new City("St. Ingbert"));
+		var los = new City("Losheim am See");
+		var wad = new City("Wadern");
+		var mzg = new City("Merzig");
+		var slz = new City("Schmelz");
+		var heu = new City("Heusweiler");
+		var sls = new City("Saarlouis");
+		var sb = new City("Saarbrücken");
+		var wnd = new City("St. Wendel");
+		var nk = new City("Neunkirchen");
+		var epp = new City("Eppelborn");
+		var hom = new City("Homburg");
+		var igb = new City("St. Ingbert");
 
 		twoWay(los, mzg, 13.2);
 		twoWay(los, wad, 15.0);

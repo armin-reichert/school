@@ -57,6 +57,10 @@ public class Graph {
 		return vertex;
 	}
 
+	public void twoWay(City eitherCity, City otherCity, double cost) {
+		twoWay(vertex(eitherCity), vertex(otherCity), cost);
+	}
+
 	public void twoWay(Vertex either, Vertex other, double cost) {
 		oneWay(either, other, cost);
 		oneWay(other, either, cost);
@@ -64,18 +68,6 @@ public class Graph {
 
 	public void oneWay(Vertex source, Vertex target, double cost) {
 		source.outgoingEdges.add(new Edge(source, target, cost));
-	}
-
-	public void twoWay(String eitherKey, String otherKey, double cost) {
-		var either = findVertex(eitherKey);
-		if (either.isEmpty()) {
-			throw new IllegalArgumentException("No vertex with key " + eitherKey);
-		}
-		var other = findVertex(otherKey);
-		if (other.isEmpty()) {
-			throw new IllegalArgumentException("No vertex with key " + otherKey);
-		}
-		twoWay(either.get(), other.get(), cost);
 	}
 
 	public void print(PrintStream out, boolean printEdges) {
