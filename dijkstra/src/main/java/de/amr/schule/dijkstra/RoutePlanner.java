@@ -55,6 +55,9 @@ public class RoutePlanner {
 	}
 
 	public List<String> computeRoute(Graph map, Vertex startVertex, Vertex goalVertex) {
+		if (startVertex == null || goalVertex == null) {
+			return List.of();
+		}
 		if (startVertex != currentStartVertex) {
 			currentStartVertex = startVertex;
 			dijkstra(map, startVertex);
