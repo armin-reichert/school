@@ -24,5 +24,5 @@ SOFTWARE.
 
 package de.amr.schule.dijkstra;
 
-public record Edge(int from, int to, double cost) {
+public record Edge(Vertex from, Vertex to, double cost) {
 }

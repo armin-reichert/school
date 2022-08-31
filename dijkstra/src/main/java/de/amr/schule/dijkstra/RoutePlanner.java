@@ -80,14 +80,13 @@ public class RoutePlanner {
 				u.visited = true;
 				LOGGER.trace(() -> "%s visited".formatted(u));
 				for (var edge : u.outgoingEdges) {
-					g.vertex(edge.to()).ifPresent(v -> {
-						var alternativeCost = u.cost + edge.cost();
-						if (alternativeCost < v.cost) {
-							v.cost = alternativeCost;
-							v.parent = u;
-							q.add(v);
-						}
-					});
+					var v = edge.to();
+					var alternativeCost = u.cost + edge.cost();
+					if (alternativeCost < v.cost) {
+						v.cost = alternativeCost;
+						v.parent = u;
+						q.add(v);
+					}
 				}
 			}
 		}

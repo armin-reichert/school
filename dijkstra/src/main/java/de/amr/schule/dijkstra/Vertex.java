@@ -25,7 +25,6 @@ SOFTWARE.
 package de.amr.schule.dijkstra;
 
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -35,14 +34,12 @@ public class Vertex {
 
 	public final Set<Edge> outgoingEdges = new LinkedHashSet<>();
 
-	public final int index;
 	public final String key;
 	public Vertex parent;
 	public double cost;
 	public boolean visited;
 
-	public Vertex(int index, String key) {
-		this.index = index;
+	public Vertex(String key) {
 		this.key = key;
 		this.parent = null;
 		this.cost = Double.MAX_VALUE;
@@ -53,24 +50,6 @@ public class Vertex {
 	public String toString() {
 		var parentText = parent != null ? parent.key : "none";
 		var costText = cost == Double.MAX_VALUE ? "unknown" : "%.1f".formatted(cost);
-		return "Vertex[index=%2d, key=%s, parent=%s, dist=%s, visited=%s]".formatted(index, key, parentText, costText,
-				visited);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(index);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Vertex other = (Vertex) obj;
-		return index == other.index;
+		return "Vertex[key=%s, parent=%s, dist=%s, visited=%s]".formatted(key, parentText, costText, visited);
 	}
 }

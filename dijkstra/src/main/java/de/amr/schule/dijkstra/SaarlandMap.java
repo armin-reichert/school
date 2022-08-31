@@ -31,8 +31,6 @@ package de.amr.schule.dijkstra;
 public class SaarlandMap extends Graph {
 
 	public SaarlandMap() {
-		super(20);
-
 		var los = addVertex("Losheim");
 		var wad = addVertex("Wadern");
 		var mzg = addVertex("Merzig");

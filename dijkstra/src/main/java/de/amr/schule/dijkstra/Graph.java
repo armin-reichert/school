@@ -34,20 +34,11 @@ import java.util.stream.Stream;
 
 public class Graph {
 
-	private final List<Vertex> vertices;
-	private final Map<String, Integer> vertexIndexByKey = new HashMap<>();
-
-	public Graph(int initialCapacity) {
-		vertices = new ArrayList<>(initialCapacity);
-	}
-
-	public Optional<Vertex> vertex(int index) {
-		return Optional.ofNullable(vertices.get(index));
-	}
+	private final List<Vertex> vertices = new ArrayList<>();
+	private final Map<String, Vertex> vertexByKey = new HashMap<>();
 
 	public Optional<Vertex> findVertex(String key) {
-		var index = vertexIndexByKey.get(key);
-		return index == null ? Optional.empty() : vertex(index);
+		return Optional.ofNullable(vertexByKey.get(key));
 	}
 
 	public Stream<Vertex> vertices() {
@@ -59,9 +50,8 @@ public class Graph {
 	}
 
 	public Vertex addVertex(String key) {
-		var vertex = new Vertex(vertices.size(), key);
+		var vertex = new Vertex(key);
 		vertices.add(vertex);
-		vertexIndexByKey.put(key, vertex.index);
 		return vertex;
 	}
 
@@ -71,7 +61,7 @@ public class Graph {
 	}
 
 	public void oneWay(Vertex source, Vertex target, double cost) {
-		source.outgoingEdges.add(new Edge(source.index, target.index, cost));
+		source.outgoingEdges.add(new Edge(source, target, cost));
 	}
 
 	public void twoWay(String eitherKey, String otherKey, double cost) {
@@ -91,9 +81,7 @@ public class Graph {
 		if (printEdges) {
 			vertices().forEach(v -> {
 				v.outgoingEdges.forEach(edge -> {
-					var from = vertices.get(edge.from());
-					var to = vertices.get(edge.to());
-					out.println("Edge[%s -> %s %.1f km]".formatted(from.key, to.key, edge.cost()));
+					out.println("Edge[%s -> %s %.1f km]".formatted(edge.from().key, edge.to().key, edge.cost()));
 				});
 			});
 		}
