@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package de.amr.schule.dijkstra;
+package de.amr.schule.dijkstra.graph;
 
 import java.util.LinkedHashSet;
 import java.util.Objects;

@@ -31,6 +31,9 @@ import java.util.PriorityQueue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.amr.schule.dijkstra.graph.Graph;
+import de.amr.schule.dijkstra.graph.Vertex;
+
 /**
  * @author Armin Reichert
  * 

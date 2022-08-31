@@ -24,6 +24,8 @@ SOFTWARE.
 
 package de.amr.schule.dijkstra;
 
+import de.amr.schule.dijkstra.graph.Graph;
+
 /**
  * @author Armin Reichert
  *
