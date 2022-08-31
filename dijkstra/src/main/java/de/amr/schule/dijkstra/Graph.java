@@ -25,16 +25,13 @@ SOFTWARE.
 package de.amr.schule.dijkstra;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Graph {
 
-	private final List<Vertex> vertices = new ArrayList<>();
 	private final Map<String, Vertex> vertexByKey = new HashMap<>();
 
 	public Optional<Vertex> findVertex(String key) {
@@ -42,16 +39,19 @@ public class Graph {
 	}
 
 	public Stream<Vertex> vertices() {
-		return vertices.stream();
+		return vertexByKey.values().stream().sorted((v1, v2) -> v1.key.compareTo(v2.key));
 	}
 
 	public Stream<Edge> outgoingEdges(Vertex vertex) {
 		return vertex.outgoingEdges.stream();
 	}
 
-	public Vertex addVertex(String key) {
+	public Vertex vertex(String key) {
+		if (vertexByKey.containsKey(key)) {
+			return vertexByKey.get(key);
+		}
 		var vertex = new Vertex(key);
-		vertices.add(vertex);
+		vertexByKey.put(key, vertex);
 		return vertex;
 	}
 

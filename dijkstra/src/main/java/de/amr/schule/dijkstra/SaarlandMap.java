@@ -31,18 +31,18 @@ package de.amr.schule.dijkstra;
 public class SaarlandMap extends Graph {
 
 	public SaarlandMap() {
-		var los = addVertex("Losheim");
-		var wad = addVertex("Wadern");
-		var mzg = addVertex("Merzig");
-		var slz = addVertex("Schmelz");
-		var heu = addVertex("Heusweiler");
-		var sls = addVertex("Saarlouis");
-		var sb = addVertex("Saarbrücken");
-		var wnd = addVertex("St. Wendel");
-		var nk = addVertex("Neunkirchen");
-		var epp = addVertex("Eppelborn");
-		var hom = addVertex("Homburg");
-		var igb = addVertex("St. Ingbert");
+		var los = vertex("Losheim am See");
+		var wad = vertex("Wadern");
+		var mzg = vertex("Merzig");
+		var slz = vertex("Schmelz");
+		var heu = vertex("Heusweiler");
+		var sls = vertex("Saarlouis");
+		var sb = vertex("Saarbrücken");
+		var wnd = vertex("St. Wendel");
+		var nk = vertex("Neunkirchen");
+		var epp = vertex("Eppelborn");
+		var hom = vertex("Homburg");
+		var igb = vertex("St. Ingbert");
 
 		twoWay(los, mzg, 13.2);
 		twoWay(los, wad, 15.0);
