@@ -1,3 +1,3 @@
 # school
 
-For the kids.
+Things I did with the kids.
