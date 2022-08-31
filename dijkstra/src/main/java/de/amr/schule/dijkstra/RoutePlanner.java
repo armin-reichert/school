@@ -81,9 +81,9 @@ public class RoutePlanner {
 				LOGGER.trace(() -> "%s visited".formatted(u));
 				for (var edge : u.outgoingEdges) {
 					var v = edge.to();
-					var alternativeCost = u.cost + edge.cost();
-					if (alternativeCost < v.cost) {
-						v.cost = alternativeCost;
+					var altCost = u.cost + edge.cost();
+					if (altCost < v.cost) {
+						v.cost = altCost;
 						v.parent = u;
 						q.add(v);
 					}
