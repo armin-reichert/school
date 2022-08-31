@@ -22,25 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package de.amr.schule.dijkstra;
+package de.amr.schule.dijkstra.model;
 
-import java.io.PrintStream;
+/**
+ * In der vierten (dezimalen) Schreibweise liegt der Wertebereich der Breitengrade zwischen −90° und +90°, der
+ * Wertebereich der Längengrade zwischen −180° und +180°. Die Himmelsrichtungen N-S und E-W werden hier weggelassen.
+ * Nördliche Breiten werden positiv und südliche Breiten negativ angegeben. Östliche Längen sind positiv und westliche
+ * Längen sind negativ. Um die Breiten und Längen nicht zu verwechseln, müssen sie mit „Breite (Latitude, Lat)“ und
+ * „Länge (Longitude, Long)“ bezeichnet werden.
+ * 
+ * @author Armin Reichert
+ */
+public record City(String name, GeoCoordinate coord) {
 
-import de.amr.schule.dijkstra.graph.Graph;
-
-public class RoutePlannerApp {
-
-	public static void main(String[] args) {
-		var map = new SaarlandMap();
-		map.print(System.out, true);
-		printAllPaths(map, System.out);
+	public City(String name, float latitude, float longitude) {
+		this(name, new GeoCoordinate(latitude, longitude));
 	}
 
-	private static void printAllPaths(Graph map, PrintStream out) {
-		var routePlanner = new RoutePlanner();
-		map.vertices().forEach(//
-				start -> map.vertices().forEach(//
-						goal -> out.println("%s nach %s: %s".formatted(start.city.name(), goal.city.name(),
-								routePlanner.computeRoute(map, start, goal)))));
+	public City(String name) {
+		this(name, new GeoCoordinate(0, 0));
 	}
 }

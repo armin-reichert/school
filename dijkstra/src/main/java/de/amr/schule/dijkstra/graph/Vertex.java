@@ -28,18 +28,20 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import de.amr.schule.dijkstra.model.City;
+
 /**
  * @author Armin Reichert
  */
 public class Vertex {
 	public final Set<Edge> outgoingEdges = new LinkedHashSet<>();
-	public final String key;
+	public final City city;
 	public Vertex parent;
 	public double cost;
 	public boolean visited;
 
-	public Vertex(String key) {
-		this.key = Objects.requireNonNull(key);
+	public Vertex(City city) {
+		this.city = Objects.requireNonNull(city);
 		this.parent = null;
 		this.cost = Double.MAX_VALUE;
 		this.visited = false;
@@ -47,9 +49,9 @@ public class Vertex {
 
 	@Override
 	public String toString() {
-		var parentText = parent != null ? parent.key : "none";
+		var parentText = parent != null ? parent.city.name() : "none";
 		var costText = cost == Double.MAX_VALUE ? "indefinite" : "%.1f".formatted(cost);
 		var visitedText = visited ? "visited" : "unvisited";
-		return "Vertex[key=%s, parent=%s, cost=%s, %s]".formatted(key, parentText, costText, visitedText);
+		return "Vertex[city=%s, parent=%s, cost=%s, %s]".formatted(city, parentText, costText, visitedText);
 	}
 }

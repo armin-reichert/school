@@ -22,25 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package de.amr.schule.dijkstra;
+package de.amr.schule.dijkstra.model;
 
-import java.io.PrintStream;
-
-import de.amr.schule.dijkstra.graph.Graph;
-
-public class RoutePlannerApp {
-
-	public static void main(String[] args) {
-		var map = new SaarlandMap();
-		map.print(System.out, true);
-		printAllPaths(map, System.out);
-	}
-
-	private static void printAllPaths(Graph map, PrintStream out) {
-		var routePlanner = new RoutePlanner();
-		map.vertices().forEach(//
-				start -> map.vertices().forEach(//
-						goal -> out.println("%s nach %s: %s".formatted(start.city.name(), goal.city.name(),
-								routePlanner.computeRoute(map, start, goal)))));
-	}
+/**
+ * @author Armin Reichert
+ *
+ */
+public record GeoCoordinate(float latitude, float longitude) {
 }

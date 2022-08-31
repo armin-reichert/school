@@ -71,7 +71,7 @@ public class RoutePlanner {
 			v.cost = Double.POSITIVE_INFINITY;
 			v.visited = false;
 		});
-		LOGGER.info(() -> "Compute all paths starting at %s".formatted(start.key));
+		LOGGER.info(() -> "Compute all paths starting at %s".formatted(start.city.name()));
 		var q = new PriorityQueue<Vertex>((v1, v2) -> Double.compare(v1.cost, v2.cost));
 		start.cost = 0.0;
 		q.add(start);
@@ -96,7 +96,7 @@ public class RoutePlanner {
 	private List<String> buildRoute(Vertex goal) {
 		var route = new LinkedList<String>();
 		for (Vertex v = goal; v != null; v = v.parent) {
-			route.addFirst(v.key + " " + v.cost + " km");
+			route.addFirst(v.city.name() + " " + v.cost + " km");
 		}
 		return route;
 	}

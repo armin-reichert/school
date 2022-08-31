@@ -25,6 +25,7 @@ SOFTWARE.
 package de.amr.schule.dijkstra;
 
 import de.amr.schule.dijkstra.graph.Graph;
+import de.amr.schule.dijkstra.model.City;
 
 /**
  * @author Armin Reichert
@@ -33,18 +34,19 @@ import de.amr.schule.dijkstra.graph.Graph;
 public class SaarlandMap extends Graph {
 
 	public SaarlandMap() {
-		var los = vertex("Losheim am See");
-		var wad = vertex("Wadern");
-		var mzg = vertex("Merzig");
-		var slz = vertex("Schmelz");
-		var heu = vertex("Heusweiler");
-		var sls = vertex("Saarlouis");
-		var sb = vertex("Saarbrücken");
-		var wnd = vertex("St. Wendel");
-		var nk = vertex("Neunkirchen");
-		var epp = vertex("Eppelborn");
-		var hom = vertex("Homburg");
-		var igb = vertex("St. Ingbert");
+
+		var los = vertex(new City("Losheim am See"));
+		var wad = vertex(new City("Wadern"));
+		var mzg = vertex(new City("Merzig"));
+		var slz = vertex(new City("Schmelz"));
+		var heu = vertex(new City("Heusweiler"));
+		var sls = vertex(new City("Saarlouis"));
+		var sb = vertex(new City("Saarbrücken"));
+		var wnd = vertex(new City("St. Wendel"));
+		var nk = vertex(new City("Neunkirchen"));
+		var epp = vertex(new City("Eppelborn"));
+		var hom = vertex(new City("Homburg"));
+		var igb = vertex(new City("St. Ingbert"));
 
 		twoWay(los, mzg, 13.2);
 		twoWay(los, wad, 15.0);

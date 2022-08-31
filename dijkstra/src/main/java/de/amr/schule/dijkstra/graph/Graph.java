@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import de.amr.schule.dijkstra.model.City;
+
 public class Graph {
 
 	private final Map<String, Vertex> vertexByKey = new HashMap<>();
@@ -39,19 +41,19 @@ public class Graph {
 	}
 
 	public Stream<Vertex> vertices() {
-		return vertexByKey.values().stream().sorted((v1, v2) -> v1.key.compareTo(v2.key));
+		return vertexByKey.values().stream().sorted((v1, v2) -> v1.city.name().compareTo(v2.city.name()));
 	}
 
 	public Stream<Edge> outgoingEdges(Vertex vertex) {
 		return vertex.outgoingEdges.stream();
 	}
 
-	public Vertex vertex(String key) {
-		if (vertexByKey.containsKey(key)) {
-			return vertexByKey.get(key);
+	public Vertex vertex(City city) {
+		if (vertexByKey.containsKey(city.name())) {
+			return vertexByKey.get(city.name());
 		}
-		var vertex = new Vertex(key);
-		vertexByKey.put(key, vertex);
+		var vertex = new Vertex(city);
+		vertexByKey.put(city.name(), vertex);
 		return vertex;
 	}
 
@@ -81,7 +83,7 @@ public class Graph {
 		if (printEdges) {
 			vertices().forEach(v -> {
 				v.outgoingEdges.forEach(edge -> {
-					out.println("Edge[%s -> %s %.1f km]".formatted(edge.from().key, edge.to().key, edge.cost()));
+					out.println("Edge[%s -> %s %.1f km]".formatted(edge.from().city.name(), edge.to().city.name(), edge.cost()));
 				});
 			});
 		}
