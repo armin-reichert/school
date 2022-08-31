@@ -43,28 +43,23 @@ public class RoutePlanner {
 
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
-	private Vertex startVertex;
+	private Vertex currentStartVertex;
 
 	public List<String> computeRoute(Graph map, String startCity, String goalCity) {
-		var start = map.findVertex(startCity);
-		var goal = map.findVertex(goalCity);
-		if (start.isPresent() && goal.isPresent()) {
-			setStartVertex(map, start.get());
-			return buildRoute(goal.get());
+		var startVertex = map.findVertex(startCity);
+		var goalVertex = map.findVertex(goalCity);
+		if (startVertex.isEmpty() || goalVertex.isEmpty()) {
+			return List.of();
 		}
-		return List.of();
+		return computeRoute(map, startVertex.get(), goalVertex.get());
 	}
 
-	public List<String> computeRoute(Graph map, Vertex start, Vertex goal) {
-		setStartVertex(map, start);
-		return buildRoute(goal);
-	}
-
-	private void setStartVertex(Graph map, Vertex startVertex) {
-		if (startVertex != this.startVertex) {
-			this.startVertex = startVertex;
+	public List<String> computeRoute(Graph map, Vertex startVertex, Vertex goalVertex) {
+		if (startVertex != currentStartVertex) {
+			currentStartVertex = startVertex;
 			dijkstra(map, startVertex);
 		}
+		return buildRoute(goalVertex);
 	}
 
 	private void dijkstra(Graph g, Vertex start) {
