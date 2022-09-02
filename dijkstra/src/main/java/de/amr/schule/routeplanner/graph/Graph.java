@@ -34,9 +34,9 @@ import java.util.stream.Stream;
  */
 public class Graph {
 
-	protected final Map<String, Vertex> vertexByKey = new HashMap<>();
+	protected final Map<Object, Vertex> vertexByKey = new HashMap<>();
 
-	public Optional<Vertex> findVertex(String key) {
+	public Optional<Vertex> findVertex(Object key) {
 		return Optional.ofNullable(vertexByKey.get(key));
 	}
 
@@ -48,13 +48,12 @@ public class Graph {
 		return vertex.outgoingEdges.stream();
 	}
 
-	public void twoWay(Vertex either, Vertex other, float cost) {
-		oneWay(either, other, cost);
-		oneWay(other, either, cost);
+	public void addEdge(Vertex either, Vertex other, float cost) {
+		addDirectedEdge(either, other, cost);
+		addDirectedEdge(other, either, cost);
 	}
 
-	public void oneWay(Vertex source, Vertex target, float cost) {
+	public void addDirectedEdge(Vertex source, Vertex target, float cost) {
 		source.outgoingEdges.add(new Edge(source, target, cost));
 	}
-
 }

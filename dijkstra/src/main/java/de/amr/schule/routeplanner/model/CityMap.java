@@ -46,7 +46,7 @@ public class CityMap extends Graph {
 	}
 
 	public void street(City eitherCity, City otherCity, float cost) {
-		twoWay(vertex(eitherCity), vertex(otherCity), cost);
+		addEdge(vertex(eitherCity), vertex(otherCity), cost);
 	}
 
 	public Stream<CityMapVertex> vertices(Comparator<CityMapVertex> order) {
