@@ -33,7 +33,7 @@ public class RoutePlannerApp {
 
 	public static void main(String[] args) {
 		var map = new SaarlandMap();
-		map.print(System.out, true, RoutePlannerApp::sortedByCityName);
+		map.print(System.out, RoutePlannerApp::sortedByCityName);
 		printAllPaths(map, System.out);
 	}
 
@@ -45,8 +45,8 @@ public class RoutePlannerApp {
 		var routePlanner = new RoutePlanner();
 		map.vertices(RoutePlannerApp::sortedByCityName)
 				.forEach(start -> map.vertices(RoutePlannerApp::sortedByCityName).forEach(goal -> {
-					var startVertex = (CityMapVertex) start;
-					var goalVertex = (CityMapVertex) goal;
+					var startVertex = start;
+					var goalVertex = goal;
 					out.println("%s nach %s: %s".formatted(startVertex.city.name(), goalVertex.city.name(),
 							routePlanner.computeRoute(map, startVertex, goalVertex)));
 				}));

@@ -53,14 +53,10 @@ public class CityMap extends Graph {
 		return vertexByKey.values().stream().map(CityMapVertex.class::cast).sorted(order);
 	}
 
-	public void print(PrintStream out, boolean printEdges, Comparator<CityMapVertex> vertexOrder) {
-		vertices(vertexOrder).forEach(out::println);
-		if (printEdges) {
-			vertices(vertexOrder).forEach(v -> {
-				v.outgoingEdges.forEach(edge -> {
-					out.println("Edge[%s -> %s %.1f km]".formatted(edge.from().key(), edge.to().key(), edge.cost()));
-				});
-			});
-		}
+	public void print(PrintStream out, Comparator<CityMapVertex> order) {
+		vertices(order).forEach(out::println);
+		vertices(order).flatMap(Vertex::outgoingEdges)
+				.map(edge -> "Edge[%s -> %s %.1f km]".formatted(edge.from().key(), edge.to().key(), edge.cost()))
+				.forEach(out::println);
 	}
 }

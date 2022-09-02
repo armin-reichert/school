@@ -26,6 +26,7 @@ package de.amr.schule.routeplanner.graph;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * @author Armin Reichert
@@ -40,6 +41,10 @@ public class Vertex {
 		this.parent = null;
 		this.cost = Float.MAX_VALUE;
 		this.visited = false;
+	}
+
+	public Stream<Edge> outgoingEdges() {
+		return outgoingEdges.stream();
 	}
 
 	public String key() {
