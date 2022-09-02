@@ -34,18 +34,18 @@ import de.amr.schule.routeplanner.graph.Vertex;
 /**
  * @author Armin Reichert
  */
-public class CityMap extends Graph {
+public class RoadMap extends Graph {
 
-	public static int orderByCityName(CityMapVertex v1, CityMapVertex v2) {
+	public static int orderByCityName(RoadMapPoint v1, RoadMapPoint v2) {
 		return v1.city.name().compareTo(v2.city.name());
 	}
 
-	public CityMapVertex vertex(City city) {
+	public RoadMapPoint vertex(City city) {
 		var v = vertex(city.name());
 		if (v.isPresent()) {
-			return (CityMapVertex) v.get();
+			return (RoadMapPoint) v.get();
 		}
-		var vertex = new CityMapVertex(city);
+		var vertex = new RoadMapPoint(city);
 		addVertex(city.name(), vertex);
 		return vertex;
 	}
@@ -54,11 +54,11 @@ public class CityMap extends Graph {
 		addEdge(vertex(eitherCity), vertex(otherCity), cost);
 	}
 
-	public Stream<CityMapVertex> vertices(Comparator<CityMapVertex> order) {
-		return vertices().map(CityMapVertex.class::cast).sorted(order);
+	public Stream<RoadMapPoint> vertices(Comparator<RoadMapPoint> order) {
+		return vertices().map(RoadMapPoint.class::cast).sorted(order);
 	}
 
-	public void print(PrintStream out, Comparator<CityMapVertex> order) {
+	public void print(PrintStream out, Comparator<RoadMapPoint> order) {
 		vertices(order).forEach(out::println);
 		vertices(order).flatMap(Vertex::outgoingEdges)
 				.map(edge -> "Edge[%s -> %s %.1f km]".formatted(edge.from().key(), edge.to().key(), edge.cost()))

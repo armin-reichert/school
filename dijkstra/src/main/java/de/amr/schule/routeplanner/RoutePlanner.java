@@ -32,8 +32,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.amr.schule.routeplanner.graph.Vertex;
-import de.amr.schule.routeplanner.model.CityMap;
-import de.amr.schule.routeplanner.model.CityMapVertex;
+import de.amr.schule.routeplanner.model.RoadMap;
+import de.amr.schule.routeplanner.model.RoadMapPoint;
 
 /**
  * @author Armin Reichert
@@ -46,24 +46,24 @@ public class RoutePlanner {
 
 	private Vertex currentStartVertex;
 
-	public List<String> computeRoute(CityMap map, String startCity, String goalCity) {
-		var startVertex = map.vertex(startCity).orElse(null);
-		var goalVertex = map.vertex(goalCity).orElse(null);
-		return computeRoute(map, (CityMapVertex) startVertex, (CityMapVertex) goalVertex);
+	public List<String> computeRoute(RoadMap map, String startCity, String goalCity) {
+		var start = map.vertex(startCity).orElse(null);
+		var goal = map.vertex(goalCity).orElse(null);
+		return computeRoute(map, (RoadMapPoint) start, (RoadMapPoint) goal);
 	}
 
-	public List<String> computeRoute(CityMap map, CityMapVertex startVertex, CityMapVertex goalVertex) {
-		if (startVertex == null || goalVertex == null) {
+	public List<String> computeRoute(RoadMap map, RoadMapPoint start, RoadMapPoint goal) {
+		if (start == null || goal == null) {
 			return List.of();
 		}
-		if (startVertex != currentStartVertex) {
-			currentStartVertex = startVertex;
-			dijkstra(map, startVertex);
+		if (start != currentStartVertex) {
+			currentStartVertex = start;
+			dijkstra(map, start);
 		}
-		return buildRoute(goalVertex);
+		return buildRoute(goal);
 	}
 
-	private void dijkstra(CityMap g, CityMapVertex start) {
+	private void dijkstra(RoadMap g, RoadMapPoint start) {
 		g.vertices().forEach(v -> {
 			v.parent = null;
 			v.cost = Float.POSITIVE_INFINITY;
@@ -91,9 +91,9 @@ public class RoutePlanner {
 		}
 	}
 
-	private List<String> buildRoute(CityMapVertex goal) {
+	private List<String> buildRoute(RoadMapPoint goal) {
 		var route = new LinkedList<String>();
-		for (CityMapVertex v = goal; v != null; v = (CityMapVertex) v.parent) {
+		for (RoadMapPoint v = goal; v != null; v = (RoadMapPoint) v.parent) {
 			route.addFirst(v.city.name() + " " + v.cost + " km");
 		}
 		return route;

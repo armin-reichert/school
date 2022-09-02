@@ -25,13 +25,13 @@ SOFTWARE.
 package de.amr.schule.routeplanner;
 
 import de.amr.schule.routeplanner.model.City;
-import de.amr.schule.routeplanner.model.CityMap;
+import de.amr.schule.routeplanner.model.RoadMap;
 
 /**
  * @author Armin Reichert
  *
  */
-public class SaarlandMap extends CityMap {
+public class SaarlandMap extends RoadMap {
 
 	public SaarlandMap() {
 		var los = new City("Losheim am See");

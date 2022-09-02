@@ -28,13 +28,12 @@ import de.amr.schule.routeplanner.graph.Vertex;
 
 /**
  * @author Armin Reichert
- *
  */
-public class CityMapVertex extends Vertex {
+public class RoadMapPoint extends Vertex {
 
 	public final City city;
 
-	public CityMapVertex(City city) {
+	public RoadMapPoint(City city) {
 		this.city = city;
 	}
 
@@ -50,5 +49,4 @@ public class CityMapVertex extends Vertex {
 		var visitedText = visited ? "visited" : "unvisited";
 		return "Vertex[city=%s, parent=%s, cost=%s, %s]".formatted(city, parentText, costText, visitedText);
 	}
-
 }

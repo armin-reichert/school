@@ -26,7 +26,7 @@ package de.amr.schule.routeplanner;
 
 import java.io.PrintStream;
 
-import de.amr.schule.routeplanner.model.CityMap;
+import de.amr.schule.routeplanner.model.RoadMap;
 
 /**
  * @author Armin Reichert
@@ -35,13 +35,13 @@ public class RoutePlannerApp {
 
 	public static void main(String[] args) {
 		var map = new SaarlandMap();
-		map.print(System.out, CityMap::orderByCityName);
+		map.print(System.out, RoadMap::orderByCityName);
 		printAllPaths(map, System.out);
 	}
 
-	private static void printAllPaths(CityMap map, PrintStream out) {
+	private static void printAllPaths(RoadMap map, PrintStream out) {
 		var routePlanner = new RoutePlanner();
-		map.vertices(CityMap::orderByCityName).forEach(start -> map.vertices(CityMap::orderByCityName)//
+		map.vertices(RoadMap::orderByCityName).forEach(start -> map.vertices(RoadMap::orderByCityName)//
 				.forEach(goal -> {
 					var route = routePlanner.computeRoute(map, start, goal);
 					out.println("%s nach %s: %s".formatted(start.city.name(), goal.city.name(), route));
