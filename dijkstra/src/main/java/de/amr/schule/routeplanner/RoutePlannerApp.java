@@ -45,10 +45,8 @@ public class RoutePlannerApp {
 		var routePlanner = new RoutePlanner();
 		map.vertices(RoutePlannerApp::sortedByCityName)
 				.forEach(start -> map.vertices(RoutePlannerApp::sortedByCityName).forEach(goal -> {
-					var startVertex = start;
-					var goalVertex = goal;
-					out.println("%s nach %s: %s".formatted(startVertex.city.name(), goalVertex.city.name(),
-							routePlanner.computeRoute(map, startVertex, goalVertex)));
+					out.println("%s nach %s: %s".formatted(start.city.name(), goal.city.name(),
+							routePlanner.computeRoute(map, start, goal)));
 				}));
 	}
 }
