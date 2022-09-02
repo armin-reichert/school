@@ -40,12 +40,13 @@ public class CityMap extends Graph {
 		return v1.city.name().compareTo(v2.city.name());
 	}
 
-	public Vertex vertex(City city) {
-		if (vertexByKey.containsKey(city.name())) {
-			return vertexByKey.get(city.name());
+	public CityMapVertex vertex(City city) {
+		var v = vertex(city.name());
+		if (v.isPresent()) {
+			return (CityMapVertex) v.get();
 		}
 		var vertex = new CityMapVertex(city);
-		vertexByKey.put(city.name(), vertex);
+		addVertex(city.name(), vertex);
 		return vertex;
 	}
 
@@ -54,7 +55,7 @@ public class CityMap extends Graph {
 	}
 
 	public Stream<CityMapVertex> vertices(Comparator<CityMapVertex> order) {
-		return vertexByKey.values().stream().map(CityMapVertex.class::cast).sorted(order);
+		return vertices().map(CityMapVertex.class::cast).sorted(order);
 	}
 
 	public void print(PrintStream out, Comparator<CityMapVertex> order) {

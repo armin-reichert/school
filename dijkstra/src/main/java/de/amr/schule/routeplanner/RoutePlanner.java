@@ -47,8 +47,8 @@ public class RoutePlanner {
 	private Vertex currentStartVertex;
 
 	public List<String> computeRoute(CityMap map, String startCity, String goalCity) {
-		var startVertex = map.findVertex(startCity).orElse(null);
-		var goalVertex = map.findVertex(goalCity).orElse(null);
+		var startVertex = map.vertex(startCity).orElse(null);
+		var goalVertex = map.vertex(goalCity).orElse(null);
 		return computeRoute(map, (CityMapVertex) startVertex, (CityMapVertex) goalVertex);
 	}
 

@@ -34,9 +34,13 @@ import java.util.stream.Stream;
  */
 public class Graph {
 
-	protected final Map<Object, Vertex> vertexByKey = new HashMap<>();
+	private final Map<Object, Vertex> vertexByKey = new HashMap<>();
 
-	public Optional<Vertex> findVertex(Object key) {
+	public void addVertex(Object key, Vertex vertex) {
+		vertexByKey.put(key, vertex);
+	}
+
+	public Optional<Vertex> vertex(Object key) {
 		return Optional.ofNullable(vertexByKey.get(key));
 	}
 
