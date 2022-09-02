@@ -45,7 +45,7 @@ public class CityMap extends Graph {
 		return vertex;
 	}
 
-	public void twoWay(City eitherCity, City otherCity, float cost) {
+	public void street(City eitherCity, City otherCity, float cost) {
 		twoWay(vertex(eitherCity), vertex(otherCity), cost);
 	}
 

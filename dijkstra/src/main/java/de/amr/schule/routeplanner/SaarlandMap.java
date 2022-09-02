@@ -34,7 +34,6 @@ import de.amr.schule.routeplanner.model.CityMap;
 public class SaarlandMap extends CityMap {
 
 	public SaarlandMap() {
-
 		var los = new City("Losheim am See");
 		var wad = new City("Wadern");
 		var mzg = new City("Merzig");
@@ -48,26 +47,26 @@ public class SaarlandMap extends CityMap {
 		var hom = new City("Homburg");
 		var igb = new City("St. Ingbert");
 
-		twoWay(los, mzg, 13.2f);
-		twoWay(los, wad, 15.0f);
-		twoWay(los, slz, 17.0f);
-		twoWay(mzg, sls, 23.0f);
-		twoWay(slz, wad, 18.0f);
-		twoWay(slz, epp, 13.0f);
-		twoWay(slz, heu, 17.5f);
-		twoWay(sls, slz, 25.0f);
-		twoWay(sls, sb, 25.0f);
-		twoWay(epp, sls, 24.0f);
-		twoWay(epp, nk, 21.5f);
-		twoWay(epp, sb, 31.0f);
-		twoWay(epp, heu, 10.0f);
-		twoWay(heu, sb, 14.5f);
-		twoWay(heu, nk, 24.0f);
-		twoWay(heu, hom, 37.5f);
-		twoWay(sb, igb, 11.0f);
-		twoWay(igb, hom, 22.0f);
-		twoWay(wnd, nk, 19.0f);
-		twoWay(wnd, hom, 29.0f);
-		twoWay(nk, hom, 19.0f);
+		street(los, mzg, 13.2f);
+		street(los, wad, 15.0f);
+		street(los, slz, 17.0f);
+		street(mzg, sls, 23.0f);
+		street(slz, wad, 18.0f);
+		street(slz, epp, 13.0f);
+		street(slz, heu, 17.5f);
+		street(sls, slz, 25.0f);
+		street(sls, sb, 25.0f);
+		street(epp, sls, 24.0f);
+		street(epp, nk, 21.5f);
+		street(epp, sb, 31.0f);
+		street(epp, heu, 10.0f);
+		street(heu, sb, 14.5f);
+		street(heu, nk, 24.0f);
+		street(heu, hom, 37.5f);
+		street(sb, igb, 11.0f);
+		street(igb, hom, 22.0f);
+		street(wnd, nk, 19.0f);
+		street(wnd, hom, 29.0f);
+		street(nk, hom, 19.0f);
 	}
 }
