@@ -57,16 +57,16 @@ public class Graph {
 		return vertex;
 	}
 
-	public void twoWay(City eitherCity, City otherCity, double cost) {
+	public void twoWay(City eitherCity, City otherCity, float cost) {
 		twoWay(vertex(eitherCity), vertex(otherCity), cost);
 	}
 
-	public void twoWay(Vertex either, Vertex other, double cost) {
+	public void twoWay(Vertex either, Vertex other, float cost) {
 		oneWay(either, other, cost);
 		oneWay(other, either, cost);
 	}
 
-	public void oneWay(Vertex source, Vertex target, double cost) {
+	public void oneWay(Vertex source, Vertex target, float cost) {
 		source.outgoingEdges.add(new Edge(source, target, cost));
 	}
 

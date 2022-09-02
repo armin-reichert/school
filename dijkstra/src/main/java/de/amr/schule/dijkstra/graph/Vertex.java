@@ -37,20 +37,20 @@ public class Vertex {
 	public final Set<Edge> outgoingEdges = new LinkedHashSet<>();
 	public final City city;
 	public Vertex parent;
-	public double cost;
+	public float cost;
 	public boolean visited;
 
 	public Vertex(City city) {
 		this.city = Objects.requireNonNull(city);
 		this.parent = null;
-		this.cost = Double.MAX_VALUE;
+		this.cost = Float.MAX_VALUE;
 		this.visited = false;
 	}
 
 	@Override
 	public String toString() {
 		var parentText = parent != null ? parent.city.name() : "none";
-		var costText = cost == Double.MAX_VALUE ? "indefinite" : "%.1f".formatted(cost);
+		var costText = cost == Float.MAX_VALUE ? "indefinite" : "%.1f".formatted(cost);
 		var visitedText = visited ? "visited" : "unvisited";
 		return "Vertex[city=%s, parent=%s, cost=%s, %s]".formatted(city, parentText, costText, visitedText);
 	}

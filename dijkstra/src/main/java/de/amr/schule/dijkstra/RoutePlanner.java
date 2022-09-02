@@ -68,12 +68,12 @@ public class RoutePlanner {
 	private void dijkstra(Graph g, Vertex start) {
 		g.vertices().forEach(v -> {
 			v.parent = null;
-			v.cost = Double.POSITIVE_INFINITY;
+			v.cost = Float.POSITIVE_INFINITY;
 			v.visited = false;
 		});
 		LOGGER.info(() -> "Compute all paths starting at %s".formatted(start.city.name()));
 		var q = new PriorityQueue<Vertex>((v1, v2) -> Double.compare(v1.cost, v2.cost));
-		start.cost = 0.0;
+		start.cost = 0;
 		q.add(start);
 		while (!q.isEmpty()) {
 			var u = q.poll(); // min cost vertex in queue

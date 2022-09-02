@@ -48,26 +48,26 @@ public class SaarlandMap extends Graph {
 		var hom = new City("Homburg");
 		var igb = new City("St. Ingbert");
 
-		twoWay(los, mzg, 13.2);
-		twoWay(los, wad, 15.0);
-		twoWay(los, slz, 17.0);
-		twoWay(mzg, sls, 23.0);
-		twoWay(slz, wad, 18.0);
-		twoWay(slz, epp, 13.0);
-		twoWay(slz, heu, 17.5);
-		twoWay(sls, slz, 25.0);
-		twoWay(sls, sb, 25.0);
-		twoWay(epp, sls, 24.0);
-		twoWay(epp, nk, 21.5);
-		twoWay(epp, sb, 31.0);
-		twoWay(epp, heu, 10.0);
-		twoWay(heu, sb, 14.5);
-		twoWay(heu, nk, 24.0);
-		twoWay(heu, hom, 37.5);
-		twoWay(sb, igb, 11.0);
-		twoWay(igb, hom, 22.0);
-		twoWay(wnd, nk, 19.0);
-		twoWay(wnd, hom, 29.0);
-		twoWay(nk, hom, 19.0);
+		twoWay(los, mzg, 13.2f);
+		twoWay(los, wad, 15.0f);
+		twoWay(los, slz, 17.0f);
+		twoWay(mzg, sls, 23.0f);
+		twoWay(slz, wad, 18.0f);
+		twoWay(slz, epp, 13.0f);
+		twoWay(slz, heu, 17.5f);
+		twoWay(sls, slz, 25.0f);
+		twoWay(sls, sb, 25.0f);
+		twoWay(epp, sls, 24.0f);
+		twoWay(epp, nk, 21.5f);
+		twoWay(epp, sb, 31.0f);
+		twoWay(epp, heu, 10.0f);
+		twoWay(heu, sb, 14.5f);
+		twoWay(heu, nk, 24.0f);
+		twoWay(heu, hom, 37.5f);
+		twoWay(sb, igb, 11.0f);
+		twoWay(igb, hom, 22.0f);
+		twoWay(wnd, nk, 19.0f);
+		twoWay(wnd, hom, 29.0f);
+		twoWay(nk, hom, 19.0f);
 	}
 }
