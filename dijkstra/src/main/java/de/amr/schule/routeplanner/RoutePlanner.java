@@ -47,12 +47,9 @@ public class RoutePlanner {
 	private Vertex currentStartVertex;
 
 	public List<String> computeRoute(CityMap map, String startCity, String goalCity) {
-		var startVertex = map.findVertex(startCity);
-		var goalVertex = map.findVertex(goalCity);
-		if (startVertex.isEmpty() || goalVertex.isEmpty()) {
-			return List.of();
-		}
-		return computeRoute(map, (CityMapVertex) startVertex.get(), (CityMapVertex) goalVertex.get());
+		var startVertex = map.findVertex(startCity).orElse(null);
+		var goalVertex = map.findVertex(goalCity).orElse(null);
+		return computeRoute(map, (CityMapVertex) startVertex, (CityMapVertex) goalVertex);
 	}
 
 	public List<String> computeRoute(CityMap map, CityMapVertex startVertex, CityMapVertex goalVertex) {
