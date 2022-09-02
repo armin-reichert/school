@@ -25,6 +25,7 @@ SOFTWARE.
 package de.amr.schule.dijkstra.graph;
 
 import java.io.PrintStream;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -32,6 +33,9 @@ import java.util.stream.Stream;
 
 import de.amr.schule.dijkstra.model.City;
 
+/**
+ * @author Armin Reichert
+ */
 public class Graph {
 
 	private final Map<String, Vertex> vertexByKey = new HashMap<>();
@@ -40,8 +44,12 @@ public class Graph {
 		return Optional.ofNullable(vertexByKey.get(key));
 	}
 
+	public Stream<Vertex> vertices(Comparator<Vertex> order) {
+		return vertexByKey.values().stream().sorted(order);
+	}
+
 	public Stream<Vertex> vertices() {
-		return vertexByKey.values().stream().sorted((v1, v2) -> v1.city.name().compareTo(v2.city.name()));
+		return vertexByKey.values().stream();
 	}
 
 	public Stream<Edge> outgoingEdges(Vertex vertex) {
@@ -70,10 +78,10 @@ public class Graph {
 		source.outgoingEdges.add(new Edge(source, target, cost));
 	}
 
-	public void print(PrintStream out, boolean printEdges) {
-		vertices().forEach(out::println);
+	public void print(PrintStream out, boolean printEdges, Comparator<Vertex> vertexOrder) {
+		vertices(vertexOrder).forEach(out::println);
 		if (printEdges) {
-			vertices().forEach(v -> {
+			vertices(vertexOrder).forEach(v -> {
 				v.outgoingEdges.forEach(edge -> {
 					out.println("Edge[%s -> %s %.1f km]".formatted(edge.from().city.name(), edge.to().city.name(), edge.cost()));
 				});

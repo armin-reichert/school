@@ -27,19 +27,24 @@ package de.amr.schule.dijkstra;
 import java.io.PrintStream;
 
 import de.amr.schule.dijkstra.graph.Graph;
+import de.amr.schule.dijkstra.graph.Vertex;
 
 public class RoutePlannerApp {
 
 	public static void main(String[] args) {
 		var map = new SaarlandMap();
-		map.print(System.out, true);
+		map.print(System.out, true, RoutePlannerApp::sortedByCityName);
 		printAllPaths(map, System.out);
+	}
+
+	private static int sortedByCityName(Vertex v1, Vertex v2) {
+		return v1.city.name().compareTo(v2.city.name());
 	}
 
 	private static void printAllPaths(Graph map, PrintStream out) {
 		var routePlanner = new RoutePlanner();
-		map.vertices().forEach(//
-				start -> map.vertices().forEach(//
+		map.vertices(RoutePlannerApp::sortedByCityName).forEach(//
+				start -> map.vertices(RoutePlannerApp::sortedByCityName).forEach(//
 						goal -> out.println("%s nach %s: %s".formatted(start.city.name(), goal.city.name(),
 								routePlanner.computeRoute(map, start, goal)))));
 	}

@@ -24,5 +24,8 @@ SOFTWARE.
 
 package de.amr.schule.dijkstra.graph;
 
+/**
+ * @author Armin Reichert
+ */
 public record Edge(Vertex from, Vertex to, float cost) {
 }
