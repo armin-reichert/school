@@ -22,36 +22,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package de.amr.schule.dijkstra.graph;
+package de.amr.schule.routeplanner;
 
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.io.PrintStream;
 
-import de.amr.schule.dijkstra.model.City;
+import de.amr.schule.routeplanner.model.CityMap;
+import de.amr.schule.routeplanner.model.CityMapVertex;
 
-/**
- * @author Armin Reichert
- */
-public class Vertex {
-	public final Set<Edge> outgoingEdges = new LinkedHashSet<>();
-	public final City city;
-	public Vertex parent;
-	public float cost;
-	public boolean visited;
+public class RoutePlannerApp {
 
-	public Vertex(City city) {
-		this.city = Objects.requireNonNull(city);
-		this.parent = null;
-		this.cost = Float.MAX_VALUE;
-		this.visited = false;
+	public static void main(String[] args) {
+		var map = new SaarlandMap();
+		map.print(System.out, true, RoutePlannerApp::sortedByCityName);
+		printAllPaths(map, System.out);
 	}
 
-	@Override
-	public String toString() {
-		var parentText = parent != null ? parent.city.name() : "none";
-		var costText = cost == Float.MAX_VALUE ? "indefinite" : "%.1f".formatted(cost);
-		var visitedText = visited ? "visited" : "unvisited";
-		return "Vertex[city=%s, parent=%s, cost=%s, %s]".formatted(city, parentText, costText, visitedText);
+	private static int sortedByCityName(CityMapVertex v1, CityMapVertex v2) {
+		return v1.city.name().compareTo(v2.city.name());
+	}
+
+	private static void printAllPaths(CityMap map, PrintStream out) {
+		var routePlanner = new RoutePlanner();
+		map.vertices(RoutePlannerApp::sortedByCityName)
+				.forEach(start -> map.vertices(RoutePlannerApp::sortedByCityName).forEach(goal -> {
+					var startVertex = (CityMapVertex) start;
+					var goalVertex = (CityMapVertex) goal;
+					out.println("%s nach %s: %s".formatted(startVertex.city.name(), goalVertex.city.name(),
+							routePlanner.computeRoute(map, startVertex, goalVertex)));
+				}));
 	}
 }

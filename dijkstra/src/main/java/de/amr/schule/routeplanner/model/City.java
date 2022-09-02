@@ -22,10 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package de.amr.schule.dijkstra.graph;
+package de.amr.schule.routeplanner.model;
 
 /**
+ * In der vierten (dezimalen) Schreibweise liegt der Wertebereich der Breitengrade zwischen −90° und +90°, der
+ * Wertebereich der Längengrade zwischen −180° und +180°. Die Himmelsrichtungen N-S und E-W werden hier weggelassen.
+ * Nördliche Breiten werden positiv und südliche Breiten negativ angegeben. Östliche Längen sind positiv und westliche
+ * Längen sind negativ. Um die Breiten und Längen nicht zu verwechseln, müssen sie mit „Breite (Latitude, Lat)“ und
+ * „Länge (Longitude, Long)“ bezeichnet werden.
+ * 
  * @author Armin Reichert
  */
-public record Edge(Vertex from, Vertex to, float cost) {
+public record City(String name, GeoCoordinate coord) {
+
+	public City(String name, float latitude, float longitude) {
+		this(name, new GeoCoordinate(latitude, longitude));
+	}
+
+	public City(String name) {
+		this(name, new GeoCoordinate(0, 0));
+	}
 }

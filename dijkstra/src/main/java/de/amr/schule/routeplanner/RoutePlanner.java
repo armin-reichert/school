@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package de.amr.schule.dijkstra;
+package de.amr.schule.routeplanner;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,8 +31,9 @@ import java.util.PriorityQueue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.amr.schule.dijkstra.graph.Graph;
-import de.amr.schule.dijkstra.graph.Vertex;
+import de.amr.schule.routeplanner.graph.Vertex;
+import de.amr.schule.routeplanner.model.CityMap;
+import de.amr.schule.routeplanner.model.CityMapVertex;
 
 /**
  * @author Armin Reichert
@@ -45,16 +46,16 @@ public class RoutePlanner {
 
 	private Vertex currentStartVertex;
 
-	public List<String> computeRoute(Graph map, String startCity, String goalCity) {
+	public List<String> computeRoute(CityMap map, String startCity, String goalCity) {
 		var startVertex = map.findVertex(startCity);
 		var goalVertex = map.findVertex(goalCity);
 		if (startVertex.isEmpty() || goalVertex.isEmpty()) {
 			return List.of();
 		}
-		return computeRoute(map, startVertex.get(), goalVertex.get());
+		return computeRoute(map, (CityMapVertex) startVertex.get(), (CityMapVertex) goalVertex.get());
 	}
 
-	public List<String> computeRoute(Graph map, Vertex startVertex, Vertex goalVertex) {
+	public List<String> computeRoute(CityMap map, CityMapVertex startVertex, CityMapVertex goalVertex) {
 		if (startVertex == null || goalVertex == null) {
 			return List.of();
 		}
@@ -65,13 +66,13 @@ public class RoutePlanner {
 		return buildRoute(goalVertex);
 	}
 
-	private void dijkstra(Graph g, Vertex start) {
+	private void dijkstra(CityMap g, CityMapVertex start) {
 		g.vertices().forEach(v -> {
 			v.parent = null;
 			v.cost = Float.POSITIVE_INFINITY;
 			v.visited = false;
 		});
-		LOGGER.info(() -> "Compute all paths starting at %s".formatted(start.city.name()));
+		LOGGER.info(() -> "Compute all paths starting at %s".formatted((start.key())));
 		var q = new PriorityQueue<Vertex>((v1, v2) -> Double.compare(v1.cost, v2.cost));
 		start.cost = 0;
 		q.add(start);
@@ -93,9 +94,9 @@ public class RoutePlanner {
 		}
 	}
 
-	private List<String> buildRoute(Vertex goal) {
+	private List<String> buildRoute(CityMapVertex goal) {
 		var route = new LinkedList<String>();
-		for (Vertex v = goal; v != null; v = v.parent) {
+		for (CityMapVertex v = goal; v != null; v = (CityMapVertex) v.parent) {
 			route.addFirst(v.city.name() + " " + v.cost + " km");
 		}
 		return route;

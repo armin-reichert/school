@@ -22,30 +22,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package de.amr.schule.dijkstra;
+package de.amr.schule.routeplanner.graph;
 
-import java.io.PrintStream;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-import de.amr.schule.dijkstra.graph.Graph;
-import de.amr.schule.dijkstra.graph.Vertex;
+/**
+ * @author Armin Reichert
+ */
+public class Vertex {
+	public final Set<Edge> outgoingEdges = new LinkedHashSet<>();
+	public Vertex parent;
+	public float cost;
+	public boolean visited;
 
-public class RoutePlannerApp {
-
-	public static void main(String[] args) {
-		var map = new SaarlandMap();
-		map.print(System.out, true, RoutePlannerApp::sortedByCityName);
-		printAllPaths(map, System.out);
+	public Vertex() {
+		this.parent = null;
+		this.cost = Float.MAX_VALUE;
+		this.visited = false;
 	}
 
-	private static int sortedByCityName(Vertex v1, Vertex v2) {
-		return v1.city.name().compareTo(v2.city.name());
-	}
-
-	private static void printAllPaths(Graph map, PrintStream out) {
-		var routePlanner = new RoutePlanner();
-		map.vertices(RoutePlannerApp::sortedByCityName).forEach(//
-				start -> map.vertices(RoutePlannerApp::sortedByCityName).forEach(//
-						goal -> out.println("%s nach %s: %s".formatted(start.city.name(), goal.city.name(),
-								routePlanner.computeRoute(map, start, goal)))));
+	public String key() {
+		return this + "";
 	}
 }

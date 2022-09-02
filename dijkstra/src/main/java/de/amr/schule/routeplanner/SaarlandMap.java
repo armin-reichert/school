@@ -22,16 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package de.amr.schule.dijkstra;
+package de.amr.schule.routeplanner;
 
-import de.amr.schule.dijkstra.graph.Graph;
-import de.amr.schule.dijkstra.model.City;
+import de.amr.schule.routeplanner.model.City;
+import de.amr.schule.routeplanner.model.CityMap;
 
 /**
  * @author Armin Reichert
  *
  */
-public class SaarlandMap extends Graph {
+public class SaarlandMap extends CityMap {
 
 	public SaarlandMap() {
 

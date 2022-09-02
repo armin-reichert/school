@@ -22,45 +22,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package de.amr.schule.dijkstra.graph;
+package de.amr.schule.routeplanner.model;
 
 import java.io.PrintStream;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Stream;
 
-import de.amr.schule.dijkstra.model.City;
+import de.amr.schule.routeplanner.graph.Graph;
+import de.amr.schule.routeplanner.graph.Vertex;
 
 /**
  * @author Armin Reichert
  */
-public class Graph {
-
-	private final Map<String, Vertex> vertexByKey = new HashMap<>();
-
-	public Optional<Vertex> findVertex(String key) {
-		return Optional.ofNullable(vertexByKey.get(key));
-	}
-
-	public Stream<Vertex> vertices(Comparator<Vertex> order) {
-		return vertexByKey.values().stream().sorted(order);
-	}
-
-	public Stream<Vertex> vertices() {
-		return vertexByKey.values().stream();
-	}
-
-	public Stream<Edge> outgoingEdges(Vertex vertex) {
-		return vertex.outgoingEdges.stream();
-	}
+public class CityMap extends Graph {
 
 	public Vertex vertex(City city) {
 		if (vertexByKey.containsKey(city.name())) {
 			return vertexByKey.get(city.name());
 		}
-		var vertex = new Vertex(city);
+		var vertex = new CityMapVertex(city);
 		vertexByKey.put(city.name(), vertex);
 		return vertex;
 	}
@@ -69,21 +49,16 @@ public class Graph {
 		twoWay(vertex(eitherCity), vertex(otherCity), cost);
 	}
 
-	public void twoWay(Vertex either, Vertex other, float cost) {
-		oneWay(either, other, cost);
-		oneWay(other, either, cost);
+	public Stream<CityMapVertex> vertices(Comparator<CityMapVertex> order) {
+		return vertexByKey.values().stream().map(CityMapVertex.class::cast).sorted(order);
 	}
 
-	public void oneWay(Vertex source, Vertex target, float cost) {
-		source.outgoingEdges.add(new Edge(source, target, cost));
-	}
-
-	public void print(PrintStream out, boolean printEdges, Comparator<Vertex> vertexOrder) {
+	public void print(PrintStream out, boolean printEdges, Comparator<CityMapVertex> vertexOrder) {
 		vertices(vertexOrder).forEach(out::println);
 		if (printEdges) {
 			vertices(vertexOrder).forEach(v -> {
 				v.outgoingEdges.forEach(edge -> {
-					out.println("Edge[%s -> %s %.1f km]".formatted(edge.from().city.name(), edge.to().city.name(), edge.cost()));
+					out.println("Edge[%s -> %s %.1f km]".formatted(edge.from().key(), edge.to().key(), edge.cost()));
 				});
 			});
 		}
