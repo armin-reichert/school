@@ -36,6 +36,10 @@ import de.amr.schule.routeplanner.graph.Vertex;
  */
 public class CityMap extends Graph {
 
+	public static int orderByCityName(CityMapVertex v1, CityMapVertex v2) {
+		return v1.city.name().compareTo(v2.city.name());
+	}
+
 	public Vertex vertex(City city) {
 		if (vertexByKey.containsKey(city.name())) {
 			return vertexByKey.get(city.name());
