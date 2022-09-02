@@ -44,10 +44,6 @@ public class Graph {
 		return vertexByKey.values().stream();
 	}
 
-	public Stream<Edge> outgoingEdges(Vertex vertex) {
-		return vertex.outgoingEdgeList.stream();
-	}
-
 	public void addEdge(Vertex either, Vertex other, float cost) {
 		addDirectedEdge(either, other, cost);
 		addDirectedEdge(other, either, cost);
