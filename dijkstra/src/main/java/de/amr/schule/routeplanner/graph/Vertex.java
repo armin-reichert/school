@@ -24,15 +24,15 @@ SOFTWARE.
 
 package de.amr.schule.routeplanner.graph;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
  * @author Armin Reichert
  */
 public class Vertex {
-	public final Set<Edge> outgoingEdges = new LinkedHashSet<>();
+	public final List<Edge> outgoingEdgeList = new ArrayList<>();
 	public Vertex parent;
 	public float cost;
 	public boolean visited;
@@ -44,7 +44,7 @@ public class Vertex {
 	}
 
 	public Stream<Edge> outgoingEdges() {
-		return outgoingEdges.stream();
+		return outgoingEdgeList.stream();
 	}
 
 	public String key() {

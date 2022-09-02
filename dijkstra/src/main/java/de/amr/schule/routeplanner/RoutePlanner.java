@@ -78,7 +78,7 @@ public class RoutePlanner {
 			if (!u.visited) {
 				u.visited = true;
 				LOGGER.trace(() -> "%s visited".formatted(u));
-				for (var edge : u.outgoingEdges) {
+				for (var edge : u.outgoingEdgeList) {
 					var v = edge.to();
 					var altCost = u.cost + edge.cost();
 					if (altCost < v.cost) {

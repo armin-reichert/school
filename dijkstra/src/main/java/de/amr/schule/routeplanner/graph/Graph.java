@@ -45,7 +45,7 @@ public class Graph {
 	}
 
 	public Stream<Edge> outgoingEdges(Vertex vertex) {
-		return vertex.outgoingEdges.stream();
+		return vertex.outgoingEdgeList.stream();
 	}
 
 	public void addEdge(Vertex either, Vertex other, float cost) {
@@ -54,6 +54,6 @@ public class Graph {
 	}
 
 	public void addDirectedEdge(Vertex source, Vertex target, float cost) {
-		source.outgoingEdges.add(new Edge(source, target, cost));
+		source.outgoingEdgeList.add(new Edge(source, target, cost));
 	}
 }
