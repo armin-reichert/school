@@ -26,8 +26,15 @@ package de.amr.schule.routeplanner;
 
 import java.io.PrintStream;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
+import javax.swing.SwingUtilities;
+
+import de.amr.schule.routeplanner.model.City;
 import de.amr.schule.routeplanner.model.RoadMap;
+import de.amr.schule.routeplanner.model.RoadMapPoint;
 import de.amr.schule.routeplanner.model.SaarlandMap;
+import de.amr.schule.routeplanner.ui.RoutePlannerWindow;
 
 /**
  * @author Armin Reichert
@@ -38,6 +45,16 @@ public class RoutePlannerApp {
 		var map = new SaarlandMap();
 		map.print(System.out, RoadMap::orderByCityName);
 		printAllPaths(map, System.out);
+
+		SwingUtilities.invokeLater(() -> {
+			var window = new RoutePlannerWindow();
+			window.setMap(map);
+			var cityNames = map.vertices(RoadMap::orderByCityName).map(RoadMapPoint::getCity).map(City::name)
+					.toArray(String[]::new);
+			window.getComboStart().setModel(new DefaultComboBoxModel<>(cityNames));
+			window.getComboGoal().setModel(new DefaultComboBoxModel<>(cityNames));
+			window.getListRoute().setModel(new DefaultListModel<>());
+		});
 	}
 
 	private static void printAllPaths(RoadMap map, PrintStream out) {

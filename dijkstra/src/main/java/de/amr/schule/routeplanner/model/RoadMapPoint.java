@@ -37,6 +37,10 @@ public class RoadMapPoint extends Vertex {
 		this.city = city;
 	}
 
+	public City getCity() {
+		return city;
+	}
+
 	@Override
 	public String key() {
 		return city.name();
