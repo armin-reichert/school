@@ -64,13 +64,13 @@ public class RoutePlanner {
 	}
 
 	private void dijkstra(RoadMap g, RoadMapPoint start) {
+		LOGGER.info(() -> "Compute all paths starting at %s".formatted((start.key())));
+		var q = new PriorityQueue<Vertex>((v1, v2) -> Float.compare(v1.cost, v2.cost));
 		g.vertices().forEach(v -> {
 			v.parent = null;
 			v.cost = Float.POSITIVE_INFINITY;
 			v.visited = false;
 		});
-		LOGGER.info(() -> "Compute all paths starting at %s".formatted((start.key())));
-		var q = new PriorityQueue<Vertex>((v1, v2) -> Double.compare(v1.cost, v2.cost));
 		start.cost = 0;
 		q.add(start);
 		while (!q.isEmpty()) {
