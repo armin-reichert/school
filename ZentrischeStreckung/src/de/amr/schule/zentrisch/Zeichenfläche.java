@@ -1,8 +1,5 @@
 package de.amr.schule.zentrisch;
 
-import static de.amr.easy.game.math.Vector2f.smul;
-import static de.amr.easy.game.math.Vector2f.sum;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -24,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
-import de.amr.easy.game.math.Vector2f;
+import de.amr.easy.game.math.V2f;
 
 public class Zeichenfläche extends JPanel {
 
@@ -202,11 +199,11 @@ public class Zeichenfläche extends JPanel {
 		stift.drawLine((int) S.x, (int) S.y, (int) bounds.getX(), (int) bounds.getMaxY());
 	}
 
-	Point2D.Float streckePunkt(Point2D.Float P) {
-		Vector2f v = Vector2f.of(P.x - S.x, P.y - S.y);
-		Vector2f s = Vector2f.of(S.x, S.y);
-		Vector2f p_ = sum(s, smul(k, v));
-		return new Point2D.Float(p_.x, p_.y);
+	Point2D.Float streckePunkt(Point2D.Float point) {
+		V2f v = new V2f(point.x - S.x, point.y - S.y);
+		V2f s = new V2f(S.x, S.y);
+		V2f p_ = V2f.sum(s, V2f.smul(k, v));
+		return new Point2D.Float(p_.x(), p_.y());
 	}
 
 	Rectangle2D.Float streckeRechteck(Rectangle2D.Float rechteck) {
