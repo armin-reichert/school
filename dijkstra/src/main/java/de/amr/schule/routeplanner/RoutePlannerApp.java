@@ -27,6 +27,7 @@ package de.amr.schule.routeplanner;
 import java.io.PrintStream;
 
 import de.amr.schule.routeplanner.model.RoadMap;
+import de.amr.schule.routeplanner.model.SaarlandMap;
 
 /**
  * @author Armin Reichert

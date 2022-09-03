@@ -22,10 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package de.amr.schule.routeplanner;
-
-import de.amr.schule.routeplanner.model.City;
-import de.amr.schule.routeplanner.model.RoadMap;
+package de.amr.schule.routeplanner.model;
 
 /**
  * @author Armin Reichert
