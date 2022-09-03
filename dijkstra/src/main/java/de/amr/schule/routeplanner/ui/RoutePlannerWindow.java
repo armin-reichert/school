@@ -48,6 +48,25 @@ import net.miginfocom.swing.MigLayout;
  */
 public class RoutePlannerWindow extends JFrame {
 
+	private class ComputeRouteAction extends AbstractAction {
+
+		public ComputeRouteAction() {
+			putValue(NAME, "Compute Route");
+			putValue(SHORT_DESCRIPTION, "Computes the best route");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String startCity = (String) getComboStart().getSelectedItem();
+			String goalCity = (String) getComboGoal().getSelectedItem();
+			var rp = new RoutePlanner();
+			var route = rp.computeRoute(map, startCity, goalCity);
+			var data = new DefaultListModel<String>();
+			data.addAll(route);
+			getListRoute().setModel(data);
+		}
+	}
+
 	private RoadMap map;
 	private final Action actionComputeRoute = new ComputeRouteAction();
 	private final Action actionClearRouteList = new AbstractAction() {
@@ -82,7 +101,7 @@ public class RoutePlannerWindow extends JFrame {
 		JLabel lblGoal = new JLabel("Ziel");
 		panel.add(lblGoal);
 
-		comboGoal = new JComboBox<String>();
+		comboGoal = new JComboBox<>();
 		comboGoal.setMaximumRowCount(20);
 		comboGoal.setModel(new DefaultComboBoxModel<>(new String[] { "Eppelborn", "Losheim am See", "Wadern" }));
 		panel.add(comboGoal);
@@ -107,25 +126,6 @@ public class RoutePlannerWindow extends JFrame {
 				return values[index];
 			}
 		});
-	}
-
-	private class ComputeRouteAction extends AbstractAction {
-
-		public ComputeRouteAction() {
-			putValue(NAME, "Compute Route");
-			putValue(SHORT_DESCRIPTION, "Computes the best route");
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			String startCity = (String) getComboStart().getSelectedItem();
-			String goalCity = (String) getComboGoal().getSelectedItem();
-			var rp = new RoutePlanner();
-			var route = rp.computeRoute(map, startCity, goalCity);
-			var data = new DefaultListModel<String>();
-			data.addAll(route);
-			getListRoute().setModel(data);
-		}
 	}
 
 	public void setMap(RoadMap map) {
