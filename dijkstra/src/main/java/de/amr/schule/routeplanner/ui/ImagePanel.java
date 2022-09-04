@@ -31,22 +31,15 @@ import javax.swing.JPanel;
 
 /**
  * @author Armin Reichert
- *
  */
 public class ImagePanel extends JPanel {
 
 	private BufferedImage image;
 
-	/**
-	 * @param image the image to set
-	 */
 	public void setImage(BufferedImage image) {
 		this.image = image;
 	}
 
-	/**
-	 * @return the image
-	 */
 	public BufferedImage getImage() {
 		return image;
 	}
@@ -58,5 +51,4 @@ public class ImagePanel extends JPanel {
 			g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
 		}
 	}
-
 }

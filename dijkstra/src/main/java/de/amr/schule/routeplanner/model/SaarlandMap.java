@@ -31,18 +31,18 @@ package de.amr.schule.routeplanner.model;
 public class SaarlandMap extends RoadMap {
 
 	public SaarlandMap() {
-		var los = new City("Losheim am See");
-		var wad = new City("Wadern");
-		var mzg = new City("Merzig");
-		var slz = new City("Schmelz");
-		var heu = new City("Heusweiler");
-		var sls = new City("Saarlouis");
-		var sb = new City("Saarbrücken");
-		var wnd = new City("St. Wendel");
-		var nk = new City("Neunkirchen");
-		var epp = new City("Eppelborn");
-		var hom = new City("Homburg");
-		var igb = new City("St. Ingbert");
+		var los = new City("Losheim am See", 49.51f, 6.75f);
+		var wad = new City("Wadern", 49.534f, 6.89f);
+		var mzg = new City("Merzig", 49.449f, 6.643f);
+		var slz = new City("Schmelz", 49.432f, 6.843f);
+		var heu = new City("Heusweiler", 49.338f, 6.929f);
+		var sls = new City("Saarlouis", 49.313f, 6.752f);
+		var sb = new City("Saarbrücken", 49.238f, 6.997f);
+		var wnd = new City("St. Wendel", 49.468f, 7.167f);
+		var nk = new City("Neunkirchen", 49.349f, 7.177f);
+		var epp = new City("Eppelborn", 49.409f, 6.964f);
+		var hom = new City("Homburg", 49.329f, 7.339f);
+		var igb = new City("St. Ingbert", 49.278f, 7.112f);
 
 		street(los, mzg, 13.2f);
 		street(los, wad, 15.0f);

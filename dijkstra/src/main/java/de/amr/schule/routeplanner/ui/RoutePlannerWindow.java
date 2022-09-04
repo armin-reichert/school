@@ -114,7 +114,7 @@ public class RoutePlannerWindow extends JFrame {
 
 	public RoutePlannerWindow() {
 		setTitle("Route Planner");
-		setSize(900, 600);
+		setSize(1020, 670);
 		setLocation(30, 30);
 		setVisible(true);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
