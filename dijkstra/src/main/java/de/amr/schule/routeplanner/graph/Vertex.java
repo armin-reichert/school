@@ -32,7 +32,7 @@ import java.util.stream.Stream;
  * @author Armin Reichert
  */
 public class Vertex {
-	public final List<Edge> outgoingEdgeList = new ArrayList<>();
+	public final List<Edge> outgoingEdgeList = new ArrayList<>(5);
 	public Vertex parent;
 	public float cost;
 	public boolean visited;
