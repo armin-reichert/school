@@ -26,10 +26,6 @@ package de.amr.schule.routeplanner;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.PriorityQueue;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import de.amr.schule.routeplanner.graph.Vertex;
 import de.amr.schule.routeplanner.model.RoadMap;
@@ -41,8 +37,6 @@ import de.amr.schule.routeplanner.model.RoadMapPoint;
  * @see https://cs.au.dk/~gerth/papers/fun22.pdf
  */
 public class RoutePlanner {
-
-	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
 	private Vertex currentStartVertex;
 
@@ -58,37 +52,9 @@ public class RoutePlanner {
 		}
 		if (start != currentStartVertex) {
 			currentStartVertex = start;
-			dijkstra(map, start);
+			map.computeShortestPaths(start);
 		}
 		return buildRoute(goal);
-	}
-
-	private void dijkstra(RoadMap g, RoadMapPoint start) {
-		LOGGER.info(() -> "Compute all paths starting at %s".formatted((start.key())));
-		var q = new PriorityQueue<Vertex>((v1, v2) -> Float.compare(v1.cost, v2.cost));
-		g.vertices().forEach(v -> {
-			v.parent = null;
-			v.cost = Float.POSITIVE_INFINITY;
-			v.visited = false;
-		});
-		start.cost = 0;
-		q.add(start);
-		while (!q.isEmpty()) {
-			var u = q.poll(); // min cost vertex in queue
-			if (!u.visited) {
-				u.visited = true;
-				LOGGER.trace(() -> "%s visited".formatted(u));
-				for (var edge : u.outgoingEdgeList) {
-					var v = edge.to();
-					var altCost = u.cost + edge.cost();
-					if (altCost < v.cost) {
-						v.cost = altCost;
-						v.parent = u;
-						q.add(v);
-					}
-				}
-			}
-		}
 	}
 
 	private List<String> buildRoute(RoadMapPoint goal) {

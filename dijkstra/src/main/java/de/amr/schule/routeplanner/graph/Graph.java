@@ -27,12 +27,18 @@ package de.amr.schule.routeplanner.graph;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.PriorityQueue;
 import java.util.stream.Stream;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Armin Reichert
  */
 public class Graph {
+
+	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
 	private final Map<Object, Vertex> vertexByKey = new HashMap<>();
 
@@ -55,5 +61,38 @@ public class Graph {
 
 	public void addDirectedEdge(Vertex source, Vertex target, float cost) {
 		source.outgoingEdgeList.add(new Edge(source, target, cost));
+	}
+
+	/**
+	 * Computes the shortest path to any node from the given start vertex using the Dijkstra algorithm.
+	 * 
+	 * @param start start vertex
+	 */
+	public void computeShortestPaths(Vertex start) {
+		LOGGER.info(() -> "Compute shortest paths starting at %s".formatted((start.key())));
+		var q = new PriorityQueue<Vertex>((v1, v2) -> Float.compare(v1.cost, v2.cost));
+		vertices().forEach(v -> {
+			v.parent = null;
+			v.cost = Float.POSITIVE_INFINITY;
+			v.visited = false;
+		});
+		start.cost = 0;
+		q.add(start);
+		while (!q.isEmpty()) {
+			var u = q.poll(); // min cost vertex in queue
+			if (!u.visited) {
+				u.visited = true;
+				LOGGER.trace(() -> "%s visited".formatted(u));
+				for (var edge : u.outgoingEdgeList) {
+					var v = edge.to();
+					var altCost = u.cost + edge.cost();
+					if (altCost < v.cost) {
+						v.cost = altCost;
+						v.parent = u;
+						q.add(v);
+					}
+				}
+			}
+		}
 	}
 }
