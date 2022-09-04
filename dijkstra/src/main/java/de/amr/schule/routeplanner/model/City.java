@@ -33,13 +33,13 @@ package de.amr.schule.routeplanner.model;
  * 
  * @author Armin Reichert
  */
-public record City(String name, GeoCoordinate coord) {
+public record City(String name, GeoCoord coord) {
 
 	public City(String name, float latitude, float longitude) {
-		this(name, new GeoCoordinate(latitude, longitude));
+		this(name, new GeoCoord(latitude, longitude));
 	}
 
 	public City(String name) {
-		this(name, new GeoCoordinate(0, 0));
+		this(name, new GeoCoord(0, 0));
 	}
 }

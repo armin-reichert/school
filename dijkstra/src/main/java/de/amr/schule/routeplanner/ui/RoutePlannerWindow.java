@@ -37,6 +37,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
 import de.amr.schule.routeplanner.RoutePlanner;
@@ -59,8 +60,7 @@ public class RoutePlannerWindow extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			String startCity = (String) getComboStart().getSelectedItem();
 			String goalCity = (String) getComboGoal().getSelectedItem();
-			var rp = new RoutePlanner();
-			var route = rp.computeRoute(map, startCity, goalCity);
+			var route = routePlanner.computeRoute(map, startCity, goalCity);
 			var data = new DefaultListModel<String>();
 			data.addAll(route);
 			getListRoute().setModel(data);
@@ -68,8 +68,10 @@ public class RoutePlannerWindow extends JFrame {
 	}
 
 	private RoadMap map;
+	private final RoutePlanner routePlanner = new RoutePlanner();
+
 	private final Action actionComputeRoute = new ComputeRouteAction();
-	private final Action actionClearRouteList = new AbstractAction() {
+	private final Action actionClearRoute = new AbstractAction() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			listRoute.setModel(new DefaultListModel<>());
@@ -82,36 +84,40 @@ public class RoutePlannerWindow extends JFrame {
 	public RoutePlannerWindow() {
 		setTitle("Route Planner");
 		setSize(600, 300);
+		setLocation(30, 30);
 		setVisible(true);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		getContentPane().setLayout(new MigLayout("", "[784px]", "[10px][]"));
+		getContentPane().setLayout(new MigLayout("", "", "[10px][]"));
 
 		JPanel panel = new JPanel();
-		getContentPane().add(panel, "cell 0 0,alignx left,aligny top");
+		getContentPane().add(panel, "cell 0 0,aligny top");
+		panel.setLayout(new MigLayout("", "[24px][102px][16px][102px][107px]", "[]"));
 
 		JLabel lblStart = new JLabel("Start");
-		panel.add(lblStart);
+		panel.add(lblStart, "cell 0 0,alignx left,aligny center");
 
 		comboStart = new JComboBox<>();
 		comboStart.setMaximumRowCount(20);
 		comboStart.setModel(new DefaultComboBoxModel<>(new String[] { "Eppelborn", "Losheim am See", "Wadern" }));
-		panel.add(comboStart);
-		comboStart.setAction(actionClearRouteList);
+		panel.add(comboStart, "cell 1 0,alignx left,aligny center");
+		comboStart.setAction(actionClearRoute);
 
 		JLabel lblGoal = new JLabel("Ziel");
-		panel.add(lblGoal);
+		panel.add(lblGoal, "cell 2 0,alignx left,aligny center");
 
 		comboGoal = new JComboBox<>();
 		comboGoal.setMaximumRowCount(20);
 		comboGoal.setModel(new DefaultComboBoxModel<>(new String[] { "Eppelborn", "Losheim am See", "Wadern" }));
-		panel.add(comboGoal);
-		comboGoal.setAction(actionClearRouteList);
+		panel.add(comboGoal, "cell 3 0,alignx left,aligny center");
+		comboGoal.setAction(actionClearRoute);
 
 		JButton btnComputeRoute = new JButton("Route Berechnen");
 		btnComputeRoute.setAction(actionComputeRoute);
-		panel.add(btnComputeRoute);
+		panel.add(btnComputeRoute, "cell 4 0,alignx left,aligny top");
 
 		listRoute = new JList<>();
+		listRoute.setVisibleRowCount(20);
+		listRoute.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		getContentPane().add(listRoute, "cell 0 1,growx");
 		listRoute.setModel(new AbstractListModel<>() {
 			String[] values = new String[] { "Wadern 0.0 km", "Schmelz 18.0 km", "Eppelborn 31.0 km", "Neunkirchen 52.5 km" };

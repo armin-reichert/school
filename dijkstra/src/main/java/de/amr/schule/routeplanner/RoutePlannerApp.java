@@ -29,10 +29,10 @@ import java.io.PrintStream;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
-import de.amr.schule.routeplanner.model.City;
 import de.amr.schule.routeplanner.model.RoadMap;
-import de.amr.schule.routeplanner.model.RoadMapPoint;
 import de.amr.schule.routeplanner.model.SaarlandMap;
 import de.amr.schule.routeplanner.ui.RoutePlannerWindow;
 
@@ -43,26 +43,33 @@ public class RoutePlannerApp {
 
 	public static void main(String[] args) {
 		var map = new SaarlandMap();
-		map.print(System.out, RoadMap::orderByCityName);
-		printAllPaths(map, System.out);
-
-		SwingUtilities.invokeLater(() -> {
-			var window = new RoutePlannerWindow();
-			window.setMap(map);
-			var cityNames = map.vertices(RoadMap::orderByCityName).map(RoadMapPoint::getCity).map(City::name)
-					.toArray(String[]::new);
-			window.getComboStart().setModel(new DefaultComboBoxModel<>(cityNames));
-			window.getComboGoal().setModel(new DefaultComboBoxModel<>(cityNames));
-			window.getListRoute().setModel(new DefaultListModel<>());
-		});
+		printAllRoutes(map, System.out);
+		SwingUtilities.invokeLater(() -> createAndShowUI(map));
 	}
 
-	private static void printAllPaths(RoadMap map, PrintStream out) {
+	private static void createAndShowUI(SaarlandMap map) {
+		try {
+			UIManager.setLookAndFeel(NimbusLookAndFeel.class.getName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		var window = new RoutePlannerWindow();
+		window.setMap(map);
+		var cityNames = map.cityNames().toArray(String[]::new);
+		window.getComboStart().setModel(new DefaultComboBoxModel<>(cityNames));
+		window.getComboGoal().setModel(new DefaultComboBoxModel<>(cityNames));
+		window.getListRoute().setModel(new DefaultListModel<>());
+	}
+
+	private static void printAllRoutes(RoadMap map, PrintStream out) {
+		map.print(out, RoadMap::orderByCityName);
 		var routePlanner = new RoutePlanner();
-		map.vertices(RoadMap::orderByCityName).forEach(start -> map.vertices(RoadMap::orderByCityName)//
-				.forEach(goal -> {
-					var route = routePlanner.computeRoute(map, start, goal);
-					out.println("%s nach %s: %s".formatted(start.city.name(), goal.city.name(), route));
-				}));
+		var cityNames = map.cityNames().toArray(String[]::new);
+		for (var start : cityNames) {
+			for (var goal : cityNames) {
+				var route = routePlanner.computeRoute(map, start, goal);
+				out.println("%s nach %s: %s".formatted(start, goal, route));
+			}
+		}
 	}
 }

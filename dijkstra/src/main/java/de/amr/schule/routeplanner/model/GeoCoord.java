@@ -28,5 +28,5 @@ package de.amr.schule.routeplanner.model;
  * @author Armin Reichert
  *
  */
-public record GeoCoordinate(float latitude, float longitude) {
+public record GeoCoord(float latitude, float longitude) {
 }

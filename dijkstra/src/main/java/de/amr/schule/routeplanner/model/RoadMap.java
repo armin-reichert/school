@@ -58,6 +58,10 @@ public class RoadMap extends Graph {
 		return vertices().map(RoadMapPoint.class::cast).sorted(order);
 	}
 
+	public Stream<String> cityNames() {
+		return vertices(RoadMap::orderByCityName).map(RoadMapPoint::getCity).map(City::name);
+	}
+
 	public void print(PrintStream out, Comparator<RoadMapPoint> order) {
 		vertices(order).forEach(out::println);
 		vertices(order).flatMap(Vertex::outgoingEdges)
