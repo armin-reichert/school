@@ -25,6 +25,7 @@ SOFTWARE.
 package de.amr.schule.routeplanner.ui;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -84,7 +85,8 @@ public class RoutePlannerWindow extends JFrame {
 		@Override
 		public void mouseMoved(MouseEvent e) {
 			var coord = getCoordAtPosition(e.getX(), e.getY());
-			LOGGER.info(coord);
+			var point = getPointAtCoord(coord);
+			LOGGER.info(coord + ":" + point);
 		}
 
 		@Override
@@ -101,6 +103,12 @@ public class RoutePlannerWindow extends JFrame {
 			float latitude = MAP_LATITUDE_TOP_LEFT + ty * (MAP_LATITUDE_BOTTOM_RIGHT - MAP_LATITUDE_TOP_LEFT);
 			return new GeoCoord(latitude, longitude);
 		}
+	}
+
+	private Point getPointAtCoord(GeoCoord coord) {
+		float tx = (coord.longitude() - MAP_LONGITUDE_TOP_LEFT) / (MAP_LONGITUDE_BOTTOM_RIGHT - MAP_LONGITUDE_TOP_LEFT);
+		float ty = (coord.latitude() - MAP_LATITUDE_BOTTOM_RIGHT) / (MAP_LATITUDE_TOP_LEFT - MAP_LATITUDE_BOTTOM_RIGHT);
+		return new Point((int) (tx * mapImage.getWidth()), (int) ((1 - ty) * mapImage.getHeight()));
 	}
 
 	private RoadMap map;
