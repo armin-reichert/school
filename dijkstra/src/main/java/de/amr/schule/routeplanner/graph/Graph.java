@@ -64,7 +64,7 @@ public class Graph {
 	}
 
 	/**
-	 * Computes the shortest path to any node from the given start vertex using the Dijkstra algorithm.
+	 * Computes the shortest path from the given start vertex to all vertices using the Dijkstra algorithm.
 	 * 
 	 * @param start start vertex
 	 */
