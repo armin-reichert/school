@@ -47,6 +47,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.amr.schule.routeplanner.RoutePlanner;
+import de.amr.schule.routeplanner.model.GeoCoord;
 import de.amr.schule.routeplanner.model.RoadMap;
 import net.miginfocom.swing.MigLayout;
 
@@ -56,6 +57,10 @@ import net.miginfocom.swing.MigLayout;
 public class RoutePlannerWindow extends JFrame {
 
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
+	private static final float MAP_LATITUDE_TOP_LEFT = 49.639407f;
+	private static final float MAP_LATITUDE_BOTTOM_RIGHT = 49.111948f;
+	private static final float MAP_LONGITUDE_TOP_LEFT = 6.356f;
+	private static final float MAP_LONGITUDE_BOTTOM_RIGHT = 7.402f;
 
 	private class ComputeRouteAction extends AbstractAction {
 
@@ -78,12 +83,23 @@ public class RoutePlannerWindow extends JFrame {
 	private class MapMouseHandler extends MouseAdapter {
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			LOGGER.info(e);
+			var coord = getCoordAtPosition(e.getX(), e.getY());
+			LOGGER.info(coord);
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			LOGGER.info(e);
+		}
+
+		private GeoCoord getCoordAtPosition(int x, int y) {
+			int width = mapImage.getWidth();
+			int height = mapImage.getHeight();
+			float tx = (float) x / width;
+			float ty = (float) y / height;
+			float longitude = MAP_LONGITUDE_TOP_LEFT + tx * (MAP_LONGITUDE_BOTTOM_RIGHT - MAP_LONGITUDE_TOP_LEFT);
+			float latitude = MAP_LATITUDE_TOP_LEFT + ty * (MAP_LATITUDE_BOTTOM_RIGHT - MAP_LATITUDE_TOP_LEFT);
+			return new GeoCoord(latitude, longitude);
 		}
 	}
 
@@ -174,4 +190,5 @@ public class RoutePlannerWindow extends JFrame {
 	public JList<String> getListRoute() {
 		return listRoute;
 	}
+
 }
