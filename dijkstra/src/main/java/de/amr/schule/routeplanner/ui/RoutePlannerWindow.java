@@ -27,6 +27,7 @@ package de.amr.schule.routeplanner.ui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractListModel;
 import javax.swing.Action;
@@ -105,8 +106,8 @@ public class RoutePlannerWindow extends JFrame {
 		panelStartGoal.add(comboGoal, "cell 1 1,alignx left,aligny center");
 		comboGoal.setAction(actionComputeRoute);
 
-		JPanel panelMapImage = new JPanel();
-		panelMapImage.setBackground(new Color(0, 128, 128));
+		ImagePanel panelMapImage = new ImagePanel();
+		panelMapImage.setBackground(new Color(255, 255, 255));
 		getContentPane().add(panelMapImage, "cell 1 0 1 2,grow");
 		panelMapImage.setLayout(new MigLayout("", "[]", "[]"));
 
@@ -127,6 +128,12 @@ public class RoutePlannerWindow extends JFrame {
 				return values[index];
 			}
 		});
+
+		try {
+			panelMapImage.setImage(ImageIO.read(getClass().getResource("/saarlandkarte.jpg")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setMap(RoadMap map) {
