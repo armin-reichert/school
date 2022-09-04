@@ -26,6 +26,8 @@ package de.amr.schule.routeplanner.ui;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -41,6 +43,9 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.amr.schule.routeplanner.RoutePlanner;
 import de.amr.schule.routeplanner.model.RoadMap;
 import net.miginfocom.swing.MigLayout;
@@ -49,6 +54,8 @@ import net.miginfocom.swing.MigLayout;
  * @author Armin Reichert
  */
 public class RoutePlannerWindow extends JFrame {
+
+	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
 	private class ComputeRouteAction extends AbstractAction {
 
@@ -68,6 +75,18 @@ public class RoutePlannerWindow extends JFrame {
 		}
 	}
 
+	private class MapMouseHandler extends MouseAdapter {
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			LOGGER.info(e);
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			LOGGER.info(e);
+		}
+	}
+
 	private RoadMap map;
 	private final RoutePlanner routePlanner = new RoutePlanner();
 
@@ -75,6 +94,7 @@ public class RoutePlannerWindow extends JFrame {
 	private JComboBox<String> comboStart;
 	private JComboBox<String> comboGoal;
 	private JList<String> listRoute;
+	private ImagePanel mapImage;
 
 	public RoutePlannerWindow() {
 		setTitle("Route Planner");
@@ -106,11 +126,14 @@ public class RoutePlannerWindow extends JFrame {
 		panelStartGoal.add(comboGoal, "cell 1 1,alignx left,aligny center");
 		comboGoal.setAction(actionComputeRoute);
 
-		ImagePanel panelMapImage = new ImagePanel();
-		panelMapImage.setBackground(new Color(255, 255, 255));
-		getContentPane().add(panelMapImage, "cell 1 0 1 2,grow");
-		panelMapImage.setLayout(new MigLayout("", "[]", "[]"));
+		mapImage = new ImagePanel();
+		mapImage.setBackground(new Color(255, 255, 255));
+		getContentPane().add(mapImage, "cell 1 0 1 2,grow");
+		mapImage.setLayout(new MigLayout("", "[]", "[]"));
 
+		var mouseHandler = new MapMouseHandler();
+		mapImage.addMouseListener(mouseHandler);
+		mapImage.addMouseMotionListener(mouseHandler);
 		listRoute = new JList<>();
 		listRoute.setVisibleRowCount(20);
 		listRoute.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -130,7 +153,7 @@ public class RoutePlannerWindow extends JFrame {
 		});
 
 		try {
-			panelMapImage.setImage(ImageIO.read(getClass().getResource("/saarlandkarte.jpg")));
+			mapImage.setImage(ImageIO.read(getClass().getResource("/saarlandkarte.jpg")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
