@@ -37,7 +37,7 @@ import de.amr.schule.routeplanner.graph.Vertex;
 public class RoadMap extends Graph {
 
 	public static int orderByCityName(RoadMapPoint v1, RoadMapPoint v2) {
-		return v1.getCity().name().compareTo(v2.getCity().name());
+		return v1.city().name().compareTo(v2.city().name());
 	}
 
 	public RoadMapPoint vertex(City city) {
@@ -48,6 +48,10 @@ public class RoadMap extends Graph {
 		var vertex = new RoadMapPoint(city);
 		addVertex(city.name(), vertex);
 		return vertex;
+	}
+
+	public void street(RoadMapPoint either, RoadMapPoint other, float cost) {
+		addEdge(either, other, cost);
 	}
 
 	public void street(City eitherCity, City otherCity, float cost) {
@@ -63,7 +67,7 @@ public class RoadMap extends Graph {
 	}
 
 	public Stream<City> cities() {
-		return vertices(RoadMap::orderByCityName).map(RoadMapPoint::getCity);
+		return vertices(RoadMap::orderByCityName).map(RoadMapPoint::city);
 	}
 
 	public void print(PrintStream out, Comparator<RoadMapPoint> order) {

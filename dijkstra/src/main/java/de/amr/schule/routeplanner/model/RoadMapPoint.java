@@ -37,7 +37,7 @@ public class RoadMapPoint extends Vertex {
 		this.city = city;
 	}
 
-	public City getCity() {
+	public City city() {
 		return city;
 	}
 

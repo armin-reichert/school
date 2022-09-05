@@ -83,7 +83,7 @@ public class RoutePlannerWindow extends JFrame {
 			String goalCity = (String) getComboGoal().getSelectedItem();
 			var route = routePlanner.computeRoute(map, startCity, goalCity);
 			var data = new DefaultListModel<String>();
-			var routeDesc = route.stream().map(point -> "%s %.1f km".formatted(point.getCity().name(), point.cost)).toList();
+			var routeDesc = route.stream().map(point -> "%s %.1f km".formatted(point.city().name(), point.cost)).toList();
 			data.addAll(routeDesc);
 			getListRoute().setModel(data);
 		}
@@ -271,9 +271,9 @@ public class RoutePlannerWindow extends JFrame {
 		String goalCity = (String) getComboGoal().getSelectedItem();
 		var route = routePlanner.computeRoute(map, startCity, goalCity);
 		for (int i = 0; i < route.size(); ++i) {
-			var p = getPointAtCoord(route.get(i).getCity().coord());
+			var p = getPointAtCoord(route.get(i).city().coord());
 			if (i > 0) {
-				var q = getPointAtCoord(route.get(i - 1).getCity().coord());
+				var q = getPointAtCoord(route.get(i - 1).city().coord());
 				g.setColor(Color.GRAY);
 				g.drawLine(p.x, p.y, q.x, q.y);
 			}
