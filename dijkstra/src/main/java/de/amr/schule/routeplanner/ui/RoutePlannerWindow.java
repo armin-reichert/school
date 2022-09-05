@@ -30,6 +30,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -62,6 +64,7 @@ import net.miginfocom.swing.MigLayout;
 public class RoutePlannerWindow extends JFrame {
 
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
+
 	private static final float MAP_LATITUDE_TOP_LEFT = 49.639407f;
 	private static final float MAP_LATITUDE_BOTTOM_RIGHT = 49.111948f;
 	private static final float MAP_LONGITUDE_TOP_LEFT = 6.356f;
@@ -86,12 +89,21 @@ public class RoutePlannerWindow extends JFrame {
 		}
 	}
 
+	private class MapKeyboardHandler extends KeyAdapter {
+		@Override
+		public void keyPressed(KeyEvent e) {
+			shiftPressed = e.isShiftDown();
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			shiftPressed = e.isShiftDown();
+		}
+	}
+
 	private class MapMouseHandler extends MouseAdapter {
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			var coord = getCoordAtPosition(e.getX(), e.getY());
-			var nearestCity = getNearestCity(coord);
-			LOGGER.info("Mouse at coord %s. Nearest city: %s".formatted(coord, nearestCity));
 			lastMousePosition = e.getPoint();
 			mapImage.repaint();
 		}
@@ -108,6 +120,7 @@ public class RoutePlannerWindow extends JFrame {
 				}
 			}
 			lastMousePosition = e.getPoint();
+			mapImage.requestFocus();
 			mapImage.repaint();
 		}
 	}
@@ -121,6 +134,7 @@ public class RoutePlannerWindow extends JFrame {
 	private JList<String> listRoute;
 	private ImagePanel mapImage;
 	private Point lastMousePosition;
+	private boolean shiftPressed;
 
 	public RoutePlannerWindow() {
 		setTitle("Route Planner");
@@ -162,6 +176,10 @@ public class RoutePlannerWindow extends JFrame {
 		var mouseHandler = new MapMouseHandler();
 		mapImage.addMouseListener(mouseHandler);
 		mapImage.addMouseMotionListener(mouseHandler);
+
+		var keyHandler = new MapKeyboardHandler();
+		mapImage.addKeyListener(keyHandler);
+
 		listRoute = new JList<>();
 		listRoute.setVisibleRowCount(20);
 		listRoute.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -265,7 +283,7 @@ public class RoutePlannerWindow extends JFrame {
 			} else if (city.name().equals(getComboGoal().getSelectedItem())) {
 				circle(g, p, Color.BLUE, 6);
 			} else if (city == nearestCity) {
-				circle(g, p, Color.GREEN, 3);
+				circle(g, p, shiftPressed ? Color.BLUE : Color.GREEN, 8);
 			} else {
 				circle(g, p, Color.BLACK, 3);
 			}
