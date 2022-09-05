@@ -54,11 +54,11 @@ public class RoutePlannerApp {
 			e.printStackTrace();
 		}
 		var window = new RoutePlannerWindow();
-		window.setMap(map);
 		var cityNames = map.cityNames().toArray(String[]::new);
 		window.getComboStart().setModel(new DefaultComboBoxModel<>(cityNames));
 		window.getComboGoal().setModel(new DefaultComboBoxModel<>(cityNames));
 		window.getListRoute().setModel(new DefaultListModel<>());
+		window.setMap(map);
 	}
 
 	private static void printAllRoutes(RoadMap map, PrintStream out) {

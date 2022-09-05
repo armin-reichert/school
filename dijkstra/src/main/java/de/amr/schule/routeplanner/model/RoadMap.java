@@ -59,7 +59,11 @@ public class RoadMap extends Graph {
 	}
 
 	public Stream<String> cityNames() {
-		return vertices(RoadMap::orderByCityName).map(RoadMapPoint::getCity).map(City::name);
+		return cities().map(City::name);
+	}
+
+	public Stream<City> cities() {
+		return vertices(RoadMap::orderByCityName).map(RoadMapPoint::getCity);
 	}
 
 	public void print(PrintStream out, Comparator<RoadMapPoint> order) {

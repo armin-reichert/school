@@ -25,7 +25,9 @@ SOFTWARE.
 package de.amr.schule.routeplanner.ui;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.function.Consumer;
 
 import javax.swing.JPanel;
 
@@ -35,6 +37,8 @@ import javax.swing.JPanel;
 public class ImagePanel extends JPanel {
 
 	private BufferedImage image;
+	private Consumer<Graphics2D> fnCustomDraw = g -> {
+	};
 
 	public void setImage(BufferedImage image) {
 		this.image = image;
@@ -44,11 +48,16 @@ public class ImagePanel extends JPanel {
 		return image;
 	}
 
+	public void setFnCustomDraw(Consumer<Graphics2D> fnCustomDraw) {
+		this.fnCustomDraw = fnCustomDraw;
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (image != null) {
 			g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
 		}
+		fnCustomDraw.accept((Graphics2D) g);
 	}
 }
