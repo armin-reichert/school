@@ -267,6 +267,17 @@ public class RoutePlannerWindow extends JFrame {
 
 	private void drawMap(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		String startCity = (String) getComboStart().getSelectedItem();
+		String goalCity = (String) getComboGoal().getSelectedItem();
+		var route = routePlanner.computeRoute(map, startCity, goalCity);
+		for (int i = 0; i < route.size(); ++i) {
+			var p = getPointAtCoord(route.get(i).getCity().coord());
+			if (i > 0) {
+				var q = getPointAtCoord(route.get(i - 1).getCity().coord());
+				g.setColor(Color.GRAY);
+				g.drawLine(p.x, p.y, q.x, q.y);
+			}
+		}
 		City nearestCity = null;
 		if (lastMousePosition != null) {
 			GeoCoord coord = getCoordAtPosition(lastMousePosition.x, lastMousePosition.y);

@@ -37,7 +37,7 @@ import de.amr.schule.routeplanner.graph.Vertex;
 public class RoadMap extends Graph {
 
 	public static int orderByCityName(RoadMapPoint v1, RoadMapPoint v2) {
-		return v1.city.name().compareTo(v2.city.name());
+		return v1.getCity().name().compareTo(v2.getCity().name());
 	}
 
 	public RoadMapPoint vertex(City city) {

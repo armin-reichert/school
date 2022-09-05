@@ -31,7 +31,7 @@ import de.amr.schule.routeplanner.graph.Vertex;
  */
 public class RoadMapPoint extends Vertex {
 
-	public final City city;
+	private final City city;
 
 	public RoadMapPoint(City city) {
 		this.city = city;
