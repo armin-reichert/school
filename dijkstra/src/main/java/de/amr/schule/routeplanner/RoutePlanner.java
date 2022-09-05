@@ -27,6 +27,7 @@ package de.amr.schule.routeplanner;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.amr.schule.routeplanner.graph.PathFinder;
 import de.amr.schule.routeplanner.graph.Vertex;
 import de.amr.schule.routeplanner.model.RoadMap;
 import de.amr.schule.routeplanner.model.RoadMapPoint;
@@ -52,7 +53,7 @@ public class RoutePlanner {
 		}
 		if (start != currentStartVertex) {
 			currentStartVertex = start;
-			map.computeShortestPaths(start);
+			PathFinder.computeShortestPaths(map, start);
 		}
 		return buildRoute(goal);
 	}

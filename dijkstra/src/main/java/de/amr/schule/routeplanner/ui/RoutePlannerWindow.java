@@ -49,9 +49,6 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import de.amr.schule.routeplanner.RoutePlanner;
 import de.amr.schule.routeplanner.model.City;
 import de.amr.schule.routeplanner.model.GeoCoord;
@@ -62,8 +59,6 @@ import net.miginfocom.swing.MigLayout;
  * @author Armin Reichert
  */
 public class RoutePlannerWindow extends JFrame {
-
-	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
 	private static final float MAP_LATITUDE_TOP_LEFT = 49.639407f;
 	private static final float MAP_LATITUDE_BOTTOM_RIGHT = 49.111948f;
