@@ -81,6 +81,7 @@ public class RoutePlannerWindow extends JFrame {
 			var routeDesc = route.stream().map(point -> "%s %.1f km".formatted(point.city().name(), point.cost)).toList();
 			data.addAll(routeDesc);
 			getListRoute().setModel(data);
+			mapImage.repaint();
 		}
 	}
 
