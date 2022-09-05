@@ -40,13 +40,13 @@ public class RoutePlanner {
 
 	private Vertex currentStartVertex;
 
-	public List<String> computeRoute(RoadMap map, String startCity, String goalCity) {
+	public List<RoadMapPoint> computeRoute(RoadMap map, String startCity, String goalCity) {
 		var start = map.vertex(startCity).orElse(null);
 		var goal = map.vertex(goalCity).orElse(null);
 		return computeRoute(map, (RoadMapPoint) start, (RoadMapPoint) goal);
 	}
 
-	public List<String> computeRoute(RoadMap map, RoadMapPoint start, RoadMapPoint goal) {
+	public List<RoadMapPoint> computeRoute(RoadMap map, RoadMapPoint start, RoadMapPoint goal) {
 		if (start == null || goal == null) {
 			return List.of();
 		}
@@ -57,10 +57,10 @@ public class RoutePlanner {
 		return buildRoute(goal);
 	}
 
-	private List<String> buildRoute(RoadMapPoint goal) {
-		var route = new LinkedList<String>();
+	private List<RoadMapPoint> buildRoute(RoadMapPoint goal) {
+		var route = new LinkedList<RoadMapPoint>();
 		for (RoadMapPoint v = goal; v != null; v = (RoadMapPoint) v.parent) {
-			route.addFirst(v.city.name() + " " + v.cost + " km");
+			route.addFirst(v);
 		}
 		return route;
 	}
