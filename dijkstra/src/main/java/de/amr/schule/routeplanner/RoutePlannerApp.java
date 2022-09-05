@@ -68,7 +68,8 @@ public class RoutePlannerApp {
 		for (var start : cityNames) {
 			for (var goal : cityNames) {
 				var route = routePlanner.computeRoute(map, start, goal);
-				out.println("%s nach %s: %s".formatted(start, goal, route));
+				var routeDesc = route.stream().map(rmp -> "%s %.1f km".formatted(rmp.city().name(), rmp.cost)).toList();
+				out.println("%s nach %s: %s".formatted(start, goal, routeDesc));
 			}
 		}
 	}

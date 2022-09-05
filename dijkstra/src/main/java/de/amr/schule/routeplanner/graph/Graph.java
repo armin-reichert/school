@@ -69,7 +69,7 @@ public class Graph {
 	 * @param start start vertex
 	 */
 	public void computeShortestPaths(Vertex start) {
-		LOGGER.info(() -> "Compute shortest paths starting at %s".formatted((start.key())));
+		LOGGER.info(() -> "Compute shortest paths starting at %s".formatted(start));
 		var q = new PriorityQueue<Vertex>((v1, v2) -> Float.compare(v1.cost, v2.cost));
 		vertices().forEach(v -> {
 			v.parent = null;

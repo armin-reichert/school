@@ -72,8 +72,9 @@ public class RoadMap extends Graph {
 
 	public void print(PrintStream out, Comparator<RoadMapPoint> order) {
 		vertices(order).forEach(out::println);
-		vertices(order).flatMap(Vertex::outgoingEdges)
-				.map(edge -> "Edge[%s -> %s %.1f km]".formatted(edge.from().key(), edge.to().key(), edge.cost()))
+		vertices(order)
+				.flatMap(Vertex::outgoingEdges).map(edge -> "Edge[%s -> %s %.1f km]"
+						.formatted(((RoadMapPoint) edge.from()).key(), ((RoadMapPoint) edge.to()).key(), edge.cost()))
 				.forEach(out::println);
 	}
 }

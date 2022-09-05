@@ -46,8 +46,4 @@ public class Vertex {
 	public Stream<Edge> outgoingEdges() {
 		return outgoingEdgeList.stream();
 	}
-
-	public String key() {
-		return this + "";
-	}
 }

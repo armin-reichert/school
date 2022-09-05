@@ -41,14 +41,13 @@ public class RoadMapPoint extends Vertex {
 		return city;
 	}
 
-	@Override
 	public String key() {
 		return city.name();
 	}
 
 	@Override
 	public String toString() {
-		var parentText = parent != null ? parent.key() : "none";
+		var parentText = parent != null ? ((RoadMapPoint) parent).key() : "none";
 		var costText = cost == Float.MAX_VALUE ? "indefinite" : "%.1f".formatted(cost);
 		var visitedText = visited ? "visited" : "unvisited";
 		return "Vertex[city=%s, parent=%s, cost=%s, %s]".formatted(city, parentText, costText, visitedText);
