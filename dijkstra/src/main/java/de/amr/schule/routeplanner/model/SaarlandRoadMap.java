@@ -26,11 +26,10 @@ package de.amr.schule.routeplanner.model;
 
 /**
  * @author Armin Reichert
- *
  */
-public class SaarlandMap extends RoadMap {
+public class SaarlandRoadMap extends RoadMap {
 
-	public SaarlandMap() {
+	public SaarlandRoadMap() {
 		var los = mapLocation("Losheim am See", 49.51f, 6.75f);
 		var wad = mapLocation("Wadern", 49.534f, 6.89f);
 		var mzg = mapLocation("Merzig", 49.449f, 6.643f);
@@ -38,20 +37,20 @@ public class SaarlandMap extends RoadMap {
 		var leb = mapLocation("Lebach", 49.41f, 6.91f);
 		var heu = mapLocation("Heusweiler", 49.338f, 6.929f);
 		var sls = mapLocation("Saarlouis", 49.313f, 6.752f);
-		var sb = mapLocation("Saarbrücken", 49.238f, 6.997f);
+		var sbr = mapLocation("Saarbrücken", 49.238f, 6.997f);
 		var wnd = mapLocation("St. Wendel", 49.468f, 7.167f);
-		var nk = mapLocation("Neunkirchen", 49.349f, 7.177f);
+		var nkr = mapLocation("Neunkirchen", 49.349f, 7.177f);
 		var epp = mapLocation("Eppelborn", 49.409f, 6.964f);
 		var hom = mapLocation("Homburg", 49.329f, 7.339f);
 		var igb = mapLocation("St. Ingbert", 49.278f, 7.112f);
 		var tho = mapLocation("Tholey", 49.482f, 7.032f);
 
-		street(epp, nk, 21.5f);
-		street(epp, sb, 31.0f);
+		street(epp, nkr, 21.5f);
+		street(epp, sbr, 31.0f);
 		street(epp, heu, 10.0f);
 		street(epp, sls, 24.0f);
-		street(heu, sb, 14.5f);
-		street(heu, nk, 24.0f);
+		street(heu, sbr, 14.5f);
+		street(heu, nkr, 24.0f);
 		street(heu, hom, 37.5f);
 		street(igb, hom, 22.0f);
 		street(leb, epp, 8f);
@@ -61,15 +60,15 @@ public class SaarlandMap extends RoadMap {
 		street(los, wad, 15.0f);
 		street(los, slz, 17.0f);
 		street(mzg, sls, 23.0f);
-		street(nk, hom, 19.0f);
-		street(sb, igb, 11.0f);
+		street(nkr, hom, 19.0f);
+		street(sbr, igb, 11.0f);
 		street(slz, wad, 18.0f);
 		street(slz, leb, 5f);
 		street(sls, slz, 25.0f);
-		street(sls, sb, 25.0f);
+		street(sls, sbr, 25.0f);
 		street(tho, wnd, 13.0f);
 		street(wad, tho, 19.5f);
-		street(wnd, nk, 19.0f);
+		street(wnd, nkr, 19.0f);
 		street(wnd, hom, 29.0f);
 	}
 }

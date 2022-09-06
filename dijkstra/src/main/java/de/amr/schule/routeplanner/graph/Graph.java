@@ -37,6 +37,9 @@ public class Graph {
 	private final Map<Object, Vertex> vertexByKey = new HashMap<>();
 
 	public void addVertex(Object key, Vertex vertex) {
+		if (vertexByKey.containsKey(key)) {
+			throw new IllegalArgumentException("Vertex with key '" + key + "' already exists.");
+		}
 		vertexByKey.put(key, vertex);
 	}
 
