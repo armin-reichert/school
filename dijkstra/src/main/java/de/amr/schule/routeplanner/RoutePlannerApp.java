@@ -63,11 +63,11 @@ public class RoutePlannerApp {
 
 	private static void printAllRoutes(RoadMap map, PrintStream out) {
 		map.print(out, RoadMap::orderByName);
-		var routePlanner = new RoutePlanner();
+		var routePlanner = new RoutePlanner(map);
 		var locationNames = map.locationNames().toArray(String[]::new);
 		for (var start : locationNames) {
 			for (var goal : locationNames) {
-				var route = routePlanner.computeRoute(map, start, goal);
+				var route = routePlanner.computeRoute(start, goal);
 				var routeDesc = route.stream().map(point -> "%s %.1f km".formatted(point.name(), routePlanner.cost(point)))
 						.toList();
 				out.println("%s nach %s: %s".formatted(start, goal, routeDesc));

@@ -31,6 +31,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -78,7 +79,7 @@ public class RoutePlannerWindow extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			String startCity = (String) getComboStart().getSelectedItem();
 			String goalCity = (String) getComboGoal().getSelectedItem();
-			var route = routePlanner.computeRoute(map, startCity, goalCity);
+			var route = routePlanner.computeRoute(startCity, goalCity);
 			var data = new DefaultListModel<String>();
 			var routeDesc = route.stream().map(point -> "%s %.1f km".formatted(point.name(), routePlanner.cost(point)))
 					.toList();
@@ -89,7 +90,7 @@ public class RoutePlannerWindow extends JFrame {
 	}
 
 	private RoadMap map;
-	private final RoutePlanner routePlanner = new RoutePlanner();
+	private RoutePlanner routePlanner;
 
 	private final Action actionComputeRoute = new ComputeRouteAction();
 	private JComboBox<String> comboStart;
@@ -172,7 +173,8 @@ public class RoutePlannerWindow extends JFrame {
 	}
 
 	public void setMap(RoadMap map) {
-		this.map = map;
+		this.map = Objects.requireNonNull(map);
+		this.routePlanner = new RoutePlanner(map);
 		var locationNames = map.locationNames().toList();
 		getComboStart().setSelectedItem(locationNames.get(0));
 		getComboGoal().setSelectedItem(locationNames.get(locationNames.size() - 1));
@@ -215,7 +217,7 @@ public class RoutePlannerWindow extends JFrame {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		String startCity = (String) getComboStart().getSelectedItem();
 		String goalCity = (String) getComboGoal().getSelectedItem();
-		var route = routePlanner.computeRoute(map, startCity, goalCity);
+		var route = routePlanner.computeRoute(startCity, goalCity);
 		for (int i = 0; i < route.size(); ++i) {
 			var p = getPointAtCoord(route.get(i).coord());
 			if (i > 0) {
