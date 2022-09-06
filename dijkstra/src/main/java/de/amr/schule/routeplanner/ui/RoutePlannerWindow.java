@@ -30,7 +30,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.imageio.ImageIO;
@@ -89,31 +88,6 @@ public class RoutePlannerWindow extends JFrame {
 		}
 	}
 
-	private class MapMouseHandler extends MouseAdapter {
-		@Override
-		public void mouseMoved(MouseEvent e) {
-			mapImage.requestFocus();
-			lastMousePosition = e.getPoint();
-			mapImage.repaint();
-		}
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			var coord = getCoordAtPosition(e.getX(), e.getY());
-			var nearestCity = getNearestCity(coord);
-			if (nearestCity != null) {
-				if (e.isShiftDown()) {
-					getComboGoal().setSelectedItem(nearestCity.name());
-				} else {
-					getComboStart().setSelectedItem(nearestCity.name());
-				}
-			}
-			lastMousePosition = e.getPoint();
-			mapImage.requestFocus();
-			mapImage.repaint();
-		}
-	}
-
 	private RoadMap map;
 	private final RoutePlanner routePlanner = new RoutePlanner();
 
@@ -160,17 +134,13 @@ public class RoutePlannerWindow extends JFrame {
 		mapImage.setBackground(new Color(255, 255, 255));
 		getContentPane().add(mapImage, "cell 1 0 1 2,grow");
 		mapImage.setLayout(new MigLayout("", "[]", "[]"));
-		mapImage.setFnCustomDraw(this::drawMap);
-
-		var mouseHandler = new MapMouseHandler();
-		mapImage.addMouseListener(mouseHandler);
-		mapImage.addMouseMotionListener(mouseHandler);
-
+		mapImage.setOnRepaint(this::onRepaint);
+		mapImage.setOnMouseClicked(this::onMouseClicked);
+		mapImage.setOnMouseMoved(this::onMouseMoved);
 		mapImage.setOnKeyPressed(e -> {
 			shiftPressed = e.isShiftDown();
 			mapImage.repaint();
 		});
-
 		mapImage.setOnKeyReleased(e -> {
 			shiftPressed = e.isShiftDown();
 			mapImage.repaint();
@@ -220,6 +190,63 @@ public class RoutePlannerWindow extends JFrame {
 		return listRoute;
 	}
 
+	private void onMouseMoved(MouseEvent e) {
+		mapImage.requestFocus();
+		lastMousePosition = e.getPoint();
+		mapImage.repaint();
+	}
+
+	private void onMouseClicked(MouseEvent e) {
+		var coord = getCoordAtPosition(e.getX(), e.getY());
+		var nearestCity = getNearestCity(coord);
+		if (nearestCity != null) {
+			if (e.isShiftDown()) {
+				getComboGoal().setSelectedItem(nearestCity.name());
+			} else {
+				getComboStart().setSelectedItem(nearestCity.name());
+			}
+		}
+		lastMousePosition = e.getPoint();
+		mapImage.requestFocus();
+		mapImage.repaint();
+	}
+
+	private void onRepaint(Graphics2D g) {
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		String startCity = (String) getComboStart().getSelectedItem();
+		String goalCity = (String) getComboGoal().getSelectedItem();
+		var route = routePlanner.computeRoute(map, startCity, goalCity);
+		for (int i = 0; i < route.size(); ++i) {
+			var p = getPointAtCoord(route.get(i).coord());
+			if (i > 0) {
+				var q = getPointAtCoord(route.get(i - 1).coord());
+				g.setColor(Color.RED);
+				g.drawLine(p.x, p.y, q.x, q.y);
+			}
+		}
+		RoadMapLocation nearestLocation = null;
+		if (lastMousePosition != null) {
+			GeoCoord coord = getCoordAtPosition(lastMousePosition.x, lastMousePosition.y);
+			g.setColor(Color.BLUE);
+			g.setFont(new Font("Sans", Font.PLAIN, 10));
+			g.drawString("%.3f %.3f".formatted(coord.latitude(), coord.longitude()), lastMousePosition.x,
+					lastMousePosition.y);
+			nearestLocation = getNearestCity(coord);
+		}
+		for (var location : map.locations().toList()) {
+			Point p = getPointAtCoord(location.coord());
+			if (location.name().equals(getComboStart().getSelectedItem())) {
+				circle(g, p, Color.GREEN, 6);
+			} else if (location.name().equals(getComboGoal().getSelectedItem())) {
+				circle(g, p, Color.BLUE, 6);
+			} else if (location == nearestLocation) {
+				circle(g, p, shiftPressed ? Color.BLUE : Color.GREEN, 8);
+			} else {
+				circle(g, p, Color.BLACK, 3);
+			}
+		}
+	}
+
 	private Point getPointAtCoord(GeoCoord coord) {
 		float tx = (coord.longitude() - MAP_LONGITUDE_TOP_LEFT) / (MAP_LONGITUDE_BOTTOM_RIGHT - MAP_LONGITUDE_TOP_LEFT);
 		float ty = (coord.latitude() - MAP_LATITUDE_BOTTOM_RIGHT) / (MAP_LATITUDE_TOP_LEFT - MAP_LATITUDE_BOTTOM_RIGHT);
@@ -259,41 +286,5 @@ public class RoutePlannerWindow extends JFrame {
 	private void circle(Graphics2D g, Point p, Color color, int radius) {
 		g.setColor(color);
 		g.fillOval(p.x - radius, p.y - radius, 2 * radius, 2 * radius);
-	}
-
-	private void drawMap(Graphics2D g) {
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		String startCity = (String) getComboStart().getSelectedItem();
-		String goalCity = (String) getComboGoal().getSelectedItem();
-		var route = routePlanner.computeRoute(map, startCity, goalCity);
-		for (int i = 0; i < route.size(); ++i) {
-			var p = getPointAtCoord(route.get(i).coord());
-			if (i > 0) {
-				var q = getPointAtCoord(route.get(i - 1).coord());
-				g.setColor(Color.RED);
-				g.drawLine(p.x, p.y, q.x, q.y);
-			}
-		}
-		RoadMapLocation nearestLocation = null;
-		if (lastMousePosition != null) {
-			GeoCoord coord = getCoordAtPosition(lastMousePosition.x, lastMousePosition.y);
-			g.setColor(Color.BLUE);
-			g.setFont(new Font("Sans", Font.PLAIN, 10));
-			g.drawString("%.3f %.3f".formatted(coord.latitude(), coord.longitude()), lastMousePosition.x,
-					lastMousePosition.y);
-			nearestLocation = getNearestCity(coord);
-		}
-		for (var location : map.locations().toList()) {
-			Point p = getPointAtCoord(location.coord());
-			if (location.name().equals(getComboStart().getSelectedItem())) {
-				circle(g, p, Color.GREEN, 6);
-			} else if (location.name().equals(getComboGoal().getSelectedItem())) {
-				circle(g, p, Color.BLUE, 6);
-			} else if (location == nearestLocation) {
-				circle(g, p, shiftPressed ? Color.BLUE : Color.GREEN, 8);
-			} else {
-				circle(g, p, Color.BLACK, 3);
-			}
-		}
 	}
 }

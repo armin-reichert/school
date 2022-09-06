@@ -28,6 +28,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 
@@ -50,10 +52,18 @@ public class ImagePanel extends JPanel {
 	};
 
 	private Consumer<KeyEvent> onKeyReleased = e -> {
-		LOGGER.info("onKeyRleased(%s)".formatted(e));
+		LOGGER.info("onKeyReleased(%s)".formatted(e));
 	};
 
-	private Consumer<Graphics2D> fnCustomDraw = g -> {
+	private Consumer<MouseEvent> onMouseMoved = e -> {
+		LOGGER.info("onMouseMoved(%s)".formatted(e));
+	};
+
+	private Consumer<MouseEvent> onMouseClicked = e -> {
+		LOGGER.info("onMouseClicked(%s)".formatted(e));
+	};
+
+	private Consumer<Graphics2D> onRepaint = g -> {
 	};
 
 	public ImagePanel() {
@@ -68,6 +78,18 @@ public class ImagePanel extends JPanel {
 				onKeyReleased.accept(e);
 			}
 		});
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				onMouseClicked.accept(e);
+			}
+		});
+		addMouseMotionListener(new MouseAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				onMouseMoved.accept(e);
+			}
+		});
 	}
 
 	public void setImage(BufferedImage image) {
@@ -78,8 +100,8 @@ public class ImagePanel extends JPanel {
 		return image;
 	}
 
-	public void setFnCustomDraw(Consumer<Graphics2D> fnCustomDraw) {
-		this.fnCustomDraw = fnCustomDraw;
+	public void setOnRepaint(Consumer<Graphics2D> onRepaint) {
+		this.onRepaint = onRepaint;
 	}
 
 	public void setOnKeyPressed(Consumer<KeyEvent> onKeyPressed) {
@@ -90,12 +112,20 @@ public class ImagePanel extends JPanel {
 		this.onKeyReleased = onKeyReleased;
 	}
 
+	public void setOnMouseClicked(Consumer<MouseEvent> onMouseClicked) {
+		this.onMouseClicked = onMouseClicked;
+	}
+
+	public void setOnMouseMoved(Consumer<MouseEvent> onMouseMoved) {
+		this.onMouseMoved = onMouseMoved;
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		if (image != null) {
 			g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
 		}
-		fnCustomDraw.accept((Graphics2D) g);
+		onRepaint.accept((Graphics2D) g);
 	}
 }
