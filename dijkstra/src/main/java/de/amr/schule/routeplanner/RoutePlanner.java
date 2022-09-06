@@ -25,12 +25,10 @@ SOFTWARE.
 package de.amr.schule.routeplanner;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,7 +49,6 @@ public class RoutePlanner {
 
 	private final Map<Vertex, Float> cost = new HashMap<>();
 	private final Map<Vertex, Vertex> parent = new HashMap<>();
-	private final Set<Vertex> visited = new HashSet<>();
 	private final PriorityQueue<Vertex> q = new PriorityQueue<>((v1, v2) -> Float.compare(cost.get(v1), cost.get(v2)));
 	private Vertex currentStartVertex;
 
@@ -95,7 +92,6 @@ public class RoutePlanner {
 		q.clear();
 		cost.clear();
 		parent.clear();
-		visited.clear();
 		LOGGER.info(() -> "Compute shortest paths starting at %s".formatted(start));
 		g.vertices().forEach(v -> {
 			parent.put(v, null);
@@ -104,20 +100,17 @@ public class RoutePlanner {
 		cost.put(start, 0f);
 		q.add(start);
 		while (!q.isEmpty()) {
-			var u = q.poll(); // min cost vertex in queue
-			if (!visited.contains(u)) {
-				visited.add(u);
-				LOGGER.trace(() -> "%s visited".formatted(u));
-				u.outgoingEdges().forEach(edge -> {
-					var v = edge.to();
-					var altCost = cost.get(u) + edge.cost();
-					if (altCost < cost.get(v)) {
-						cost.put(v, altCost);
-						parent.put(v, u);
-						q.add(v);
-					}
-				});
-			}
+			var u = q.poll(); // extract min cost vertex from queue
+			u.outgoingEdges().forEach(edge -> {
+				var altCost = cost.get(u) + edge.cost();
+				var v = edge.to();
+				if (altCost < cost.get(v)) {
+					cost.put(v, altCost);
+					parent.put(v, u);
+					q.remove(v); // decrease key is not supported by Java priority queue
+					q.add(v);
+				}
+			});
 		}
 	}
 }
