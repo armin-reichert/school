@@ -49,16 +49,21 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.amr.schule.routeplanner.RoutePlanner;
 import de.amr.schule.routeplanner.model.GeoCoord;
-import de.amr.schule.routeplanner.model.RoadMapLocation;
 import de.amr.schule.routeplanner.model.RoadMap;
+import de.amr.schule.routeplanner.model.RoadMapLocation;
 import net.miginfocom.swing.MigLayout;
 
 /**
  * @author Armin Reichert
  */
 public class RoutePlannerWindow extends JFrame {
+
+	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
 	private static final float MAP_LATITUDE_TOP_LEFT = 49.639407f;
 	private static final float MAP_LATITUDE_BOTTOM_RIGHT = 49.111948f;
@@ -90,17 +95,22 @@ public class RoutePlannerWindow extends JFrame {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			shiftPressed = e.isShiftDown();
+			mapImage.repaint();
+			LOGGER.info("Shift pressed: %s", shiftPressed);
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
 			shiftPressed = e.isShiftDown();
+			mapImage.repaint();
+			LOGGER.info("Shift pressed: %s", shiftPressed);
 		}
 	}
 
 	private class MapMouseHandler extends MouseAdapter {
 		@Override
 		public void mouseMoved(MouseEvent e) {
+			mapImage.requestFocus();
 			lastMousePosition = e.getPoint();
 			mapImage.repaint();
 		}
@@ -248,7 +258,7 @@ public class RoutePlannerWindow extends JFrame {
 				minDist = dist;
 			}
 		}
-		return nearestCity;
+		return minDist < 50 ? nearestCity : null;
 	}
 
 	private double distance(GeoCoord c1, GeoCoord c2) {
@@ -271,7 +281,7 @@ public class RoutePlannerWindow extends JFrame {
 			var p = getPointAtCoord(route.get(i).coord());
 			if (i > 0) {
 				var q = getPointAtCoord(route.get(i - 1).coord());
-				g.setColor(Color.GRAY);
+				g.setColor(Color.RED);
 				g.drawLine(p.x, p.y, q.x, q.y);
 			}
 		}
