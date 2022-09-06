@@ -26,19 +26,49 @@ package de.amr.schule.routeplanner.ui;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.function.Consumer;
 
 import javax.swing.JPanel;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Armin Reichert
  */
 public class ImagePanel extends JPanel {
 
+	private final Logger LOGGER = LogManager.getFormatterLogger();
+
 	private BufferedImage image;
+
+	private Consumer<KeyEvent> onKeyPressed = e -> {
+		LOGGER.info("onKeyPressed(%s)".formatted(e));
+	};
+
+	private Consumer<KeyEvent> onKeyReleased = e -> {
+		LOGGER.info("onKeyRleased(%s)".formatted(e));
+	};
+
 	private Consumer<Graphics2D> fnCustomDraw = g -> {
 	};
+
+	public ImagePanel() {
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				onKeyPressed.accept(e);
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				onKeyReleased.accept(e);
+			}
+		});
+	}
 
 	public void setImage(BufferedImage image) {
 		this.image = image;
@@ -50,6 +80,14 @@ public class ImagePanel extends JPanel {
 
 	public void setFnCustomDraw(Consumer<Graphics2D> fnCustomDraw) {
 		this.fnCustomDraw = fnCustomDraw;
+	}
+
+	public void setOnKeyPressed(Consumer<KeyEvent> onKeyPressed) {
+		this.onKeyPressed = onKeyPressed;
+	}
+
+	public void setOnKeyReleased(Consumer<KeyEvent> onKeyReleased) {
+		this.onKeyReleased = onKeyReleased;
 	}
 
 	@Override

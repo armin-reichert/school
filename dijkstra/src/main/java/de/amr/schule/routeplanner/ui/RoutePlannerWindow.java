@@ -30,8 +30,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -88,22 +86,6 @@ public class RoutePlannerWindow extends JFrame {
 			data.addAll(routeDesc);
 			getListRoute().setModel(data);
 			mapImage.repaint();
-		}
-	}
-
-	private class MapKeyboardHandler extends KeyAdapter {
-		@Override
-		public void keyPressed(KeyEvent e) {
-			shiftPressed = e.isShiftDown();
-			mapImage.repaint();
-			LOGGER.info("Shift pressed: %s", shiftPressed);
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-			shiftPressed = e.isShiftDown();
-			mapImage.repaint();
-			LOGGER.info("Shift pressed: %s", shiftPressed);
 		}
 	}
 
@@ -184,8 +166,15 @@ public class RoutePlannerWindow extends JFrame {
 		mapImage.addMouseListener(mouseHandler);
 		mapImage.addMouseMotionListener(mouseHandler);
 
-		var keyHandler = new MapKeyboardHandler();
-		mapImage.addKeyListener(keyHandler);
+		mapImage.setOnKeyPressed(e -> {
+			shiftPressed = e.isShiftDown();
+			mapImage.repaint();
+		});
+
+		mapImage.setOnKeyReleased(e -> {
+			shiftPressed = e.isShiftDown();
+			mapImage.repaint();
+		});
 
 		listRoute = new JList<>();
 		listRoute.setVisibleRowCount(20);
