@@ -49,7 +49,7 @@ public class RoutePlanner {
 	private final RoadMap map;
 	private Map<Vertex, Float> cost = new HashMap<>();
 	private Map<Vertex, Vertex> parent = new HashMap<>();
-	private Vertex currentStartVertex;
+	private Vertex start;
 
 	public RoutePlanner(RoadMap map) {
 		this.map = map;
@@ -65,10 +65,10 @@ public class RoutePlanner {
 		if (start == null || goal == null) {
 			return List.of();
 		}
-		if (start != currentStartVertex) {
-			currentStartVertex = start;
+		if (start != this.start) {
+			this.start = start;
 			LOGGER.info(() -> "Compute shortest paths starting at %s".formatted(start));
-			dijkstra(start);
+			dijkstra();
 		}
 		return buildRoute(goal);
 	}
@@ -87,10 +87,8 @@ public class RoutePlanner {
 
 	/**
 	 * Computes the shortest path from the given start vertex to all vertices using the Dijkstra algorithm.
-	 * 
-	 * @param start start vertex
 	 */
-	private void dijkstra(Vertex start) {
+	private void dijkstra() {
 		PriorityQueue<Vertex> q = new PriorityQueue<>((v1, v2) -> Float.compare(cost(v1), cost(v2)));
 		parent = new HashMap<>();
 		cost = new HashMap<>();
@@ -102,10 +100,15 @@ public class RoutePlanner {
 				var altCost = cost(u) + edge.cost();
 				var v = edge.to();
 				if (altCost < cost(v)) {
+					LOGGER.trace("Shorter path to %s found: old=%.1f new=%.1f".formatted(v, cost(v), altCost));
+					boolean removed = q.remove(v); // decrease key is not supported by Java priority queue
+					if (removed) {
+						LOGGER.trace("%s (cost=%.1f) removed from priority queue".formatted(v, cost(v)));
+					}
 					cost.put(v, altCost);
 					parent.put(v, u);
-					q.remove(v); // decrease key is not supported by Java priority queue
 					q.add(v);
+					LOGGER.trace("%s (cost=%.1f) added to priority queue".formatted(v, cost(v)));
 				}
 			});
 		}
