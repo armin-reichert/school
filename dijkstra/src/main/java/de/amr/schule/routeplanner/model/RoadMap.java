@@ -36,45 +36,41 @@ import de.amr.schule.routeplanner.graph.Vertex;
  */
 public class RoadMap extends Graph {
 
-	public static int orderByCityName(RoadMapPoint v1, RoadMapPoint v2) {
-		return v1.city().name().compareTo(v2.city().name());
+	public static int orderByName(RoadMapLocation v1, RoadMapLocation v2) {
+		return v1.name().compareTo(v2.name());
 	}
 
-	public RoadMapPoint vertex(City city) {
-		var v = vertex(city.name());
-		if (v.isPresent()) {
-			return (RoadMapPoint) v.get();
+	public RoadMapLocation mapLocation(String name, float latitude, float longitude) {
+		var location = vertex(name);
+		if (location.isPresent()) {
+			return (RoadMapLocation) location.get();
 		}
-		var vertex = new RoadMapPoint(city);
-		addVertex(city.name(), vertex);
-		return vertex;
+		var newLocation = new RoadMapLocation(name, latitude, longitude);
+		addVertex(name, newLocation);
+		return newLocation;
 	}
 
-	public void street(RoadMapPoint either, RoadMapPoint other, float cost) {
+	public void street(RoadMapLocation either, RoadMapLocation other, float cost) {
 		addEdge(either, other, cost);
 	}
 
-	public void street(City eitherCity, City otherCity, float cost) {
-		addEdge(vertex(eitherCity), vertex(otherCity), cost);
+	public Stream<RoadMapLocation> vertices(Comparator<RoadMapLocation> order) {
+		return vertices().map(RoadMapLocation.class::cast).sorted(order);
 	}
 
-	public Stream<RoadMapPoint> vertices(Comparator<RoadMapPoint> order) {
-		return vertices().map(RoadMapPoint.class::cast).sorted(order);
+	public Stream<RoadMapLocation> locations() {
+		return vertices(RoadMap::orderByName);
 	}
 
-	public Stream<String> cityNames() {
-		return cities().map(City::name);
+	public Stream<String> locationNames() {
+		return locations().map(RoadMapLocation::name);
 	}
 
-	public Stream<City> cities() {
-		return vertices(RoadMap::orderByCityName).map(RoadMapPoint::city);
-	}
-
-	public void print(PrintStream out, Comparator<RoadMapPoint> order) {
+	public void print(PrintStream out, Comparator<RoadMapLocation> order) {
 		vertices(order).forEach(out::println);
 		vertices(order)
 				.flatMap(Vertex::outgoingEdges).map(edge -> "Edge[%s -> %s %.1f km]"
-						.formatted(((RoadMapPoint) edge.from()).key(), ((RoadMapPoint) edge.to()).key(), edge.cost()))
+						.formatted(((RoadMapLocation) edge.from()).name(), ((RoadMapLocation) edge.to()).name(), edge.cost()))
 				.forEach(out::println);
 	}
 }

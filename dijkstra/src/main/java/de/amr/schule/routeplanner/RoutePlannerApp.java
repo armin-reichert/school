@@ -54,22 +54,22 @@ public class RoutePlannerApp {
 			e.printStackTrace();
 		}
 		var window = new RoutePlannerWindow();
-		var cityNames = map.cityNames().toArray(String[]::new);
-		window.getComboStart().setModel(new DefaultComboBoxModel<>(cityNames));
-		window.getComboGoal().setModel(new DefaultComboBoxModel<>(cityNames));
+		var locationNames = map.locationNames().toArray(String[]::new);
+		window.getComboStart().setModel(new DefaultComboBoxModel<>(locationNames));
+		window.getComboGoal().setModel(new DefaultComboBoxModel<>(locationNames));
 		window.getListRoute().setModel(new DefaultListModel<>());
 		window.setMap(map);
 	}
 
 	private static void printAllRoutes(RoadMap map, PrintStream out) {
-		map.print(out, RoadMap::orderByCityName);
+		map.print(out, RoadMap::orderByName);
 		var routePlanner = new RoutePlanner();
-		var cityNames = map.cityNames().toArray(String[]::new);
-		for (var start : cityNames) {
-			for (var goal : cityNames) {
+		var locationNames = map.locationNames().toArray(String[]::new);
+		for (var start : locationNames) {
+			for (var goal : locationNames) {
 				var route = routePlanner.computeRoute(map, start, goal);
-				var routeDesc = route.stream()
-						.map(point -> "%s %.1f km".formatted(point.city().name(), routePlanner.cost(point))).toList();
+				var routeDesc = route.stream().map(point -> "%s %.1f km".formatted(point.name(), routePlanner.cost(point)))
+						.toList();
 				out.println("%s nach %s: %s".formatted(start, goal, routeDesc));
 			}
 		}

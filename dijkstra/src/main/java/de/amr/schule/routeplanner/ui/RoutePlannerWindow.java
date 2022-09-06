@@ -50,8 +50,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
 import de.amr.schule.routeplanner.RoutePlanner;
-import de.amr.schule.routeplanner.model.City;
 import de.amr.schule.routeplanner.model.GeoCoord;
+import de.amr.schule.routeplanner.model.RoadMapLocation;
 import de.amr.schule.routeplanner.model.RoadMap;
 import net.miginfocom.swing.MigLayout;
 
@@ -78,7 +78,7 @@ public class RoutePlannerWindow extends JFrame {
 			String goalCity = (String) getComboGoal().getSelectedItem();
 			var route = routePlanner.computeRoute(map, startCity, goalCity);
 			var data = new DefaultListModel<String>();
-			var routeDesc = route.stream().map(point -> "%s %.1f km".formatted(point.city().name(), routePlanner.cost(point)))
+			var routeDesc = route.stream().map(point -> "%s %.1f km".formatted(point.name(), routePlanner.cost(point)))
 					.toList();
 			data.addAll(routeDesc);
 			getListRoute().setModel(data);
@@ -204,9 +204,9 @@ public class RoutePlannerWindow extends JFrame {
 
 	public void setMap(RoadMap map) {
 		this.map = map;
-		var cities = map.cities().toList();
-		getComboStart().setSelectedItem(cities.get(0).name());
-		getComboGoal().setSelectedItem(cities.get(cities.size() - 1).name());
+		var locationNames = map.locationNames().toList();
+		getComboStart().setSelectedItem(locationNames.get(0));
+		getComboGoal().setSelectedItem(locationNames.get(locationNames.size() - 1));
 	}
 
 	public JComboBox<String> getComboStart() {
@@ -237,11 +237,11 @@ public class RoutePlannerWindow extends JFrame {
 		return new GeoCoord(latitude, longitude);
 	}
 
-	private City getNearestCity(GeoCoord coord) {
+	private RoadMapLocation getNearestCity(GeoCoord coord) {
 		double minDist = Double.POSITIVE_INFINITY;
-		City nearestCity = null;
-		var cities = map.cities().toList();
-		for (var city : cities) {
+		RoadMapLocation nearestCity = null;
+		var locations = map.locations().toList();
+		for (var city : locations) {
 			double dist = distance(coord, city.coord());
 			if (dist < minDist) {
 				nearestCity = city;
@@ -268,29 +268,29 @@ public class RoutePlannerWindow extends JFrame {
 		String goalCity = (String) getComboGoal().getSelectedItem();
 		var route = routePlanner.computeRoute(map, startCity, goalCity);
 		for (int i = 0; i < route.size(); ++i) {
-			var p = getPointAtCoord(route.get(i).city().coord());
+			var p = getPointAtCoord(route.get(i).coord());
 			if (i > 0) {
-				var q = getPointAtCoord(route.get(i - 1).city().coord());
+				var q = getPointAtCoord(route.get(i - 1).coord());
 				g.setColor(Color.GRAY);
 				g.drawLine(p.x, p.y, q.x, q.y);
 			}
 		}
-		City nearestCity = null;
+		RoadMapLocation nearestLocation = null;
 		if (lastMousePosition != null) {
 			GeoCoord coord = getCoordAtPosition(lastMousePosition.x, lastMousePosition.y);
 			g.setColor(Color.BLUE);
 			g.setFont(new Font("Sans", Font.PLAIN, 10));
 			g.drawString("%.3f %.3f".formatted(coord.latitude(), coord.longitude()), lastMousePosition.x,
 					lastMousePosition.y);
-			nearestCity = getNearestCity(coord);
+			nearestLocation = getNearestCity(coord);
 		}
-		for (var city : map.cities().toList()) {
-			Point p = getPointAtCoord(city.coord());
-			if (city.name().equals(getComboStart().getSelectedItem())) {
+		for (var location : map.locations().toList()) {
+			Point p = getPointAtCoord(location.coord());
+			if (location.name().equals(getComboStart().getSelectedItem())) {
 				circle(g, p, Color.GREEN, 6);
-			} else if (city.name().equals(getComboGoal().getSelectedItem())) {
+			} else if (location.name().equals(getComboGoal().getSelectedItem())) {
 				circle(g, p, Color.BLUE, 6);
-			} else if (city == nearestCity) {
+			} else if (location == nearestLocation) {
 				circle(g, p, shiftPressed ? Color.BLUE : Color.GREEN, 8);
 			} else {
 				circle(g, p, Color.BLACK, 3);

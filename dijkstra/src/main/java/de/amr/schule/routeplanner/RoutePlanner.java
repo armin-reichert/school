@@ -38,7 +38,7 @@ import org.apache.logging.log4j.Logger;
 import de.amr.schule.routeplanner.graph.Graph;
 import de.amr.schule.routeplanner.graph.Vertex;
 import de.amr.schule.routeplanner.model.RoadMap;
-import de.amr.schule.routeplanner.model.RoadMapPoint;
+import de.amr.schule.routeplanner.model.RoadMapLocation;
 
 /**
  * @author Armin Reichert
@@ -60,13 +60,13 @@ public class RoutePlanner {
 		return value == null ? Float.POSITIVE_INFINITY : value;
 	}
 
-	public List<RoadMapPoint> computeRoute(RoadMap map, String startCity, String goalCity) {
+	public List<RoadMapLocation> computeRoute(RoadMap map, String startCity, String goalCity) {
 		var start = map.vertex(startCity).orElse(null);
 		var goal = map.vertex(goalCity).orElse(null);
-		return computeRoute(map, (RoadMapPoint) start, (RoadMapPoint) goal);
+		return computeRoute(map, (RoadMapLocation) start, (RoadMapLocation) goal);
 	}
 
-	public List<RoadMapPoint> computeRoute(RoadMap map, RoadMapPoint start, RoadMapPoint goal) {
+	public List<RoadMapLocation> computeRoute(RoadMap map, RoadMapLocation start, RoadMapLocation goal) {
 		if (start == null || goal == null) {
 			return List.of();
 		}
@@ -77,9 +77,9 @@ public class RoutePlanner {
 		return buildRoute(goal);
 	}
 
-	private List<RoadMapPoint> buildRoute(RoadMapPoint goal) {
-		var route = new LinkedList<RoadMapPoint>();
-		for (RoadMapPoint v = goal; v != null; v = (RoadMapPoint) parent.get(v)) {
+	private List<RoadMapLocation> buildRoute(RoadMapLocation goal) {
+		var route = new LinkedList<RoadMapLocation>();
+		for (RoadMapLocation v = goal; v != null; v = (RoadMapLocation) parent.get(v)) {
 			route.addFirst(v);
 		}
 		return route;

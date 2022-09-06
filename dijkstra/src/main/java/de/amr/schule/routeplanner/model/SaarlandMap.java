@@ -31,20 +31,20 @@ package de.amr.schule.routeplanner.model;
 public class SaarlandMap extends RoadMap {
 
 	public SaarlandMap() {
-		var los = vertex(new City("Losheim am See", 49.51f, 6.75f));
-		var wad = vertex(new City("Wadern", 49.534f, 6.89f));
-		var mzg = vertex(new City("Merzig", 49.449f, 6.643f));
-		var slz = vertex(new City("Schmelz", 49.432f, 6.843f));
-		var leb = vertex(new City("Lebach", 49.41f, 6.91f));
-		var heu = vertex(new City("Heusweiler", 49.338f, 6.929f));
-		var sls = vertex(new City("Saarlouis", 49.313f, 6.752f));
-		var sb = vertex(new City("Saarbrücken", 49.238f, 6.997f));
-		var wnd = vertex(new City("St. Wendel", 49.468f, 7.167f));
-		var nk = vertex(new City("Neunkirchen", 49.349f, 7.177f));
-		var epp = vertex(new City("Eppelborn", 49.409f, 6.964f));
-		var hom = vertex(new City("Homburg", 49.329f, 7.339f));
-		var igb = vertex(new City("St. Ingbert", 49.278f, 7.112f));
-		var tho = vertex(new City("Tholey", 49.482f, 7.032f));
+		var los = mapLocation("Losheim am See", 49.51f, 6.75f);
+		var wad = mapLocation("Wadern", 49.534f, 6.89f);
+		var mzg = mapLocation("Merzig", 49.449f, 6.643f);
+		var slz = mapLocation("Schmelz", 49.432f, 6.843f);
+		var leb = mapLocation("Lebach", 49.41f, 6.91f);
+		var heu = mapLocation("Heusweiler", 49.338f, 6.929f);
+		var sls = mapLocation("Saarlouis", 49.313f, 6.752f);
+		var sb = mapLocation("Saarbrücken", 49.238f, 6.997f);
+		var wnd = mapLocation("St. Wendel", 49.468f, 7.167f);
+		var nk = mapLocation("Neunkirchen", 49.349f, 7.177f);
+		var epp = mapLocation("Eppelborn", 49.409f, 6.964f);
+		var hom = mapLocation("Homburg", 49.329f, 7.339f);
+		var igb = mapLocation("St. Ingbert", 49.278f, 7.112f);
+		var tho = mapLocation("Tholey", 49.482f, 7.032f);
 
 		street(epp, nk, 21.5f);
 		street(epp, sb, 31.0f);

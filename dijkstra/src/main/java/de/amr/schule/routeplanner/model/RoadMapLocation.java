@@ -29,24 +29,26 @@ import de.amr.schule.routeplanner.graph.Vertex;
 /**
  * @author Armin Reichert
  */
-public class RoadMapPoint extends Vertex {
+public class RoadMapLocation extends Vertex {
 
-	private final City city;
+	private final String name;
+	private final GeoCoord coord;
 
-	public RoadMapPoint(City city) {
-		this.city = city;
+	public RoadMapLocation(String name, float latitude, float longitude) {
+		this.name = name;
+		coord = new GeoCoord(latitude, longitude);
 	}
 
-	public City city() {
-		return city;
+	public String name() {
+		return name;
 	}
 
-	public String key() {
-		return city.name();
+	public GeoCoord coord() {
+		return coord;
 	}
 
 	@Override
 	public String toString() {
-		return "RoadMapPoint[city=%s]".formatted(city);
+		return "RoadMapLocation[name=%s coord=%s]".formatted(name, coord);
 	}
 }
