@@ -54,6 +54,6 @@ public class Graph {
 	}
 
 	public void addDirectedEdge(Vertex source, Vertex target, float cost) {
-		source.outgoingEdgeList.add(new Edge(source, target, cost));
+		source.addEdge(target, cost);
 	}
 }

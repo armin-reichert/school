@@ -24,10 +24,18 @@ SOFTWARE.
 
 package de.amr.schule.routeplanner;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
 
-import de.amr.schule.routeplanner.graph.PathFinder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import de.amr.schule.routeplanner.graph.Graph;
 import de.amr.schule.routeplanner.graph.Vertex;
 import de.amr.schule.routeplanner.model.RoadMap;
 import de.amr.schule.routeplanner.model.RoadMapPoint;
@@ -39,7 +47,18 @@ import de.amr.schule.routeplanner.model.RoadMapPoint;
  */
 public class RoutePlanner {
 
+	private static final Logger LOGGER = LogManager.getFormatterLogger();
+
+	private final Map<Vertex, Float> cost = new HashMap<>();
+	private final Map<Vertex, Vertex> parent = new HashMap<>();
+	private final Set<Vertex> visited = new HashSet<>();
+	private final PriorityQueue<Vertex> q = new PriorityQueue<>((v1, v2) -> Float.compare(cost.get(v1), cost.get(v2)));
 	private Vertex currentStartVertex;
+
+	public float cost(Vertex v) {
+		Float value = cost.get(v);
+		return value == null ? Float.POSITIVE_INFINITY : value;
+	}
 
 	public List<RoadMapPoint> computeRoute(RoadMap map, String startCity, String goalCity) {
 		var start = map.vertex(startCity).orElse(null);
@@ -53,16 +72,52 @@ public class RoutePlanner {
 		}
 		if (start != currentStartVertex) {
 			currentStartVertex = start;
-			PathFinder.computeShortestPaths(map, start);
+			computeShortestPaths(map, start);
 		}
 		return buildRoute(goal);
 	}
 
 	private List<RoadMapPoint> buildRoute(RoadMapPoint goal) {
 		var route = new LinkedList<RoadMapPoint>();
-		for (RoadMapPoint v = goal; v != null; v = (RoadMapPoint) v.parent) {
+		for (RoadMapPoint v = goal; v != null; v = (RoadMapPoint) parent.get(v)) {
 			route.addFirst(v);
 		}
 		return route;
+	}
+
+	/**
+	 * Computes the shortest path from the given start vertex to all vertices using the Dijkstra algorithm.
+	 * 
+	 * @param g     graph
+	 * @param start start vertex
+	 */
+	private void computeShortestPaths(Graph g, Vertex start) {
+		q.clear();
+		cost.clear();
+		parent.clear();
+		visited.clear();
+		LOGGER.info(() -> "Compute shortest paths starting at %s".formatted(start));
+		g.vertices().forEach(v -> {
+			parent.put(v, null);
+			cost.put(v, Float.POSITIVE_INFINITY);
+		});
+		cost.put(start, 0f);
+		q.add(start);
+		while (!q.isEmpty()) {
+			var u = q.poll(); // min cost vertex in queue
+			if (!visited.contains(u)) {
+				visited.add(u);
+				LOGGER.trace(() -> "%s visited".formatted(u));
+				u.outgoingEdges().forEach(edge -> {
+					var v = edge.to();
+					var altCost = cost.get(u) + edge.cost();
+					if (altCost < cost.get(v)) {
+						cost.put(v, altCost);
+						parent.put(v, u);
+						q.add(v);
+					}
+				});
+			}
+		}
 	}
 }

@@ -32,18 +32,17 @@ import java.util.stream.Stream;
  * @author Armin Reichert
  */
 public class Vertex {
-	public final List<Edge> outgoingEdgeList = new ArrayList<>(5);
-	public Vertex parent;
-	public float cost;
-	public boolean visited;
 
-	public Vertex() {
-		this.parent = null;
-		this.cost = Float.MAX_VALUE;
-		this.visited = false;
+	private List<Edge> adjEdges;
+
+	public void addEdge(Vertex to, float cost) {
+		if (adjEdges == null) {
+			adjEdges = new ArrayList<>(3);
+		}
+		adjEdges.add(new Edge(this, to, cost));
 	}
 
 	public Stream<Edge> outgoingEdges() {
-		return outgoingEdgeList.stream();
+		return adjEdges == null ? Stream.empty() : adjEdges.stream();
 	}
 }
