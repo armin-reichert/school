@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.PriorityQueue;
 
 import org.apache.logging.log4j.LogManager;
@@ -47,12 +48,12 @@ public class RoutePlanner {
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
 	private final RoadMap map;
-	private Map<Vertex, Float> cost = new HashMap<>();
-	private Map<Vertex, Vertex> parent = new HashMap<>();
-	private Vertex start;
+	private Map<Vertex, Float> cost;
+	private Map<Vertex, Vertex> parent;
+	private Vertex startVertex;
 
 	public RoutePlanner(RoadMap map) {
-		this.map = map;
+		this.map = Objects.requireNonNull(map);
 	}
 
 	public List<RoadMapLocation> computeRoute(String startCity, String goalCity) {
@@ -65,9 +66,9 @@ public class RoutePlanner {
 		if (start == null || goal == null) {
 			return List.of();
 		}
-		if (start != this.start) {
-			this.start = start;
-			LOGGER.info(() -> "Compute shortest paths starting at %s".formatted(start));
+		if (start != startVertex) {
+			startVertex = start;
+			LOGGER.info(() -> "Compute shortest paths starting at %s".formatted(startVertex));
 			dijkstra();
 		}
 		return buildRoute(goal);
@@ -92,8 +93,8 @@ public class RoutePlanner {
 		PriorityQueue<Vertex> q = new PriorityQueue<>((v1, v2) -> Float.compare(cost(v1), cost(v2)));
 		parent = new HashMap<>();
 		cost = new HashMap<>();
-		cost.put(start, 0.0f);
-		q.add(start);
+		cost.put(startVertex, 0.0f);
+		q.add(startVertex);
 		while (!q.isEmpty()) {
 			var u = q.poll(); // extract min cost vertex from queue
 			u.outgoingEdges().forEach(edge -> {
