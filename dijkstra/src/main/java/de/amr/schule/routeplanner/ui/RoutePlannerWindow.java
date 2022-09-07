@@ -118,7 +118,7 @@ public class RoutePlannerWindow extends JFrame {
 
 		comboStart = new JComboBox<>();
 		comboStart.setMaximumRowCount(20);
-		comboStart.setModel(new DefaultComboBoxModel<>(new String[] { "Eppelborn", "Losheim am See", "Wadern" }));
+		comboStart.setModel(new DefaultComboBoxModel<>(new String[] { "Wadern" }));
 		panelStartGoal.add(comboStart, "cell 1 0,alignx left,aligny center");
 		comboStart.setAction(actionComputeRoute);
 
@@ -127,7 +127,7 @@ public class RoutePlannerWindow extends JFrame {
 
 		comboGoal = new JComboBox<>();
 		comboGoal.setMaximumRowCount(20);
-		comboGoal.setModel(new DefaultComboBoxModel<>(new String[] { "Eppelborn", "Losheim am See", "Wadern" }));
+		comboGoal.setModel(new DefaultComboBoxModel<>(new String[] { "Neunkirchen" }));
 		panelStartGoal.add(comboGoal, "cell 1 1,alignx left,aligny center");
 		comboGoal.setAction(actionComputeRoute);
 
