@@ -64,13 +64,12 @@ public class RoutePlannerWindow extends JFrame {
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
-	private static final float MAP_LATITUDE_TOP_LEFT = 49.639407f;
-	private static final float MAP_LATITUDE_BOTTOM_RIGHT = 49.111948f;
-	private static final float MAP_LONGITUDE_TOP_LEFT = 6.356f;
-	private static final float MAP_LONGITUDE_BOTTOM_RIGHT = 7.402f;
+	private static final float MAP_LATITUDE_MIN = 49.111948f; // bottom
+	private static final float MAP_LATITUDE_MAX = 49.639407f; // top
+	private static final float MAP_LONGITUDE_MIN = 6.356f; // left
+	private static final float MAP_LONGITUDE_MAX = 7.402f; // right
 
 	private class ComputeRouteAction extends AbstractAction {
-
 		public ComputeRouteAction() {
 			putValue(NAME, "Route");
 			putValue(SHORT_DESCRIPTION, "Computes the best route");
@@ -102,7 +101,7 @@ public class RoutePlannerWindow extends JFrame {
 	private boolean shiftPressed;
 
 	public RoutePlannerWindow() {
-		setTitle("Route Planner");
+		setTitle("Routenplaner Saarland");
 		setResizable(false);
 		setSize(1010, 670);
 		setLocation(30, 30);
@@ -136,7 +135,6 @@ public class RoutePlannerWindow extends JFrame {
 		mapImage.setBackground(new Color(255, 255, 255));
 		getContentPane().add(mapImage, "cell 1 0 1 2,grow");
 		mapImage.setLayout(new MigLayout("", "[]", "[]"));
-		mapImage.setOnRepaint(this::onRepaint);
 		mapImage.setOnMouseClicked(this::onMouseClicked);
 		mapImage.setOnMouseMoved(this::onMouseMoved);
 		mapImage.setOnKeyPressed(e -> {
@@ -179,6 +177,7 @@ public class RoutePlannerWindow extends JFrame {
 		var locationNames = map.locationNames().toList();
 		getComboStart().setSelectedItem(locationNames.get(0));
 		getComboGoal().setSelectedItem(locationNames.get(locationNames.size() - 1));
+		mapImage.setOnRepaint(this::onRepaint);
 	}
 
 	public JComboBox<String> getComboStart() {
@@ -251,8 +250,8 @@ public class RoutePlannerWindow extends JFrame {
 	}
 
 	private Point getPointAtCoord(GeoCoord coord) {
-		float tx = (coord.longitude() - MAP_LONGITUDE_TOP_LEFT) / (MAP_LONGITUDE_BOTTOM_RIGHT - MAP_LONGITUDE_TOP_LEFT);
-		float ty = (coord.latitude() - MAP_LATITUDE_BOTTOM_RIGHT) / (MAP_LATITUDE_TOP_LEFT - MAP_LATITUDE_BOTTOM_RIGHT);
+		float tx = (coord.longitude() - MAP_LONGITUDE_MIN) / (MAP_LONGITUDE_MAX - MAP_LONGITUDE_MIN);
+		float ty = (coord.latitude() - MAP_LATITUDE_MIN) / (MAP_LATITUDE_MAX - MAP_LATITUDE_MIN);
 		return new Point((int) (tx * mapImage.getWidth()), (int) ((1 - ty) * mapImage.getHeight()));
 	}
 
@@ -261,8 +260,8 @@ public class RoutePlannerWindow extends JFrame {
 		int height = mapImage.getHeight();
 		float tx = (float) x / width;
 		float ty = (float) y / height;
-		float longitude = MAP_LONGITUDE_TOP_LEFT + tx * (MAP_LONGITUDE_BOTTOM_RIGHT - MAP_LONGITUDE_TOP_LEFT);
-		float latitude = MAP_LATITUDE_TOP_LEFT + ty * (MAP_LATITUDE_BOTTOM_RIGHT - MAP_LATITUDE_TOP_LEFT);
+		float longitude = MAP_LONGITUDE_MIN + tx * (MAP_LONGITUDE_MAX - MAP_LONGITUDE_MIN);
+		float latitude = MAP_LATITUDE_MAX + ty * (MAP_LATITUDE_MIN - MAP_LATITUDE_MAX);
 		return new GeoCoord(latitude, longitude);
 	}
 
