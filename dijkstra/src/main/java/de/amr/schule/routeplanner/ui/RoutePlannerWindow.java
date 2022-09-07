@@ -61,6 +61,7 @@ import net.miginfocom.swing.MigLayout;
  */
 public class RoutePlannerWindow extends JFrame {
 
+	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
 	private static final float MAP_LATITUDE_TOP_LEFT = 49.639407f;
@@ -103,7 +104,7 @@ public class RoutePlannerWindow extends JFrame {
 	public RoutePlannerWindow() {
 		setTitle("Route Planner");
 		setResizable(false);
-		setSize(1020, 670);
+		setSize(1010, 670);
 		setLocation(30, 30);
 		setVisible(true);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
