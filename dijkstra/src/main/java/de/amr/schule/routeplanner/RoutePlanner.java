@@ -98,11 +98,12 @@ public class RoutePlanner {
 		while (!q.isEmpty()) {
 			var u = q.poll(); // extract min cost vertex from queue
 			u.outgoingEdges().forEach(edge -> {
+				var v = edge.to(); // edge = (u, v)
 				var altCost = cost(u) + edge.cost();
-				var v = edge.to();
 				if (altCost < cost(v)) {
-					LOGGER.trace("Shorter path to %s found: old=%.1f new=%.1f".formatted(v, cost(v), altCost));
-					boolean removed = q.remove(v); // decrease key is not supported by Java priority queue
+					LOGGER.trace("Shorter path to %s found: old cost=%.1f new cost=%.1f".formatted(v, cost(v), altCost));
+					// "decrease key" is not supported by Java priority queue, use remove/add instead
+					boolean removed = q.remove(v);
 					if (removed) {
 						LOGGER.trace("%s (cost=%.1f) removed from priority queue".formatted(v, cost(v)));
 					}
