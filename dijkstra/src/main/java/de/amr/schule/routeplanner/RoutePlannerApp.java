@@ -33,6 +33,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import de.amr.schule.routeplanner.model.RoadMap;
+import de.amr.schule.routeplanner.model.RoutePlanner;
 import de.amr.schule.routeplanner.model.SaarlandRoadMap;
 import de.amr.schule.routeplanner.ui.RoutePlannerWindow;
 

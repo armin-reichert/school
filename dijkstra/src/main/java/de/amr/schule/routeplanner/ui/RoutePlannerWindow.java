@@ -50,10 +50,10 @@ import javax.swing.WindowConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.amr.schule.routeplanner.RoutePlanner;
 import de.amr.schule.routeplanner.model.GeoCoord;
 import de.amr.schule.routeplanner.model.RoadMap;
 import de.amr.schule.routeplanner.model.RoadMapLocation;
+import de.amr.schule.routeplanner.model.RoutePlanner;
 import net.miginfocom.swing.MigLayout;
 
 /**

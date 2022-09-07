@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package de.amr.schule.routeplanner;
+package de.amr.schule.routeplanner.model;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -35,8 +35,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.amr.schule.routeplanner.graph.Vertex;
-import de.amr.schule.routeplanner.model.RoadMap;
-import de.amr.schule.routeplanner.model.RoadMapLocation;
 
 /**
  * @author Armin Reichert
