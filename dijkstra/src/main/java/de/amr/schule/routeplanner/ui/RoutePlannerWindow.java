@@ -24,6 +24,7 @@ SOFTWARE.
 
 package de.amr.schule.routeplanner.ui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -31,6 +32,7 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.List;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
@@ -215,17 +217,11 @@ public class RoutePlannerWindow extends JFrame {
 
 	private void onRepaint(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		drawStreets(g);
 		String startCity = (String) getComboStart().getSelectedItem();
 		String goalCity = (String) getComboGoal().getSelectedItem();
 		var route = routePlanner.computeRoute(startCity, goalCity);
-		for (int i = 0; i < route.size(); ++i) {
-			var p = getPointAtCoord(route.get(i).coord());
-			if (i > 0) {
-				var q = getPointAtCoord(route.get(i - 1).coord());
-				g.setColor(Color.RED);
-				g.drawLine(p.x, p.y, q.x, q.y);
-			}
-		}
+		drawRoute(g, route);
 		RoadMapLocation nearestLocation = null;
 		if (lastMousePosition != null) {
 			GeoCoord coord = getCoordAtPosition(lastMousePosition.x, lastMousePosition.y);
@@ -247,6 +243,29 @@ public class RoutePlannerWindow extends JFrame {
 				circle(g, p, Color.BLACK, 3);
 			}
 		}
+	}
+
+	public void drawRoute(Graphics2D g, List<RoadMapLocation> route) {
+		for (int i = 0; i < route.size(); ++i) {
+			var p = getPointAtCoord(route.get(i).coord());
+			if (i > 0) {
+				var q = getPointAtCoord(route.get(i - 1).coord());
+				g.setColor(Color.RED);
+				g.drawLine(p.x, p.y, q.x, q.y);
+			}
+		}
+	}
+
+	private void drawStreets(Graphics2D g) {
+		map.locations().forEach(location -> {
+			location.outgoingEdges().forEach(street -> {
+				Point from = getPointAtCoord(((RoadMapLocation) street.from()).coord());
+				Point to = getPointAtCoord(((RoadMapLocation) street.to()).coord());
+				g.setColor(Color.LIGHT_GRAY);
+				g.setStroke(new BasicStroke(0.5f));
+				g.drawLine(from.x, from.y, to.x, to.y);
+			});
+		});
 	}
 
 	private Point getPointAtCoord(GeoCoord coord) {
