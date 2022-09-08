@@ -222,6 +222,10 @@ public class RoutePlannerWindow extends JFrame {
 		String goalCity = (String) getComboGoal().getSelectedItem();
 		var route = routePlanner.computeRoute(startCity, goalCity);
 		drawRoute(g, route);
+		drawStartAndGoalLocations(g);
+	}
+
+	public void drawStartAndGoalLocations(Graphics2D g) {
 		RoadMapLocation nearestLocation = null;
 		if (lastMousePosition != null) {
 			GeoCoord coord = getCoordAtPosition(lastMousePosition.x, lastMousePosition.y);
@@ -246,23 +250,24 @@ public class RoutePlannerWindow extends JFrame {
 	}
 
 	public void drawRoute(Graphics2D g, List<RoadMapLocation> route) {
+		g.setColor(Color.RED);
+		g.setStroke(new BasicStroke(1f));
 		for (int i = 0; i < route.size(); ++i) {
 			var p = getPointAtCoord(route.get(i).coord());
 			if (i > 0) {
 				var q = getPointAtCoord(route.get(i - 1).coord());
-				g.setColor(Color.RED);
 				g.drawLine(p.x, p.y, q.x, q.y);
 			}
 		}
 	}
 
 	private void drawStreets(Graphics2D g) {
+		g.setColor(Color.DARK_GRAY);
+		g.setStroke(new BasicStroke(0.1f));
 		map.locations().forEach(location -> {
 			location.outgoingEdges().forEach(street -> {
 				Point from = getPointAtCoord(((RoadMapLocation) street.from()).coord());
 				Point to = getPointAtCoord(((RoadMapLocation) street.to()).coord());
-				g.setColor(Color.LIGHT_GRAY);
-				g.setStroke(new BasicStroke(0.5f));
 				g.drawLine(from.x, from.y, to.x, to.y);
 			});
 		});
