@@ -32,7 +32,6 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.util.List;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
@@ -218,11 +217,9 @@ public class RoutePlannerWindow extends JFrame {
 	private void onRepaint(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		drawStreets(g);
-		String startCity = (String) getComboStart().getSelectedItem();
-		String goalCity = (String) getComboGoal().getSelectedItem();
-		var route = routePlanner.computeRoute(startCity, goalCity);
-		drawRoute(g, route);
+		drawRoute(g);
 		drawStartAndGoalLocations(g);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 	}
 
 	public void drawStartAndGoalLocations(Graphics2D g) {
@@ -249,7 +246,10 @@ public class RoutePlannerWindow extends JFrame {
 		}
 	}
 
-	public void drawRoute(Graphics2D g, List<RoadMapLocation> route) {
+	public void drawRoute(Graphics2D g) {
+		String startCity = (String) getComboStart().getSelectedItem();
+		String goalCity = (String) getComboGoal().getSelectedItem();
+		var route = routePlanner.computeRoute(startCity, goalCity);
 		g.setColor(Color.RED);
 		g.setStroke(new BasicStroke(1f));
 		for (int i = 0; i < route.size(); ++i) {

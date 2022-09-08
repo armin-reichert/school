@@ -53,7 +53,6 @@ public class SaarlandRoadMap extends RoadMap {
 		street(epp, nkr, 21.5f);
 		street(epp, sbr, 31.0f);
 		street(epp, heu, 10.0f);
-		street(epp, sls, 24.0f);
 		street(dil, nal, 6.0f);
 		street(dil, sls, 9.0f);
 		street(heu, vlk, 12.0f);
