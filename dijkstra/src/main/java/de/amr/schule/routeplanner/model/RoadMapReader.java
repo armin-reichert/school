@@ -110,7 +110,7 @@ public class RoadMapReader {
 			LOGGER.error("Line %d: '%s': Invalid longitude: '%s'".formatted(lineNumber, line, tokens[3]));
 			return;
 		}
-		locationByName.put(key, map.mapLocation(name, latitude, longitude));
+		locationByName.put(key, map.getOrCreateLocation(name, latitude, longitude));
 	}
 
 	private void parseRoad(String line) {
