@@ -176,8 +176,10 @@ public class RoutePlannerWindow extends JFrame {
 		this.map = Objects.requireNonNull(map);
 		this.routePlanner = new RoutePlanner(map);
 		var locationNames = map.locationNames().toList();
-		getComboStart().setSelectedItem(locationNames.get(0));
-		getComboGoal().setSelectedItem(locationNames.get(locationNames.size() - 1));
+		if (!locationNames.isEmpty()) {
+			getComboStart().setSelectedItem(locationNames.get(0));
+			getComboGoal().setSelectedItem(locationNames.get(locationNames.size() - 1));
+		}
 		mapImage.setOnRepaint(this::onRepaint);
 	}
 

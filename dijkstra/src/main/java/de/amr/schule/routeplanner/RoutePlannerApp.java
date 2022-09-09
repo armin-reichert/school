@@ -33,8 +33,8 @@ import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import de.amr.schule.routeplanner.model.RoadMap;
+import de.amr.schule.routeplanner.model.RoadMapReader;
 import de.amr.schule.routeplanner.model.RoutePlanner;
-import de.amr.schule.routeplanner.model.SaarlandRoadMap;
 import de.amr.schule.routeplanner.ui.RoutePlannerWindow;
 
 /**
@@ -43,12 +43,13 @@ import de.amr.schule.routeplanner.ui.RoutePlannerWindow;
 public class RoutePlannerApp {
 
 	public static void main(String[] args) {
-		var map = new SaarlandRoadMap();
-		printAllRoutes(map, System.out);
+//		var map = new SaarlandRoadMap();
+		var map = new RoadMapReader().read(RoutePlannerApp.class.getResourceAsStream("/saarland.txt"));
+//		printAllRoutes(map, System.out);
 		SwingUtilities.invokeLater(() -> createAndShowUI(map));
 	}
 
-	private static void createAndShowUI(SaarlandRoadMap map) {
+	private static void createAndShowUI(RoadMap map) {
 		try {
 			UIManager.setLookAndFeel(NimbusLookAndFeel.class.getName());
 		} catch (Exception e) {
