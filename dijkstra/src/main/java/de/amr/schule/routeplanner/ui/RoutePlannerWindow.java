@@ -78,14 +78,14 @@ public class RoutePlannerWindow extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String startCity = (String) getComboStart().getSelectedItem();
-			String goalCity = (String) getComboGoal().getSelectedItem();
+			String startCity = (String) comboStart().getSelectedItem();
+			String goalCity = (String) comboGoal().getSelectedItem();
 			var route = routePlanner.computeRoute(startCity, goalCity);
 			var data = new DefaultListModel<String>();
 			var routeDesc = route.stream().map(point -> "%s %.1f km".formatted(point.name(), routePlanner.cost(point)))
 					.toList();
 			data.addAll(routeDesc);
-			getListRoute().setModel(data);
+			listRoute().setModel(data);
 			mapImage.repaint();
 		}
 	}
@@ -177,21 +177,21 @@ public class RoutePlannerWindow extends JFrame {
 		this.routePlanner = new RoutePlanner(map);
 		var locationNames = map.locationNames().toList();
 		if (!locationNames.isEmpty()) {
-			getComboStart().setSelectedItem(locationNames.get(0));
-			getComboGoal().setSelectedItem(locationNames.get(locationNames.size() - 1));
+			comboStart().setSelectedItem(locationNames.get(0));
+			comboGoal().setSelectedItem(locationNames.get(locationNames.size() - 1));
 		}
 		mapImage.setOnRepaint(this::onRepaint);
 	}
 
-	public JComboBox<String> getComboStart() {
+	public JComboBox<String> comboStart() {
 		return comboStart;
 	}
 
-	public JComboBox<String> getComboGoal() {
+	public JComboBox<String> comboGoal() {
 		return comboGoal;
 	}
 
-	public JList<String> getListRoute() {
+	public JList<String> listRoute() {
 		return listRoute;
 	}
 
@@ -206,9 +206,9 @@ public class RoutePlannerWindow extends JFrame {
 		var nearestCity = getNearestCity(coord);
 		if (nearestCity != null) {
 			if (e.isShiftDown()) {
-				getComboGoal().setSelectedItem(nearestCity.name());
+				comboGoal().setSelectedItem(nearestCity.name());
 			} else {
-				getComboStart().setSelectedItem(nearestCity.name());
+				comboStart().setSelectedItem(nearestCity.name());
 			}
 		}
 		lastMousePosition = e.getPoint();
@@ -243,9 +243,9 @@ public class RoutePlannerWindow extends JFrame {
 		}
 		for (var location : map.locations().toList()) {
 			Point p = getPointAtCoord(location.coord());
-			if (location.name().equals(getComboStart().getSelectedItem())) {
+			if (location.name().equals(comboStart().getSelectedItem())) {
 				circle(g, p, Color.GREEN, 6);
-			} else if (location.name().equals(getComboGoal().getSelectedItem())) {
+			} else if (location.name().equals(comboGoal().getSelectedItem())) {
 				circle(g, p, new Color(0, 0, 255, 100), 6);
 			} else if (location == nearestLocation) {
 				circle(g, p, shiftPressed ? new Color(0, 0, 255, 100) : Color.GREEN, 8);
@@ -256,8 +256,8 @@ public class RoutePlannerWindow extends JFrame {
 	}
 
 	public void drawRoute(Graphics2D g) {
-		String startCity = (String) getComboStart().getSelectedItem();
-		String goalCity = (String) getComboGoal().getSelectedItem();
+		String startCity = (String) comboStart().getSelectedItem();
+		String goalCity = (String) comboGoal().getSelectedItem();
 		var route = routePlanner.computeRoute(startCity, goalCity);
 		g.setColor(Color.RED);
 		g.setStroke(new BasicStroke(1f));

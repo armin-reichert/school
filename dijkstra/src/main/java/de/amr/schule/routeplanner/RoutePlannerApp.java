@@ -70,18 +70,18 @@ public class RoutePlannerApp {
 		}
 		var window = new RoutePlannerWindow();
 		var locationNames = map.locationNames().toArray(String[]::new);
-		window.getComboStart().setModel(new DefaultComboBoxModel<>(locationNames));
-		window.getComboGoal().setModel(new DefaultComboBoxModel<>(locationNames));
-		window.getListRoute().setModel(new DefaultListModel<>());
+		window.comboStart().setModel(new DefaultComboBoxModel<>(locationNames));
+		window.comboGoal().setModel(new DefaultComboBoxModel<>(locationNames));
+		window.listRoute().setModel(new DefaultListModel<>());
 		window.setMap(map);
 
-		window.getListRoute().getActionMap().put("printAll", new AbstractAction() {
+		window.listRoute().getActionMap().put("printAll", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				printAllRoutes(map);
 			}
 		});
-		window.getListRoute().getInputMap().put(KeyStroke.getKeyStroke('p'), "printAll");
+		window.listRoute().getInputMap().put(KeyStroke.getKeyStroke('p'), "printAll");
 	}
 
 	private static void printAllRoutes(RoadMap map) {
