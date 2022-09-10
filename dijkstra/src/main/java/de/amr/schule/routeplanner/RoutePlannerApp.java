@@ -50,19 +50,23 @@ public class RoutePlannerApp {
 
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
-	private static final String MAP_FILE = "saarland.txt";
-
 	public static void main(String[] args) {
-		var is = RoutePlannerApp.class.getResourceAsStream("/" + MAP_FILE);
-		if (is == null) {
-			throw new MissingResourceException("Could not read map from file '%s'".formatted(MAP_FILE),
-					RoutePlannerApp.class.getName(), MAP_FILE);
-		}
-		var map = RoadMapReader.readMap(is);
-		SwingUtilities.invokeLater(() -> createAndShowUI(map));
+		var app = new RoutePlannerApp("saarland.txt");
+		SwingUtilities.invokeLater(app::createAndShowUI);
 	}
 
-	private static void createAndShowUI(RoadMap map) {
+	private RoadMap map;
+
+	public RoutePlannerApp(String mapFile) {
+		var resource = getClass().getResourceAsStream("/" + mapFile);
+		if (resource == null) {
+			throw new MissingResourceException("Could not read map from file '%s'".formatted(mapFile),
+					RoutePlannerApp.class.getName(), mapFile);
+		}
+		map = RoadMapReader.readMap(resource);
+	}
+
+	private void createAndShowUI() {
 		try {
 			UIManager.setLookAndFeel(NimbusLookAndFeel.class.getName());
 		} catch (Exception e) {
