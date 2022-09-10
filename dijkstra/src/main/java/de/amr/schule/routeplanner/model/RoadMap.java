@@ -50,16 +50,16 @@ public class RoadMap extends Graph {
 		return newLocation;
 	}
 
-	public void street(RoadMapLocation either, RoadMapLocation other, float cost) {
+	public void addRoad(RoadMapLocation either, RoadMapLocation other, float cost) {
 		addEdge(either, other, cost);
 	}
 
-	public Stream<RoadMapLocation> vertices(Comparator<RoadMapLocation> order) {
+	public Stream<RoadMapLocation> locations(Comparator<RoadMapLocation> order) {
 		return vertices().map(RoadMapLocation.class::cast).sorted(order);
 	}
 
 	public Stream<RoadMapLocation> locations() {
-		return vertices(RoadMap::orderByName);
+		return locations(RoadMap::orderByName);
 	}
 
 	public Stream<String> locationNames() {
@@ -67,8 +67,8 @@ public class RoadMap extends Graph {
 	}
 
 	public void print(PrintStream out, Comparator<RoadMapLocation> order) {
-		vertices(order).forEach(out::println);
-		vertices(order)
+		locations(order).forEach(out::println);
+		locations(order)
 				.flatMap(Vertex::outgoingEdges).map(edge -> "Edge[%s -> %s %.1f km]"
 						.formatted(((RoadMapLocation) edge.from()).name(), ((RoadMapLocation) edge.to()).name(), edge.cost()))
 				.forEach(out::println);
