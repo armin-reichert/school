@@ -221,17 +221,24 @@ public class RoutePlannerWindow extends JFrame {
 		drawStreets(g);
 		drawRoute(g);
 		drawStartAndGoalLocations(g);
+		drawMousePointer(g);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+	}
+
+	private void drawMousePointer(Graphics2D g) {
+		if (lastMousePosition != null) {
+			GeoCoord coord = getCoordAtPosition(lastMousePosition.x, lastMousePosition.y);
+			g.setColor(Color.BLACK);
+			g.setFont(new Font("Sans", Font.PLAIN, 10));
+			g.drawString("%.3f %.3f".formatted(coord.latitude(), coord.longitude()), lastMousePosition.x,
+					lastMousePosition.y);
+		}
 	}
 
 	public void drawStartAndGoalLocations(Graphics2D g) {
 		RoadMapLocation nearestLocation = null;
 		if (lastMousePosition != null) {
 			GeoCoord coord = getCoordAtPosition(lastMousePosition.x, lastMousePosition.y);
-			g.setColor(Color.BLUE);
-			g.setFont(new Font("Sans", Font.PLAIN, 10));
-			g.drawString("%.3f %.3f".formatted(coord.latitude(), coord.longitude()), lastMousePosition.x,
-					lastMousePosition.y);
 			nearestLocation = getNearestCity(coord);
 		}
 		for (var location : map.locations().toList()) {
@@ -239,9 +246,9 @@ public class RoutePlannerWindow extends JFrame {
 			if (location.name().equals(getComboStart().getSelectedItem())) {
 				circle(g, p, Color.GREEN, 6);
 			} else if (location.name().equals(getComboGoal().getSelectedItem())) {
-				circle(g, p, Color.BLUE, 6);
+				circle(g, p, new Color(0, 0, 255, 100), 6);
 			} else if (location == nearestLocation) {
-				circle(g, p, shiftPressed ? Color.BLUE : Color.GREEN, 8);
+				circle(g, p, shiftPressed ? new Color(0, 0, 255, 100) : Color.GREEN, 8);
 			} else {
 				circle(g, p, Color.BLACK, 3);
 			}
