@@ -26,6 +26,7 @@ package de.amr.schule.routeplanner;
 
 import java.awt.event.ActionEvent;
 import java.io.PrintStream;
+import java.util.MissingResourceException;
 
 import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
@@ -34,9 +35,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import de.amr.schule.routeplanner.model.RoadMap;
 import de.amr.schule.routeplanner.model.RoadMapReader;
@@ -48,11 +46,14 @@ import de.amr.schule.routeplanner.ui.RoutePlannerWindow;
  */
 public class RoutePlannerApp {
 
-	private static final Logger LOGGER = LogManager.getFormatterLogger();
-
 	public static void main(String[] args) {
-		var map = new RoadMapReader().read(RoutePlannerApp.class.getResourceAsStream("/saarland.txt"));
-//		printAllRoutes(map, System.out);
+		var mapPath = "/saarland.txt";
+		var is = RoutePlannerApp.class.getResourceAsStream(mapPath);
+		if (is == null) {
+			throw new MissingResourceException("Could not read map from resource '%s'".formatted(mapPath),
+					RoutePlannerApp.class.getName(), mapPath);
+		}
+		var map = new RoadMapReader().read(is);
 		SwingUtilities.invokeLater(() -> createAndShowUI(map));
 	}
 
