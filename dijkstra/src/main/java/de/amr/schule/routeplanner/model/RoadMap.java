@@ -40,7 +40,7 @@ public class RoadMap extends Graph {
 		return v1.name().compareTo(v2.name());
 	}
 
-	public RoadMapLocation mapLocation(String name, float latitude, float longitude) {
+	public RoadMapLocation getOrCreateLocation(String name, float latitude, float longitude) {
 		var location = vertex(name);
 		if (location.isPresent()) {
 			return (RoadMapLocation) location.get();

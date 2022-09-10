@@ -30,24 +30,24 @@ package de.amr.schule.routeplanner.model;
 public class SaarlandRoadMap extends RoadMap {
 
 	public SaarlandRoadMap() {
-		var los = mapLocation("Losheim am See", 49.51f, 6.75f);
-		var wad = mapLocation("Wadern", 49.534f, 6.89f);
-		var mzg = mapLocation("Merzig", 49.449f, 6.643f);
-		var bec = mapLocation("Beckingen", 49.391f, 6.705f);
-		var dil = mapLocation("Dillingen", 49.353f, 6.714f);
-		var slz = mapLocation("Schmelz", 49.432f, 6.843f);
-		var leb = mapLocation("Lebach", 49.41f, 6.91f);
-		var nal = mapLocation("Nalbach", 49.378f, 6.781f);
-		var heu = mapLocation("Heusweiler", 49.338f, 6.929f);
-		var sls = mapLocation("Saarlouis", 49.313f, 6.752f);
-		var vlk = mapLocation("Völklingen", 49.255f, 6.859f);
-		var sbr = mapLocation("Saarbrücken", 49.238f, 6.997f);
-		var wnd = mapLocation("St. Wendel", 49.468f, 7.167f);
-		var nkr = mapLocation("Neunkirchen", 49.349f, 7.177f);
-		var epp = mapLocation("Eppelborn", 49.409f, 6.964f);
-		var hom = mapLocation("Homburg", 49.329f, 7.339f);
-		var igb = mapLocation("St. Ingbert", 49.278f, 7.112f);
-		var tho = mapLocation("Tholey", 49.482f, 7.032f);
+		var los = getOrCreateLocation("Losheim am See", 49.51f, 6.75f);
+		var wad = getOrCreateLocation("Wadern", 49.534f, 6.89f);
+		var mzg = getOrCreateLocation("Merzig", 49.449f, 6.643f);
+		var bec = getOrCreateLocation("Beckingen", 49.391f, 6.705f);
+		var dil = getOrCreateLocation("Dillingen", 49.353f, 6.714f);
+		var slz = getOrCreateLocation("Schmelz", 49.432f, 6.843f);
+		var leb = getOrCreateLocation("Lebach", 49.41f, 6.91f);
+		var nal = getOrCreateLocation("Nalbach", 49.378f, 6.781f);
+		var heu = getOrCreateLocation("Heusweiler", 49.338f, 6.929f);
+		var sls = getOrCreateLocation("Saarlouis", 49.313f, 6.752f);
+		var vlk = getOrCreateLocation("Völklingen", 49.255f, 6.859f);
+		var sbr = getOrCreateLocation("Saarbrücken", 49.238f, 6.997f);
+		var wnd = getOrCreateLocation("St. Wendel", 49.468f, 7.167f);
+		var nkr = getOrCreateLocation("Neunkirchen", 49.349f, 7.177f);
+		var epp = getOrCreateLocation("Eppelborn", 49.409f, 6.964f);
+		var hom = getOrCreateLocation("Homburg", 49.329f, 7.339f);
+		var igb = getOrCreateLocation("St. Ingbert", 49.278f, 7.112f);
+		var tho = getOrCreateLocation("Tholey", 49.482f, 7.032f);
 
 		street(bec, dil, 3.5f);
 		street(epp, nkr, 21.5f);
