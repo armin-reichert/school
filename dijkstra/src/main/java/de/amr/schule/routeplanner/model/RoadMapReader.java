@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -88,15 +89,19 @@ public class RoadMapReader {
 		}
 	}
 
+	private String[] splitAndTrimCSV(String line) {
+		return Stream.of(line.split(",")).map(String::trim).toArray(String[]::new);
+	}
+
 	private void parseLocation(String line) {
 		// key, location name, latitude, longitude
-		String[] tokens = line.split(",");
+		String[] tokens = splitAndTrimCSV(line);
 		if (tokens.length != 4) {
 			LOGGER.error("Line %d: '%s': Invalid location spec".formatted(lineNumber, line));
 			return;
 		}
-		String key = tokens[0].trim();
-		String name = tokens[1].trim();
+		String key = tokens[0];
+		String name = tokens[1];
 		float latitude;
 		try {
 			latitude = Float.parseFloat(tokens[2]);
@@ -116,24 +121,24 @@ public class RoadMapReader {
 
 	private void parseRoad(String line) {
 		// from to cost
-		String[] tokens = line.split(",");
+		String[] tokens = splitAndTrimCSV(line);
 		if (tokens.length != 3) {
 			LOGGER.error("Line %d: '%s': Invalid road spec".formatted(lineNumber, line));
 			return;
 		}
-		var fromLocation = locationByName.get(tokens[0].trim());
+		var fromLocation = locationByName.get(tokens[0]);
 		if (fromLocation == null) {
 			LOGGER.error("Line %d: '%s': Invalid location: '%s'".formatted(lineNumber, line, tokens[0]));
 			return;
 		}
-		var toLocation = locationByName.get(tokens[1].trim());
+		var toLocation = locationByName.get(tokens[1]);
 		if (toLocation == null) {
 			LOGGER.error("Line %d: '%s': Invalid location: '%s'".formatted(lineNumber, line, tokens[1]));
 			return;
 		}
 		float dist;
 		try {
-			dist = Float.parseFloat(tokens[2].trim());
+			dist = Float.parseFloat(tokens[2]);
 		} catch (NumberFormatException x) {
 			LOGGER.error("Line %d: '%s': Invalid distance: '%s'".formatted(lineNumber, line, tokens[2]));
 			return;

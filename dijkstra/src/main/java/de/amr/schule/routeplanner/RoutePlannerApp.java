@@ -25,7 +25,6 @@ SOFTWARE.
 package de.amr.schule.routeplanner;
 
 import java.awt.event.ActionEvent;
-import java.io.PrintStream;
 import java.util.MissingResourceException;
 
 import javax.swing.AbstractAction;
@@ -36,6 +35,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.amr.schule.routeplanner.model.RoadMap;
 import de.amr.schule.routeplanner.model.RoadMapReader;
 import de.amr.schule.routeplanner.model.RoutePlanner;
@@ -45,6 +47,8 @@ import de.amr.schule.routeplanner.ui.RoutePlannerWindow;
  * @author Armin Reichert
  */
 public class RoutePlannerApp {
+
+	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
 	public static void main(String[] args) {
 		var mapPath = "/saarland.txt";
@@ -73,14 +77,14 @@ public class RoutePlannerApp {
 		window.getListRoute().getActionMap().put("printAll", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				printAllRoutes(map, System.out);
+				printAllRoutes(map);
 			}
 		});
 		window.getListRoute().getInputMap().put(KeyStroke.getKeyStroke('p'), "printAll");
 	}
 
-	private static void printAllRoutes(RoadMap map, PrintStream out) {
-		map.print(out, RoadMap::orderByName);
+	private static void printAllRoutes(RoadMap map) {
+		map.print(LOGGER::info, RoadMap::orderByName);
 		var routePlanner = new RoutePlanner(map);
 		var locationNames = map.locationNames().toArray(String[]::new);
 		for (var start : locationNames) {
@@ -88,7 +92,7 @@ public class RoutePlannerApp {
 				var route = routePlanner.computeRoute(start, goal);
 				var routeDesc = route.stream().map(point -> "%s %.1f km".formatted(point.name(), routePlanner.cost(point)))
 						.toList();
-				out.println("%s nach %s: %s".formatted(start, goal, routeDesc));
+				LOGGER.info("%s nach %s: %s".formatted(start, goal, routeDesc));
 			}
 		}
 	}

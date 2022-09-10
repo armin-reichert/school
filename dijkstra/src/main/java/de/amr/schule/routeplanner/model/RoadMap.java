@@ -24,8 +24,8 @@ SOFTWARE.
 
 package de.amr.schule.routeplanner.model;
 
-import java.io.PrintStream;
 import java.util.Comparator;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import de.amr.schule.routeplanner.graph.Graph;
@@ -66,11 +66,11 @@ public class RoadMap extends Graph {
 		return locations().map(RoadMapLocation::name);
 	}
 
-	public void print(PrintStream out, Comparator<RoadMapLocation> order) {
-		locations(order).forEach(out::println);
+	public void print(Consumer<String> destination, Comparator<RoadMapLocation> order) {
+		locations(order).map(RoadMapLocation::toString).forEach(destination::accept);
 		locations(order)
 				.flatMap(Vertex::outgoingEdges).map(edge -> "Edge[%s -> %s %.1f km]"
 						.formatted(((RoadMapLocation) edge.from()).name(), ((RoadMapLocation) edge.to()).name(), edge.cost()))
-				.forEach(out::println);
+				.forEach(destination::accept);
 	}
 }
