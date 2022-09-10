@@ -266,12 +266,10 @@ public class RoutePlannerWindow extends JFrame {
 	private void drawStreets(Graphics2D g) {
 		g.setColor(Color.DARK_GRAY);
 		g.setStroke(new BasicStroke(0.1f));
-		map.locations().forEach(location -> {
-			location.outgoingEdges().forEach(street -> {
-				Point from = getPointAtCoord(((RoadMapLocation) street.from()).coord());
-				Point to = getPointAtCoord(((RoadMapLocation) street.to()).coord());
-				g.drawLine(from.x, from.y, to.x, to.y);
-			});
+		map.edges().forEach(road -> {
+			Point from = getPointAtCoord(((RoadMapLocation) road.from()).coord());
+			Point to = getPointAtCoord(((RoadMapLocation) road.to()).coord());
+			g.drawLine(from.x, from.y, to.x, to.y);
 		});
 	}
 

@@ -50,14 +50,15 @@ public class RoutePlannerApp {
 
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
+	private static final String MAP_FILE = "saarland.txt";
+
 	public static void main(String[] args) {
-		var mapPath = "/saarland.txt";
-		var is = RoutePlannerApp.class.getResourceAsStream(mapPath);
+		var is = RoutePlannerApp.class.getResourceAsStream("/" + MAP_FILE);
 		if (is == null) {
-			throw new MissingResourceException("Could not read map from resource '%s'".formatted(mapPath),
-					RoutePlannerApp.class.getName(), mapPath);
+			throw new MissingResourceException("Could not read map from file '%s'".formatted(MAP_FILE),
+					RoutePlannerApp.class.getName(), MAP_FILE);
 		}
-		var map = new RoadMapReader().read(is);
+		var map = RoadMapReader.readMap(is);
 		SwingUtilities.invokeLater(() -> createAndShowUI(map));
 	}
 
@@ -92,7 +93,7 @@ public class RoutePlannerApp {
 				var route = routePlanner.computeRoute(start, goal);
 				var routeDesc = route.stream().map(point -> "%s %.1f km".formatted(point.name(), routePlanner.cost(point)))
 						.toList();
-				LOGGER.info("%s nach %s: %s".formatted(start, goal, routeDesc));
+				LOGGER.info(() -> "%s nach %s: %s".formatted(start, goal, routeDesc));
 			}
 		}
 	}

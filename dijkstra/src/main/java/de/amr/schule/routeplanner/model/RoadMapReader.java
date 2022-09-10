@@ -42,24 +42,32 @@ public class RoadMapReader {
 
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
-	static final int MODE_SKIP = 0;
-	static final int MODE_LOCATIONS = 1;
-	static final int MODE_ROADS = 2;
+	private static final int MODE_SKIP = 0;
+	private static final int MODE_LOCATIONS = 1;
+	private static final int MODE_ROADS = 2;
 
-	private RoadMap map;
-	private Map<String, RoadMapLocation> locationByName = new HashMap<>();
+	private static String[] splitAndTrimCSV(String line) {
+		return Stream.of(line.split(",")).map(String::trim).toArray(String[]::new);
+	}
+
+	public static RoadMap readMap(InputStream is) {
+		return new RoadMapReader(is).map;
+	}
+
+	private final RoadMap map;
+	private final Map<String, RoadMapLocation> locationByName = new HashMap<>();
 	private int mode = MODE_SKIP;
 	private int lineNumber;
 
-	public RoadMap read(InputStream is) {
+	private RoadMapReader(InputStream is) {
 		map = new RoadMap();
 		lineNumber = 0;
 		try (InputStreamReader utf8 = new InputStreamReader(is, StandardCharsets.UTF_8);
 				BufferedReader rdr = new BufferedReader(utf8)) {
 			rdr.lines().forEach(line -> {
 				++lineNumber;
-				if (line.startsWith("#")) {
-					// skip comment line
+				if (line.startsWith("#") || line.isBlank()) {
+					// skip line
 				} else {
 					processLine(line);
 				}
@@ -67,7 +75,6 @@ public class RoadMapReader {
 		} catch (Exception x) {
 			x.printStackTrace();
 		}
-		return map;
 	}
 
 	private void processLine(String line) {
@@ -75,29 +82,18 @@ public class RoadMapReader {
 			mode = MODE_LOCATIONS;
 		} else if (".roads".equals(line)) {
 			mode = MODE_ROADS;
-		} else if (!line.isBlank()) {
-			switch (mode) {
-			case MODE_LOCATIONS -> {
-				parseLocation(line);
-			}
-			case MODE_ROADS -> {
-				parseRoad(line);
-			}
-			default -> {
-			}
-			}
+		} else if (mode == MODE_LOCATIONS) {
+			parseLocation(line);
+		} else if (mode == MODE_ROADS) {
+			parseRoad(line);
 		}
-	}
-
-	private String[] splitAndTrimCSV(String line) {
-		return Stream.of(line.split(",")).map(String::trim).toArray(String[]::new);
 	}
 
 	private void parseLocation(String line) {
 		// key, location name, latitude, longitude
 		String[] tokens = splitAndTrimCSV(line);
 		if (tokens.length != 4) {
-			LOGGER.error("Line %d: '%s': Invalid location spec".formatted(lineNumber, line));
+			LOGGER.error(() -> "Line %d: '%s': Invalid location spec".formatted(lineNumber, line));
 			return;
 		}
 		String key = tokens[0];
@@ -123,17 +119,17 @@ public class RoadMapReader {
 		// from to cost
 		String[] tokens = splitAndTrimCSV(line);
 		if (tokens.length != 3) {
-			LOGGER.error("Line %d: '%s': Invalid road spec".formatted(lineNumber, line));
+			LOGGER.error(() -> "Line %d: '%s': Invalid road spec".formatted(lineNumber, line));
 			return;
 		}
 		var fromLocation = locationByName.get(tokens[0]);
 		if (fromLocation == null) {
-			LOGGER.error("Line %d: '%s': Invalid location: '%s'".formatted(lineNumber, line, tokens[0]));
+			LOGGER.error(() -> "Line %d: '%s': Invalid location: '%s'".formatted(lineNumber, line, tokens[0]));
 			return;
 		}
 		var toLocation = locationByName.get(tokens[1]);
 		if (toLocation == null) {
-			LOGGER.error("Line %d: '%s': Invalid location: '%s'".formatted(lineNumber, line, tokens[1]));
+			LOGGER.error(() -> "Line %d: '%s': Invalid location: '%s'".formatted(lineNumber, line, tokens[1]));
 			return;
 		}
 		float dist;
