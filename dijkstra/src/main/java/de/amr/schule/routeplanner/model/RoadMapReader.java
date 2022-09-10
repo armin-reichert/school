@@ -53,7 +53,8 @@ public class RoadMapReader {
 	public RoadMap read(InputStream is) {
 		map = new RoadMap();
 		lineNumber = 0;
-		try (BufferedReader rdr = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+		try (InputStreamReader utf8 = new InputStreamReader(is, StandardCharsets.UTF_8);
+				BufferedReader rdr = new BufferedReader(utf8)) {
 			rdr.lines().forEach(line -> {
 				++lineNumber;
 				if (line.startsWith("#")) {
@@ -94,8 +95,8 @@ public class RoadMapReader {
 			LOGGER.error("Line %d: '%s': Invalid location spec".formatted(lineNumber, line));
 			return;
 		}
-		String key = tokens[0];
-		String name = tokens[1];
+		String key = tokens[0].trim();
+		String name = tokens[1].trim();
 		float latitude;
 		try {
 			latitude = Float.parseFloat(tokens[2]);
@@ -132,7 +133,7 @@ public class RoadMapReader {
 		}
 		float dist;
 		try {
-			dist = Float.parseFloat(tokens[2]);
+			dist = Float.parseFloat(tokens[2].trim());
 		} catch (NumberFormatException x) {
 			LOGGER.error("Line %d: '%s': Invalid distance: '%s'".formatted(lineNumber, line, tokens[2]));
 			return;
