@@ -24,13 +24,19 @@ SOFTWARE.
 
 package de.amr.schule.routeplanner;
 
+import java.awt.event.ActionEvent;
 import java.io.PrintStream;
 
+import javax.swing.AbstractAction;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import de.amr.schule.routeplanner.model.RoadMap;
 import de.amr.schule.routeplanner.model.RoadMapReader;
@@ -42,8 +48,9 @@ import de.amr.schule.routeplanner.ui.RoutePlannerWindow;
  */
 public class RoutePlannerApp {
 
+	private static final Logger LOGGER = LogManager.getFormatterLogger();
+
 	public static void main(String[] args) {
-//		var map = new SaarlandRoadMap();
 		var map = new RoadMapReader().read(RoutePlannerApp.class.getResourceAsStream("/saarland.txt"));
 //		printAllRoutes(map, System.out);
 		SwingUtilities.invokeLater(() -> createAndShowUI(map));
@@ -61,6 +68,14 @@ public class RoutePlannerApp {
 		window.getComboGoal().setModel(new DefaultComboBoxModel<>(locationNames));
 		window.getListRoute().setModel(new DefaultListModel<>());
 		window.setMap(map);
+
+		window.getListRoute().getActionMap().put("printAll", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				printAllRoutes(map, System.out);
+			}
+		});
+		window.getListRoute().getInputMap().put(KeyStroke.getKeyStroke('p'), "printAll");
 	}
 
 	private static void printAllRoutes(RoadMap map, PrintStream out) {

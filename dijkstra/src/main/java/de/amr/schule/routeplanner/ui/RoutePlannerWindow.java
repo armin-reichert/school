@@ -112,7 +112,7 @@ public class RoutePlannerWindow extends JFrame {
 
 		JPanel panelStartGoal = new JPanel();
 		getContentPane().add(panelStartGoal, "cell 0 0");
-		panelStartGoal.setLayout(new MigLayout("", "[][][]", "[][]"));
+		panelStartGoal.setLayout(new MigLayout("", "[][]", "[][]"));
 
 		JLabel lblStart = new JLabel("Start");
 		panelStartGoal.add(lblStart, "cell 0 0,alignx left,aligny center");
@@ -120,7 +120,7 @@ public class RoutePlannerWindow extends JFrame {
 		comboStart = new JComboBox<>();
 		comboStart.setMaximumRowCount(20);
 		comboStart.setModel(new DefaultComboBoxModel<>(new String[] { "Wadern" }));
-		panelStartGoal.add(comboStart, "cell 1 0,alignx left,aligny center");
+		panelStartGoal.add(comboStart, "cell 1 0,growx,aligny center");
 		comboStart.setAction(actionComputeRoute);
 
 		JLabel lblGoal = new JLabel("Ziel");
@@ -129,7 +129,7 @@ public class RoutePlannerWindow extends JFrame {
 		comboGoal = new JComboBox<>();
 		comboGoal.setMaximumRowCount(20);
 		comboGoal.setModel(new DefaultComboBoxModel<>(new String[] { "Neunkirchen" }));
-		panelStartGoal.add(comboGoal, "cell 1 1,alignx left,aligny center");
+		panelStartGoal.add(comboGoal, "cell 1 1,growx,aligny center");
 		comboGoal.setAction(actionComputeRoute);
 
 		mapImage = new ImagePanel();
