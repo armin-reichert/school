@@ -70,6 +70,9 @@ public class RoutePlannerWindow extends JFrame {
 	private static final float MAP_LONGITUDE_MIN = 6.356f; // left
 	private static final float MAP_LONGITUDE_MAX = 7.402f; // right
 
+	private static final Color COLOR_START = new Color(0, 255, 0, 100);
+	private static final Color COLOR_GOAL = new Color(0, 0, 255, 100);
+
 	private class ComputeRouteAction extends AbstractAction {
 		public ComputeRouteAction() {
 			putValue(NAME, "Route");
@@ -244,11 +247,11 @@ public class RoutePlannerWindow extends JFrame {
 		for (var location : map.locations().toList()) {
 			Point p = getPointAtCoord(location.coord());
 			if (location.name().equals(comboStart().getSelectedItem())) {
-				circle(g, p, Color.GREEN, 6);
+				circle(g, p, COLOR_START, 6);
 			} else if (location.name().equals(comboGoal().getSelectedItem())) {
-				circle(g, p, new Color(0, 0, 255, 100), 6);
+				circle(g, p, COLOR_GOAL, 6);
 			} else if (location == nearestLocation) {
-				circle(g, p, shiftPressed ? new Color(0, 0, 255, 100) : Color.GREEN, 8);
+				circle(g, p, shiftPressed ? COLOR_GOAL : COLOR_START, 8);
 			} else {
 				circle(g, p, Color.BLACK, 3);
 			}
