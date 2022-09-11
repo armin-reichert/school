@@ -34,8 +34,6 @@ import java.util.PriorityQueue;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.amr.schule.routeplanner.graph.Vertex;
-
 /**
  * @author Armin Reichert
  * 
@@ -54,10 +52,14 @@ public class RoutePlanner {
 		this.map = Objects.requireNonNull(map);
 	}
 
+	public float cost(RoadMapLocation location) {
+		return cost.getOrDefault(location, Float.POSITIVE_INFINITY);
+	}
+
 	public List<RoadMapLocation> computeRoute(String startName, String goalName) {
-		var start = map.vertex(startName).orElse(null);
-		var goal = map.vertex(goalName).orElse(null);
-		return computeRoute((RoadMapLocation) start, (RoadMapLocation) goal);
+		var start = (RoadMapLocation) map.vertex(startName).orElse(null);
+		var goal = (RoadMapLocation) map.vertex(goalName).orElse(null);
+		return computeRoute(start, goal);
 	}
 
 	public List<RoadMapLocation> computeRoute(RoadMapLocation start, RoadMapLocation goal) {
@@ -80,15 +82,11 @@ public class RoutePlanner {
 		return route;
 	}
 
-	public float cost(Vertex v) {
-		return cost.getOrDefault(v, Float.POSITIVE_INFINITY);
-	}
-
 	/**
 	 * Computes the shortest path from the given start vertex to all vertices using the Dijkstra algorithm.
 	 */
 	private void dijkstra() {
-		PriorityQueue<RoadMapLocation> q = new PriorityQueue<>((v1, v2) -> Float.compare(cost(v1), cost(v2)));
+		var q = new PriorityQueue<RoadMapLocation>((loc1, loc2) -> Float.compare(cost(loc1), cost(loc2)));
 		parent = new HashMap<>();
 		cost = new HashMap<>();
 		cost.put(startLocation, 0.0f);
