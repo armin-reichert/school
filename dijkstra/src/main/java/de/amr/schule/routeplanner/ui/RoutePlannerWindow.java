@@ -73,35 +73,28 @@ public class RoutePlannerWindow extends JFrame {
 	private static final Color COLOR_START = new Color(0, 255, 0, 100);
 	private static final Color COLOR_GOAL = new Color(0, 0, 255, 100);
 
-	private class ComputeRouteAction extends AbstractAction {
-		public ComputeRouteAction() {
-			putValue(NAME, "Route");
-			putValue(SHORT_DESCRIPTION, "Computes the best route");
-		}
-
+	private final Action actionComputeRoute = new AbstractAction("Route") {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String startCity = (String) comboStart().getSelectedItem();
-			String goalCity = (String) comboGoal().getSelectedItem();
-			var route = routePlanner.computeRoute(startCity, goalCity);
+			String start = (String) comboStart().getSelectedItem();
+			String goal = (String) comboGoal().getSelectedItem();
+			var route = routePlanner.computeRoute(start, goal);
+			var sections = route.stream()
+					.map(location -> "%s %.1f km".formatted(location.name(), routePlanner.cost(location))).toList();
 			var data = new DefaultListModel<String>();
-			var routeDesc = route.stream().map(point -> "%s %.1f km".formatted(point.name(), routePlanner.cost(point)))
-					.toList();
-			data.addAll(routeDesc);
+			data.addAll(sections);
 			listRoute().setModel(data);
 			mapImage.repaint();
 		}
-	}
+	};
 
 	private RoadMap map;
 	private RoutePlanner routePlanner;
-
-	private final Action actionComputeRoute = new ComputeRouteAction();
 	private JComboBox<String> comboStart;
 	private JComboBox<String> comboGoal;
 	private JList<String> listRoute;
 	private ImagePanel mapImage;
-	private Point lastMousePosition;
+	private Point mousePosition;
 	private boolean shiftPressed;
 
 	public RoutePlannerWindow() {
@@ -199,49 +192,48 @@ public class RoutePlannerWindow extends JFrame {
 
 	private void onMouseMoved(MouseEvent e) {
 		mapImage.requestFocus();
-		lastMousePosition = e.getPoint();
+		mousePosition = e.getPoint();
 		mapImage.repaint();
 	}
 
 	private void onMouseClicked(MouseEvent e) {
 		var coord = getCoordAtPosition(e.getX(), e.getY());
-		var nearestCity = getNearestCity(coord);
-		if (nearestCity != null) {
+		var nearest = getNearestLocation(coord, 50);
+		if (nearest != null) {
 			if (e.isShiftDown()) {
-				comboGoal().setSelectedItem(nearestCity.name());
+				comboGoal().setSelectedItem(nearest.name());
 			} else {
-				comboStart().setSelectedItem(nearestCity.name());
+				comboStart().setSelectedItem(nearest.name());
 			}
 		}
-		lastMousePosition = e.getPoint();
+		mousePosition = e.getPoint();
 		mapImage.requestFocus();
 		mapImage.repaint();
 	}
 
 	private void onRepaint(Graphics2D g) {
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		drawStreets(g);
+		drawRoads(g);
 		drawRoute(g);
 		drawStartAndGoalLocations(g);
-		drawMousePointer(g);
+		drawMouseCoord(g);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 	}
 
-	private void drawMousePointer(Graphics2D g) {
-		if (lastMousePosition != null) {
-			GeoCoord coord = getCoordAtPosition(lastMousePosition.x, lastMousePosition.y);
+	private void drawMouseCoord(Graphics2D g) {
+		if (mousePosition != null) {
+			GeoCoord coord = getCoordAtPosition(mousePosition.x, mousePosition.y);
 			g.setColor(Color.BLACK);
 			g.setFont(new Font("Sans", Font.PLAIN, 10));
-			g.drawString("%.3f %.3f".formatted(coord.latitude(), coord.longitude()), lastMousePosition.x,
-					lastMousePosition.y);
+			g.drawString("%.3f %.3f".formatted(coord.latitude(), coord.longitude()), mousePosition.x, mousePosition.y);
 		}
 	}
 
 	public void drawStartAndGoalLocations(Graphics2D g) {
 		RoadMapLocation nearestLocation = null;
-		if (lastMousePosition != null) {
-			GeoCoord coord = getCoordAtPosition(lastMousePosition.x, lastMousePosition.y);
-			nearestLocation = getNearestCity(coord);
+		if (mousePosition != null) {
+			GeoCoord coord = getCoordAtPosition(mousePosition.x, mousePosition.y);
+			nearestLocation = getNearestLocation(coord, 50);
 		}
 		for (var location : map.locations().toList()) {
 			Point p = getPointAtCoord(location.coord());
@@ -258,9 +250,9 @@ public class RoutePlannerWindow extends JFrame {
 	}
 
 	public void drawRoute(Graphics2D g) {
-		String startCity = (String) comboStart().getSelectedItem();
-		String goalCity = (String) comboGoal().getSelectedItem();
-		var route = routePlanner.computeRoute(startCity, goalCity);
+		String start = (String) comboStart().getSelectedItem();
+		String goal = (String) comboGoal().getSelectedItem();
+		var route = routePlanner.computeRoute(start, goal);
 		g.setColor(Color.RED);
 		g.setStroke(new BasicStroke(1f));
 		for (int i = 0; i < route.size(); ++i) {
@@ -272,7 +264,7 @@ public class RoutePlannerWindow extends JFrame {
 		}
 	}
 
-	private void drawStreets(Graphics2D g) {
+	private void drawRoads(Graphics2D g) {
 		g.setColor(Color.DARK_GRAY);
 		g.setStroke(new BasicStroke(0.1f));
 		map.edges().forEach(road -> {
@@ -298,18 +290,17 @@ public class RoutePlannerWindow extends JFrame {
 		return new GeoCoord(latitude, longitude);
 	}
 
-	private RoadMapLocation getNearestCity(GeoCoord coord) {
+	private RoadMapLocation getNearestLocation(GeoCoord coord, double range) {
 		double minDist = Double.POSITIVE_INFINITY;
-		RoadMapLocation nearestCity = null;
-		var locations = map.locations().toList();
-		for (var city : locations) {
-			double dist = distance(coord, city.coord());
+		RoadMapLocation nearest = null;
+		for (var location : map.locations().toList()) {
+			double dist = distance(coord, location.coord());
 			if (dist < minDist) {
-				nearestCity = city;
+				nearest = location;
 				minDist = dist;
 			}
 		}
-		return minDist < 50 ? nearestCity : null;
+		return minDist < range ? nearest : null;
 	}
 
 	private double distance(GeoCoord c1, GeoCoord c2) {
