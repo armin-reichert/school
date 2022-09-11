@@ -136,6 +136,11 @@ public class RoutePlannerWindow extends JFrame {
 		comboGoal.setAction(actionComputeRoute);
 
 		mapImage = new ImagePanel();
+		try {
+			mapImage.setImage(ImageIO.read(getClass().getResourceAsStream("/saarlandkarte.jpg")));
+		} catch (Exception x) {
+			x.printStackTrace();
+		}
 		mapImage.setBackground(new Color(255, 255, 255));
 		getContentPane().add(mapImage, "cell 1 0 1 2,grow");
 		mapImage.setLayout(new MigLayout("", "[]", "[]"));
@@ -167,12 +172,6 @@ public class RoutePlannerWindow extends JFrame {
 				return values[index];
 			}
 		});
-
-		try {
-			mapImage.setImage(ImageIO.read(getClass().getResource("/saarlandkarte.jpg")));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void setMap(RoadMap map) {

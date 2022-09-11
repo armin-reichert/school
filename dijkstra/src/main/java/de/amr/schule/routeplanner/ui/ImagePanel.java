@@ -43,26 +43,13 @@ import org.apache.logging.log4j.Logger;
  */
 public class ImagePanel extends JPanel {
 
-	private final Logger LOGGER = LogManager.getFormatterLogger();
+	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
 	private BufferedImage image;
-
-	private Consumer<KeyEvent> onKeyPressed = e -> {
-		LOGGER.info("onKeyPressed(%s)".formatted(e));
-	};
-
-	private Consumer<KeyEvent> onKeyReleased = e -> {
-		LOGGER.info("onKeyReleased(%s)".formatted(e));
-	};
-
-	private Consumer<MouseEvent> onMouseMoved = e -> {
-		LOGGER.info("onMouseMoved(%s)".formatted(e));
-	};
-
-	private Consumer<MouseEvent> onMouseClicked = e -> {
-		LOGGER.info("onMouseClicked(%s)".formatted(e));
-	};
-
+	private Consumer<KeyEvent> onKeyPressed = e -> LOGGER.info(() -> "onKeyPressed(%s)".formatted(e));
+	private Consumer<KeyEvent> onKeyReleased = e -> LOGGER.info(() -> "onKeyReleased(%s)".formatted(e));
+	private Consumer<MouseEvent> onMouseMoved = e -> LOGGER.info(() -> "onMouseMoved(%s)".formatted(e));
+	private Consumer<MouseEvent> onMouseClicked = e -> LOGGER.info(() -> "onMouseClicked(%s)".formatted(e));
 	private Consumer<Graphics2D> onRepaint = g -> {
 	};
 
