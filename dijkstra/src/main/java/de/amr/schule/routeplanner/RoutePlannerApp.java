@@ -82,13 +82,13 @@ public class RoutePlannerApp {
 		window.listRoute().getActionMap().put("printAll", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				printAllRoutes(map);
+				printAllRoutes();
 			}
 		});
 		window.listRoute().getInputMap().put(KeyStroke.getKeyStroke('p'), "printAll");
 	}
 
-	private static void printAllRoutes(RoadMap map) {
+	private void printAllRoutes() {
 		map.print(LOGGER::info, RoadMap::orderByName);
 		var routePlanner = new RoutePlanner(map);
 		var locationNames = map.locationNames().toArray(String[]::new);
