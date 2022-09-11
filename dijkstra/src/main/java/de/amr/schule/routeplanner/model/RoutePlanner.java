@@ -46,17 +46,17 @@ public class RoutePlanner {
 	private static final Logger LOGGER = LogManager.getFormatterLogger();
 
 	private final RoadMap map;
-	private Map<Vertex, Float> cost;
-	private Map<Vertex, Vertex> parent;
-	private Vertex startVertex;
+	private Map<RoadMapLocation, Float> cost;
+	private Map<RoadMapLocation, RoadMapLocation> parent;
+	private RoadMapLocation startLocation;
 
 	public RoutePlanner(RoadMap map) {
 		this.map = Objects.requireNonNull(map);
 	}
 
-	public List<RoadMapLocation> computeRoute(String startCity, String goalCity) {
-		var start = map.vertex(startCity).orElse(null);
-		var goal = map.vertex(goalCity).orElse(null);
+	public List<RoadMapLocation> computeRoute(String startName, String goalName) {
+		var start = map.vertex(startName).orElse(null);
+		var goal = map.vertex(goalName).orElse(null);
 		return computeRoute((RoadMapLocation) start, (RoadMapLocation) goal);
 	}
 
@@ -64,9 +64,9 @@ public class RoutePlanner {
 		if (start == null || goal == null) {
 			return List.of();
 		}
-		if (start != startVertex) {
-			startVertex = start;
-			LOGGER.info(() -> "Compute shortest paths starting at %s".formatted(startVertex));
+		if (start != startLocation) {
+			startLocation = start;
+			LOGGER.info(() -> "Compute shortest paths starting at %s".formatted(startLocation));
 			dijkstra();
 		}
 		return buildRoute(goal);
@@ -74,7 +74,7 @@ public class RoutePlanner {
 
 	private List<RoadMapLocation> buildRoute(RoadMapLocation goal) {
 		var route = new LinkedList<RoadMapLocation>();
-		for (RoadMapLocation v = goal; v != null; v = (RoadMapLocation) parent.get(v)) {
+		for (RoadMapLocation v = goal; v != null; v = parent.get(v)) {
 			route.addFirst(v);
 		}
 		return route;
@@ -88,15 +88,15 @@ public class RoutePlanner {
 	 * Computes the shortest path from the given start vertex to all vertices using the Dijkstra algorithm.
 	 */
 	private void dijkstra() {
-		PriorityQueue<Vertex> q = new PriorityQueue<>((v1, v2) -> Float.compare(cost(v1), cost(v2)));
+		PriorityQueue<RoadMapLocation> q = new PriorityQueue<>((v1, v2) -> Float.compare(cost(v1), cost(v2)));
 		parent = new HashMap<>();
 		cost = new HashMap<>();
-		cost.put(startVertex, 0.0f);
-		q.add(startVertex);
+		cost.put(startLocation, 0.0f);
+		q.add(startLocation);
 		while (!q.isEmpty()) {
 			var u = q.poll(); // extract min cost vertex from queue
 			u.outgoingEdges().forEach(edge -> {
-				var v = edge.to(); // edge = (u, v)
+				var v = (RoadMapLocation) edge.to(); // edge = (u, v)
 				var altCost = cost(u) + edge.cost();
 				if (altCost < cost(v)) {
 					LOGGER.trace("Shorter path to %s found: old cost=%.1f new cost=%.1f".formatted(v, cost(v), altCost));
